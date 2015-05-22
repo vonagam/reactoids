@@ -69,4 +69,4 @@ mixin =
     return
 
 
-React.mixins.add 'input', mixin
+ReactMixinManager.add 'input', mixin

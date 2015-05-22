@@ -34,4 +34,4 @@ mixin = ->
     _.pick props, keys
 
 
-React.mixins.add 'omit_props', mixin
+ReactMixinManager.add 'omit_props', mixin

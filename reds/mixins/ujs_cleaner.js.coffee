@@ -9,4 +9,4 @@ mixin =
     return
 
 
-React.mixins.add 'ujs_cleaner', mixin
+ReactMixinManager.add 'ujs_cleaner', mixin

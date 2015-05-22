@@ -19,4 +19,4 @@ mixin =
       that.refs[ ref ][ signal ].apply undefined, argus
 
 
-React.mixins.add 'connector', mixin
+ReactMixinManager.add 'connector', mixin

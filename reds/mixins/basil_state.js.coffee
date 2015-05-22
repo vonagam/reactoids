@@ -33,4 +33,4 @@ mixin =
     return
 
 
-React.mixins.add 'basil_state', mixin
+ReactMixinManager.add 'basil_state', mixin

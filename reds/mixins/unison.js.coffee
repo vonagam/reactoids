@@ -64,4 +64,4 @@ mixin = ( method, duration, name = '' )->
     return
 
 
-React.mixins.add 'unison', mixin
+ReactMixinManager.add 'unison', mixin

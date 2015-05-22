@@ -47,4 +47,4 @@ mixin =
     return
 
 
-React.mixins.add 'timer', mixin
+ReactMixinManager.add 'timer', mixin

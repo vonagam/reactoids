@@ -174,4 +174,4 @@ __ =
 mixin = Mixer.mixin __, [ 'fetchView', 'reloadView', 'clearViewCache' ]
 
 
-React.mixins.add 'ajax_view', mixin
+ReactMixinManager.add 'ajax_view', mixin

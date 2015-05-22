@@ -7,4 +7,4 @@ mixin =
     return
 
 
-React.mixins.add 'toggle_state', mixin
+ReactMixinManager.add 'toggle_state', mixin

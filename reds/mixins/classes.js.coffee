@@ -12,4 +12,4 @@ mixin =
     classes @props.className, args
 
 
-React.mixins.add 'classes', mixin
+ReactMixinManager.add 'classes', mixin

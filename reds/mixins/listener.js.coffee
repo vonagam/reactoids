@@ -71,4 +71,4 @@ mixin =
     return
 
 
-React.mixins.add 'listener', mixin
+ReactMixinManager.add 'listener', mixin

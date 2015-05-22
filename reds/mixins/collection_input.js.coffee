@@ -29,4 +29,4 @@ mixin =
     _.map options, ( option )-> _.pass func, option, thisArg
 
 
-React.mixins.add 'collection_input', mixin, 'input'
+ReactMixinManager.add 'collection_input', mixin, 'input'

@@ -66,4 +66,4 @@ mixin =
     return
 
 
-React.mixins.add 'ajax_sender', mixin
+ReactMixinManager.add 'ajax_sender', mixin
