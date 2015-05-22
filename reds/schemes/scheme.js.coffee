@@ -1,4 +1,4 @@
-Field = $require 'schemes/_field'
+Field = $require 'schemes/field'
 
 $define ->
 
