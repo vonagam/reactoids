@@ -15,6 +15,11 @@ $define ->
 
     mixins: [ 'component', 'ajax_sender' ]
 
+    classes:
+      'sender':
+        '-waiting': ''
+        '-ready': ''
+
     getDefaultProps: ->
 
       redirect: ( data, status, xhr )-> xhr.getResponseHeader 'Location'

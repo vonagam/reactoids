@@ -14,6 +14,9 @@ $define ->
 
     mixins: [ 'component', 'unison( "forceUpdate", 60000 )' ]
 
+    classes:
+      'moment': ''
+
     render: ->
 
       time = moment @props.time

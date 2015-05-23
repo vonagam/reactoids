@@ -12,6 +12,10 @@ $define ->
 
     mixins: [ 'component', 'input' ]
 
+    classes:
+      'checkboxer':
+        '-checked': ''
+
     onClick: ->
 
       _.pass @props.onClick

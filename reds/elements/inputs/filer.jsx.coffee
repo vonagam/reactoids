@@ -7,11 +7,16 @@ $define ->
 
   File = React.createClass
 
+    propTypes:
+
+      file: React.PropTypes.any
+      preview: React.PropTypes.bool
+      remove: React.PropTypes.func
+
     onDataUrlLoad: ( reader )->
 
       return unless @isMounted()
 
-      #React.findDOMNode( @refs.preview ).style.backgroundImage = "url(#{ reader.result })"
       React.findDOMNode( @refs.preview ).src = reader.result
 
       return
@@ -28,24 +33,25 @@ $define ->
 
     componentDidMount: ->
 
-      @createDataUrl()
+      if @props.preview
+
+        @createDataUrl()
 
       return
 
     componentDidUpdate: ( prev_props )->
 
-      return if prev_props.file == @props.file
+      if prev_props.file != @props.file && @props.preview
 
-      @createDataUrl()
+        @createDataUrl()
 
       return
 
     componentWillReceiveProps: ( next_props )->
 
-      return if next_props.file == @props.file
+      if next_props.file != @props.file && @props.preview
 
-      #React.findDOMNode( @refs.preview ).style.backgroundImage = ''
-      React.findDOMNode( @refs.preview ).src = ''
+        React.findDOMNode( @refs.preview ).src = '' 
 
       return
 
@@ -53,10 +59,14 @@ $define ->
 
       file = @props.file
 
+      if @props.preview
+
+        preview = `<img ref='preview' className='preview' />`
+
       `<div className='file'>
-        <Button className='remove' onClick={ this.props.remove } text='x' />
-        <img ref='preview' className='preview' />
         <div className='name'>{ file.name }</div>
+        { preview }
+        <Button className='remove' onClick={ this.props.remove } text='x' />
       </div>`
 
 
@@ -65,8 +75,36 @@ $define ->
     propTypes:
 
       multiple: React.PropTypes.bool
+      preview: React.PropTypes.bool
 
     mixins: [ 'component', 'input' ]
+
+    classes:
+      'filler':
+        '-multiple': ''
+        '-empty': ''
+        '-filled': ''
+        '-dragging': ''
+        'files':
+          'file':
+            'name': ''
+            'preview': ''
+            'remove': ''
+        'dropzone': ''
+        'actions':
+          'action':
+            '-set': ''
+            '-add': ''
+            '-clear': ''
+
+    getDefaultProps: ->
+
+      multiple: false
+      preview: true
+
+    getInitialState: ->
+
+      dragging: false
 
     clear: ->
 
@@ -76,7 +114,13 @@ $define ->
 
     onChange: ( event )->
 
-      files = _.toArray event.target.files
+      if event.dataTransfer
+
+        files = _.toArray event.dataTransfer.files
+
+      else
+
+        files = _.toArray event.target.files
 
       if @action == 'set'
 
@@ -102,7 +146,7 @@ $define ->
 
     onLabelClick: ->
 
-      @onActionClick 'set'
+      @onActionClick if @props.multiple then 'add' else 'set'
 
       return
 
@@ -134,6 +178,32 @@ $define ->
 
       return
 
+    onDragLeave: ->
+
+      @setState dragging: false
+
+      return
+
+    onDragOver: ( event )->
+
+      event.preventDefault()
+
+      @setState dragging: true
+
+      event.dataTransfer.dropEffect = 'copy'
+
+      return
+
+    onDrop: ( event )->
+
+      event.preventDefault()
+
+      @setState dragging: false
+
+      @onChange event
+
+      return
+
     render: ->
 
       value = @getValue()
@@ -141,6 +211,7 @@ $define ->
       className = @classes 'Filer',
         if value then '-filled' else '-empty',
         '-multiple': @props.multiple
+        '-dragging': @props.dragging
 
       if value
 
@@ -151,6 +222,7 @@ $define ->
           `<File
             key={ index }
             file={ file }
+            preview={ this.props.preview }
             remove={ _.partial( this.removeFile, file ) }
           />`
 
@@ -163,7 +235,7 @@ $define ->
           `<Button
             className='action -add'
             onClick={ value && _.partial( this.onActionClick, 'add' ) }
-            text='Добавить'
+            text='Add'
           />`
 
       `<div
@@ -173,17 +245,24 @@ $define ->
         <div className='files'>
           { files }
         </div>
+        <div
+          className='dropzone'
+          onClick={ this.onLabelClick }
+          onDragLeave={ this.onDragLeave }
+          onDragOver={ this.onDragOver }
+          onDrop={ this.onDrop }
+        />
         <div className='actions'>
           <Button
             className='action -set'
             onClick={ _.partial( this.onActionClick, 'set' ) }
-            text='Загрузить'
+            text='Upload'
           />
           { add_action }
           <Button
             className='action -clear'
             onClick={ value && this.clear }
-            text='Очистить'
+            text='Clear'
           />
         </div>
         <input

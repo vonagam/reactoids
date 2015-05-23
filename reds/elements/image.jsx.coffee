@@ -12,9 +12,16 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes:
+      'image': ''
+
+    getDefaultProps: ->
+
+      tag: 'img'
+
     render: ->
 
-      Tag = @props.tag || 'img'
+      Tag = @props.tag
 
       url = @props.url
 

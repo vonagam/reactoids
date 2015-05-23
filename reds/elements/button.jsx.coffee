@@ -13,6 +13,11 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes:
+      'button':
+        '-disabled': ''
+        '-enabled': ''
+
     onClick: ->
 
       _.pass @props.onClick, arguments

@@ -9,6 +9,11 @@ $define ->
 
     mixins: [ 'component', 'collection_input' ]
 
+    classes:
+      'radigos':
+        'radigo':
+          '-checked': ''
+
     onOptionClick: ( event )->
 
       value = @getValue()

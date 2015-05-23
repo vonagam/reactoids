@@ -12,6 +12,9 @@ $define ->
 
     mixins: [ 'component', 'input' ]
 
+    classes:
+      'textarea': ''
+
     getDefaultProps: ->
 
       value: ''

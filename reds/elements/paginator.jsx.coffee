@@ -17,6 +17,12 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes:
+      'paginator':
+        'separator': ''
+        'page':
+          '-current': ''
+
     getDefaultProps: ->
 
       url: ''

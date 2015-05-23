@@ -11,6 +11,9 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes:
+      'icon': ''
+
     render: ->
 
       `<i

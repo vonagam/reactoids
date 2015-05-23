@@ -23,6 +23,13 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes:
+      'shares':
+        'share':
+          '-counts': ''
+          'icon': ''
+          'count': ''
+
     getDefaultProps: ->
 
       show_counts: true

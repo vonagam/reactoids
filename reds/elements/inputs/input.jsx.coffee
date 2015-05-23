@@ -15,6 +15,9 @@ $define ->
 
     mixins: [ 'component', 'input' ]
 
+    classes:
+      'input': ''
+
     getDefaultProps: ->
 
       value: ''

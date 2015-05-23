@@ -20,6 +20,11 @@ $define ->
 
     mixins: [ 'component', 'connector' ]
 
+    classes:
+      'form':
+        'fields': ''
+        'button': ''
+
     getDefaultProps: ->
 
       defaults: {}
@@ -105,9 +110,12 @@ $define ->
 
     render: ->
 
-      values = @state.values
       errors = @state.errors
-      defaults = @props.defaults
+
+      values = _.merge {}, @state.values, @props.defaults, ( value, default )->
+
+        return value if value != undefined
+        return default
 
       scheme = _.map _.funced( @props.scheme, values ), ( field )->
 
@@ -119,11 +127,7 @@ $define ->
 
         field.messages.error = errors[ field.path ]
 
-        value = values[ field.path ]
-
-        value = defaults[ field.path ] if value == undefined
-
-        field.value = value
+        field.value = values[ field.path ]
 
         field
 

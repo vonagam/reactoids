@@ -13,6 +13,9 @@ $define ->
 
     mixins: [ 'component', 'listener' ]
 
+    classes:
+      'scrollen': ''
+
     getDefaultProps: ->
 
       parent: window

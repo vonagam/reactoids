@@ -1,5 +1,5 @@
 classes = $require 'various/classes'
-$require 'mixins/omit_props'
+$require 'mixins/component'
 
 Input = $require 'elements/inputs/input'
 Checkboxer = $require 'elements/inputs/checkboxer'
@@ -53,18 +53,27 @@ $define ->
       onFocus: React.PropTypes.func
       onBlur: React.PropTypes.func
 
-    mixins: [ 'omit_props' ]
+    mixins: [ 'component' ]
+
+    classes:
+      'field':
+        '-focused': ''
+        '-filled': ''
+        'input':
+          'input': ''
+        'message': ''
 
     getInitialState: ->
 
       focus: false
-      value: undefined
+      value: @getValue()
 
     getValue: ->
 
       return @props.value if @props.value != undefined
       return @state.value if @state.value != undefined
       return @refs.input.getValue() if @refs.input
+      return @props.defaultValue
 
     onChange: ( value )->
 

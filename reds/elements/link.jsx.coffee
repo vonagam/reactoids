@@ -15,6 +15,11 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes:
+      'link':
+        '-current': ''
+        '-disabled': ''
+
     render: ->
 
       href = @props.href

@@ -45,6 +45,20 @@ $define ->
 
     mixins: [ 'component', 'input' ]
 
+    classes:
+      'arrayer':
+        '-filled': ''
+        '-empty': ''
+        'items':
+          'item':
+            'input': ''
+            'remove': ''
+        'actions':
+          'action':
+            '-add': ''
+            '-clear': ''
+
+
     getDefaultProps: ->
 
       item: Item

@@ -24,6 +24,16 @@ $define ->
 
     mixins: [ 'component' ]
 
+    classes: 
+      'table': 
+        'head':
+          'tr': ''
+          'th': ''
+        'body':
+          'tr': ''
+          'td': '' 
+        'foot': ''
+
     getDefaultProps: ->
 
       tr_props: {}

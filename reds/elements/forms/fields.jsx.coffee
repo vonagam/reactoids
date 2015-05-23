@@ -1,7 +1,7 @@
 Field = $require 'elements/forms/field'
 classes = $require 'various/classes'
 PropByPath = $require 'various/prop_by_path'
-$require 'mixins/omit_props'
+$require 'mixins/component'
 
 $define ->
 
@@ -14,7 +14,11 @@ $define ->
       onChange: React.PropTypes.func
       onSubmit: React.PropTypes.func
 
-    mixins: [ 'omit_props' ]
+    mixins: [ 'component' ]
+
+    classes:
+      'fields':
+        'field': ''
 
     getValues: ->
 
@@ -44,10 +48,6 @@ $define ->
 
     render: ->
 
-      className = classes @props.className, 'Fields'
-
-      props = @omitProps()
-
       fields = _.map @props.scheme, ( field )->
 
         field = _.clone field
@@ -65,8 +65,8 @@ $define ->
       , this
 
       `<div
-        { ...props }
-        className={ className }
+        { ...this.omitProps() }
+        className={ this.classes( 'Fields' ) }
       >
         { fields }
       </div>`

@@ -8,6 +8,9 @@ $define ->
 
     mixins: [ 'component', 'collection_input' ]
 
+    classes:
+      'select': ''
+
     onChange: ( event )->
 
       @setValue event.target.value
