@@ -64,7 +64,7 @@ $define ->
 
       return @props.value if @props.value != undefined
       return @state.value if @state.value != undefined
-      return @refs.input.getValue() if @isMounted()
+      return @refs.input.getValue() if @refs.input
 
     onChange: ( value )->
 

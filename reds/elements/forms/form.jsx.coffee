@@ -26,7 +26,7 @@ $define ->
 
     getInitialState: ->
 
-      values: _.cloneDeep _.funced @props.defaults, @state?.values || {}
+      values: {}
       errors: {}
 
     onChange: ( path, value )->
@@ -107,6 +107,7 @@ $define ->
 
       values = @state.values
       errors = @state.errors
+      defaults = @props.defaults
 
       scheme = _.map _.funced( @props.scheme, values ), ( field )->
 
@@ -118,7 +119,11 @@ $define ->
 
         field.messages.error = errors[ field.path ]
 
-        field.value = values[ field.path ]
+        value = values[ field.path ]
+
+        value = defaults[ field.path ] if value == undefined
+
+        field.value = value
 
         field
 
@@ -146,5 +151,3 @@ $define ->
           onClick={ _.queue( button.onClick, this.connect( 'sender', 'send' ) ) }
         />
       </Sender>`
-
-      
