@@ -55,10 +55,10 @@ $define ->
         field.key = field.path
         field.ref = field.path
 
+        field.className = classes this.classed( '.field' ), field.className
+
         @addFieldListener field, 'onChange'
         @addFieldListener field, 'onSubmit'
-
-        field.className = classes field.className, 'field'
 
         `<Field { ...field } />`
 
@@ -66,7 +66,7 @@ $define ->
 
       `<div
         { ...this.omitProps() }
-        className={ this.classes( 'Fields' ) }
+        className={ this.classed( '' ) }
       >
         { fields }
       </div>`

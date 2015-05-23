@@ -45,7 +45,7 @@ $define ->
 
       `<textarea
         { ...this.omitProps() }
-        className={ this.classes( 'Textarea' ) }
+        className={ this.classed( '' ) }
         value={ value }
         onChange={ this.onChange }
         onBlur={ this.onBlur }

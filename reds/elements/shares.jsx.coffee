@@ -66,18 +66,19 @@ $define ->
 
         `<a
           key={ site }
-          className={ classes( 'share fa-fw', '-' + site, { '-counts': count > 0 } ) }
+          data-site={ site }
+          className={ this.classed( '.share', { 'shares.share.-counts': count > 0 } ) }
           href={ href }
         >
-          <Icon className='icon' icon={ ICONS[ site ] } />
-          <span className='count'>{ count }</span>
+          <Icon className={ this.classed( '.share.icon' ) } icon={ ICONS[ site ] } />
+          <span className={ this.classed( '.share.count' ) }>{ count }</span>
         </a>`
 
       , this
 
       `<div
         { ...this.omitProps() }
-        className={ this.classes( 'Shares' ) }
+        className={ this.classed( '' ) }
       >
         { shares }
       </div>`

@@ -36,7 +36,7 @@ $define ->
 
       options = @getOptions ( value, label )->
 
-        className = classes 'radigo', '-checked': value == ivalue
+        className = @classed '.radigo', '.radigo.-checked': value == ivalue
 
         `<div
           key={ value }
@@ -47,11 +47,9 @@ $define ->
           { label }
         </div>`
 
-      , this
-
       `<div
         { ...this.omitProps() }
-        className={ this.classes( 'Radigos' ) }
+        className={ this.classed( '' ) }
       >
         { options }
       </div>`

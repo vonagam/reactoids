@@ -35,20 +35,17 @@ $define ->
 
     mapItem: ( item, index )->
 
-      return `<div key={ 's' + index } className='separator' />` if item == undefined
+      return `<div key={ 's' + index } className={ this.classed( '.separator' ) } />` if item == undefined
 
       url = @props.url
 
       page = item + 1
 
-      className = 'page'
+      if page != @props.current
 
-      href = ( if _.isFunction @props.url then @props.url else @getPageUrl ) page
+        href = ( if _.isFunction @props.url then @props.url else @getPageUrl ) page
 
-      if page == @props.current
-
-        className += ' -current'
-        href = undefined
+      className = @classed '.page', '.page.-current': page == @props.current
 
       `<a
         key={ page }
@@ -109,7 +106,7 @@ $define ->
 
       `<div
         { ...this.omitProps() }
-        className={ this.classes( 'Paginator' ) }
+        className={ this.classed( '' ) }
       >
         { elements }
       </div>`

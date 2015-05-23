@@ -12,6 +12,7 @@ $define ->
       file: React.PropTypes.any
       preview: React.PropTypes.bool
       remove: React.PropTypes.func
+      classed: React.PropTypes.func
 
     onDataUrlLoad: ( reader )->
 
@@ -59,14 +60,20 @@ $define ->
 
       file = @props.file
 
+      classed = @props.classed
+
       if @props.preview
 
-        preview = `<img ref='preview' className='preview' />`
+        preview = `<img ref='preview' className={ classed( '.files.file.preview' ) } />`
 
-      `<div className='file'>
-        <div className='name'>{ file.name }</div>
+      `<div className={ classed( '.files.file' ) }>
+        <div className={ classed( '.files.file.name' ) }>{ file.name }</div>
         { preview }
-        <Button className='remove' onClick={ this.props.remove } text='x' />
+        <Button
+          className={ classed( '.files.file.remove' ) }
+          onClick={ this.props.remove }
+          text='x'
+        />
       </div>`
 
 
@@ -208,10 +215,10 @@ $define ->
 
       value = @getValue()
 
-      className = @classes 'Filer',
-        if value then '-filled' else '-empty',
-        '-multiple': @props.multiple
-        '-dragging': @props.dragging
+      className = @classed '',
+        if value then '.-filled' else '.-empty',
+        '.-multiple': @props.multiple
+        '.-dragging': @props.dragging
 
       if value
 
@@ -224,6 +231,7 @@ $define ->
             file={ file }
             preview={ this.props.preview }
             remove={ _.partial( this.removeFile, file ) }
+            classed={ this.classed }
           />`
 
         , this
@@ -233,7 +241,7 @@ $define ->
         add_action =
 
           `<Button
-            className='action -add'
+            className={ this.classed( '.actions.action', '.actions.action.-add' ) }
             onClick={ value && _.partial( this.onActionClick, 'add' ) }
             text='Add'
           />`
@@ -242,25 +250,25 @@ $define ->
         { ...this.omitProps() }
         className={ className }
       >
-        <div className='files'>
+        <div className={ this.classed( '.files' ) }>
           { files }
         </div>
         <div
-          className='dropzone'
+          className={ this.classed( '.dropzone' ) }
           onClick={ this.onLabelClick }
           onDragLeave={ this.onDragLeave }
           onDragOver={ this.onDragOver }
           onDrop={ this.onDrop }
         />
-        <div className='actions'>
+        <div className={ this.classed( '.actions' ) }>
           <Button
-            className='action -set'
+            className={ this.classed( '.actions.action', '.actions.action.-set' ) }
             onClick={ _.partial( this.onActionClick, 'set' ) }
             text='Upload'
           />
           { add_action }
           <Button
-            className='action -clear'
+            className={ this.classed( '.actions.action', '.actions.action.-clear' ) }
             onClick={ value && this.clear }
             text='Clear'
           />

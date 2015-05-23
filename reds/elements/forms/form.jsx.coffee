@@ -140,18 +140,18 @@ $define ->
         { ...this.omitProps() }
         ajax={ this.getAjax }
         is_ready={ is_ready }
-        className={ this.classes( 'Form' ) }
+        className={ this.classed( '' ) }
       >
         <Fields
           ref='fields'
           scheme={ scheme }
           onChange={ this.onChange }
           onSubmit={ this.connect( 'sender', 'send' ) }
-          className='fields'
+          className={ this.classed( '.fields' ) }
         />
         <Button
           { ...button }
-          className={ classes( button.className, 'button' ) }
+          className={ classes( this.classed( '.button' ), button.className ) }
           onClick={ _.queue( button.onClick, this.connect( 'sender', 'send' ) ) }
         />
       </Sender>`

@@ -27,11 +27,11 @@ $define ->
     classes: 
       'table': 
         'head':
-          'tr': ''
-          'th': ''
+          'row': ''
+          'cell': ''
         'body':
-          'tr': ''
-          'td': '' 
+          'row': ''
+          'cell': '' 
         'foot': ''
 
     getDefaultProps: ->
@@ -47,7 +47,7 @@ $define ->
         `<th
           key={ key }
           { ...th }
-          className={ classes( 'th', th.className ) }
+          className={ classes( this.classed( '.head.cell' ), th.className ) }
         />`
 
       trs = _.map @props.collection, ( item, index )->
@@ -67,7 +67,7 @@ $define ->
           `<td 
             key={ key }
             { ...td }
-            className={ classes( 'td', td.className ) }
+            className={ classes( this.classed( '.body.cell' ), td.className ) }
           />`
 
         tr = _.funced( @props.tr, item ) || {}
@@ -75,20 +75,28 @@ $define ->
         `<tr
           key={ index }
           { ...tr }
-          className={ classes( 'tr', tr.className ) }
+          className={ classes( this.classed( '.body.row' ), tr.className ) }
         >
           { tds }
         </tr>`
 
       , this
 
-      tfoot = `<tfoot className='tfoot'>{ this.props.tfoot }</tfoot>` if @props.tfoot
+      if @props.tfoot
+
+        tfoot = `<tfoot className={ this.classed( '.foot' ) }>{ this.props.tfoot }</tfoot>`
 
       `<table
         { ...this.omitProps() }
-        className={ this.classes( 'Table' ) }
+        className={ this.classed( '' ) }
       >
-        <thead className='thead'><tr className='thead_tr'>{ ths }</tr></thead>
-        <tbody className='tbody'>{ trs }</tbody>
+        <thead className={ this.classed( '.head' ) }>
+          <tr className={ this.classed( '.head.row' ) }>
+            { ths }
+          </tr>
+        </thead>
+        <tbody className={ this.classed( '.body' ) }>
+          { trs }
+        </tbody>
         { tfoot }
       </table>`

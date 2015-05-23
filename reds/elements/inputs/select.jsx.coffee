@@ -25,13 +25,18 @@ $define ->
 
       options = @getOptions ( value, label )->
 
-        `<option key={ value } value={ value }>{ label }</option>`
+        `<option
+          key={ value }
+          value={ value }
+        >
+          { label }
+        </option>`
 
       options.unshift `<option key='_blank' value=''></option>` if @props.allow_blank
 
       `<select
         { ...this.omitProps() }
-        className={ this.classes( 'Select' ) }
+        className={ this.classed( '' ) }
         value={ value }
         onChange={ this.onChange }
       >

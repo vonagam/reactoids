@@ -1,6 +1,6 @@
 $require 'mixins/component'
 $require 'mixins/unison'
-moment = window.moment
+Moment = window.moment
 
 $define ->
 
@@ -19,7 +19,7 @@ $define ->
 
     render: ->
 
-      time = moment @props.time
+      time = Moment @props.time
 
       format = _.funced @props.format, time
 
@@ -35,7 +35,7 @@ $define ->
 
       `<span
         { ...this.omitProps() }
-        className={ this.classes( 'Moment' ) }
+        className={ this.classed( '' ) }
       >
         { time }
       </span>`

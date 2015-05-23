@@ -58,9 +58,9 @@ $define ->
 
     render: ->
 
-      className = @classes 'Sender',
-        '-waiting': @state.ajax_requests.sended
-        '-ready': @props.ajax
+      className = @classed '',
+        '.-waiting': @state.ajax_requests.sended
+        '.-ready': @props.ajax
 
       `<div
         { ...this.omitProps() }

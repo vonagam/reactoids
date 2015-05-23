@@ -34,7 +34,7 @@ $define ->
 
       value = @getValue()
 
-      className = @classes 'Checkboxer', '-checked': value
+      className = @classed '', '.-checked': value
 
       `<div
         { ...this.omitProps() }

@@ -60,5 +60,5 @@ $define ->
       `<Button
         ref='button'
         { ...this.omitProps() }
-        className={ this.classes( 'Scrollen' )  }
+        className={ this.classed( '' )  }
       />`

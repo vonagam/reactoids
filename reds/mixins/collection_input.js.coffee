@@ -20,13 +20,13 @@ mixin =
 
     allow_blank: true
 
-  getOptions: ( func, thisArg )->
+  getOptions: ( func )->
 
     mapper = if _.isArray @props.collection then getOption else ( label, value )-> [ value, label ]
 
     options = _.map @props.collection, mapper
 
-    _.map options, ( option )-> _.pass func, option, thisArg
+    _.map options, ( ( option )-> _.pass func, option, this ), this
 
 
 ReactMixinManager.add 'collection_input', mixin, 'input'

@@ -60,7 +60,7 @@ $define ->
 
       `<input
         { ...this.omitProps() }
-        className={ this.classes( 'Input' ) }
+        className={ this.classed( '' ) }
         value={ value }
         type={ this.props.sub_type }
         onChange={ this.onChange }

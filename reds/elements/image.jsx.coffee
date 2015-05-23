@@ -32,5 +32,5 @@ $define ->
       `<Tag
         { ...this.omitProps() }
         { ...props }
-        className={ this.classes( 'Image' ) }
+        className={ this.classed( '' ) }
       />`

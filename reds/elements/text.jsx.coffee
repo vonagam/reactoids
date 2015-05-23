@@ -12,7 +12,7 @@ $define ->
 
     mixins: [ 'component' ]
 
-    classes_scheme:
+    classes:
       'text': 
         'paragraph': ''
 
@@ -24,7 +24,7 @@ $define ->
 
       else
 
-        className = @classed 'text.paragraph'
+        className = @classed '.paragraph'
 
         text = Autolinker.link text
         text = '<p class="' + className + '">' + text + '</p>'
@@ -51,6 +51,6 @@ $define ->
 
       `<div
         { ...this.omitProps() }
-        className={ this.classed( 'text' ) } 
+        className={ this.classed( '' ) } 
         dangerouslySetInnerHTML={ { __html: this.text } }
       />`

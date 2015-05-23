@@ -14,6 +14,7 @@ $define ->
       value: React.PropTypes.any
       onChange: React.PropTypes.func
       onRemove: React.PropTypes.func
+      classed: React.PropTypes.func
 
     mixins: [ 'omit_props' ]
 
@@ -21,14 +22,16 @@ $define ->
 
       props = @props
 
-      `<div { ...this.omitProps() }>
+      classed = props.classed
+
+      `<div className={ classed( '.items.item' ) }>
         <Input
-          className='input'
+          className={ classed( '.items.item.input' ) }
           value={ props.value }
           onChange={ props.onChange }
         />
         <Button
-          className='remove'
+          className={ classed( '.items.item.remove' ) }
           onClick={ props.onRemove }
           text='x'
         />
@@ -114,31 +117,31 @@ $define ->
 
           `<this.props.item
             key={ index }
-            className='item'
             value={ item }
             onChange={ _.partial( this.onItemChange, index ) }
             onRemove={ _.partial( this.onItemRemove, index ) }
+            classed={ this.classed }
           />`
 
         , this
 
       `<div
         { ...this.omitProps() }
-        className={ this.classes( 'Arrayer', is_filled ? '-filled' : '-empty' ) }
+        className={ this.classed( '', is_filled ? '.-filled' : '.-empty' ) }
       >
-        <div className='items'>
+        <div className={ this.classed( '.items' ) }>
           { items }
         </div>
-        <div className='actions'>
+        <div className={ this.classed( '.actions' ) }>
           <Button
-            className='action -add'
+            className={ this.classed( '.actions.action', '.actions.action.-add' ) }
             onClick={ _.funced( this.props.canAdd, value ) ? this.onAddClick : undefined }
-            text='Добавить'
+            text='Add'
           />
           <Button
-            className='action -clear'
+            className={ this.classed( '.actions.action', '.actions.action.-clear' ) }
             onClick={ is_filled ? this.onClearClick : undefined }
-            text='Очистить'
+            text='Clear'
           />
         </div>
       </div>`

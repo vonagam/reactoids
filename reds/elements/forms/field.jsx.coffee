@@ -71,7 +71,6 @@ $define ->
     getValue: ->
 
       return @props.value if @props.value != undefined
-      return @state.value if @state.value != undefined
       return @refs.input.getValue() if @refs.input
       return @props.defaultValue
 
@@ -108,9 +107,9 @@ $define ->
 
       value = @getValue()
 
-      className = classes @props.className, 'Field',
-        '-focused': @state.focus
-        '-filled': value != undefined && value != ''
+      className = @classed '',
+        '.-focused': @state.focus
+        '.-filled': value != undefined && value != ''
 
       input_props = @omitProps [ 'id', 'className', Field ]
 
@@ -120,13 +119,14 @@ $define ->
 
         return unless text
 
-        className.add '-' + name
-
-        message = key: name, className: "message #{ name }", children: text
-
-        message.onClick = @onLabelClick if name == 'label'
-
-        `<div { ...message } />`
+        `<div
+          key={ name }
+          data-message={ name }
+          className={ this.classed( '.message' ) }
+          onClick={ name == 'label' && this.onLabelClick }
+        >
+          { text }
+        </div>`
 
       , this
 
@@ -137,11 +137,12 @@ $define ->
         data-path={ this.props.path }
         data-type={ Input.displayName.toLowerCase() }
       >
-        <div className='input'>
+        <div className={ this.classed( '.input' ) }>
           <Input
             ref='input'
             { ...input_props }
             { ...input_add_props }
+            className={ this.classed( '.input.input' ) }
             onFocus={ _.queue( this.props.onFocus, this.onFocus ) }
             onBlur={ _.queue( this.props.onBlur, this.onBlur ) }
             onChange={ _.queue( this.props.onChange, this.onChange ) }

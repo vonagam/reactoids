@@ -1,3 +1,4 @@
+classes = $require 'various/classes'
 $require 'mixins/component'
 
 $define ->
@@ -18,5 +19,5 @@ $define ->
 
       `<i
         { ...this.omitProps() }
-        className={ this.classes( 'Icon fa fa-' + this.props.icon ) }
+        className={ classes( this.classed( '' ), 'fa fa-' + this.props.icon ) }
       />`
