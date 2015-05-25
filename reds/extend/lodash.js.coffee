@@ -43,3 +43,16 @@ _.mixin
         func.apply undefined, arguments
 
       return
+
+  truthyKeys: ( object )->
+
+    result = []
+
+    _.forOwn object, ( value, key )->
+
+      result.push key if value
+
+      return
+
+    result
+

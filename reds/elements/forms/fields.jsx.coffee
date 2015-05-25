@@ -1,5 +1,4 @@
 Field = $require 'elements/forms/field'
-classes = $require 'various/classes'
 PropByPath = $require 'various/prop_by_path'
 $require 'mixins/component'
 
@@ -55,7 +54,7 @@ $define ->
         field.key = field.path
         field.ref = field.path
 
-        field.className = classes this.classed( '.field' ), field.className
+        field.className = @mergeClassNames @classed( 'field' ), field.className
 
         @addFieldListener field, 'onChange'
         @addFieldListener field, 'onSubmit'

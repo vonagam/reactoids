@@ -1,4 +1,3 @@
-classes = $require 'various/classes'
 $require 'mixins/component'
 
 $define ->
@@ -19,5 +18,5 @@ $define ->
 
       `<i
         { ...this.omitProps() }
-        className={ classes( this.classed( '' ), 'fa fa-' + this.props.icon ) }
+        className={ this.mergeClassNames( this.classed( '' ), 'fa fa-' + this.props.icon ) }
       />`

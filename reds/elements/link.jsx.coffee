@@ -49,8 +49,8 @@ $define ->
         href = null if href == path || @props.current
 
       className = @classed '',
-        '.-current': @props.href && href == null
-        '.-disabled': ! @props.href
+        '-current': @props.href && href == null
+        '-disabled': ! @props.href
 
       Tag = if href then 'a' else 'span'
 

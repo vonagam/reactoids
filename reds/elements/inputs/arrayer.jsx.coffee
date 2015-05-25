@@ -24,14 +24,14 @@ $define ->
 
       classed = props.classed
 
-      `<div className={ classed( '.items.item' ) }>
+      `<div className={ classed( 'item' ) }>
         <Input
-          className={ classed( '.items.item.input' ) }
+          className={ classed( 'input' ) }
           value={ props.value }
           onChange={ props.onChange }
         />
         <Button
-          className={ classed( '.items.item.remove' ) }
+          className={ classed( 'remove' ) }
           onClick={ props.onRemove }
           text='x'
         />
@@ -127,19 +127,19 @@ $define ->
 
       `<div
         { ...this.omitProps() }
-        className={ this.classed( '', is_filled ? '.-filled' : '.-empty' ) }
+        className={ this.classed( '', is_filled ? '-filled' : '-empty' ) }
       >
-        <div className={ this.classed( '.items' ) }>
+        <div className={ this.classed( 'items' ) }>
           { items }
         </div>
-        <div className={ this.classed( '.actions' ) }>
+        <div className={ this.classed( 'actions' ) }>
           <Button
-            className={ this.classed( '.actions.action', '.actions.action.-add' ) }
+            className={ this.classed( 'action', '-add' ) }
             onClick={ _.funced( this.props.canAdd, value ) ? this.onAddClick : undefined }
             text='Add'
           />
           <Button
-            className={ this.classed( '.actions.action', '.actions.action.-clear' ) }
+            className={ this.classed( 'action', '-clear' ) }
             onClick={ is_filled ? this.onClearClick : undefined }
             text='Clear'
           />

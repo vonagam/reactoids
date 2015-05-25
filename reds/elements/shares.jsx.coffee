@@ -1,6 +1,5 @@
 getSocialShares = $require 'various/social_shares'
 Icon = $require 'elements/icon'
-classes = $require 'various/classes'
 $require 'mixins/component'
 
 $define ->
@@ -67,11 +66,11 @@ $define ->
         `<a
           key={ site }
           data-site={ site }
-          className={ this.classed( '.share', { 'shares.share.-counts': count > 0 } ) }
+          className={ this.classed( 'share', { '-counts': count > 0 } ) }
           href={ href }
         >
-          <Icon className={ this.classed( '.share.icon' ) } icon={ ICONS[ site ] } />
-          <span className={ this.classed( '.share.count' ) }>{ count }</span>
+          <Icon className={ this.classed( 'icon' ) } icon={ ICONS[ site ] } />
+          <span className={ this.classed( 'count' ) }>{ count }</span>
         </a>`
 
       , this

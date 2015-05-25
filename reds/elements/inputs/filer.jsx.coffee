@@ -64,13 +64,13 @@ $define ->
 
       if @props.preview
 
-        preview = `<img ref='preview' className={ classed( '.files.file.preview' ) } />`
+        preview = `<img ref='preview' className={ classed( 'preview' ) } />`
 
-      `<div className={ classed( '.files.file' ) }>
-        <div className={ classed( '.files.file.name' ) }>{ file.name }</div>
+      `<div className={ classed( 'file' ) }>
+        <div className={ classed( 'name' ) }>{ file.name }</div>
         { preview }
         <Button
-          className={ classed( '.files.file.remove' ) }
+          className={ classed( 'remove' ) }
           onClick={ this.props.remove }
           text='x'
         />
@@ -216,9 +216,9 @@ $define ->
       value = @getValue()
 
       className = @classed '',
-        if value then '.-filled' else '.-empty',
-        '.-multiple': @props.multiple
-        '.-dragging': @props.dragging
+        if value then '-filled' else '-empty',
+        '-multiple': @props.multiple
+        '-dragging': @props.dragging
 
       if value
 
@@ -241,7 +241,7 @@ $define ->
         add_action =
 
           `<Button
-            className={ this.classed( '.actions.action', '.actions.action.-add' ) }
+            className={ this.classed( 'action', '-add' ) }
             onClick={ value && _.partial( this.onActionClick, 'add' ) }
             text='Add'
           />`
@@ -250,25 +250,25 @@ $define ->
         { ...this.omitProps() }
         className={ className }
       >
-        <div className={ this.classed( '.files' ) }>
+        <div className={ this.classed( 'files' ) }>
           { files }
         </div>
         <div
-          className={ this.classed( '.dropzone' ) }
+          className={ this.classed( 'dropzone' ) }
           onClick={ this.onLabelClick }
           onDragLeave={ this.onDragLeave }
           onDragOver={ this.onDragOver }
           onDrop={ this.onDrop }
         />
-        <div className={ this.classed( '.actions' ) }>
+        <div className={ this.classed( 'actions' ) }>
           <Button
-            className={ this.classed( '.actions.action', '.actions.action.-set' ) }
+            className={ this.classed( 'action', '-set' ) }
             onClick={ _.partial( this.onActionClick, 'set' ) }
             text='Upload'
           />
           { add_action }
           <Button
-            className={ this.classed( '.actions.action', '.actions.action.-clear' ) }
+            className={ this.classed( 'action', '-clear' ) }
             onClick={ value && this.clear }
             text='Clear'
           />

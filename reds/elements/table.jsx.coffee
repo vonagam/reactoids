@@ -1,4 +1,3 @@
-classes = $require 'various/classes'
 $require 'mixins/component'
 
 $define ->
@@ -47,8 +46,10 @@ $define ->
         `<th
           key={ key }
           { ...th }
-          className={ classes( this.classed( '.head.cell' ), th.className ) }
+          className={ this.mergeClassNames( this.classed( 'head.cell' ), th.className ) }
         />`
+
+      , this
 
       trs = _.map @props.collection, ( item, index )->
 
@@ -67,15 +68,17 @@ $define ->
           `<td 
             key={ key }
             { ...td }
-            className={ classes( this.classed( '.body.cell' ), td.className ) }
+            className={ this.mergeClassNames( this.classed( 'body.cell' ), td.className ) }
           />`
+
+        , this
 
         tr = _.funced( @props.tr, item ) || {}
 
         `<tr
           key={ index }
           { ...tr }
-          className={ classes( this.classed( '.body.row' ), tr.className ) }
+          className={ this.mergeClassNames( this.classed( 'body.row' ), tr.className ) }
         >
           { tds }
         </tr>`
@@ -84,18 +87,18 @@ $define ->
 
       if @props.tfoot
 
-        tfoot = `<tfoot className={ this.classed( '.foot' ) }>{ this.props.tfoot }</tfoot>`
+        tfoot = `<tfoot className={ this.classed( 'foot' ) }>{ this.props.tfoot }</tfoot>`
 
       `<table
         { ...this.omitProps() }
         className={ this.classed( '' ) }
       >
-        <thead className={ this.classed( '.head' ) }>
-          <tr className={ this.classed( '.head.row' ) }>
+        <thead className={ this.classed( 'head' ) }>
+          <tr className={ this.classed( 'head.row' ) }>
             { ths }
           </tr>
         </thead>
-        <tbody className={ this.classed( '.body' ) }>
+        <tbody className={ this.classed( 'body' ) }>
           { trs }
         </tbody>
         { tfoot }

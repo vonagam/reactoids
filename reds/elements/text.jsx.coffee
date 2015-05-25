@@ -24,7 +24,7 @@ $define ->
 
       else
 
-        className = @classed '.paragraph'
+        className = @classed 'paragraph'
 
         text = Autolinker.link text
         text = '<p class="' + className + '">' + text + '</p>'

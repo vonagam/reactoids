@@ -22,7 +22,7 @@ $define ->
 
     render: ->
 
-      className = @classed '', if @props.hide then '.-hidding' else '.-showing'
+      className = @classed '', if @props.hide then '-hidding' else '-showing'
 
       inside = if @props.hide then null else @props.children
     

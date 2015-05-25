@@ -1,7 +1,6 @@
 Sender = $require 'elements/sender'
 Fields = $require 'elements/forms/fields'
 Button = $require 'elements/button'
-classes = $require 'various/classes'
 PropByPath = $require 'various/prop_by_path'
 $require 'mixins/component'
 $require 'mixins/connector'
@@ -112,10 +111,7 @@ $define ->
 
       errors = @state.errors
 
-      values = _.merge {}, @state.values, @props.defaults, ( value, default )->
-
-        return value if value != undefined
-        return default
+      values = _.defaults {}, @state.values, @props.defaults
 
       scheme = _.map _.funced( @props.scheme, values ), ( field )->
 
@@ -147,11 +143,11 @@ $define ->
           scheme={ scheme }
           onChange={ this.onChange }
           onSubmit={ this.connect( 'sender', 'send' ) }
-          className={ this.classed( '.fields' ) }
+          className={ this.classed( 'fields' ) }
         />
         <Button
           { ...button }
-          className={ classes( this.classed( '.button' ), button.className ) }
+          className={ this.mergeClassNames( this.classed( 'button' ), button.className ) }
           onClick={ _.queue( button.onClick, this.connect( 'sender', 'send' ) ) }
         />
       </Sender>`

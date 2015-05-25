@@ -1,4 +1,3 @@
-classes = $require 'various/classes'
 $require 'mixins/component'
 
 Input = $require 'elements/inputs/input'
@@ -59,7 +58,7 @@ $define ->
       'field':
         '-focused': ''
         '-filled': ''
-        'input':
+        'wrapper':
           'input': ''
         'message': ''
 
@@ -71,7 +70,7 @@ $define ->
     getValue: ->
 
       return @props.value if @props.value != undefined
-      return @refs.input.getValue() if @refs.input
+      return @refs.input.getValue() if @refs?.input
       return @props.defaultValue
 
     onChange: ( value )->
@@ -108,8 +107,8 @@ $define ->
       value = @getValue()
 
       className = @classed '',
-        '.-focused': @state.focus
-        '.-filled': value != undefined && value != ''
+        '-focused': @state.focus
+        '-filled': value != undefined && value != ''
 
       input_props = @omitProps [ 'id', 'className', Field ]
 
@@ -122,7 +121,7 @@ $define ->
         `<div
           key={ name }
           data-message={ name }
-          className={ this.classed( '.message' ) }
+          className={ this.classed( 'message' ) }
           onClick={ name == 'label' && this.onLabelClick }
         >
           { text }
@@ -137,12 +136,12 @@ $define ->
         data-path={ this.props.path }
         data-type={ Input.displayName.toLowerCase() }
       >
-        <div className={ this.classed( '.input' ) }>
+        <div className={ this.classed( 'wrapper' ) }>
           <Input
             ref='input'
             { ...input_props }
             { ...input_add_props }
-            className={ this.classed( '.input.input' ) }
+            className={ this.classed( 'input' ) }
             onFocus={ _.queue( this.props.onFocus, this.onFocus ) }
             onBlur={ _.queue( this.props.onBlur, this.onBlur ) }
             onChange={ _.queue( this.props.onChange, this.onChange ) }

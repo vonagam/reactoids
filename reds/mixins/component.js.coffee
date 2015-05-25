@@ -1,4 +1,4 @@
 $require 'mixins/omit_props'
-$require 'mixins/classes'
+$require 'mixins/classed'
 
-ReactMixinManager.alias 'component', 'omit_props', 'classes'
+ReactMixinManager.alias 'component', 'omit_props', 'classed'

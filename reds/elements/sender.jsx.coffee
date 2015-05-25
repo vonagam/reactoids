@@ -1,4 +1,3 @@
-classes = $require 'various/classes'
 simulateLink = $require 'various/simulate_link'
 $require 'mixins/ajax_sender'
 $require 'mixins/component'
@@ -59,8 +58,8 @@ $define ->
     render: ->
 
       className = @classed '',
-        '.-waiting': @state.ajax_requests.sended
-        '.-ready': @props.ajax
+        '-waiting': @state.ajax_requests.sended
+        '-ready': @props.ajax
 
       `<div
         { ...this.omitProps() }

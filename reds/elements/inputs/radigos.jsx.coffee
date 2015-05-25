@@ -1,4 +1,3 @@
-classes = $require 'various/classes'
 $require 'mixins/collection_input'
 $require 'mixins/component'
 
@@ -36,7 +35,7 @@ $define ->
 
       options = @getOptions ( value, label )->
 
-        className = @classed '.radigo', '.radigo.-checked': value == ivalue
+        className = @classed 'radigo', '-checked': value == ivalue
 
         `<div
           key={ value }

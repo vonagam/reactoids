@@ -35,7 +35,7 @@ $define ->
 
     mapItem: ( item, index )->
 
-      return `<div key={ 's' + index } className={ this.classed( '.separator' ) } />` if item == undefined
+      return `<div key={ 's' + index } className={ this.classed( 'separator' ) } />` if item == undefined
 
       url = @props.url
 
@@ -45,7 +45,7 @@ $define ->
 
         href = ( if _.isFunction @props.url then @props.url else @getPageUrl ) page
 
-      className = @classed '.page', '.page.-current': page == @props.current
+      className = @classed 'page', '-current': page == @props.current
 
       `<a
         key={ page }

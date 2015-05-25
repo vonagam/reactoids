@@ -45,7 +45,7 @@ $define ->
       `<Tag
         ref='sender'
         { ...this.omitProps() }
-        className={ this.classed( '', disabled ? '.-disabled' : '.-enabled' ) }
+        className={ this.classed( '', disabled ? '-disabled' : '-enabled' ) }
         onClick={ this.onClick }
       >
         { this.props.text || this.props.children }
