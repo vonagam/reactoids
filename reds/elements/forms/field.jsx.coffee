@@ -121,7 +121,7 @@ $define ->
         `<div
           key={ name }
           data-message={ name }
-          className={ this.classed( 'message' ) }
+          className={ this.classed( 'message', 'message.-' + name ) }
           onClick={ name == 'label' && this.onLabelClick }
         >
           { text }

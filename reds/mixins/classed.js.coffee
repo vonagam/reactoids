@@ -46,6 +46,8 @@ mixin = ->
 
       result = _.find SCHEME, ( scheme_key )-> check.test scheme_key
 
+      result ||= key
+
       cache[ key ] = result
 
       result
