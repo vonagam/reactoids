@@ -87,7 +87,7 @@ $define ->
     mixins: [ 'component', 'input' ]
 
     classes:
-      'filler':
+      'filer':
         '-multiple': ''
         '-empty': ''
         '-filled': ''
