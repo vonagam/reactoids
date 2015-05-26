@@ -4,21 +4,15 @@ $require 'mixins/component'
 $define ->
 
 
-  Checkboxer = React.createClass
-
-    propTypes:
-
-      onClick: React.PropTypes.func
+  Checkbox = React.createClass
 
     mixins: [ 'component', 'input' ]
 
     classes:
-      'checkboxer':
+      'checkbox':
         '-checked': ''
 
-    onClick: ->
-
-      _.pass @props.onClick
+    onChange: ->
 
       @setValue ! Boolean @getValue()
 
@@ -26,7 +20,7 @@ $define ->
 
     onLabelClick: ->
 
-      @onClick()
+      @onChange()
 
       return
 
@@ -36,8 +30,10 @@ $define ->
 
       className = @classed '', '-checked': value
 
-      `<div
+      `<input
         { ...this.omitProps() }
+        type='checkbox'
         className={ className }
-        onClick={ this.onClick }
+        checked={ Boolean( value ) }
+        onChange={ this.onChange }
       />`
