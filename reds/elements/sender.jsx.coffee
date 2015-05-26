@@ -41,11 +41,7 @@ $define ->
       
       return unless ajax
 
-      ajax.method ||= 'get'
-
-      ajax.dataType ||= 'json'
-
-      ajax.method = ajax.method.toUpperCase()
+      ajax.method = ( ajax.method || 'get' ).toUpperCase()
 
       ajax.url = Routes[ ajax.url ]() if /^\w+$/.test ajax.url
 
