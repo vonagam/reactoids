@@ -1,4 +1,6 @@
 $require 'mixins/component'
+$require 'mixins/connector'
+$require 'mixins/content_for'
 
 Input = $require 'elements/inputs/input'
 Checkboxer = $require 'elements/inputs/checkboxer'
@@ -52,7 +54,7 @@ $define ->
       onFocus: React.PropTypes.func
       onBlur: React.PropTypes.func
 
-    mixins: [ 'component' ]
+    mixins: [ 'component', 'connector', 'content_for' ]
 
     classes:
       'field':
@@ -91,12 +93,6 @@ $define ->
 
       return
 
-    onLabelClick: ->
-
-      _.pass @refs.input.onLabelClick, arguments
-
-      return
-
     render: ->
 
       input_info = Field.getInputInfo @props
@@ -104,28 +100,44 @@ $define ->
       Input = input_info.input
       input_add_props = input_info.props
 
+      input_props = @omitProps [ 'id', Field ]
+
       value = @getValue()
 
       className = @classed '',
         '-focused': @state.focus
         '-filled': value != undefined && value != ''
 
-      input_props = @omitProps [ 'id', 'className', Field ]
+      messages = _.each @props.messages, ( data, name )->
 
-      messages = _.map @props.messages, ( text, name )->
+        data = _.funced data, value
 
-        text = _.funced text, value
+        if _.isPlainObject data
 
-        return unless text
+          content = data.content
+          position = data.position || 'after'
 
-        `<div
-          key={ name }
-          data-message={ name }
-          className={ this.classed( 'message', 'message.-' + name ) }
-          onClick={ name == 'label' && this.onLabelClick }
-        >
-          { text }
-        </div>`
+        else
+
+          content = data
+          position = 'after'
+
+        return unless content
+
+        @contentFor( position,
+
+          `<div
+            key={ name }
+            data-message={ name }
+            className={ this.classed( 'message', 'message.-' + name ) }
+            onClick={ name == 'label' && this.connect( 'input', 'onLabelClick', true ) }
+          >
+            { content }
+          </div>`
+
+        )
+
+        return
 
       , this
 
@@ -136,7 +148,9 @@ $define ->
         data-path={ this.props.path }
         data-type={ Input.displayName.toLowerCase() }
       >
+        { this.contentFor( 'before' ) }
         <div className={ this.classed( 'wrapper' ) }>
+          { this.contentFor( 'inside_before' ) }
           <Input
             ref='input'
             { ...input_props }
@@ -146,8 +160,9 @@ $define ->
             onBlur={ _.queue( this.props.onBlur, this.onBlur ) }
             onChange={ _.queue( this.props.onChange, this.onChange ) }
           />
+          { this.contentFor( 'inside_after' ) }
         </div>
-        { messages }
+        { this.contentFor( 'after' ) }
       </div>`
 
 

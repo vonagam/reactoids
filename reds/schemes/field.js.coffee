@@ -23,4 +23,10 @@ $define ->
     field.messages.hint ?= getTranslation name, [ "simple_form.hints#{ model }" ]
     field.messages.placeholder ?= getTranslation name, [ "simple_form.placeholders#{ model }" ]
 
+    label = field.messages.label
+
+    if label && ! _.isPlainObject( label ) && ! _.isFunction( label )
+
+      field.messages.label = content: label, position: 'before'
+
     field
