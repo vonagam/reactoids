@@ -13,6 +13,8 @@ $define ->
 
   Field = React.createClass
 
+    mixins: [ 'component', 'connector', 'content_for' ]
+
     statics:
 
       INPUTS: {}
@@ -53,8 +55,6 @@ $define ->
       onChange: React.PropTypes.func
       onFocus: React.PropTypes.func
       onBlur: React.PropTypes.func
-
-    mixins: [ 'component', 'connector', 'content_for' ]
 
     classes:
       'field':

@@ -14,13 +14,13 @@ $define ->
 
   Shares = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       sites: React.PropTypes.array.isRequired
       url: React.PropTypes.string.isRequired
-      show_counts: React.PropTypes.bool 
-
-    mixins: [ 'component' ]
+      show_counts: React.PropTypes.bool
 
     classes:
       'shares':

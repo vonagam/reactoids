@@ -5,12 +5,12 @@ $define ->
 
   Image = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       tag: React.PropTypes.string
       url: React.PropTypes.string
-
-    mixins: [ 'component' ]
 
     classes:
       'image': ''

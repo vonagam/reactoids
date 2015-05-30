@@ -79,12 +79,12 @@ $define ->
 
   Filer = React.createClass
 
+    mixins: [ 'component', 'input' ]
+
     propTypes:
 
       multiple: React.PropTypes.bool
       preview: React.PropTypes.bool
-
-    mixins: [ 'component', 'input' ]
 
     classes:
       'filer':

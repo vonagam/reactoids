@@ -6,6 +6,8 @@ $define ->
 
   Paginator = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       current: React.PropTypes.number.isRequired
@@ -14,8 +16,6 @@ $define ->
       url: React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.func ]
       param: React.PropTypes.string
       search: React.PropTypes.object
-
-    mixins: [ 'component' ]
 
     classes:
       'paginator':

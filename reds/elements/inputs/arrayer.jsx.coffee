@@ -9,14 +9,14 @@ $define ->
 
   Item = React.createClass
 
+    mixins: [ 'omit_props' ]
+
     propTypes:
 
       value: React.PropTypes.any
       onChange: React.PropTypes.func
       onRemove: React.PropTypes.func
       classed: React.PropTypes.func
-
-    mixins: [ 'omit_props' ]
 
     render: ->
 
@@ -40,13 +40,13 @@ $define ->
 
   Arrayer = React.createClass
 
+    mixins: [ 'component', 'input' ]
+
     propTypes:
 
       item: React.PropTypes.any
       template: React.PropTypes.any
       canAdd: React.PropTypes.funced( React.PropTypes.bool )
-
-    mixins: [ 'component', 'input' ]
 
     classes:
       'arrayer':

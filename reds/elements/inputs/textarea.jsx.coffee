@@ -6,11 +6,11 @@ $define ->
 
   Textarea = React.createClass
 
+    mixins: [ 'component', 'input' ]
+
     propTypes:
 
       onBlur: React.PropTypes.func
-
-    mixins: [ 'component', 'input' ]
 
     classes:
       'textarea': ''

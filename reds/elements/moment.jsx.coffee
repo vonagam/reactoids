@@ -7,12 +7,12 @@ $define ->
 
   Moment = React.createClass
 
+    mixins: [ 'component', 'unison( "forceUpdate", 60000 )' ]
+
     propTypes:
 
       time: React.PropTypes.any.isRequired
       format: React.PropTypes.funced( React.PropTypes.string ).isRequired
-
-    mixins: [ 'component', 'unison( "forceUpdate", 60000 )' ]
 
     classes:
       'moment': ''

@@ -7,11 +7,11 @@ $define ->
 
   Scrollen = React.createClass
 
+    mixins: [ 'component', 'listener' ]
+
     propTypes:
 
       parent: React.PropTypes.any
-
-    mixins: [ 'component', 'listener' ]
 
     classes:
       'scrollen': ''

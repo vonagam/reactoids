@@ -10,14 +10,14 @@ $define ->
 
   Form = React.createClass
 
+    mixins: [ 'component', 'connector' ]
+
     propTypes:
 
       ajax: React.PropTypes.funced React.PropTypes.object
       scheme: React.PropTypes.funced( React.PropTypes.array, React.PropTypes.object ).isRequired
       defaults: React.PropTypes.funced React.PropTypes.object
       button: React.PropTypes.object
-
-    mixins: [ 'component', 'connector' ]
 
     classes:
       'form':

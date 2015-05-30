@@ -14,14 +14,14 @@ $define ->
 
   Table = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       collection: React.PropTypes.array.isRequired
       columns: React.PropTypes.oneOfType( [ React.PropTypes.array, React.PropTypes.object ] ).isRequired
       tfoot: React.PropTypes.any
       tr: React.PropTypes.funced( React.PropTypes.object )
-
-    mixins: [ 'component' ]
 
     classes: 
       'table': 

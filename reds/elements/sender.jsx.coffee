@@ -7,12 +7,12 @@ $define ->
 
   Sender = React.createClass
 
+    mixins: [ 'component', 'ajax_sender' ]
+
     propTypes:
 
       ajax: React.PropTypes.funced React.PropTypes.object
       redirect: React.PropTypes.funced [ React.PropTypes.string, React.PropTypes.bool ]
-
-    mixins: [ 'component', 'ajax_sender' ]
 
     classes:
       'sender':

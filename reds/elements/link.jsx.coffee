@@ -8,12 +8,12 @@ $define ->
 
   Link = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       href: React.PropTypes.string
       current: React.PropTypes.bool
-
-    mixins: [ 'component' ]
 
     classes:
       'link':

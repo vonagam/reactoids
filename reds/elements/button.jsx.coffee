@@ -6,12 +6,12 @@ $define ->
 
   Button = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       onClick: React.PropTypes.func
       text: React.PropTypes.node
-
-    mixins: [ 'component' ]
 
     classes:
       'button':

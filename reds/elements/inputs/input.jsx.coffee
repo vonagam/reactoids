@@ -6,14 +6,14 @@ $define ->
 
   Input = React.createClass
 
+    mixins: [ 'component', 'input' ]
+
     propTypes:
 
       sub_type: React.PropTypes.string
       onBlur: React.PropTypes.func
       onKeyDown: React.PropTypes.func
       onSubmit: React.PropTypes.func
-
-    mixins: [ 'component', 'input' ]
 
     classes:
       'input': ''

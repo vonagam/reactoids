@@ -5,11 +5,11 @@ $define ->
 
   Icon = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       icon: React.PropTypes.string.isRequired
-
-    mixins: [ 'component' ]
 
     classes:
       'icon': ''

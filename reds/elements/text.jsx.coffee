@@ -6,11 +6,11 @@ $define ->
 
   Text = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       text: React.PropTypes.string
-
-    mixins: [ 'component' ]
 
     classes:
       'text': 

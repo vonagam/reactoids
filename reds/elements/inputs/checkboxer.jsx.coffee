@@ -6,11 +6,11 @@ $define ->
 
   Checkboxer = React.createClass
 
+    mixins: [ 'component', 'input' ]
+
     propTypes:
 
       onClick: React.PropTypes.func
-
-    mixins: [ 'component', 'input' ]
 
     classes:
       'checkboxer':

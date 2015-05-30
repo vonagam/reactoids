@@ -7,13 +7,13 @@ $define ->
 
   Fields = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       scheme: React.PropTypes.oneOfType( [ React.PropTypes.object, React.PropTypes.array ] ).isRequired
       onChange: React.PropTypes.func
       onSubmit: React.PropTypes.func
-
-    mixins: [ 'component' ]
 
     classes:
       'fields':

@@ -5,11 +5,11 @@ $define ->
 
   Hidder = React.createClass
 
+    mixins: [ 'component' ]
+
     propTypes:
 
       hide: React.PropTypes.bool
-
-    mixins: [ 'component' ]
 
     classes:
       'hidder':
