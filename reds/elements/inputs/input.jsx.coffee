@@ -20,6 +20,7 @@ $define ->
 
     getDefaultProps: ->
 
+      sub_type: 'text'
       value: ''
 
     onChange: ( event )->
