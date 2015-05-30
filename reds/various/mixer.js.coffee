@@ -28,22 +28,31 @@ $define ->
       return method.apply null, args
 
 
-  mixin: ( mixin, publics = [] )->
+  inject = ( target, source, keys )->
 
-    result = {}
+    _.each source, ( value, key )->
 
-    publics = publics.concat reacts
+      return unless _.include keys, key
 
-    for key, value of mixin
+      if _.isFunction value
 
-      continue unless _.includes publics, key
-
-      if typeof value == 'function'
-
-        result[ key ] = publicMethod value
+        target[ key ] = publicMethod value
 
       else
 
-        result[ key ] = value
+        target[ key ] = value
 
-    result
+      return
+
+    target
+
+
+  mixin = ( mixin, publics = [] )->
+
+    publics = publics.concat reacts
+
+    inject {}, mixin, publics
+
+
+  inject: inject
+  mixin: mixin
