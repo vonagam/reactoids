@@ -66,6 +66,8 @@ __ =
 
   receiveView: ( that, position, data )->
 
+    data.url = data.url.replace( /_=\d+&?/, '' ).replace( /[?&]+$/, '' )
+
     __.rememberView that, position, data
 
     __.setView that, data
@@ -82,6 +84,7 @@ __ =
       $.ajax
         type: 'get'
         url: url
+        cache: false
         dataType: 'json'
         complete: -> that.loading = null
         success: __.receiveView.bind null, that, position
