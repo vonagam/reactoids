@@ -29,7 +29,7 @@ $define ->
 
       return unless location
 
-      simulateLink location, React.findDOMNode( this ), ( $link )-> $link.data( 'no-cache', true )
+      simulateLink location, @getDOM(), ( $link )-> $link.data( 'no-cache', true )
 
       return
 

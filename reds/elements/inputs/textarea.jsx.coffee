@@ -35,7 +35,7 @@ $define ->
 
     onLabelClick: ->
 
-      React.findDOMNode( this ).focus()
+      @getDOM().focus()
 
       return
 

@@ -1,4 +1,6 @@
 _.mixin
+
+  # Array
   
   append: ( array, values )->
 
@@ -12,21 +14,35 @@ _.mixin
 
     return array
 
-  pass: ( func, args, thisArg )->
+  insert: ( array, index, values )->
 
-    return func.apply thisArg, args if func
+    Array.prototype.splice.apply array, [ index, 0 ].concat values
 
-  funced: ( value )->
+    return array
 
-    if _.isFunction value
+  # Math
 
-      args = _.slice arguments, 1 if arguments.length > 1
+  clamp: ( value, min, max )->
 
-      return value.apply undefined, args
+    return max if value > max
+    return min if value < min
+    return value
 
-    else
+  # Object
 
-      return value
+  truthyKeys: ( object )->
+
+    result = []
+
+    _.forOwn object, ( value, key )->
+
+      result.push key if value
+
+      return
+
+    result
+
+  # Utility
 
   queue: ->
 
@@ -44,15 +60,30 @@ _.mixin
 
       return
 
-  truthyKeys: ( object )->
+  pass: ( func, args, thisArg )->
 
-    result = []
+    return func.apply thisArg, args if func
 
-    _.forOwn object, ( value, key )->
+  funced: ( value )->
 
-      result.push key if value
+    if _.isFunction value
 
-      return
+      args = _.slice arguments, 1 if arguments.length > 1
 
-    result
+      return value.apply undefined, args
 
+    else
+
+      return value
+
+  eacho: ( value, func )->
+
+    if _.isArray value
+
+      _.each value, func
+
+    else
+
+      func value
+
+    return

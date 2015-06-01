@@ -22,7 +22,7 @@ $define ->
 
     isBellowScreen: ->
 
-      $button = $ React.findDOMNode @refs.button
+      $button = $ @getDOM 'button'
 
       $parent = $ @props.parent
 

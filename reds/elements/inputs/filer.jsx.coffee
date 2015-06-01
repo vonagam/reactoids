@@ -18,7 +18,7 @@ $define ->
 
       return unless @isMounted()
 
-      React.findDOMNode( @refs.preview ).src = reader.result
+      @getDOM( 'preview' ).src = reader.result
 
       return
 
@@ -52,7 +52,7 @@ $define ->
 
       if next_props.file != @props.file && @props.preview
 
-        React.findDOMNode( @refs.preview ).src = '' 
+        @getDOM( 'preview' ).src = '' 
 
       return
 
@@ -147,7 +147,7 @@ $define ->
 
       @action = action
 
-      React.findDOMNode( @refs.input ).click()
+      @getDOM( 'input' ).click()
 
       return
 
@@ -161,7 +161,7 @@ $define ->
 
       if @props.value != undefined && next_props.value == undefined
 
-        React.findDOMNode( @refs.input ).value = ''
+        @getDOM( 'input' ).value = ''
 
       return
 
