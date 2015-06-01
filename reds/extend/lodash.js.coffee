@@ -20,6 +20,10 @@ _.mixin
 
     return array
 
+  # Collection
+
+  none: _.negate _.any
+  
   # Math
 
   clamp: ( value, min, max )->
