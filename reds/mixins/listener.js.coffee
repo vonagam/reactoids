@@ -28,6 +28,11 @@ mixin =
   
   addListener: ( key, listener )->
 
+    if arguments.length < 2
+
+      listener = key
+      key = _.uniqueId 'listener_'
+
     listener.target ||= document
 
     if @listeners[ key ]
