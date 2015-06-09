@@ -207,6 +207,8 @@ $define ->
 
       @setState dragging: false
 
+      @action = if @props.multiple then 'add' else 'set'
+
       @onChange event
 
       return
