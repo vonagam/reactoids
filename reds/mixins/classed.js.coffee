@@ -1,4 +1,21 @@
-classes_config = $require 'config/classes'
+CONFIG =
+
+  classes: {}
+
+  func: ( scheme )->
+
+    result = {}
+
+    _.each scheme, ( path )->
+
+      result[ path ] = path.replace /^.+\.([^\.]+)$/, '$1'
+
+      return
+
+    result
+
+
+$define -> CONFIG
 
 
 mixin = ->
@@ -97,7 +114,7 @@ mixin = ->
 
     SCHEME = makeScheme scheme_plan
 
-    CLASSES = toClasses classes_config[ NAME ]
+    CLASSES = toClasses CONFIG.classes[ NAME ] || CONFIG.func SCHEME
 
     return
 
