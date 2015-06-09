@@ -100,8 +100,7 @@ $define ->
         'dropzone': ''
         'actions':
           'action':
-            '-set': ''
-            '-add': ''
+            '-select': ''
             '-clear': ''
 
     getDefaultProps: ->
@@ -113,41 +112,39 @@ $define ->
 
       dragging: false
 
-    clear: ->
-
-      @setValue undefined
-
-      return
-
     onChange: ( event )->
 
-      if event.dataTransfer
+      files = _.toArray(
 
-        files = _.toArray event.dataTransfer.files
+        if event.dataTransfer
 
-      else
+          event.dataTransfer.files
 
-        files = _.toArray event.target.files
+        else
+
+          event.target.files
+
+      )
 
       return if _.isEmpty files
 
-      if @action == 'set'
-
-        value = if @props.multiple then files else files[ 0 ]
-
-      else if @action == 'add'
+      if @props.multiple
 
         value = @getValue()
 
+        value = [ value ] if value && ! _.isArray value
+
         value = if value then value.concat files else files
+
+      else
+
+        value = files[ 0 ]
 
       @setValue value
 
       return
 
-    onActionClick: ( action )->
-
-      @action = action
+    onSelectClick: ->
 
       @getDOM( 'input' ).click()
 
@@ -155,7 +152,13 @@ $define ->
 
     onLabelClick: ->
 
-      @onActionClick if @props.multiple then 'add' else 'set'
+      @onSelectClick
+
+      return
+
+    onClearClick: ->
+
+      @setValue undefined
 
       return
 
@@ -209,8 +212,6 @@ $define ->
 
       @setState dragging: false
 
-      @action = if @props.multiple then 'add' else 'set'
-
       @onChange event
 
       return
@@ -240,15 +241,27 @@ $define ->
 
         , this
 
-      if @props.multiple
+      button_text =
 
-        add_action =
+        if value
 
-          `<Button
-            className={ this.classed( 'action', '-add' ) }
-            onClick={ value && _.partial( this.onActionClick, 'add' ) }
-            text='Add'
-          />`
+          if @props.multiple
+
+            'Add Files'
+
+          else
+
+            'Change File'
+
+        else
+
+          if @props.multiple
+
+            'Select Files'
+
+          else
+
+            'Select File'
 
       `<div
         { ...this.omitProps() }
@@ -266,14 +279,13 @@ $define ->
         />
         <div className={ this.classed( 'actions' ) }>
           <Button
-            className={ this.classed( 'action', '-set' ) }
-            onClick={ _.partial( this.onActionClick, 'set' ) }
-            text='Upload'
+            className={ this.classed( 'action', '-select' ) }
+            onClick={ this.onSelectClick }
+            text={ button_text }
           />
-          { add_action }
           <Button
             className={ this.classed( 'action', '-clear' ) }
-            onClick={ value && this.clear }
+            onClick={ value && this.onClearClick }
             text='Clear'
           />
         </div>
