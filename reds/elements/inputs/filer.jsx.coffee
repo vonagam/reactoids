@@ -129,6 +129,8 @@ $define ->
 
         files = _.toArray event.target.files
 
+      return if _.isEmpty files
+
       if @action == 'set'
 
         value = if @props.multiple then files else files[ 0 ]
