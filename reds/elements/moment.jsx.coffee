@@ -1,6 +1,6 @@
 $require 'mixins/component'
 $require 'mixins/unison'
-Moment = window.moment
+moment = window.moment
 
 $define ->
 
@@ -19,7 +19,7 @@ $define ->
 
     render: ->
 
-      time = Moment @props.time
+      time = moment @props.time
 
       format = _.funced @props.format, time
 
