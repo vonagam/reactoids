@@ -26,6 +26,10 @@ _.mixin
   
   # Math
 
+  avg: ( collection, iteratee, thisArg )->
+
+    _.sum( collection, iteratee, thisArg ) / _.size( collection )
+
   clamp: ( value, min, max )->
 
     return max if value > max
