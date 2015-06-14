@@ -26,7 +26,7 @@ mixin =
 
     options = _.map @props.collection, mapper
 
-    _.map options, ( ( option )-> _.pass func, option, this ), this
+    _.map options, ( ( option )-> func.apply this, option ), this
 
 
 ReactMixinManager.add 'collection_input', mixin, 'input'
