@@ -21,14 +21,6 @@ $define ->
 
     encode: ( params )->
 
-      params = _.transform params, ( result, value, key )->
+      return '' if _.isEmpty params
 
-        result.push encodeURIComponent( key ) + '=' + encodeURIComponent( value )
-
-        return
-
-      , []
-
-      return '' if params.length == 0
-
-      '?' + params.join '&'
+      '?' + _.map( params, ( value, key )-> encodeURIComponent( key ) + '=' + encodeURIComponent( value ) ).join '&'

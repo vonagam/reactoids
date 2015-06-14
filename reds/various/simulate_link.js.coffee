@@ -15,12 +15,12 @@ $define ->
 
     $link.trigger event
 
-    if ! event.isDefaultPrevented()
+    if event.isDefaultPrevented()
 
-      location.href = href
+      $link.remove()
 
     else
 
-      $link.remove()
+      location.href = href
 
     return
