@@ -2,13 +2,13 @@ mixin = ( method, duration, name = '' )->
 
   Unison =
 
-    elements: []
-
-    interval: undefined
+    method: method
 
     duration: duration
 
-    method: method
+    elements: []
+
+    interval: undefined
 
     invoke: ->
 
@@ -28,7 +28,7 @@ mixin = ( method, duration, name = '' )->
 
       else
 
-        _.remove elements, ( _element )-> element == _element
+        _.pull elements, element
 
       if elements.length > 0
 
@@ -44,6 +44,7 @@ mixin = ( method, duration, name = '' )->
 
 
   member_name = '_' + _.snakeCase "In#{ _.capitalize name }Unison"
+  
   method_name = "toggle#{ _.capitalize name }Unison"
 
 

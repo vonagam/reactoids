@@ -1,26 +1,29 @@
-$define ->
+#$ = $global 'jQuery' http://jquery.com
 
 
-  simulateLink = ( href, containter = 'body', decorateLink )->
+simulateLink = ( href, containter = 'body', decorateLink )->
 
-    $link = $ '<a></a>'
+  $link = $ '<a></a>'
 
-    $link.attr 'href', href
+  $link.attr 'href', href
 
-    decorateLink $link if decorateLink
+  decorateLink $link if decorateLink
 
-    $link.appendTo containter
+  $link.appendTo containter
 
-    event = $.Event 'click'
+  event = $.Event 'click'
 
-    $link.trigger event
+  $link.trigger event
 
-    if event.isDefaultPrevented()
+  if event.isDefaultPrevented()
 
-      $link.remove()
+    $link.remove()
 
-    else
+  else
 
-      location.href = href
+    location.href = href
 
-    return
+  return
+
+
+$define -> simulateLink

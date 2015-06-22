@@ -2,7 +2,7 @@ mixin =
 
   toggleState: ( key, value )->
 
-    @setState "#{ key }": if value != undefined then value else ! @state[ key ]
+    @setState "#{ key }": if arguments.length == 2 then value else ! @state[ key ]
 
     return
 

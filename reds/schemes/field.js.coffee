@@ -1,32 +1,37 @@
-$define ->
+# i18n = $global 'i18n' https://github.com/fnando/i18n-js
+
+Input = $require 'elements/inputs/input'
 
 
-  getTranslation = ( field, scopes )->
+getTranslation = ( field, scopes )->
 
-    scopes = _.map scopes, ( scope )-> scope: scope + '.' + field
+  scopes = _.map scopes, ( scope )-> scope: scope + '.' + field
 
-    I18n.t null, defaults: scopes, defaultValue: ''
+  I18n.t null, defaults: scopes, defaultValue: ''
 
 
-  Field = ( model, name, options )->
+Field = ( model, name, options )->
 
-    field = _.clone( options, true ) || {}
+  field = _.clone( options, true ) || {}
 
-    field.name = name
-    field.path = _.compact( [ model, name ] ).join '.'
+  field.key = name
+  
+  field.type ||= Input
 
-    field.messages ||= {}
+  model = '.' + model if model
 
-    model = '.' + model if model
+  field.messages ?= {}
+  field.messages.label ?= getTranslation name, [ "simple_form.labels#{ model }", "activerecord.attributes#{ model }", 'attributes' ]
+  field.messages.hint ?= getTranslation name, [ "simple_form.hints#{ model }" ]
+  field.messages.placeholder ?= getTranslation name, [ "simple_form.placeholders#{ model }" ]
 
-    field.messages.label ?= getTranslation name, [ "simple_form.labels#{ model }", "activerecord.attributes#{ model }", 'attributes' ]
-    field.messages.hint ?= getTranslation name, [ "simple_form.hints#{ model }" ]
-    field.messages.placeholder ?= getTranslation name, [ "simple_form.placeholders#{ model }" ]
+  label = field.messages.label
 
-    label = field.messages.label
+  if label && ! _.isPlainObject( label ) && ! _.isFunction( label )
 
-    if label && ! _.isPlainObject( label ) && ! _.isFunction( label )
+    field.messages.label = content: label, position: 'before'
 
-      field.messages.label = content: label, position: 'before'
+  field
 
-    field
+
+$define -> Field

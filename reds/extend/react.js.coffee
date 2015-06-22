@@ -5,3 +5,6 @@ React.PropTypes.funced = ->
   types = [ React.PropTypes.func ].concat types
 
   React.PropTypes.oneOfType types
+
+
+React.PropTypes.collection = React.PropTypes.oneOfType [ React.PropTypes.object, React.PropTypes.array ]

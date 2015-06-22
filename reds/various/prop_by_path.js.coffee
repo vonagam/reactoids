@@ -1,79 +1,46 @@
-$define ->
-  
-
-  get = ( object, path )->
-
-    return object unless path && path.length > 0
-
-    path = path.split '.' if typeof path == 'string'
-
-    for key in path
-
-      return undefined unless object instanceof Object
-
-      object = object[ key ]
-
-    return object
+propByPath =
 
 
-  set = ( object, path, value )->
+  flattened: (->
 
-    throw new Error 'invalid path for setting' unless path && path.length > 0
+    flatten = ( object, isValue, target, name )->
 
-    path = path.split '.' if typeof path == 'string'
+      if isValue object
 
-    if path.length > 1
+        target[ name ] = object
 
-      for key in path.slice 0, -1
+      else if _.isObject object
 
-        object[ key ] ?= {}
+        _.each object, ( value, key )->
 
-        object = object[ key ]
+          path = if name then name + '.' + key else key
 
-    object[ path[ path.length - 1 ] ] = value
+          flatten value, isValue, target, path
 
-    return
+          return
 
+      return
 
-  flatten = ( object, isValue, target, name )->
+    ( object, isValue = _.isPlainObject )->
 
-    if isValue object
+      result = {}
 
-      target[ name ] = object
+      flatten object, isValue, result
 
-    else if _.isObject object
+      result
 
-      for key, value of object
-
-        key = name + '.' + key if name
-
-        flatten value, isValue, target, key
-
-    return
-
-
-  isValueDef = ( value )-> typeof value != 'object' || value == null || value instanceof Date
-
-
-  flattened = ( object, isValue = isValueDef )->
-
-    result = {}
-
-    flatten object, isValue, result
-
-    result
+  )()
     
 
-  inflated = ( object )->
+  inflated: ( object )->
 
-    result = {}
+    _.transform object, ( result, value, path )->
 
-    set object, path, value for path, value of object
+      _.set result, path, value
 
-    result
+      return
+
+    , {}
 
 
-  get: get
-  set: set
-  flattened: flattened
-  inflated: inflated
+$define -> propByPath

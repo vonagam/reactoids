@@ -23,6 +23,32 @@ _.mixin
   # Collection
 
   none: _.negate _.any
+
+  # Function
+
+  bindary: ( func, thisArg, partials... )->
+
+    ->
+
+      func.apply thisArg, partials
+
+  partialary: ( func, partials... )->
+
+    ->
+
+      func.apply undefined, partials
+
+  queue: ->
+
+    funcs = _.filter arguments, _.isFunction
+
+    ->
+
+      for func in funcs
+
+        func.apply undefined, arguments
+
+      return
   
   # Math
 
@@ -52,22 +78,6 @@ _.mixin
 
   # Utility
 
-  queue: ->
-
-    args = arguments
-
-    funcs = undefined
-
-    ->
-
-      funcs ||= _.filter _.flattenDeep( _.toArray args ), _.isFunction
-
-      for func in funcs
-
-        func.apply undefined, arguments
-
-      return
-
   pass: ( func, args, thisArg )->
 
     return func.apply thisArg, args if func
@@ -83,6 +93,10 @@ _.mixin
     else
 
       return value
+
+  wrapInArray: ( value )->
+
+    if _.isArray value then value else [ value ]
 
   eacho: ( value, func )->
 

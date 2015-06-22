@@ -1,69 +1,52 @@
-toggleAjaxRequest = ( that, name, request )->
+# Routes = $global 'Routes' http://railsware.github.io/js-routes
 
-  if request
+$require 'mixins/ajax'
 
-    that.ajax_requests[ name ] = request
-
-  else
-
-    that.ajax_requests[ name ]?.abort()
-
-    delete that.ajax_requests[ name ]
-
-  that.setState ajax_requests: _.mapValues that.ajax_requests, -> true
-
-  return
+simulateLink = $require 'various/simulate_link'
 
 
 mixin =
 
-  getInitialState: ->
+  # may implement
+  #
+  # getAjax: -> object
 
-    ajax_requests: {}
+  propTypes:
 
-  componentWillMount: ->
+    ajax: React.PropTypes.funced React.PropTypes.object
+    redirect: React.PropTypes.funced React.PropTypes.string, React.PropTypes.bool
 
-    @ajax_requests = {}
+  getDefaultProps: ->
 
-    return
+    redirect: ( data, status, xhr )-> xhr.getResponseHeader 'Location'
 
-  sendAjax: ( name, options, force )->
+  onSendSuccess: ( data, status, xhr )->
 
-    if @ajax_requests[ name ]
+    location = _.funced @props.redirect, data, status, xhr
 
-      return unless force
+    return unless location
 
-      @abortAjax name
-
-    that = this
-
-    params = _.clone options
-
-    params.complete = ->
-
-      that.abortAjax name
-
-      _.pass options.complete, arguments
-
-      return
-
-    request = $.ajax params
-
-    toggleAjaxRequest that, name, request
+    simulateLink location, React.findDOMNode( this ), ( $link )-> $link.data 'no-cache', true
 
     return
 
-  abortAjax: ( name )->
+  send: ->
 
-    toggleAjaxRequest this, name, false
+    return if @ajax_requests.sended
 
-    return
+    ajax = @getAjax?() || _.funced @props.ajax 
+    
+    return unless ajax
 
-  componentWillUnmount: ->
+    ajax.method = ( ajax.method || 'get' ).toUpperCase()
 
-    @abortAjax name for name of @ajax_requests
+    ajax.url = Routes[ ajax.url ]() if /^\w+$/.test ajax.url
+
+    ajax.success = _.queue @onSendSuccess, ajax.success
+
+    @sendAjax 'sended', ajax
 
     return
 
 
-ReactMixinManager.add 'ajax_sender', mixin
+ReactMixinManager.add 'ajax_sender', mixin, 'ajax'

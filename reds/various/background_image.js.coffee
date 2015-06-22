@@ -1,8 +1,8 @@
-$define ->
+backgroundImage = ( url )->
+
+  return unless url
+
+  backgroundImage: "url(#{ url })"
 
 
-  backgroundImage = ( url )->
-
-    return unless url
-
-    backgroundImage: "url(#{ url })"
+$define -> backgroundImage

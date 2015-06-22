@@ -1,6 +1,6 @@
 mixin =
 
-  getDOM: ( ref )->
+  dom: ( ref )->
 
     return React.findDOMNode this unless ref
 
@@ -9,4 +9,4 @@ mixin =
     return React.findDOMNode ref
 
 
-ReactMixinManager.add 'get_dom', mixin
+ReactMixinManager.add 'dom', mixin

@@ -1,58 +1,65 @@
-$define ->
+Mixer =
 
 
-  reacts = [
+  inject: (->
 
-    'getInitialState'
-    'getDefaultProps'
-    'propTypes'
-    'componentWillMount'
-    'componentDidMount'
-    'componentWillReceiveProps'
-    'shouldComponentUpdate'
-    'componentWillUpdate'
-    'componentDidUpdate'
-    'componentWillUnmount'
-  
-  ]
+    publicMethod = ( method )->
 
+      ->
 
-  publicMethod = ( method )->
+        args = [ this ]
 
-    ->
+        args.push arg for arg in arguments
 
-      args = [ this ]
+        method.apply null, args    
 
-      args.push arg for arg in arguments
+    ( target, source, keys )->
 
-      return method.apply null, args
+      _.each source, ( value, key )->
 
+        return unless _.include keys, key
 
-  inject = ( target, source, keys )->
+        target[ key ] = 
 
-    _.each source, ( value, key )->
+          if _.isFunction value
 
-      return unless _.include keys, key
+            publicMethod value
 
-      if _.isFunction value
+          else
 
-        target[ key ] = publicMethod value
+            value
 
-      else
+        return
 
-        target[ key ] = value
+      target
 
-      return
-
-    target
+  )()
 
 
-  mixin = ( mixin, publics = [] )->
+  mixin: (->
 
-    publics = publics.concat reacts
+    REACT_METHODS = [
 
-    inject {}, mixin, publics
+      'getInitialState'
+      'getDefaultProps'
+      'propTypes'
+      'componentWillMount'
+      'componentDidMount'
+      'componentWillReceiveProps'
+      'shouldComponentUpdate'
+      'componentWillUpdate'
+      'componentDidUpdate'
+      'componentWillUnmount'
+
+    ]
+
+    ( mixin, publics = [] )->
+
+      publics = publics.concat REACT_METHODS
+
+      Mixer.inject {}, mixin, publics
+
+  )()
 
 
-  inject: inject
-  mixin: mixin
+$define -> Mixer

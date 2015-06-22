@@ -3,9 +3,11 @@ getTimerFuns = ( constructor, destructor, keeper )->
   set: ( name, args... )->
 
     id = @[ keeper ][ name ]
+    
     destructor id if id
 
     id = constructor.apply null, args
+    
     @[ keeper ][ name ] = id
 
     return id
@@ -13,8 +15,11 @@ getTimerFuns = ( constructor, destructor, keeper )->
   clear: ( name )->
 
     id = @[ keeper ][ name ]
+    
     return unless id
+    
     destructor id
+    
     delete @[ keeper ][ name ]
 
     return
@@ -28,8 +33,8 @@ mixin =
 
   componentWillMount: ->
 
-    @intervals = []
-    @timeouts = []
+    @intervals = {}
+    @timeouts = {}
 
     return
   
@@ -41,8 +46,8 @@ mixin =
   
   componentWillUnmount: ->
 
-    clearInterval id for key, id of @intervals
-    clearTimeout id for key, id of @timeouts
+    _.each @intervals, clearInterval
+    _.each @timeouts, clearTimeout
 
     return
 

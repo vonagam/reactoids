@@ -13,20 +13,15 @@ mixin =
 
   propTypes:
 
-    collection: React.PropTypes.oneOfType( [ React.PropTypes.object, React.PropTypes.array ] ).isRequired
-    allow_blank: React.PropTypes.bool
+    collection: React.PropTypes.collection.isRequired
 
-  getDefaultProps: ->
-
-    allow_blank: true
-
-  getOptions: ( func )->
+  mapOptions: ( iteratee )->
 
     mapper = if _.isArray @props.collection then getOption else ( label, value )-> [ value, label ]
 
     options = _.map @props.collection, mapper
 
-    _.map options, ( ( option )-> func.apply this, option ), this
+    _.map options, ( ( option )-> iteratee.apply this, option ), this
 
 
 ReactMixinManager.add 'collection_input', mixin, 'input'

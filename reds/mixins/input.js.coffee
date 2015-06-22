@@ -3,14 +3,16 @@ mixin =
   propTypes:
 
     value: React.PropTypes.any
-    defaultValue: React.PropTypes.any
-    inputDelay: React.PropTypes.number
+    default_value: React.PropTypes.any
+    readonly: React.PropTypes.bool
+    input_delay: React.PropTypes.number
     onChange: React.PropTypes.func
     onTempChange: React.PropTypes.func
 
   getDefaultProps: ->
 
-    inputDelay: 100
+    readonly: false
+    input_delay: 100
 
   getInitialState: ->
 
@@ -22,35 +24,33 @@ mixin =
     return @state.input_temp if @state.input_temp != undefined
     return @props.value if @props.value != undefined
     return @state.input_real if @state.input_real != undefined
-    return @props.defaultValue
+    return @props.default_value
 
   setValue: ( value )->
 
+    return if @props.readonly
+
     clearTimeout @_input_timeout
 
-    @props.onChange? value, this
-
     @setState input_temp: undefined, input_real: value
+
+    @props.onChange? value
 
     return
 
   setTempValue: ( value )->
 
-    return @setValue value unless @props.inputDelay
+    return if @props.readonly
+
+    return @setValue value if @props.input_delay == 0
 
     clearTimeout @_input_timeout
 
     @setState input_temp: value
 
-    @props.onTempChange? value, this
+    @props.onTempChange? value
 
-    @_input_timeout = setTimeout =>
-
-      @setValue value
-
-      return
-
-    , @props.inputDelay
+    @_input_timeout = setTimeout _.partial( @setValue, value ), @props.input_delay unless @props.input_delay < 0
 
     return
 
@@ -62,9 +62,11 @@ mixin =
 
   componentWillReceiveProps: ( next_props )->
 
-    if @props.value != undefined && next_props.value == undefined
+    if @props.value != next_props.value
 
-      @setState input_real: undefined
+      clearTimeout @_input_timeout
+
+      @setState input_temp: undefined, input_real: next_props.value
 
     return
 

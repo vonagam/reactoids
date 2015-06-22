@@ -3,14 +3,16 @@ toggleListener = ( listener, bool )->
   if bool
 
     return if listener.turned
-    listener.turned = true
 
     listener.target.addEventListener listener.event, listener.callback
+
+    listener.turned = true
 
 
   else
 
     return unless listener.turned
+
     listener.turned = false
 
     listener.target.removeEventListener listener.event, listener.callback
@@ -31,6 +33,7 @@ mixin =
     if arguments.length < 2
 
       listener = key
+      
       key = _.uniqueId 'listener_'
 
     listener.target ||= document

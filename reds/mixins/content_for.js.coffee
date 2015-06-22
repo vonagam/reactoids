@@ -1,36 +1,59 @@
+resetContents = ( that )->
+
+  that._for_contents = {}
+
+  that._prop_contents = _.mapValues that.props.contents, ( content )-> _.funced content, that
+
+  return
+
+
 mixin =
+
+  propTypes:
+
+    contents: React.PropTypes.object
+
+  getDefaultProps: ->
+
+    contents: {}
 
   componentWillMount: ->
 
-    @__content_for = {}
+    resetContents this
 
     return
 
    componentWillUpdate: ->
 
-    @__content_for = {}
+    resetContents this
 
     return
 
   contentFor: ( key, value )->
 
-    current_value = @__content_for[ key ]
+    for_content = @_for_contents[ key ]
 
-    return current_value if arguments.length == 1
+    if arguments.length == 1
 
-    return unless value
+      prop_content = @_prop_contents[ key ]
 
-    if ! current_value
+      return for_content unless prop_content
 
-      @__content_for[ key ] = value
+      return prop_content unless for_content
 
-    else if _.isArray current_value
+      return for_content.concat prop_content
 
-      @__content_for[ key ] = current_value.concat value
+    else if value
 
-    else
+      @_for_contents[ key ] = 
 
-      @__content_for[ key ] = [ current_value, value ]
+        if for_content
+
+          for_content.concat value
+
+        else
+
+          _.wrapInArray value
 
     return
 

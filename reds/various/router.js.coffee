@@ -1,101 +1,102 @@
 SearchParams = $require 'various/search_params'
 
-$define ->
+
+class Route
+
+  constructor: ( path_scheme, options = {} )->
+
+    @captures = []
+
+    @constraints = options.constraints || {}
+
+    @defaults = options.defaults || {}
+
+    @path_checker = 
+      path_scheme
+      .replace /:/g, '§'
+      .replace /\(([^)]*)\)/g, "(?:$1)?"
+      .replace /\./g, '\\.'
+      .replace /§(\w+)/g, ( match, name )=>
+
+        @captures.push name
+
+        @constraints[ name ] || '([\\w_-]+)'
+
+    @path_checker = RegExp '^' + @path_checker + '$'
+
+    return
+
+  check: ( path )->
+
+    match = path.match @path_checker
+
+    return unless match
+
+    params = {}
+
+    for name, index in @captures
+
+      if value = match[ index + 1 ]
+
+        params[ name ] = value
+
+    return params
 
 
-  class Route
+class Router
 
-    constructor: ( path_scheme, options = {} )->
+  constructor: ( handlers = {} )->
 
-      @captures = []
+    @routes = {}
+    @handlers = {}
 
-      @constraints = options.constraints || {}
+    @add handlers
 
-      @defaults = options.defaults || {}
+    return
 
-      @path_checker = 
-        path_scheme
-        .replace /:/g, '§'
-        .replace /\(([^)]*)\)/g, "(?:$1)?"
-        .replace /\./g, '\\.'
-        .replace /§(\w+)/g, ( match, name )=>
+  add: ( handlers )->
 
-          @captures.push name
+    for name, handler of handlers
 
-          @constraints[ name ] || '([\\w_-]+)'
+      if _.isArray handler
 
-      @path_checker = RegExp '^' + @path_checker + '$'
+        options = handler[ 1 ]
+        handler = handler[ 0 ]
 
-      return
+      else 
 
-    check: ( path )->
+        options = {}
 
-      match = path.match @path_checker
+      @routes[ name ] = new Route Routes[ name ].toString(), options
+      @handlers[ name ] = handler
 
-      return unless match
+    return
 
-      params = {}
+  run: ( url, callback )->
 
-      for name, index in @captures
+    path = url.match( /^[^?]+/ )[ 0 ]
+    search = url.slice path.length
 
-        if value = match[ index + 1 ]
+    for name, route of @routes
 
-          params[ name ] = value
+      params = route.check path
 
-      return params
+      continue unless params
+
+      search = SearchParams.decode search
+
+      return { 
+
+        handler: @handlers[ name ]
+        request:
+          path: path
+          route: name
+          search: search
+          params: _.merge params, search
+
+      }
+
+    return
 
 
-  class Router
-
-    constructor: ( handlers = {} )->
-
-      @routes = {}
-      @handlers = {}
-
-      @add handlers
-
-      return
-
-    add: ( handlers )->
-
-      for name, handler of handlers
-
-        if _.isArray handler
-
-          options = handler[ 1 ]
-          handler = handler[ 0 ]
-
-        else 
-
-          options = {}
-
-        @routes[ name ] = new Route Routes[ name ].toString(), options
-        @handlers[ name ] = handler
-
-      return
-
-    run: ( url, callback )->
-
-      path = url.match( /^[^?]+/ )[ 0 ]
-      search = url.slice path.length
-
-      for name, route of @routes
-
-        params = route.check path
-
-        continue unless params
-
-        search = SearchParams.decode search
-
-        return { 
-
-          handler: @handlers[ name ]
-          request:
-            path: path
-            route: name
-            search: search
-            params: _.merge params, search
-
-        }
-
-      return
+$define -> Router

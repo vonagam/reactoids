@@ -1,71 +1,57 @@
 Field = $require 'schemes/field'
+Fields = $require 'elements/forms/fields'
 
 $define ->
 
 
-  class Node
-
-    constructor: ->
-
-      @nodes = []
-
-    addNode: ( node )->
-
-      @nodes.push node
-
-      node
-
-    toFields: ->
-
-      _.flatten _.invoke @nodes, 'toFields'
-
-
-  class Attr
-
-    constructor: ( path, name, options )->
-
-      @field = new Field path, name, options
-
-    toFields: ->
-
-      @field
-
-
-  class Model extends Node
+  class Model
 
     constructor: ( name )->
 
-      super
+      @_fields = []
 
       @name = name
 
       return
 
-    attr: ( name, options )->
+    fields: ( fields )->
 
-      @addNode new Attr @name, name, options
+      fields = _.map fields, ( options, name )-> 
 
-      @
+        new Field @name, name, options
 
-    attrs: ( attrs )->
+      , this
 
-      _.each attrs, ( options, name )->
+      _.append @_fields, fields
 
-        @attr name, options
+      return
 
-        return
+    toProp: ->
 
-      , @
-
-      @
+      @_fields
 
       
-  class Scheme extends Node
+  class Scheme
 
-    constructor: ( name )->
+    constructor: ->
 
-      return new Model name if name
+      @_models = {}
+
+      return
 
     model: ( name )->
 
-      @addNode new Model name
+      model = new Model name
+
+      @_models[ name ] = model
+
+      model
+
+    toProp: ->
+
+      _.map @_models, ( node, key )->
+
+        key: key
+        type: Fields
+        props:
+          scheme: node.toProp()

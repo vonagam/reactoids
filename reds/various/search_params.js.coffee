@@ -1,26 +1,28 @@
-$define ->
+SearchParams = 
 
 
-  SearchParams = 
+  decode: ( search )->
+    
+    params = {}
 
-    decode: ( search )->
-      
-      params = {}
+    return params unless search
 
-      return params unless search
+    search = search.replace( /^\?/, '' ).replace( '+', ' ' )
 
-      search = search.replace( /^\?/, '' ).replace( '+', ' ' )
+    regexp = /&?([^=]+)=([^&]*)/g
 
-      regexp = /&?([^=]+)=([^&]*)/g
+    while tokens = regexp.exec search
 
-      while tokens = regexp.exec search
+      params[ decodeURIComponent tokens[ 1 ] ] = decodeURIComponent tokens[ 2 ]
 
-        params[ decodeURIComponent tokens[ 1 ] ] = decodeURIComponent tokens[ 2 ]
+    params
 
-      params
 
-    encode: ( params )->
+  encode: ( params )->
 
-      return '' if _.isEmpty params
+    return '' if _.isEmpty params
 
-      '?' + _.map( params, ( value, key )-> encodeURIComponent( key ) + '=' + encodeURIComponent( value ) ).join '&'
+    '?' + _.map( params, ( value, key )-> encodeURIComponent( key ) + '=' + encodeURIComponent( value ) ).join '&'
+
+
+$define -> SearchParams

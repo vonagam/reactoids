@@ -137,7 +137,7 @@ __ =
 
     that.viewsCache = {}
 
-    $( that.getDOMNode() ).on 'click', 'a[href]', ( event )->
+    $( React.findDOMNode that ).on 'click', 'a[href]', ( event )->
 
       $link = $ event.currentTarget
 

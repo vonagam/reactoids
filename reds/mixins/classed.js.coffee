@@ -4,15 +4,13 @@ CONFIG =
 
   func: ( scheme )->
 
-    result = {}
-
-    _.each scheme, ( path )->
+    _.transform scheme, ( result, path )->
 
       result[ path ] = path.replace /^.+\.([^\.]+)$/, '$1'
 
       return
 
-    result
+    , {}
 
 
 $define -> CONFIG
