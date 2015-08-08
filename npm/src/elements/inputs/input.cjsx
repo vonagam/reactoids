@@ -37,7 +37,7 @@ Input = React.createClass
 
     return
 
-  onKeyDown: ->
+  onKeyDown: ( event )->
 
     if event.key == 'Enter'
 

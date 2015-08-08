@@ -11,7 +11,7 @@ getOption = function(variant) {
   if (!_.isObject(variant)) {
     return [variant, variant];
   }
-  if (_.isArray(option)) {
+  if (_.isArray(variant)) {
     return [variant[0], variant[1]];
   }
   return [variant.value, variant.label];

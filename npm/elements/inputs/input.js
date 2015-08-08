@@ -32,7 +32,7 @@ Input = React.createClass({
   onBlur: function() {
     this.setValue(this.dom().value);
   },
-  onKeyDown: function() {
+  onKeyDown: function(event) {
     var base;
     if (event.key === 'Enter') {
       this.dom().blur();
