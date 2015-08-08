@@ -5,7 +5,7 @@ getOption = ( variant )->
 
   return variant() if _.isFunction variant
   return [ variant, variant ] unless _.isObject variant
-  return [ variant[ 0 ], variant[ 1 ] ] if _.isArray option
+  return [ variant[ 0 ], variant[ 1 ] ] if _.isArray variant
   return [ variant.value, variant.label ]
 
 
