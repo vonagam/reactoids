@@ -69,7 +69,7 @@ Field = React.createClass
           key={ name }
           {... props }
           className={ @mergeClassNames @classed( 'message', "message.-#{ name }" ), props.className }
-          onClick={ @connect 'input', 'onLabelClick', true if name == 'label' }
+          onClick={ _.queue( props.onClick, name == 'label' && @connect 'input', 'onLabelClick', true ) }
         >
           {
 

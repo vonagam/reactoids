@@ -66,7 +66,7 @@ Field = React.createClass({
         "key": name
       }, props, {
         "className": this.mergeClassNames(this.classed('message', "message.-" + name), props.className),
-        "onClick": (name === 'label' ? this.connect('input', 'onLabelClick', true) : void 0)
+        "onClick": _.queue(props.onClick, name === 'label' && this.connect('input', 'onLabelClick', true))
       }), content));
     }, this);
     return React.createElement("div", React.__spread({}, this.omitProps(), {
