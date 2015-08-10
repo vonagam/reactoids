@@ -31,7 +31,7 @@ gulp.task 'npm', [ 'clean-npm' ], ->
 
     gulp.src '../src/**/*'
 
-    gulp.dest '../npm/src'
+    gulp.dest '../npm/_src'
 
   ]
 
