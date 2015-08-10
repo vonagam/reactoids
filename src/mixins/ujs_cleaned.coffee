@@ -1,10 +1,13 @@
+findDOM = §require 'various/find_dom'
+
+
 mixin =
 
   componentDidMount: ->
 
     for attribute in [ 'class', 'props' ]
     
-      React.findDOMNode( this ).parentNode.removeAttribute 'data-react-' + attribute
+      findDOM( this ).parentNode.removeAttribute 'data-react-' + attribute
 
     return
 

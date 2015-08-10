@@ -1,12 +1,15 @@
+findDOM = §require 'various/find_dom'
+
+
 mixin =
 
   dom: ( ref )->
 
-    return React.findDOMNode this unless ref
+    return findDOM this unless ref
 
-    return React.findDOMNode @refs[ ref ] if typeof ref == 'string'
+    return findDOM @refs[ ref ] if typeof ref == 'string'
 
-    return React.findDOMNode ref
+    return findDOM ref
 
 
 ReactMixinManager.add 'dom', mixin
