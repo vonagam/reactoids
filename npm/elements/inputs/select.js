@@ -25,9 +25,9 @@ Select = React.createClass({
       }),
       "value": this.getValue(),
       "onChange": this.onChange
-    }), React.createElement("option", {
+    }), (this.props.allow_blank ? React.createElement("option", {
       "value": ''
-    }), this.mapOptions(function(value, label) {
+    }) : void 0), this.mapOptions(function(value, label) {
       return React.createElement("option", {
         "key": value,
         "value": value

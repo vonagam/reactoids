@@ -19,7 +19,13 @@ getOption = function(variant) {
 
 mixin = {
   propTypes: {
-    collection: React.PropTypes.collection.isRequired
+    collection: React.PropTypes.collection.isRequired,
+    allow_blank: React.PropTypes.bool
+  },
+  getDefaultProps: function() {
+    return {
+      allow_blank: true
+    };
   },
   mapOptions: function(iteratee) {
     var mapper, options;

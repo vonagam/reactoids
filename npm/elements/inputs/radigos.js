@@ -20,6 +20,9 @@ Radigos = React.createClass({
   onClick: function(value) {
     var current_value;
     current_value = this.getValue();
+    if (value === current_value && !this.props.allow_blank) {
+      return;
+    }
     this.setValue(value === current_value ? void 0 : value);
   },
   render: function() {
