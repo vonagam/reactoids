@@ -1,6 +1,8 @@
 'use strict';
 
-var mixin;
+var findDOM, mixin;
+
+findDOM = require('../various/find_dom');
 
 mixin = {
   componentDidMount: function() {
@@ -8,7 +10,7 @@ mixin = {
     ref = ['class', 'props'];
     for (i = 0, len = ref.length; i < len; i++) {
       attribute = ref[i];
-      React.findDOMNode(this).parentNode.removeAttribute('data-react-' + attribute);
+      findDOM(this).parentNode.removeAttribute('data-react-' + attribute);
     }
   }
 };

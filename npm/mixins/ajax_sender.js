@@ -1,6 +1,6 @@
 'use strict';
 
-var mixin, simulateLink;
+var findDOM, mixin, simulateLink;
 
 if (!window.Routes) {
   console.log('reactoids/mixins/ajax_sender: Routes is not defined in window, see http://railsware.github.io/js-routes');
@@ -9,6 +9,8 @@ if (!window.Routes) {
 require('../mixins/ajax');
 
 simulateLink = require('../various/simulate_link');
+
+findDOM = require('../various/find_dom');
 
 mixin = {
   propTypes: {
@@ -28,7 +30,7 @@ mixin = {
     if (!location) {
       return;
     }
-    simulateLink(location, React.findDOMNode(this), function($link) {
+    simulateLink(location, findDOM(this), function($link) {
       return $link.data('no-cache', true);
     });
   },

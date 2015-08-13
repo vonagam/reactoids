@@ -2,6 +2,8 @@
 
 Mixer = §require 'various/mixer'
 
+findDOM = §require 'various/find_dom'
+
 
 getCurrentUrl = -> window.location.pathname + window.location.search
 
@@ -139,7 +141,7 @@ __ =
 
     that.viewsCache = {}
 
-    $( React.findDOMNode that ).on 'click', 'a[href]', ( event )->
+    $( findDOM that ).on 'click', 'a[href]', ( event )->
 
       $link = $ event.currentTarget
 

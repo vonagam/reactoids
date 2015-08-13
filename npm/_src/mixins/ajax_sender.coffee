@@ -3,6 +3,7 @@
 §require 'mixins/ajax'
 
 simulateLink = §require 'various/simulate_link'
+findDOM = §require 'various/find_dom'
 
 
 mixin =
@@ -26,7 +27,7 @@ mixin =
 
     return unless location
 
-    simulateLink location, React.findDOMNode( this ), ( $link )-> $link.data 'no-cache', true
+    simulateLink location, findDOM( this ), ( $link )-> $link.data 'no-cache', true
 
     return
 

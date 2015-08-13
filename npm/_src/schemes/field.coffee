@@ -1,4 +1,4 @@
-§global 'i18n', 'https://github.com/fnando/i18n-js'
+§global 'I18n', 'https://github.com/fnando/i18n-js'
 
 Input = §require 'elements/inputs/input'
 

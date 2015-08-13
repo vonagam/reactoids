@@ -2,8 +2,8 @@
 
 var Field, Input, getTranslation;
 
-if (!window.i18n) {
-  console.log('reactoids/schemes/field: i18n is not defined in window, see https://github.com/fnando/i18n-js');
+if (!window.I18n) {
+  console.log('reactoids/schemes/field: I18n is not defined in window, see https://github.com/fnando/i18n-js');
 }
 
 Input = require('../elements/inputs/input');

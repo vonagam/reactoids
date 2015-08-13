@@ -1,16 +1,18 @@
 'use strict';
 
-var mixin;
+var findDOM, mixin;
+
+findDOM = require('../various/find_dom');
 
 mixin = {
   dom: function(ref) {
     if (!ref) {
-      return React.findDOMNode(this);
+      return findDOM(this);
     }
     if (typeof ref === 'string') {
-      return React.findDOMNode(this.refs[ref]);
+      return findDOM(this.refs[ref]);
     }
-    return React.findDOMNode(ref);
+    return findDOM(ref);
   }
 };
 

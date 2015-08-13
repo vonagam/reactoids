@@ -1,12 +1,14 @@
 'use strict';
 
-var Mixer, __, getCurrentUrl, jsonDeepEqual, mixin;
+var Mixer, __, findDOM, getCurrentUrl, jsonDeepEqual, mixin;
 
 if (!window.$) {
   console.log('reactoids/mixins/ajax_view: $ is not defined in window, see http://jquery.com');
 }
 
 Mixer = require('../various/mixer');
+
+findDOM = require('../various/find_dom');
 
 getCurrentUrl = function() {
   return window.location.pathname + window.location.search;
@@ -120,7 +122,7 @@ __ = {
   componentDidMount: function(that) {
     __.csrfProtection(that);
     that.viewsCache = {};
-    $(React.findDOMNode(that)).on('click', 'a[href]', function(event) {
+    $(findDOM(that)).on('click', 'a[href]', function(event) {
       var $link, l, no_cache, target, url;
       $link = $(event.currentTarget);
       if ($link.data('no-ajax')) {
