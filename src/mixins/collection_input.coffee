@@ -14,6 +14,11 @@ mixin =
   propTypes:
 
     collection: React.PropTypes.collection.isRequired
+    allow_blank: React.PropTypes.bool
+
+  getDefaultProps: ->
+
+    allow_blank: true
 
   mapOptions: ( iteratee )->
 

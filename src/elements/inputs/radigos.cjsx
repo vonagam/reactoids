@@ -19,6 +19,8 @@ Radigos = React.createClass
 
     current_value = @getValue()
 
+    return if value == current_value && ! @props.allow_blank
+
     @setValue if value == current_value then undefined else value
 
     return

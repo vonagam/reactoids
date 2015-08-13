@@ -29,7 +29,11 @@ Select = React.createClass
       value={ @getValue() }
       onChange={ @onChange }
     >
-      <option value='' />
+      {
+
+        <option value='' /> if @props.allow_blank
+
+      }
       {
 
         @mapOptions ( value, label )->
