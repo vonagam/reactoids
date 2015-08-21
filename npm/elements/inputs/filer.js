@@ -128,7 +128,7 @@ Filer = React.createClass({
     this.dom('input').click();
   },
   onLabelClick: function() {
-    this.onSelectClick;
+    this.onSelectClick();
   },
   onClearClick: function() {
     this.setValue(void 0);
