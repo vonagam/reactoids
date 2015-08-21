@@ -165,7 +165,7 @@ Filer = React.createClass
 
   onLabelClick: ->
 
-    @onSelectClick
+    @onSelectClick()
 
     return
 
