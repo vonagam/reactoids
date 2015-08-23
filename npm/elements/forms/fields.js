@@ -18,7 +18,7 @@ Fields = React.createClass({
     }
   },
   propTypes: {
-    scheme: React.PropTypes.collection.isRequired,
+    scheme: React.PropTypes.funced(React.PropTypes.collection).isRequired,
     messages: React.PropTypes.object,
     onSubmit: React.PropTypes.func
   },
@@ -39,7 +39,7 @@ Fields = React.createClass({
     value = this.getValue();
     return React.createElement("div", React.__spread({}, this.omitProps(), {
       "className": this.classed('')
-    }), _.map(this.props.scheme, function(field, key) {
+    }), _.map(_.funced(this.props.scheme, value), function(field, key) {
       var messages;
       key = field.key || key;
       messages = _.mapValues(this.props.messages, key);
