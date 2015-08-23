@@ -18,7 +18,7 @@ Fields = React.createClass
 
   propTypes:
 
-    scheme: React.PropTypes.collection.isRequired
+    scheme: React.PropTypes.funced( React.PropTypes.collection ).isRequired
     messages: React.PropTypes.object
     onSubmit: React.PropTypes.func
 
@@ -47,7 +47,7 @@ Fields = React.createClass
     >
       {
 
-        _.map @props.scheme, ( field, key )->
+        _.map _.funced( @props.scheme, value ), ( field, key )->
 
           key = field.key || key
 

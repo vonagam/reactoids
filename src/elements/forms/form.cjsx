@@ -28,7 +28,7 @@ Form = React.createClass
 
   propTypes:
 
-    scheme: React.PropTypes.collection.isRequired
+    scheme: React.PropTypes.funced( React.PropTypes.collection ).isRequired
     messages: React.PropTypes.object
 
   getDefaultProps: ->
