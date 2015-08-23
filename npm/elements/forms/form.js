@@ -100,7 +100,9 @@ Form = React.createClass({
     ajax.beforeSend = this._queue(this.onAjaxBefore, ajax.beforeSend);
     ajax.error = this._queue(this.onAjaxError, ajax.error);
     ajax.success = this._queue(this.onAjaxSuccess, ajax.success);
-    this.toFormData(ajax);
+    if (!_.isEmpty(ajax.data)) {
+      this.toFormData(ajax);
+    }
     return ajax;
   },
   submit: function() {

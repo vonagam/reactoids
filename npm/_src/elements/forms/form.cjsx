@@ -107,7 +107,7 @@ Form = React.createClass
 
     ajax.success = @_queue @onAjaxSuccess, ajax.success
 
-    @toFormData ajax
+    @toFormData ajax unless _.isEmpty ajax.data
 
     ajax
 
