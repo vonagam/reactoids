@@ -26,17 +26,13 @@ _.mixin
 
   # Function
 
-  bindary: ( func, thisArg, partials... )->
+  bindary: ->
 
-    ->
+    _.bind.apply _, _.flatten arguments
 
-      func.apply thisArg, partials
+  partialary: ->
 
-  partialary: ( func, partials... )->
-
-    ->
-
-      func.apply undefined, partials
+    _.partial.apply _, _.flatten arguments
 
   queue: ->
 
@@ -49,6 +45,42 @@ _.mixin
         func.apply undefined, arguments
 
       return
+
+  # Lang
+
+  toFlattenedPlainObject: ( source, isDeep = _.isPlainObject, target = {}, path = '' )->
+
+    _.transform source, ( target, value, key )->
+
+      key = "#{ path }.#{ key }" if path
+
+      if isDeep value
+
+        _.toFlattenedPlainObject value, isDeep, target, key
+
+      else
+
+        target[ key ] = value
+
+      return
+
+    , target
+
+  toInflatedPlainObject: ( source )->
+
+    _.transform source, ( result, value, path )->
+
+      _.set result, path, value
+
+      return
+
+    , {}
+
+  isEqualPick: ( value, other, keys, customizer, thisArg )->
+
+    return true if value == other
+    
+    _.isEqual _.pick( value, keys ), _.pick( other, keys ), customizer, thisArg
   
   # Math
 
@@ -66,15 +98,11 @@ _.mixin
 
   truthyKeys: ( object )->
 
-    result = []
+    _.keys _.pick object, _.identity
 
-    _.forOwn object, ( value, key )->
+  falseyKeys: ( object )->
 
-      result.push key if value
-
-      return
-
-    result
+    _.keys _.omit object, _.identity
 
   # Utility
 

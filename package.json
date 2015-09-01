@@ -1,0 +1,26 @@
+{
+  "name": "reactoids",
+  "version": "0.0.8",
+  "description": "Bunch of React components",
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script-void/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vonagam/reactoids.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Dmitry Maganov <vonagam@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vonagam/reactoids/issues"
+  },
+  "homepage": "https://github.com/vonagam/reactoids",
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "coffee-script-void": "^1.9.3",
+    "mocha": "^2.3.0"
+  }
+}

@@ -1,10 +1,16 @@
-mixin = ( method, duration, name = '' )->
+mixin = ( ARGS )->
+
+  # method
+  # duration
+  # name
+  # auto
+
 
   Unison =
 
-    method: method
+    method: ARGS.method
 
-    duration: duration
+    duration: ARGS.duration
 
     elements: []
 
@@ -43,26 +49,36 @@ mixin = ( method, duration, name = '' )->
       return
 
 
-  member_name = '_' + _.snakeCase "In#{ _.capitalize name }Unison"
+  member = "in#{ _.capitalize ARGS.name }Unison"
   
-  method_name = "toggle#{ _.capitalize name }Unison"
+  method = "toggle#{ _.capitalize ARGS.name }Unison"
 
 
-  "#{ method_name }": ( bool )->
+  getInitialMembers: ->
 
-    return if Boolean( @[ member_name ] ) == bool
+    "#{ member }": false
 
-    @[ member_name ] = bool
+  "#{ method }": ( bool )->
+
+    return if @[ member ] == Boolean bool
+
+    @[ member ] = Boolean bool
 
     Unison.toggle this, bool
 
     return
 
+  componentDidMount: ->
+
+    @[ method ] true if ARGS.auto
+
+    return
+
   componentWillUnmount: ->
 
-    @[ method_name ] false
+    @[ method ] false
     
     return
 
 
-ReactMixinManager.add 'unison', mixin
+module.exports = mixin

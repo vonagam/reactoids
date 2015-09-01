@@ -1,35 +1,20 @@
-processClasses = ( args )->
+classes = ->
 
-  result = []
+  args = _.flattenDeep _.toArray arguments
 
-  _.each args, ( arg )->
+  _.transform( args, ( result, arg )->
 
-    item =
+    if _.isObject arg
 
-      if _.isString arg
+      arg = _.truthyKeys( arg ).join ' '
 
-        arg
+    if arg
 
-      else if _.isArray arg
-
-        processClasses arg
-
-      else if _.isObject arg
-
-        _.truthyKeys( arg ).join ' '
-
-      else
-
-        arg
-
-    result.push item if item
+      result.push arg
 
     return
 
-  result.join ' '
+  , [] ).join ' '
 
 
-classes = -> processClasses _.toArray arguments
-
-
-§export classes
+module.exports = classes

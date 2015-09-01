@@ -1,11 +1,11 @@
 Mixer =
 
 
-  inject: (->
+  inject: (->=
 
-    publicMethod = ( method )->
+    publicMethod = ( method )->=
 
-      ->
+      ->=
 
         args = [ this ]
 
@@ -13,11 +13,9 @@ Mixer =
 
         method.apply null, args    
 
-    ( target, source, keys )->
+    ( target, source, keys )->=
 
-      _.each source, ( value, key )->
-
-        return unless _.include keys, key
+      _.transform _.pick( source, keys ), ( target, value, key )->
 
         target[ key ] = 
 
@@ -29,20 +27,18 @@ Mixer =
 
             value
 
-        return
-
-      target
+      , target
 
   )()
 
 
-  mixin: (->
+  mixin: (->=
 
     REACT_METHODS = [
 
-      'getInitialState'
-      'getDefaultProps'
       'propTypes'
+      'getDefaultProps'
+      'getInitialState'
       'componentWillMount'
       'componentDidMount'
       'componentWillReceiveProps'
@@ -53,7 +49,7 @@ Mixer =
 
     ]
 
-    ( mixin, publics = [] )->
+    ( mixin, publics = [] )->=
 
       publics = publics.concat REACT_METHODS
 
@@ -62,4 +58,4 @@ Mixer =
   )()
 
 
-§export Mixer
+module.exports = Mixer

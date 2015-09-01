@@ -1,19 +1,38 @@
-§global '$', 'http://jquery.com'
+#§global '$', 'http://jquery.com'
+#§global 'Routes', 'http://railsware.github.io/js-routes'
+
+simulateLink = require '../various/simulateLink'
+findDOM = require '../various/findDOM'
 
 
-toggleAjaxRequest = ( that, name, request )->
+toggleAjax = ( that, name, ajax )->
 
-  if request
+  if ajax
 
-    that.ajax_requests[ name ] = request
+    that.ajaxes[ name ] = ajax
 
   else
 
-    that.ajax_requests[ name ]?.abort()
+    that.ajaxes[ name ]?.abort()
 
-    delete that.ajax_requests[ name ]
+    delete that.ajaxes[ name ]
 
-  that.setState ajax_requests: _.mapValues that.ajax_requests, -> true
+  that.setState ajaxes: _.mapValues that.ajaxes, -> true
+
+  return
+
+
+onAjaxSuccess = ( that, redirect, data, status, xhr )->
+
+  location = xhr.getResponseHeader 'Location'
+
+  check = _.funced redirect, location, data, status, xhr
+
+  return unless check
+
+  location = check if _.isString check
+
+  simulateLink location, findDOM that
 
   return
 
@@ -22,51 +41,59 @@ mixin =
 
   getInitialState: ->
 
-    ajax_requests: {}
+    ajaxes: {}
 
-  componentWillMount: ->
+  getInitialMembers: ->
 
-    @ajax_requests = {}
-
-    return
-
-  sendAjax: ( name, options, force )->
-
-    if @ajax_requests[ name ]
-
-      return unless force
-
-      @abortAjax name
-
-    that = this
-
-    params = _.clone options
-
-    params.complete = ->
-
-      that.abortAjax name
-
-      _.pass options.complete, arguments
-
-      return
-
-    request = $.ajax params
-
-    toggleAjaxRequest that, name, request
-
-    return
+    ajaxes: {}
 
   abortAjax: ( name )->
 
-    toggleAjaxRequest this, name, false
+    toggleAjax this, name, false
+
+    return
+
+  sendAjax: ( name, options, options = {} )->
+
+    return if _.isEmpty options
+
+    if @ajaxes[ name ]
+
+      return unless options.force
+
+      @abortAjax name
+
+    params = _.clone options
+
+    params = _.mapKeys params, ( value, key )-> 
+
+      if /^on[A-Z]/.test( key ) then _.camelCase( key.replace /^on/, '' ) else key
+
+    params.url = Routes[ params.url ]() if /^\w+$/.test params.url
+
+    params.method = ( params.method || params.type || 'get' ).toUpperCase()
+
+    params.complete = _.queue _.partial( @abortAjax, name ), params.complete
+
+    params.success = _.queue params.success, _.partial( onAjaxSuccess, this, params.redirect ) if params.redirect
+
+    ajax = $.ajax params
+
+    toggleAjax this, name, ajax
 
     return
 
   componentWillUnmount: ->
 
-    @abortAjax name for name of @ajax_requests
+    _.each @ajaxes, ( ajax, name )->
+
+      @abortAjax name
+
+      return
+
+    , this
 
     return
 
 
-ReactMixinManager.add 'ajax', mixin
+module.exports = mixin

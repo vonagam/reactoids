@@ -1,9 +1,11 @@
-SearchParams = §require 'various/search_params'
+#§global 'Routes', 'https://github.com/railsware/js-routes'
+
+SearchParams = require '../various/SearchParams'
 
 
 class Route
 
-  constructor: ( path_scheme, options = {} )->
+  constructor: ( pathScheme, options = {} )->
 
     @captures = []
 
@@ -11,8 +13,9 @@ class Route
 
     @defaults = options.defaults || {}
 
-    @path_checker = 
-      path_scheme
+    @pathChecker =
+
+      pathScheme
       .replace /:/g, '§'
       .replace /\(([^)]*)\)/g, "(?:$1)?"
       .replace /\./g, '\\.'
@@ -20,27 +23,21 @@ class Route
 
         @captures.push name
 
-        @constraints[ name ] || '([\\w_-]+)'
+        @constraints[ name ] || '([\\w\\-]+)'
 
-    @path_checker = RegExp '^' + @path_checker + '$'
+    @pathChecker = RegExp '^' + @pathChecker + '$'
 
-    return
+  check: ( path )->=
 
-  check: ( path )->
-
-    match = path.match @path_checker
+    match = path.match @pathChecker
 
     return unless match
 
-    params = {}
+    _.transform @captures, ( result, name, index )->
 
-    for name, index in @captures
+      result[ name ] = match[ index + 1 ] || @defaults[ name ]
 
-      if value = match[ index + 1 ]
-
-        params[ name ] = value
-
-    return params
+    , {}, this
 
 
 class Router
@@ -52,11 +49,9 @@ class Router
 
     @add handlers
 
-    return
-
   add: ( handlers )->
 
-    for name, handler of handlers
+    _.each handlers, ( handler, name )->
 
       if _.isArray handler
 
@@ -67,17 +62,26 @@ class Router
 
         options = {}
 
-      @routes[ name ] = new Route Routes[ name ].toString(), options
+      pathScheme =
+
+        if Routes && /^\w+$/.test name
+
+          Routes[ name ].toString()
+
+        else
+
+          name
+
+      @routes[ name ] = new Route pathScheme, options
       @handlers[ name ] = handler
 
-    return
+    , this
 
-  run: ( url, callback )->
+  run: ( url )->=
 
-    path = url.match( /^[^?]+/ )[ 0 ]
-    search = url.slice path.length
+    [ path, search ] = url.split '?'
 
-    for name, route of @routes
+    _.find @routes, ( route, name )->=
 
       params = route.check path
 
@@ -85,18 +89,12 @@ class Router
 
       search = SearchParams.decode search
 
-      return { 
-
-        handler: @handlers[ name ]
-        request:
-          path: path
-          route: name
-          search: search
-          params: _.merge params, search
-
-      }
-
-    return
+      handler: @handlers[ name ]
+      request:
+        path: path
+        search: search
+        route: name
+        params: _.merge {}, params, search
 
 
-§export Router
+module.exports = Router

@@ -1,7 +1,13 @@
-§require 'mixins/pure_render'
-§require 'mixins/omit_props'
-§require 'mixins/classed'
-§require 'mixins/dom'
+PureRenderMixin = require '../mixins/PureRender'
+OmitPropsMixin = require '../mixins/OmitProps'
+ClassedMixin = require '../mixins/Classed'
+FindDOMMixin = require '../mixins/FindDOM'
+BMixin = require '../mixins/B'
 
 
-ReactMixinManager.alias 'component', 'pure_render', 'omit_props', 'classed', 'dom'
+mixin =
+
+  mixins: [ PureRenderMixin, OmitPropsMixin, ClassedMixin, FindDOMMixin, BMixin ]
+
+
+module.exports = mixin

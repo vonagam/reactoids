@@ -1,48 +1,46 @@
-getTimerFuns = ( constructor, destructor, keeper )->
+getTimerFuns = ( constructor, destructor, member )->
 
-  set: ( name, args... )->
+  set: ( key, args... )->
 
-    id = @[ keeper ][ name ]
+    id = @[ member ][ key ]
     
     destructor id if id
 
     id = constructor.apply null, args
     
-    @[ keeper ][ name ] = id
+    @[ member ][ key ] = id
 
-    return id
+    return
 
-  clear: ( name )->
+  clear: ( key )->
 
-    id = @[ keeper ][ name ]
+    id = @[ member ][ key ]
     
     return unless id
     
     destructor id
     
-    delete @[ keeper ][ name ]
+    delete @[ member ][ key ]
 
     return
 
 
-interval = getTimerFuns setInterval, clearInterval, 'intervals'
-timeout = getTimerFuns setTimeout, clearTimeout, 'timeouts'
+INTERVAL = getTimerFuns setInterval, clearInterval, 'intervals'
+TIMEOUT = getTimerFuns setTimeout, clearTimeout, 'timeouts'
 
 
 mixin =
 
-  componentWillMount: ->
-
-    @intervals = {}
-    @timeouts = {}
-
-    return
+  getInitialMembers: ->
+    
+    intervals: {}
+    timeouts: {}
   
-  setInterval: interval.set
-  clearInterval: interval.clear
+  setInterval: INTERVAL.set
+  clearInterval: INTERVAL.clear
 
-  setTimeout: timeout.set
-  clearTimeout: timeout.clear
+  setTimeout: TIMEOUT.set
+  clearTimeout: TIMEOUT.clear
   
   componentWillUnmount: ->
 
@@ -52,4 +50,4 @@ mixin =
     return
 
 
-ReactMixinManager.add 'timer', mixin
+module.exports = mixin
