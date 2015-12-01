@@ -1,7 +1,12 @@
 .DS_Store
 
 node_modules
+npm-debug.log
 
-/npm
+/builder/build-development
+/builder/build-publish
 
 /notes
+
+/sources/**/_*
+/tests/**/_*
