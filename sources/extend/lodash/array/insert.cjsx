@@ -1,8 +1,10 @@
-insert = ( array, index, values )->=
+insert = ( _ )->=
 
-  Array.prototype.splice.apply array, [ index, 0 ].concat values
+  ( array, index, values )->=
 
-  array
+    Array.prototype.splice.apply array, [ index, 0 ].concat values
+
+    array
 
 
 module.exports = insert

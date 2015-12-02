@@ -1,49 +1,11 @@
-#if ! __ReactoidsOnServer
-
-getUrlLink = (->=
-
-  link = document.createElement 'a'
-
-  ( url )->=
-  
-    link.href = url
-
-    link
-
-)()
-
-###
-
-else
-
-  getUrlLink = (->=
-
-    serverSide = requireSource 'serverSide'
-
-    Url = require 'url'
-
-    defaults = { 'protocol': '', 'host': '', 'hostname': '', 'port': '', 'pathname': '', 'search': '', 'hash': '' }
-
-    ( url )->=
-
-      url = Url.resolve serverSide.href, url
-
-      link = Url.parse url
-
-      link = _.defaults _.pick( link, _.isString ), defaults
-
-      link
-
-  )()
-
-###
+LINK = document.createElement 'a'
 
 
 getUrlData = ( url )->=
 
-  link = getUrlLink url
+  LINK.href = url
 
-  _.pick link, [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 'hash' ]
+  _.pick LINK, [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 'hash' ]
 
 
 module.exports = getUrlData

@@ -1,4 +1,4 @@
-searchParams = 
+QueryString = 
 
 
   decode: ( search, mapper )->=
@@ -45,4 +45,4 @@ searchParams =
     '?' + _.map( params, ( value, key )->= "#{ encodeURIComponent key }=#{ encodeURIComponent value }" ).join '&'
 
 
-module.exports = searchParams
+module.exports = QueryString

@@ -2,6 +2,10 @@ describe 'simulateLink', ->
 
   simulateLink = requireSubject()
 
+  $ = requireDependency 'jquery'
+
+  # TODO: add tests for decorators and container arguments
+
 
   hrefBefore = window.location.href
 

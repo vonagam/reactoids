@@ -1,9 +1,8 @@
-_ = require 'lodash'
+wrapInArray = ( _ )->=
 
+  ( value )->=
 
-wrapInArray = ( value )->=
-
-  if _.isArray value then value else [ value ]
+    if _.isArray value then value else [ value ]
 
 
 module.exports = wrapInArray

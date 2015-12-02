@@ -1,17 +1,21 @@
 describe 'Router', ->
 
-  Router = requireSubject()
+  dependencies = requireSource 'dependencies'
 
   router = undefined
+
+  hrefBefore = window.location.href
 
 
   before ->
 
-    GLOBAL.Routes = { 
+    dependencies[ 'js-routes' ] = { 
 
       inRoutes: '/defined/in/routes'
 
     }
+
+    Router = requireSubject()
 
     router = new Router {
 
@@ -24,11 +28,15 @@ describe 'Router', ->
 
     }
 
+    window.location.href = 'http://foo.bar/'
+
   after ->
 
-    delete GLOBAL.Routes
+    dependencies[ 'js-routes' ] = undefined
 
     router = undefined
+
+    window.location.href = hrefBefore
 
 
   checks = [

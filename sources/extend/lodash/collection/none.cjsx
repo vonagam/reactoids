@@ -1,7 +1,6 @@
-_ = require 'lodash'
+none = ( _ )->=
 
-
-none = _.negate _.any
+  _.negate _.any
 
 
 module.exports = none

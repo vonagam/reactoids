@@ -1,8 +1,10 @@
-clamp = ( value, min, max )->=
+clamp = ( _ )->=
 
-  return min if value < min
-  return max if value > max
-  return value
+  ( value, min, max )->=
+
+    return min if value < min
+    return max if value > max
+    return value
 
 
 module.exports = clamp

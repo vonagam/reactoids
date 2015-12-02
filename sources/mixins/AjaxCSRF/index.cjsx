@@ -1,3 +1,5 @@
+$ = requireDependency 'jquery'
+
 Mixin = requireSource 'various/Mixin'
 
 

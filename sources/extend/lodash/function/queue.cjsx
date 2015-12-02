@@ -1,15 +1,14 @@
-_ = require 'lodash'
+queue = ( _ )->=
 
+  ->=
 
-queue = ->=
+    funcs = _.filter arguments, _.isFunction
 
-  funcs = _.filter arguments, _.isFunction
+    ->
 
-  ->
+      for func in funcs
 
-    for func in funcs
-
-      func.apply this, arguments
+        func.apply this, arguments
 
 
 module.exports = queue

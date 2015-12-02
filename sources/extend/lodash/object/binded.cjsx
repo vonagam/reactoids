@@ -1,9 +1,8 @@
-_ = require 'lodash'
+binded = ( _ )->=
 
+  ( object, path, thisArg )->=
 
-binded = ( object, path, thisArg )->=
-
-  _.bind _.get( object, path ), thisArg || object
+    _.bind _.get( object, path ), thisArg || object
 
 
 module.exports = binded

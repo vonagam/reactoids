@@ -1,4 +1,4 @@
-#§global 'I18n', 'https://github.com/fnando/i18n-js'
+I18n = requireDependency 'i18n-js'
 
 Fields = requireSource 'components/inputs/Fields'
 
@@ -47,7 +47,7 @@ Field = ( model, key, options )->=
 
   field.messages ||= {}
 
-  if window.I18n
+  if I18n
 
     _.transform MESSAGES, ( result, type )->
 

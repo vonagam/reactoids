@@ -1,9 +1,10 @@
+$ = requireDependency 'jquery'
+Routes = requireDependency 'js-routes'
+
 Mixin = requireSource 'various/Mixin'
 
-#§global '$', 'http://jquery.com'
-#§global 'Routes', 'http://railsware.github.io/js-routes'
-
 simulateLink = requireSource 'various/simulateLink'
+
 findDOM = requireSource 'various/findDOM'
 
 
@@ -26,11 +27,11 @@ onAjaxSuccess = ( that, redirect, data, status, xhr )->
 
   location = xhr.getResponseHeader 'Location'
 
-  check = _.funced redirect, location, data, status, xhr
+  allow = _.funced redirect, location, data, status, xhr
 
-  return unless check
+  return unless allow
 
-  location = check if _.isString check
+  location = allow if _.isString allow
 
   simulateLink location, findDOM that
 
@@ -67,7 +68,7 @@ mixin =
 
         if /^on[A-Z]/.test( key ) then _.camelCase( key.replace /^on/, '' ) else key
 
-      options.url = Routes[ options.url ]() if window.Routes && /^\w+$/.test options.url
+      options.url = Routes[ options.url ]() if Routes && /^\w+$/.test options.url
 
       options.method = ( options.method || options.type || 'get' ).toUpperCase()
 

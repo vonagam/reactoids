@@ -1,15 +1,21 @@
 describe 'Moment', ->
 
-  Moment = requireSubject()
+  dependencies = requireSource 'dependencies'
+
+  Moment = undefined
 
 
   before ->
 
-    GLOBAL.moment = require 'moment'
+    dependencies.moment = require 'moment'
+
+    Moment = requireSubject()
 
   after ->
 
-    delete GLOBAL.moment
+    dependencies.moment = undefined
+
+    Moment = undefined
 
 
   variants =

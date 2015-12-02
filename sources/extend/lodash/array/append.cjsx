@@ -1,8 +1,10 @@
-append = ( array, values )->=
+append = ( _ )->=
 
-  Array.prototype.push.apply array, values
+  ( array, values )->=
 
-  array
+    Array.prototype.push.apply array, values
+
+    array
 
 
 module.exports = append

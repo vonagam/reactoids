@@ -1,21 +1,20 @@
-_ = require 'lodash'
+toFlattenedPlainObject = ( _ )->=
 
+  ( source, isDeep = _.isPlainObject, accumulator = {}, path = '' )->=
 
-toFlattenedPlainObject = ( source, isDeep = _.isPlainObject, accumulator = {}, path = '' )->=
+    _.transform source, ( accumulator, value, key )->
 
-  _.transform source, ( accumulator, value, key )->
+      key = "#{ path }.#{ key }" if path
 
-    key = "#{ path }.#{ key }" if path
+      if isDeep value
 
-    if isDeep value
+        _.toFlattenedPlainObject value, isDeep, accumulator, key
 
-      _.toFlattenedPlainObject value, isDeep, accumulator, key
+      else
 
-    else
+        accumulator[ key ] = value
 
-      accumulator[ key ] = value
-
-  , accumulator
+    , accumulator
 
 
 module.exports = toFlattenedPlainObject

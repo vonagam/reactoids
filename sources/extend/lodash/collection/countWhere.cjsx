@@ -1,17 +1,16 @@
-_ = require 'lodash'
+countWhere = ( _ )->=
 
+  ( collection, source )->=
 
-countWhere = ( collection, source )->=
+    matches = _.matches source
 
-  matches = _.matches source
+    _.reduce collection, ( count, value )->
 
-  _.reduce collection, ( count, value )->
+      return count + 1 if matches value
 
-    return count + 1 if matches value
+      return count
 
-    return count
-
-  , 0
+    , 0
 
 
 module.exports = countWhere

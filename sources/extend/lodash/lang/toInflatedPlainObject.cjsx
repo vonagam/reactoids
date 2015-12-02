@@ -1,13 +1,12 @@
-_ = require 'lodash'
+toInflatedPlainObject = ( _ )->=
 
+  ( source )->=
 
-toInflatedPlainObject = ( source )->=
+    _.transform source, ( accumulator, value, path )->
 
-  _.transform source, ( accumulator, value, path )->
+      _.set accumulator, path, value
 
-    _.set accumulator, path, value
-
-  , {}
+    , {}
 
 
 module.exports = toInflatedPlainObject

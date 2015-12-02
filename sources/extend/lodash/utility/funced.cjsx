@@ -1,17 +1,16 @@
-_ = require 'lodash'
+funced = ( _ )->=
 
+  ( value )->=
 
-funced = ( value )->=
+    if _.isFunction value
 
-  if _.isFunction value
+      args = _.slice arguments, 1 if arguments.length > 1
 
-    args = _.slice arguments, 1 if arguments.length > 1
+      value.apply undefined, args
 
-    value.apply undefined, args
+    else
 
-  else
-
-    value
+      value
 
 
 module.exports = funced

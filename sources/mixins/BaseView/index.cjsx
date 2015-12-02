@@ -1,6 +1,6 @@
-Mixin = requireSource 'various/Mixin'
+$ = requireDependency 'jquery'
 
-#§global '$', 'http://jquery.com'
+Mixin = requireSource 'various/Mixin'
 
 findDOM = requireSource 'various/findDOM'
 

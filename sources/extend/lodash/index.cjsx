@@ -3,7 +3,9 @@ mixin = require './mixin'
 
 extend = ( _ )->
 
-  _.mixin mixin
+  source = _.mapValues mixin, ( value )->= value( _ )
+
+  _.mixin source
 
 
 module.exports = extend

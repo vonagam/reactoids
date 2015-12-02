@@ -1,9 +1,8 @@
-_ = require 'lodash'
+truthyKeys = ( _ )->=
 
+  ( object )->=
 
-truthyKeys = ( object )->=
-
-  _.keys _.pick object, _.identity
+    _.keys _.pick object, _.identity
 
 
 module.exports = truthyKeys

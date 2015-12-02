@@ -1,8 +1,10 @@
-prepend = ( array, values )->=
+prepend = ( _ )->=
 
-  Array.prototype.unshift.apply array, values
+  ( array, values )->=
 
-  array
+    Array.prototype.unshift.apply array, values
+
+    array
 
 
 module.exports = prepend

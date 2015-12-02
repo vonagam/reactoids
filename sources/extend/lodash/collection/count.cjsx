@@ -1,13 +1,12 @@
-_ = require 'lodash'
+count = ( _ )->=
 
+  ( collection, target )->=
 
-count = ( collection, target )->=
+    _.reduce collection, ( count, value )->=
 
-  _.reduce collection, ( count, value )->=
+      count + ( value == target )
 
-    count + ( value == target )
-
-  , 0
+    , 0
 
 
 module.exports = count

@@ -1,15 +1,14 @@
-_ = require 'lodash'
+eacho = ( _ )->=
 
+  ( value, iteratee, thisArg )->
 
-eacho = ( value, iteratee, thisArg )->
+    if _.isArray value
 
-  if _.isArray value
+      _.each value, iteratee, thisArg
 
-    _.each value, iteratee, thisArg
+    else
 
-  else
-
-    iteratee.call thisArg, value
+      iteratee.call thisArg, value
 
 
 module.exports = eacho

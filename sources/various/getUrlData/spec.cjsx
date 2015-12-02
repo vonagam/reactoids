@@ -2,8 +2,6 @@ describe 'getUrlData', ->
 
   getUrlData = requireSubject()
 
-  #serverSide = requireSource 'serverSide'
-
 
   hrefBefore = window.location.href
 

@@ -1,6 +1,7 @@
 Mixin = requireSource 'various/Mixin'
 
 HistoryViewMixin = requireSource 'mixins/HistoryView'
+
 AjaxMixin = requireSource 'mixins/Ajax'
 
 

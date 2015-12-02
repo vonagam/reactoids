@@ -1,13 +1,13 @@
-#§global '$', 'http://jquery.com'
+$ = requireDependency 'jquery'
 
 
 simulateLink = ( href, containter = 'body', decorateLink )->
 
-  $link = $ '<a></a>'
+  $link = $ '<a>'
 
   $link.attr 'href', href
 
-  decorateLink? $link
+  decorateLink $link if decorateLink
 
   $link.appendTo containter
 

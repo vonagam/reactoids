@@ -1,6 +1,6 @@
-describe 'SearchParams', ->
+describe 'QueryString', ->
 
-  SearchParams = requireSubject()
+  QueryString = requireSubject()
 
 
   checkChecks = ( method, checks )->
@@ -9,7 +9,7 @@ describe 'SearchParams', ->
 
       it check.title, ->
 
-        expect( SearchParams[ method ].apply SearchParams, check.input ).eql check.output
+        expect( QueryString[ method ].apply QueryString, check.input ).eql check.output
 
 
   describe '::encode', ->

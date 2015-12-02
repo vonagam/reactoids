@@ -1,6 +1,8 @@
-pass = ( func, args, thisArg )->=
+pass = ( _ )->=
 
-  func.apply thisArg, args if func
+  ( func, args, thisArg )->=
+
+    func.apply thisArg, args if func
 
 
 module.exports = pass

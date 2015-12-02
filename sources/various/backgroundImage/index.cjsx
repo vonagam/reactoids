@@ -1,8 +1,12 @@
 backgroundImage = ( url )->=
 
-  return unless url
+  if url
 
-  backgroundImage: "url(#{ url })"
+    backgroundImage: "url(#{ url })"
+
+  else
+
+    undefined
 
 
 module.exports = backgroundImage

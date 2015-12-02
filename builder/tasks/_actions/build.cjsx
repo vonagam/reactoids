@@ -1,12 +1,45 @@
 gulp = require 'gulp'
 
-$ = require( 'gulp-load-plugins' )()
+_ = require 'lodash'
 
-$.replace = require 'hn-gulp-replace'
+$ = require( 'gulp-load-plugins' )()
 
 path = require 'path'
 
 pipe = require './pipe'
+
+
+AUTO_DEPENDENCIES = [
+
+  {
+    variable: 'React'
+    package: 'react'
+  }
+  {
+    variable: 'ReactDOM'
+    package: 'react-dom'
+  }
+  {
+    variable: '_'
+    package: 'lodash'
+  }
+
+]
+
+_.each AUTO_DEPENDENCIES, ( dependency )->
+
+  used = RegExp "\\b#{ dependency.variable }[\\.\\[]"
+
+  dependency.isNeeded = ( content, path )->=
+
+    return false if /^(\.\.|extend)/.test path
+
+    return true if /spec\.[^\.]+$/.test path
+
+    return used.test content
+
+
+sourcesDirectoryPath = path.resolve '../sources'
 
 
 build = ( src, options = {} )->=
@@ -17,19 +50,27 @@ build = ( src, options = {} )->=
 
     $.plumber errorHandler: options.plumber if options.plumber
 
-    $.replace 'requireSubject()', 'require("./index")'
+    $.insert.transform ( content, file )->=
 
-    $.replace 'requireSource \'', ( match, file )->=
+      filePath = path.relative sourcesDirectoryPath, file.path
 
-      fileDirectoryPath = path.dirname file.path
+      sourcesPath = path.relative path.dirname( file.path ), sourcesDirectoryPath
 
-      sourcesDirectoryPath = path.resolve '../sources'
+      _.each AUTO_DEPENDENCIES, ( dependency )->
 
-      relativePath = path.relative fileDirectoryPath, sourcesDirectoryPath
+        if dependency.isNeeded content, filePath
 
-      "require '#{ relativePath }/"
+          content = "#{ dependency.variable } = requireDependency '#{ dependency.package }';" + content
 
-    $.insert.prepend '"use strict";'
+      content = content.replace /requireSubject\(\)/g, 'require("./index")'
+
+      content = content.replace /requireDependency\s'([^']+)'/g, "requireSource('dependencies')['$1']"
+
+      content = content.replace /requireSource(\(|\s)'/g, "require$1'#{ sourcesPath }/"
+
+      content = '"use strict";' + content
+
+      content
 
     $.sourcemaps.init() if options.sourcemaps
 

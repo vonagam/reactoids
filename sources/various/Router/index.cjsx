@@ -1,6 +1,6 @@
-#§global 'Routes', 'https://github.com/railsware/js-routes'
+Routes = requireDependency 'js-routes'
 
-SearchParams = requireSource 'various/SearchParams'
+QueryString = requireSource 'various/QueryString'
 
 getUrlData = requireSource 'various/getUrlData'
 
@@ -81,7 +81,7 @@ class Router
 
     path = urlData.pathname
 
-    search = SearchParams.decode urlData.search
+    search = QueryString.decode urlData.search
 
     result = undefined
 
@@ -95,9 +95,9 @@ class Router
 
         handler: @handlers[ name ]
         request:
+          route: name
           path: path
           search: search
-          route: name
           params: _.merge {}, params, search
 
       return false

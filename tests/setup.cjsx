@@ -15,6 +15,13 @@ chai.use require 'chai-changes'
 chai.use require './helpers/myChai'
 
 
+# helpers
+
+GLOBAL.TestReact = require './helpers/TestReact'
+GLOBAL.TestMixin = require './helpers/TestMixin'
+GLOBAL.TestComponent = require './helpers/TestComponent'
+
+
 # jsdom
 
 jsdom = require 'jsdom'
@@ -24,22 +31,14 @@ GLOBAL.window = document.defaultView
 GLOBAL.navigator = window.navigator # for ReactDOM
 
 
-# dependecies
+# dependencies
 
-GLOBAL._ = require 'lodash'
-GLOBAL.$ = require 'jquery'
-GLOBAL.React = require 'react'
-GLOBAL.ReactDOM = require 'react-dom'
+dependencies = require '../sources/dependencies'
 
-require( '../sources/extend/lodash' )( GLOBAL._ )
-require( '../sources/extend/react' )( GLOBAL.React )
+dependencies[ 'lodash' ] = require 'lodash'
+dependencies[ 'jquery' ] = require 'jquery'
+dependencies[ 'react' ] = require 'react'
+dependencies[ 'react-dom' ] = require 'react-dom'
 
-
-# helpers
-
-###
-GLOBAL.requireSubject = require './helpers/requireSubject'
-###
-GLOBAL.TestReact = require './helpers/TestReact'
-GLOBAL.TestMixin = require './helpers/TestMixin'
-GLOBAL.TestComponent = require './helpers/TestComponent'
+require( '../sources/extend/lodash' )( dependencies[ 'lodash' ] )
+require( '../sources/extend/react' )( dependencies[ 'react' ] )
