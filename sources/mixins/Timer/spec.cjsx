@@ -17,15 +17,19 @@ describe 'Timer', ->
 
       count++
 
+      expect( count ).most 2
+
       if count == 2
 
         component.clearInterval 'check'
 
         component.setTimeout 'check', ( param )->
 
-          expect( param ).equal 'some'
+          count++
 
-          expect( count ).equal 2
+          expect( count ).equal 3
+
+          expect( param ).equal 'some'
 
           TestReact.unmount component
 

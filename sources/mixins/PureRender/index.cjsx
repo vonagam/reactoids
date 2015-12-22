@@ -24,7 +24,7 @@ mixin =
     ! _.isEqual( @state, nextState, customizer )
 
 
-_.each [ 
+_.each [
 
     'bind'
     'partial'

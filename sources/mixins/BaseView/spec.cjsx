@@ -2,6 +2,8 @@ describe 'BaseView', ->
 
   BaseView = requireSubject()
 
+  $ = requireDependency 'jquery'
+
 
   it 'works', ->
 

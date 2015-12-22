@@ -29,7 +29,7 @@ onAjaxSuccess = ( that, redirect, data, status, xhr )->
 
   allow = _.funced redirect, location, data, status, xhr
 
-  return unless allow
+  return unless allow == true || _.isString allow
 
   location = allow if _.isString allow
 
@@ -52,29 +52,41 @@ mixin =
 
       toggleAjax this, name, false
 
-    sendAjax: ( name, options, flags = {} )->
+    sendAjax: ( name, options )->
 
       return if _.isEmpty options
 
       if @ajaxes[ name ]
 
-        return unless flags.force
+        return unless options.force
+
+        delete options.force
 
         @abortAjax name
 
       options = _.clone options
 
-      options = _.mapKeys options, ( value, key )-> 
+      options = _.mapKeys options, ( value, key )->=
 
         if /^on[A-Z]/.test( key ) then _.camelCase( key.replace /^on/, '' ) else key
 
-      options.url = Routes[ options.url ]() if Routes && /^\w+$/.test options.url
+      if Routes && /^\w+$/.test options.url
 
-      options.method = ( options.method || options.type || 'get' ).toUpperCase()
+        options.url = Routes[ options.url ]() 
+
+      if _.has options, 'type'
+
+        options.method = options.method || options.type
+
+        delete options.type
+
+      if options.redirect
+
+        options.success = _.queue options.success, _.partial onAjaxSuccess, this, options.redirect
+
+        delete options.redirect
 
       options.complete = _.queue _.partial( toggleAjax, this, name, false ), options.complete
-
-      options.success = _.queue options.success, _.partial( onAjaxSuccess, this, options.redirect ) if options.redirect
 
       ajax = $.ajax options
 

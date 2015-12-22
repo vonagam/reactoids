@@ -30,6 +30,8 @@ mixin = Mixin.createArged
       ARGS.onMove that, getPosition event
 
 
+    mixins: [ EventListener ]
+
     getInitialState: ->=
 
       dragging: false

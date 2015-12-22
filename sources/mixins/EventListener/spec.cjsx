@@ -27,7 +27,7 @@ describe 'EventListener', ->
 
     expect( addStub ).callCount 1
 
-    expect( addStub.calledWith 'someEvent', callback ).true
+    expect( addStub ).calledWith 'someEvent', callback
 
 
     expect( removeStub ).callCount 0
@@ -36,7 +36,7 @@ describe 'EventListener', ->
 
     expect( removeStub ).callCount 1
 
-    expect( removeStub.calledWith 'someEvent', callback ).true
+    expect( removeStub ).calledWith 'someEvent', callback
 
 
     addStub.restore()

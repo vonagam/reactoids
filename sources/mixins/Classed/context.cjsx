@@ -5,9 +5,9 @@ mixin = Mixin.createArged
 
   args:
 
-    getClassNames: React.PropTypes.func # ( constructor, keys )->=
+    getClassNames: React.PropTypes.func # ( constructor, keys )->= OR ( id, constructor, keys, that )->=
     definingType: React.PropTypes.oneOf [ 'standart', 'custom' ]
-    contextHandling: React.PropTypes.oneOf [ 'ignore', 'combine', 'merge' ]
+    contextHandling: React.PropTypes.oneOf [ 'ignore', 'combine', 'overlap' ]
 
   defaults:
 
@@ -48,7 +48,7 @@ mixin = Mixin.createArged
 
             when 'combine' then return [ contextClassNames, ourClassNames ]
 
-            when 'merge' then return _.assign {}, contextClassNames, ourClassNames
+            when 'overlap' then return _.assign {}, contextClassNames, ourClassNames
 
 
     contextTypes: contextTypes

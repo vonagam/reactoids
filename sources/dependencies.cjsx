@@ -6,7 +6,7 @@ module.exports = {
 
   'react-dom': undefined
 
-  'lodash': undefined
+  'lodash': undefined # https://lodash.com
 
   '$': undefined # http://jquery.com
 

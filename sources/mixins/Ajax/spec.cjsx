@@ -1,7 +1,72 @@
-###
 describe 'Ajax', ->
 
   Ajax = requireSubject()
+
+  Ajaxed = TestMixin.createMixinClass Ajax
+
+  $ = requireDependency 'jquery'
+
+
+  $options = undefined
+
+  $ajax = undefined
+
+  $abort = undefined
+
+  before ->
+
+    $abort = sinon.spy()
+
+    $ajax = sinon.stub $, 'ajax', ( options )->=
+
+      $options = options
+
+      abort: $abort
+
+  afterEach ->
+
+    $ajax.reset()
+
+    $abort.reset()
+
+  after ->
+
+    $ajax.restore()
+
+  ###
+
+
+  checks = {
+
+    'onSuccess':
+      input:
+        onSuccess: sinon.spy()
+      output: ( input, output )->=
+        success: input.onSuccess
+        complete: output.complete
+
+    'type':
+      input:
+        type: 'asd'
+      output: ( input, output )->=
+        method: 'ASD'
+        complete: output.complete
+
+    'redirect true':
+      input:
+        redirect: true
+      output: ( input, output )->=
+        success: output.success
+        complete: output.complete
+
+    'redirect string'
+      input:
+        redirect: 'http://foo.bar/'
+      output: ( input, output )->=
+        success: output.success
+        complete: output.complete
+
+  }
 
 
   checks = [
@@ -22,7 +87,7 @@ describe 'Ajax', ->
 
   it 'works', ->
 
-    Ajaxed = TestMixin.createMixinClass Ajax
+    
 
 
     component = TestReact.render <Ajaxed />
@@ -69,4 +134,69 @@ describe 'Ajax', ->
 
 
     TestReact.unmount component
-###
+
+  ###
+
+
+  describe 'redirects', ->
+
+    hrefBefore = window.location.href
+
+    beforeEach ->
+
+      window.location.href = 'http://asd.bsa/'
+
+    after ->
+
+      window.location.href = hrefBefore
+
+    variants = [
+
+      false
+      true
+      ''
+      '/asd'
+
+    ]
+
+    funced = [
+
+      false
+      true
+
+    ]
+
+    locations = [
+
+      undefined
+      'http://foo.bar/'
+
+    ]
+
+    _.each locations, ( location )->
+
+      _.each funced, ( funced )->
+
+        _.each variants, ( variant )->
+
+          it JSON.stringify( location: location, variant: variant, funced: funced ), ->
+
+            component = TestReact.render <Ajaxed />
+
+            redirect = if funced then _.constant variant else variant
+
+            component.sendAjax 'check', redirect: redirect
+
+            xhr = getResponseHeader: _.constant location
+
+            willChange = _.isString( variant ) || ( variant == true && location )
+
+            if willChange
+
+              $( 'body' ).one 'click', _.method 'preventDefault'
+
+            $options.success undefined, undefined, xhr
+
+            expect( window.location.href ).only( ! willChange ).equal 'http://asd.bsa/'
+
+            TestReact.unmount component

@@ -37,7 +37,7 @@ checkOptionsConflict = ( that, props, state )->
   if value != undefined && _.none options, 'selected'
 
     that.setValue undefined
-  
+
 
 mixin =
 

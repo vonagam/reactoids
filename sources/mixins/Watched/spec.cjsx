@@ -38,7 +38,9 @@ describe 'Watched', ->
 
       expect( ARGS.getValue ).callCount 4
       expect( ARGS.onChange ).callCount 1
-      expect( ARGS.onChange.calledWith component, 'newValue', 'oldValue' ).equal true
+      expect( ARGS.onChange ).calledWith component, 'newValue', 'oldValue'
+
+      expect( component.isMounted() ).equal false
 
       done()
 
