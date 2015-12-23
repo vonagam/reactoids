@@ -52,7 +52,7 @@ ComponentArgs = classes:
       '-add': ''
       '-clear': ''
 
-StringedArgs = strings: [ 'remove', 'add', 'crear' ]
+StringedArgs = strings: [ 'remove', 'add', 'clear' ]
 
 RenderSlotsArgs = names: [ 'item' ]
 
@@ -102,7 +102,7 @@ Arrayer = React.createClass
 
     values = _.clone @getValue()
 
-    values.push _.cloneDeep _.funced @props.template, that
+    values.push _.cloneDeep _.funced @props.template, this
 
     @setValue values
 

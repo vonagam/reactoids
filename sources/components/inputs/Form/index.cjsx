@@ -6,7 +6,7 @@ AjaxMixin = requireSource 'mixins/Ajax'
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'
 
 Fields = requireSource 'components/inputs/Fields'
-Button = requireSource 'components/inputs/Button'
+Button = requireSource 'components/general/Button'
 
 toFormData = requireSource 'various/toFormData'
 
@@ -118,7 +118,7 @@ Form = React.createClass
       <div className={ @classed 'actions' }>
         {
 
-          @actions( className: @classed 'action' )
+          @renderActions( className: @classed 'action' )
 
         }
       </div>

@@ -15,14 +15,14 @@ mixin = Mixin.createArged
 
   defaults:
 
-    getHistoryState: ( that, data, url )-> { url: url }
+    getHistoryState: ( that, data, url )->= { url: url }
     changeAjaxOptions: _.noop
 
-  mixin: ( ARGS )->
+  mixin: ( ARGS )->=
 
-    HISTORY_VIEW_ARGS = _.merge HistoryViewMixin.pick( ARGS ),
+    HISTORY_VIEW_ARGS = _.defaults HistoryViewMixin.pick( ARGS ),
 
-      handlePop: ( that, state )->
+      handleHistoryData: ( that, state )->
 
         that.loadView state.url, 'replace'
 
@@ -37,7 +37,7 @@ mixin = Mixin.createArged
         return true
 
 
-    mixins: [ HistoryViewMixin( HISTORY_VIEW_ARGS ) ]
+    mixins: [ HistoryViewMixin( HISTORY_VIEW_ARGS ), AjaxMixin ]
 
     loadView: ( url, position = 'push' )->
 

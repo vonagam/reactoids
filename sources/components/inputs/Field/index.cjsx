@@ -47,7 +47,7 @@ Field = React.createClass
 
   onLabelClick: ->
 
-    @refs.input.onLabelClick()
+    _.funced @refs.input.onLabelClick
 
   render: ->=
 
@@ -65,17 +65,17 @@ Field = React.createClass
 
       if _.isPlainObject message
 
-        text = message.text
+        content = message.content
         props = message.props || {}
         position = message.position || 'after'
 
       else
 
-        text = message
+        content = message
         props = {}
         position = 'after'
 
-      return unless text
+      return unless content
 
       messages[ position ] ||= []
 
@@ -89,7 +89,7 @@ Field = React.createClass
         >
           {
             
-            text
+            content
           
           }
         </div>
