@@ -29,7 +29,7 @@ Link = React.createClass
 
   displayName: 'Link'
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
+  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), UrlWatcherMixin( UrlWatcherArgs ) ]
 
   propTypes:
 
