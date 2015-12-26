@@ -16,6 +16,8 @@ mixin = Mixin.createArged
     onStart: _.noop
     onStop: _.noop
 
+  mixins: [ EventListener ]
+
   mixin: ( ARGS )->=
 
     getPosition = ( event )->=

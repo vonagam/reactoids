@@ -61,7 +61,17 @@ Mixin =
 
       Mixin.createPlain input.mixin ARGS
 
-    result.pick = ( ARGS )->= _.pick ARGS, _.keys input.args
+    _.assign result, input
+
+    result.picked = _.keys input.args
+
+    _.each input.mixins, ( mixin )->
+
+      result.picked = _.union result.picked, mixin.picked if _.isFunction mixin
+
+    result.pick = ( ARGS )->=
+
+      _.pick ARGS, result.picked
 
     result
 

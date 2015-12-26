@@ -8,6 +8,8 @@ DomMixin = requireSource 'mixins/Dom'
 
 mixin = Mixin.createArged
 
+  mixins: [ PureRenderMixin, OmitPropsMixin, ClassedMixin, DomMixin ]
+
   mixin: ( ARGS )->=
 
     mixins: [ PureRenderMixin, OmitPropsMixin(), ClassedMixin( ClassedMixin.pick( ARGS ) ), DomMixin ]

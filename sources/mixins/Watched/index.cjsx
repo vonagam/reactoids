@@ -15,6 +15,8 @@ mixin = Mixin.createArged
 
     name: ''
 
+  mixins: [ UnisonMixin ]
+
   mixin: ( ARGS )->=
 
     member = "_watched#{ _.capitalize ARGS.name }"

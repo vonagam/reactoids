@@ -15,6 +15,8 @@ mixin = Mixin.createArged
     update: _.method 'forceUpdate'
     shouldWatch: true
 
+  mixins: [ UnisonMixin ]
+
   mixin: ( ARGS )->=
 
     currHref = window.location.href

@@ -7,7 +7,7 @@ describe 'BaseView', ->
 
   it 'works', ->
 
-    handleLink = sinon.spy ( that, link, inDomain )->=
+    handleLink = sinon.spy ( that, link )->=
 
       /hello/.test link.href
 

@@ -131,6 +131,8 @@ mixin = Mixin.createArged
 
     getHistoryId: 'default'
 
+  mixins: [ BaseViewMixin ]
+
   mixin: ( ARGS )->=
 
     mixins: [ BaseViewMixin BaseViewMixin.pick ARGS ]
