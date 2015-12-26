@@ -30,7 +30,7 @@ mixin = Mixin.createArged
 
       return false unless BaseViewMixin.defaults.shouldHandleLink that, link
 
-      return false if link.getAttribute( 'data-no-ajax' ) == 'false'
+      return false if link.getAttribute( 'data-no-ajax' ) == 'true'
 
       return true
 
