@@ -1,6 +1,6 @@
-Routes = requireDependency 'js-routes'
+URI = require 'urijs'
 
-QueryString = requireSource 'various/QueryString'
+Routes = requireDependency 'js-routes'
 
 getUrlData = requireSource 'various/getUrlData'
 
@@ -81,7 +81,7 @@ class Router
 
     path = urlData.pathname
 
-    search = QueryString.decode urlData.search
+    search = URI.parseQuery urlData.search
 
     result = undefined
 

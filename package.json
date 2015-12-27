@@ -43,5 +43,8 @@
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
     "source-map-support": "^0.3.3"
+  },
+  "dependencies": {
+    "urijs": "^1.17.0"
   }
 }

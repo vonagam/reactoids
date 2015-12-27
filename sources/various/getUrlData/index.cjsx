@@ -1,11 +1,24 @@
-LINK = document.createElement 'a'
+URI = require 'urijs'
+
+
+PARTS = [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 'hash' ]
 
 
 getUrlData = ( url )->=
 
-  LINK.href = url
+  data = URI url, window.location.href
 
-  _.pick LINK, [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 'hash' ]
+  protocol = data.protocol()
+
+  if protocol && ! /:$/.test protocol
+
+    data.protocol = _.constant "#{ protocol }:"
+
+  _.transform PARTS, ( result, part )->
+
+    result[ part ] = data[ part ]()
+
+  , {}
 
 
 module.exports = getUrlData
