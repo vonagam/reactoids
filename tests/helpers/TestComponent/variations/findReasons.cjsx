@@ -1,3 +1,5 @@
+_ = require 'lodash'
+
 getVariantString = require './getVariantString'
 
 
