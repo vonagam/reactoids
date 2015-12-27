@@ -31,7 +31,13 @@ onAjaxSuccess = ( that, redirect, data, status, xhr )->
 
   return unless allow == true || _.isString allow
 
-  location = allow if _.isString allow
+  if _.isString allow
+
+    location = allow
+
+    if Routes && /^[\w_]+$/.test( location ) && Routes[ location ]
+
+      location = Routes[ location ]()
 
   simulateLink location, findDOM that
 
@@ -70,7 +76,7 @@ mixin =
 
         if /^on[A-Z]/.test( key ) then _.camelCase( key.replace /^on/, '' ) else key
 
-      if Routes && /^\w+$/.test options.url
+      if Routes && /^[\w_]+$/.test( options.url ) && Routes[ options.url ]
 
         options.url = Routes[ options.url ]() 
 

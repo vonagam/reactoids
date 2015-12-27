@@ -62,7 +62,7 @@ class Router
 
       pathScheme =
 
-        if Routes && /^\w+$/.test name
+        if Routes && /^[\w_]+$/.test( name ) && Routes[ name ]
 
           Routes[ name ].toString()
 
