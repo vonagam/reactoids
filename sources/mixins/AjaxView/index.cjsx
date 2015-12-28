@@ -6,6 +6,8 @@ HistoryViewMixin = requireSource 'mixins/HistoryView'
 
 AjaxMixin = requireSource 'mixins/Ajax'
 
+URI = require 'urijs'
+
 
 mixin = Mixin.createArged
 
@@ -56,13 +58,19 @@ mixin = Mixin.createArged
 
         state = ARGS.getHistoryState that, data, url
 
+        ARGS.setView that, data, url
+
         that.changeHistoryState position, state
 
-        ARGS.setView that, data, url
+      uri = new URI url
+
+      if ! /\.[^\.]+$/.test uri.pathname()
+
+        uri.pathname "#{ uri.pathname() }.json"
 
       ajaxOptions =
 
-        url: url
+        url: uri.toString()
         dataType: 'json'
         success: onSuccess
 

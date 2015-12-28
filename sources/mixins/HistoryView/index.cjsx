@@ -5,9 +5,7 @@ BaseViewMixin = requireSource 'mixins/BaseView'
 
 History =
 
-  states: []
-
-  index: undefined
+  state: undefined
 
   instances: {}
 
@@ -27,9 +25,9 @@ History =
 
     @instances[ id ] = { component: component, ARGS: ARGS }
 
-    @startListen() if @index == undefined
+    @startListen() if @state == undefined
 
-    @updateState component, ARGS, true
+    @changeState 'replace' unless _.isEqual _.get( @state, "datas.#{ id }" ), ARGS.getHistoryData component
 
   removeComponent: ( component, ARGS )->
 
@@ -37,29 +35,9 @@ History =
 
     delete @instances[ id ]
 
-    @updateState component, ARGS, false
+    @changeState 'replace' if _.has @state.datas, id
 
-  updateState: ( component, ARGS, bool )->
-
-    id = @getId component, ARGS
-
-    datas = _.get window.history.state, 'datas'
-
-    if datas
-
-      if bool
-
-        data = ARGS.getHistoryData component
-
-        return if _.isEqual datas[ id ], data
-
-      else
-
-        return if ! _.has datas, id
-
-    @changeState component, ARGS, 'replace'
-
-  changeState: ( component, ARGS, position, options = {} )->=
+  changeState: ( position, component, ARGS, options = {} )->=
 
     currentState = _.defaults {}, window.history.state, index: 0, datas: {}
 
@@ -75,15 +53,11 @@ History =
 
       state.index = currentState.index + 1
 
-      @states = @states.slice 0, state.index
-
     state.HistoryViewMixin = true
 
     state.datas = _.mapValues @instances, ( instance )->= instance.ARGS.getHistoryData instance.component
 
-    @states[ state.index ] = state
-
-    @index = state.index
+    @state = state
 
     window.history[ "#{ position }State" ] state, options.title, options.url
 
@@ -93,19 +67,19 @@ History =
 
     eventState = event.state
 
-    historyState = @states[ @index ]
+    historyState = @state
 
-    id = @states[ Math.max eventState.index, historyState.index ].id
+    id = ( if eventState.index > historyState.index then eventState else historyState ).id
 
     instance = @instances[ id ]
+
+    return window.location.reload() if instance == undefined
 
     if Math.abs( eventState.index - historyState.index ) == 1
 
       instance.ARGS.handleHistoryData instance.component, eventState.datas[ id ], _.noop
 
     else
-
-      # i decided for now to skip hard and complex part of solving multiply steps history jump
 
       if _.isEqual _.keys( eventState.datas ), [ id ]
 
@@ -115,8 +89,7 @@ History =
 
         window.location.reload()
 
-    @index = eventState.index
-
+    @state = eventState
 
 
 mixin = Mixin.createArged
@@ -141,7 +114,7 @@ mixin = Mixin.createArged
 
       return unless window.history
 
-      History.changeState this, ARGS, position, options
+      History.changeState position, this, ARGS, options
 
     componentWillMount: ->
 

@@ -2,6 +2,17 @@ describe 'HistoryView', ->
 
   HistoryView = requireSubject()
 
+
+  hrefBefore = window.location.href
+
+  before ->
+
+    window.location.href = 'http://foo.bar'
+
+  after ->
+
+    window.location.href = hrefBefore
+
   
   it 'works', ->
 
@@ -41,7 +52,7 @@ describe 'HistoryView', ->
     component = TestReact.render <HistoryViewed><a href='http://foo.bar/hello/world' /></HistoryViewed>
 
 
-    expect( ARGS.getHistoryData ).callCount 1
+    expect( ARGS.getHistoryData ).callCount 2
     
     expect( ARGS.handleHistoryData ).callCount 0
 
@@ -61,7 +72,7 @@ describe 'HistoryView', ->
     TestReact.$( component ).find( 'a' ).trigger 'click'
 
 
-    expect( ARGS.getHistoryData ).callCount 2
+    expect( ARGS.getHistoryData ).callCount 3
 
     expect( ARGS.handleHistoryData ).callCount 0
 
@@ -85,7 +96,7 @@ describe 'HistoryView', ->
     )
 
 
-    expect( ARGS.getHistoryData ).callCount 2
+    expect( ARGS.getHistoryData ).callCount 3
 
     expect( ARGS.handleHistoryData ).callCount 1
 
