@@ -3,7 +3,7 @@
   "version": "1.0.6",
   "description": "Bunch of React components",
   "scripts": {
-    "build": "gulp --require coffee-react-void/register --cwd builder development-build",
+    "build": "gulp --require coffee-react-void/register --cwd builder production-build",
     "watch": "gulp --require coffee-react-void/register --cwd builder development-watch",
     "test": "gulp --require coffee-react-void/register --cwd builder development-test"
   },
