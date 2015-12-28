@@ -6,7 +6,7 @@ PARTS = [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 
 
 getUrlData = ( url )->=
 
-  data = URI url, window.location.href
+  data = new URI url, window.location.href
 
   protocol = data.protocol()
 
