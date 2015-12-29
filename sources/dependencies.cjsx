@@ -2,20 +2,24 @@ module.exports = {
 
   # required
 
-  'react': undefined
+  'react': undefined # facebook/react, http://facebook.github.io/react
 
-  'react-dom': undefined
+  'react-dom': undefined # facebook/react, http://facebook.github.io/react
 
-  'lodash': undefined # https://lodash.com
+  'lodash': undefined # lodash/lodash, https://lodash.com
 
-  '$': undefined # http://jquery.com
+  '$': undefined # jquery/jquery, http://jquery.com
 
   # optional
 
-  'js-routes': undefined # https://github.com/railsware/js-routes
+  'js-routes': undefined # railsware/js-routes
 
-  'moment': undefined # http://momentjs.com
+  'moment': undefined # moment/moment, http://momentjs.com
 
-  'i18n-js': undefined # https://github.com/fnando/i18n-js
+  'i18n-js': undefined # fnando/i18n-js
+
+  'basil.js': undefined # wisembly/basil.js, http://wisembly.github.io/basil.js
+
+  'actioncable': undefined # rails/rails/tree/master/actioncable, rhyzx/actioncable
 
 }
