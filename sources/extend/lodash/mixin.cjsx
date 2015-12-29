@@ -40,8 +40,6 @@ mixin =
 
   # Object
 
-  binded: require './object/binded'
-
   falseyKeys: require './object/falseyKeys'
 
   truthyKeys: require './object/truthyKeys'

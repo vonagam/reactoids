@@ -15,7 +15,7 @@ History =
 
   startListen: ->
 
-    window.addEventListener 'popstate', _.binded History, 'onStatePop'
+    window.addEventListener 'popstate', _.bindKey History, 'onStatePop'
 
   addComponent: ( component, ARGS )->
 
