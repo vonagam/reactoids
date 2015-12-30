@@ -22,4 +22,6 @@ module.exports = {
 
   'actioncable': undefined # rails/rails/tree/master/actioncable, rhyzx/actioncable
 
+  'pixi.js': undefined # pixijs/pixi.js, http://www.pixijs.com
+
 }

@@ -6,9 +6,9 @@ build = require '../_actions/build'
 require './clean'
 
 
-gulp.task 'development-build', [ 'development-clean' ], ->=
+gulp.task 'development-build', [ 'development-clean' ], ( callback )->=
 
-  build '../{sources,tests}/**/*', 
+  build '../{sources,tests}/**/*.cjsx', 
 
     base: '../'
 
@@ -17,3 +17,15 @@ gulp.task 'development-build', [ 'development-clean' ], ->=
     plumber: false
 
     sourcemaps: true
+
+  .on 'end', ->
+
+    $.pipe [
+
+      gulp.src [ '../package.json', '../sources/**/*.js' ]
+
+      gulp.dest 'build-development'
+
+    ]
+
+    .on 'end', callback

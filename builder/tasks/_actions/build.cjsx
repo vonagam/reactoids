@@ -23,6 +23,11 @@ AUTO_DEPENDENCIES = [
     variable: '_'
     package: 'lodash'
   }
+  {
+    variable: 'PIXI'
+    package: 'pixi.js'
+    includes: /renderers\/pixi/
+  }
 
 ]
 
@@ -35,6 +40,8 @@ _.each AUTO_DEPENDENCIES, ( dependency )->
     return false if /^(\.\.|extend)/.test path
 
     return true if /spec\.[^\.]+$/.test path
+
+    return false if @includes && ! @includes.test path
 
     return used.test content
 

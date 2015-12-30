@@ -10,7 +10,7 @@ require './clean'
 
 gulp.task 'production-build', [ 'production-clean' ], ( callback )->
 
-  build '../sources/**/*',
+  build '../sources/**/*.cjsx',
 
     base: '../sources'
 
@@ -24,7 +24,7 @@ gulp.task 'production-build', [ 'production-clean' ], ( callback )->
 
     $.pipe [
 
-      gulp.src '../package.json'
+      gulp.src [ '../package.json', '../sources/**/*.js' ]
 
       gulp.dest 'build-production'
 
