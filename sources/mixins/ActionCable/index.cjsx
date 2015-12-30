@@ -8,16 +8,20 @@ mixin = Mixin.createArged
   args:
 
     url: React.PropTypes.string
+    timeout: React.PropTypes.number
 
   defaults:
 
     url: '/cable'
+    timeout: 1000
 
   mixin: ( ARGS )->=
 
     consumer = undefined
 
     count = 0
+
+    timeoutId = undefined 
 
     openConnection = ->
 
@@ -27,7 +31,7 @@ mixin = Mixin.createArged
 
         consumer = ActionCable.createConsumer ARGS.url
 
-      else if count == 1 && consumer.isState 'closed'
+      else if count == 1 && consumer.connection.isState 'closed'
 
         consumer.connection.open()
 
@@ -37,7 +41,15 @@ mixin = Mixin.createArged
 
       if count == 0
 
-        consumer.connection.close()
+        clearTimeout timeoutId
+
+        timeoutId = setTimeout ->
+
+          if count == 0 && ! consumer.connection.isState 'closed'
+
+            consumer.connection.close()
+
+        , ARGS.timeout
 
 
     getInitialMembers: ->=
