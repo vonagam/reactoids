@@ -1,9 +1,15 @@
 $ = requireDependency 'jquery'
 
+Routes = requireDependency 'js-routes'
+
 
 simulateLink = ( href, containter = 'body', decorateLink )->
 
   $link = $ '<a>'
+
+  if Routes && /^[\w_]+$/.test( href ) && Routes[ href ]
+
+    href = Routes[ href ]()
 
   $link.attr 'href', href
 
