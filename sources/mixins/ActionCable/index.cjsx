@@ -2,6 +2,8 @@ ActionCable = requireDependency 'actioncable'
 
 Mixin = requireSource 'various/Mixin'
 
+# TODO use something like crosstab to use only 1 connection between multiply tabs
+
 
 mixin = Mixin.createArged
 
