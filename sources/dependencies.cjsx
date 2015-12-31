@@ -24,4 +24,6 @@ module.exports = {
 
   'pixi.js': undefined # pixijs/pixi.js, http://www.pixijs.com
 
+  'd3': undefined # mbostock/d3, https://d3js.org
+
 }

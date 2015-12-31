@@ -28,6 +28,11 @@ AUTO_DEPENDENCIES = [
     package: 'pixi.js'
     includes: /renderers\/pixi/
   }
+  {
+    variable: 'd3'
+    package: 'd3'
+    includes: /wrappers\/d3/
+  }
 
 ]
 
