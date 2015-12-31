@@ -90,25 +90,6 @@ mergeDefaultProps = ( mixins, Component )->
   Component.defaultProps = getMergedFunceds _.map mixins, 'getDefaultProps'
 
 
-transferCustomMembers = ( mixins, Component )->
-
-  proto = Component.prototype
-
-  _.each mixins, ( mixin )->
-
-    _.each mixin, ( value, key )->
-
-      return if _.include MEMBERS, key
-
-      if proto.hasOwnProperty key
-
-        console.error 'multiply mixins implement "%s" in "%s"', key, Component.displayName
-
-        return
-
-      proto[ key ] = value
-
-
 mergeFuncMembers = ( mixins, Component )->
 
   proto = Component.prototype
@@ -142,6 +123,25 @@ mergeFuncMembers = ( mixins, Component )->
             func.apply this, arguments
 
 
+transferCustomMembers = ( mixins, Component )->
+
+  proto = Component.prototype
+
+  _.each mixins, ( mixin )->
+
+    _.each mixin, ( value, key )->
+
+      return if _.include MEMBERS, key
+
+      if proto.hasOwnProperty key
+
+        console.error 'multiply mixins implement "%s" in "%s"', key, Component.displayName
+
+        return
+
+      proto[ key ] = value
+
+
 createComponent = ( scheme )->=
 
   mixins = Mixin.resolve scheme.mixins
@@ -165,12 +165,12 @@ createComponent = ( scheme )->=
   prototype.mixins = mixins
 
   prototype.construct = _.noop # unnecessary but required by React method
+  
+  mergeStatics mixins, Component
 
   mergeTypesMembers mixins, Component
 
   mergeDefaultProps mixins, Component
-  
-  mergeStatics mixins, Component
 
   mergeFuncMembers mixins, Component
 
