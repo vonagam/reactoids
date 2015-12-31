@@ -10,19 +10,11 @@ Polygon = createGraphics 'Polygon',
 
   updateGraphics: ( that, prevProps, nextProps )->=
 
-    if nextProps.path != prevProps.path || nextProps.radiusY != prevProps.radiusY
+    ! _.isEqual nextProps.path, prevProps.path
 
-      that.pixi.path = nextProps.path || []
+  drawGraphics: ( that, props )->
 
-      true
-
-    else
-
-      false
-
-  drawGraphics: ( that )->
-
-    that.pixi.drawPolygon that.pixi.path
+    that.pixi.drawPolygon ( props.path || [] )
 
 
 module.exports = Polygon

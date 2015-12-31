@@ -10,19 +10,11 @@ Circle = createGraphics 'Circle',
 
   updateGraphics: ( that, prevProps, nextProps )->=
 
-    if nextProps.radius != prevProps.radius
+    nextProps.radius != prevProps.radius
 
-      that.pixi.radius = nextProps.radius || 0
+  drawGraphics: ( that, props )->
 
-      true
-
-    else
-      
-      false
-
-  drawGraphics: ( that )->
-
-    that.pixi.drawCircle 0, 0, that.pixi.radius
+    that.pixi.drawCircle 0, 0, ( props.radius || 0 )
 
 
 module.exports = Circle

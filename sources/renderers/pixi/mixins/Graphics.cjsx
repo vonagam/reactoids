@@ -27,7 +27,7 @@ mixin = Mixin.createArged
 
     updateGraphics: React.PropTypes.func # ( that, prevProps, nextProps )->= bool ( true if changed )
 
-    drawGraphics: React.PropTypes.func # ( that )->
+    drawGraphics: React.PropTypes.func # ( that, props )->
 
   mixins: [ PixiNodeMixin ]
 
@@ -61,7 +61,7 @@ mixin = Mixin.createArged
 
           pixi.lineStyle pixi.settings.lineWidth, pixi.settings.liceColor, pixi.settings.lineAlpha
 
-          ARGS.drawGraphics that
+          ARGS.drawGraphics that, nextProps
 
           pixi.endFill()
 

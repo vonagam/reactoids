@@ -11,20 +11,11 @@ Ellipse = createGraphics 'Ellipse',
 
   updateGraphics: ( that, prevProps, nextProps )->=
 
-    if nextProps.radiusX != prevProps.radiusX || nextProps.radiusY != prevProps.radiusY
+    nextProps.radiusX != prevProps.radiusX || nextProps.radiusY != prevProps.radiusY
 
-      that.pixi.radiusX = nextProps.radiusX || 0
-      that.pixi.radiusY = nextProps.radiusY || 0
+  drawGraphics: ( that, props )->
 
-      true
-
-    else
-
-      false
-
-  drawGraphics: ( that )->
-
-    that.pixi.drawEllipse 0, 0, that.pixi.radiusX, that.pixi.radiusY
+    that.pixi.drawEllipse 0, 0, ( props.radiusX || 0 ), ( props.radiusY || 0 )
 
 
 module.exports = Ellipse
