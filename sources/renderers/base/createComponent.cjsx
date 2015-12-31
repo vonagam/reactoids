@@ -28,6 +28,7 @@ SPECIAL_MEMBERS = [
   'statics'
   'getDefaultProps'
   'getInitialState'
+  'displayName'
 
 ]
 
@@ -56,7 +57,7 @@ mergeStatics = ( mixins, Component )->
 
       if Component.hasOwnProperty key
 
-        console.error 'static member "%s" already defined in "%s"', key, Component.prototype.displayName
+        console.error 'static member "%s" already defined in "%s"', key, Component.displayName
 
         return
 
@@ -75,7 +76,7 @@ mergeTypesMembers = ( mixins, Component )->
 
           if result.hasOwnProperty key
 
-            console.error 'conflict in "%s" for type of "%s" in "%s"', member, key, Component.prototype.displayName
+            console.error 'conflict in "%s" for type of "%s" in "%s"', member, key, Component.displayName
 
             return
 
@@ -89,7 +90,9 @@ mergeDefaultProps = ( mixins, Component )->
   Component.defaultProps = getMergedFunceds _.map mixins, 'getDefaultProps'
 
 
-transferCustomMembers = ( mixins, proto )->
+transferCustomMembers = ( mixins, Component )->
+
+  proto = Component.prototype
 
   _.each mixins, ( mixin )->
 
@@ -99,14 +102,16 @@ transferCustomMembers = ( mixins, proto )->
 
       if proto.hasOwnProperty key
 
-        console.error 'multiply mixins implement "%s" in "%s"', key, proto.displayName
+        console.error 'multiply mixins implement "%s" in "%s"', key, Component.displayName
 
         return
 
       proto[ key ] = value
 
 
-mergeFuncMembers = ( mixins, proto )->
+mergeFuncMembers = ( mixins, Component )->
+
+  proto = Component.prototype
 
   _.each FUNC_MEMBERS, ( key )->
 
@@ -153,6 +158,8 @@ createComponent = ( scheme )->=
 
     @state = getMergedFunceds getInitialStates, this
 
+  Component.displayName = scheme.displayName
+
   prototype = Component.prototype
 
   prototype.mixins = mixins
@@ -165,9 +172,9 @@ createComponent = ( scheme )->=
   
   mergeStatics mixins, Component
 
-  mergeFuncMembers mixins, prototype
+  mergeFuncMembers mixins, Component
 
-  transferCustomMembers mixins, prototype
+  transferCustomMembers mixins, Component
 
   Component
 
