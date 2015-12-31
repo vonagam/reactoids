@@ -33,10 +33,10 @@ mixin = Mixin.createArged
 
       result
 
-    receiveComponent: ( nextComponent, transaction, context )->
+    receiveComponent: ( nextElement, transaction, context )->
 
       prevProps = @_currentElement.props
-      nextProps = nextComponent.props
+      nextProps = nextElement.props
 
       unless _.isEqual prevProps, nextProps
 
@@ -44,7 +44,7 @@ mixin = Mixin.createArged
 
         @updateChildren nextProps.children, transaction, context
       
-      @_currentElement = nextComponent
+      @_currentElement = nextElement
 
     unmountComponent: ->
 
