@@ -15,7 +15,7 @@ attachLayer = ( layer )->
 
   layer.container = div
 
-  root = layer.root()
+  root = _.funced layer.root
 
   root.appendChild div
 
@@ -110,7 +110,15 @@ mixin =
 
       @_layers[ layer.name ] = layer
 
-      renderLayer this, layer
+      renderLayer this, layer if @isMounted()
+
+    dettachLayer: ( name )->
+
+      layer = @_layers[ name ]
+
+      throw new Error "LayeredMixin: layer with name '#{ name }' does not exist" unless layer
+
+      dettachLayer layer
 
 
 module.exports = mixin
