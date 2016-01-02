@@ -31,9 +31,11 @@ Layer = React.createClass
 
   renderLayerLayer: ->=
 
+    { classed } = this
+
     <div
       {... @omitProps() }
-      className={ @classed '.' }
+      className={ classed '.' }
     />
 
   render: ->=
