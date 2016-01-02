@@ -89,7 +89,7 @@ Tether = React.createClass
 
     @createTether options
 
-    @tether.position()
+    @positionTether()
 
   componentDidUpdate: ( prevProps )->
 
@@ -113,7 +113,7 @@ Tether = React.createClass
 
           @target = @tether.target
     
-    @tether.position() if @tether
+    @positionTether()
 
   componentWillUnmount: ->
 
@@ -138,6 +138,10 @@ Tether = React.createClass
     @tether = undefined
 
     @target = undefined
+
+  positionTether: ->
+
+    @tether.position() if @tether
 
   render: ->=
 
