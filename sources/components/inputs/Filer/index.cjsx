@@ -57,21 +57,20 @@ File = React.createClass
 
   render: ->=
 
-    file = @props.file
+    { props } = this
 
-    classed = @props.classed
-    stringed = @props.stringed
+    { file, classed, stringed } = props
 
     <div className={ classed 'file' }>
       <div className={ classed 'name' }>{ file.name }</div>
       { 
 
-        <img ref='preview' className={ classed 'preview' } /> if @props.preview
+        <img ref='preview' className={ classed 'preview' } /> if props.preview
 
       }
       <Button
         className={ classed 'remove' }
-        onClick={ @props.onRemove }
+        onClick={ props.onRemove }
         text={ stringed 'remove' }
       />
     </div>
@@ -195,24 +194,26 @@ Filer = React.createClass
 
   render: ->=
 
+    { props, classed, stringed } = this
+
     value = @getValue()
 
     <div
       {... @omitProps() }
       className={ 
 
-        @classed( '.', 
+        classed( '.', 
 
           "-#{ if value then 'filled' else 'empty' }"
-          '-readonly': @props.readOnly
-          '-multiple': @props.multiple
-          '-dragging': @props.dragging
+          '-readonly': props.readOnly
+          '-multiple': props.multiple
+          '-dragging': props.dragging
 
         )
 
       }
     >
-      <div className={ @classed 'files' }>
+      <div className={ classed 'files' }>
         {
 
           if value
@@ -222,9 +223,9 @@ Filer = React.createClass
               <File
                 key={ index }
                 file={ file }
-                preview={ @props.preview }
-                classed={ @classed }
-                stringed={ @stringed }
+                preview={ props.preview }
+                classed={ classed }
+                stringed={ stringed }
                 onRemove={ @_partial @onFileRemove, file }
               />
 
@@ -233,31 +234,31 @@ Filer = React.createClass
         }
       </div>
       <div
-        className={ @classed 'dropzone' }
+        className={ classed 'dropzone' }
         onClick={ @onLabelClick }
         onDragLeave={ @onDragLeave }
         onDragOver={ @onDragOver }
         onDrop={ @onDrop }
       >
-        <div className={ @classed 'drop' }>{ @stringed 'drop' }</div>
+        <div className={ classed 'drop' }>{ stringed 'drop' }</div>
       </div>
-      <div className={ @classed 'actions' }>
+      <div className={ classed 'actions' }>
         <Button
-          className={ @classed 'action', '-select' }
+          className={ classed 'action', '-select' }
           onClick={ @onSelectClick }
-          text={ @stringed 'select', value: value, multiple: @props.multiple }
+          text={ stringed 'select', value: value, multiple: props.multiple }
         />
         <Button
-          className={ @classed 'action', '-clear' }
+          className={ classed 'action', '-clear' }
           onClick={ @onClearClick if value }
-          text={ @stringed 'crear' }
+          text={ stringed 'crear' }
         />
       </div>
       <input
         ref='input'
         style={ display: 'none' }
         type='file'
-        multiple={ @props.multiple }
+        multiple={ props.multiple }
         onChange={ @onChange }
       />
     </div>

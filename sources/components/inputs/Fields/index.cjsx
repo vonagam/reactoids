@@ -38,30 +38,32 @@ Fields = React.createClass
 
   render: ->=
 
+    { props, classed } = this
+
     value = @getValue()
 
     <div
       {... @omitProps() }
-      className={ @classed '.' }
+      className={ classed '.' }
     >
       {
 
-        _.map _.funced( @props.scheme, value ), ( field, key )->=
+        _.map _.funced( props.scheme, value ), ( field, key )->=
 
           key = field.key || key
 
-          messages = _.mapValues @props.messages, key
+          messages = _.mapValues props.messages, key
 
           <Field
             key={ key }
-            className={ @mergeClassNames @classed( 'field', '-readonly': @props.readOnly ), field.className }
+            className={ @mergeClassNames classed( 'field', '-readonly': props.readOnly ), field.className }
             type={ field.type }
             props={ field.props }
             value={ _.get value, key }
             messages={ _.merge messages, field.messages }
-            readonly={ @props.readOnly || field.readonly }
+            readonly={ props.readOnly || field.readonly }
             onChange={ @_queue @_partial( @onChange, key ), field.onChange }
-            onSubmit={ @_queue @props.onSubmit, field.onSubmit }
+            onSubmit={ @_queue props.onSubmit, field.onSubmit }
           />
 
         , this

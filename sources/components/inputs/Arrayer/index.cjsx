@@ -116,13 +116,15 @@ Arrayer = React.createClass
 
   render: ->=
 
+    { props, classed, stringed } = this
+
     value = @getValue()
 
     <div
       {... @omitProps() }
-      className={ @classed '.', "-#{ if value.length > 0 then 'filled' else 'empty' }", '-readonly': @props.readOnly }
+      className={ classed '.', "-#{ if value.length > 0 then 'filled' else 'empty' }", '-readonly': props.readOnly }
     >
-      <div className={ @classed 'items' }>
+      <div className={ classed 'items' }>
         {
 
           _.map value, ( item, index )->=
@@ -131,10 +133,10 @@ Arrayer = React.createClass
             
               key: index
               value: item
-              classed: @classed
-              stringed: @stringed
+              classed: classed
+              stringed: stringed
               onChange: @_partial @onItemChange, index
-              onRemove: _.funced( @props.canRemove, item, value ) && @_partial @onItemRemove, index
+              onRemove: _.funced( props.canRemove, item, value ) && @_partial @onItemRemove, index
             
             )
 
@@ -142,16 +144,16 @@ Arrayer = React.createClass
 
         }
       </div>
-      <div className={ @classed 'actions' }>
+      <div className={ classed 'actions' }>
         <Button
-          className={ @classed 'action', '-add' }
-          onClick={ @onAddClick if _.funced @props.canAdd, value }
-          text={ @stringed 'add' }
+          className={ classed 'action', '-add' }
+          onClick={ @onAddClick if _.funced props.canAdd, value }
+          text={ stringed 'add' }
         />
         <Button
-          className={ @classed 'action', '-clear' }
-          onClick={ @onClearClick if _.any value, ( ( item )->= _.funced @props.canRemove, item, value ), this }
-          text={ @stringed 'clear' }
+          className={ classed 'action', '-clear' }
+          onClick={ @onClearClick if _.any value, ( ( item )->= _.funced props.canRemove, item, value ), this }
+          text={ stringed 'clear' }
         />
       </div>
     </div>

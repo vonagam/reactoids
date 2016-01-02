@@ -95,30 +95,32 @@ Form = React.createClass
 
   render: ->=
 
-    messages = _.cloneDeep( @props.messages ) || {}
+    { props, state, classed } = this
 
-    messages.errors = _.merge {}, messages.errors, @state.errors
+    messages = _.cloneDeep( props.messages ) || {}
 
-    readOnly = @props.readOnly || @state.ajaxes.one
+    messages.errors = _.merge {}, messages.errors, state.errors
+
+    readOnly = props.readOnly || state.ajaxes.one
 
     <div
       {... @omitProps() }
-      className={ @classed '.', '-waiting': @state.ajaxes.one, '-readonly': readOnly }
+      className={ classed '.', '-waiting': state.ajaxes.one, '-readonly': readOnly }
     >
       <Fields
         {... @omitProps() }
-        className={ @classed 'fields' }
-        scheme={ @props.scheme }
+        className={ classed 'fields' }
+        scheme={ props.scheme }
         messages={ messages }
         value={ @getValue() }
         readOnly={ readOnly }
         onChange={ @setValue }
         onSubmit={ @submit }
       />
-      <div className={ @classed 'actions' }>
+      <div className={ classed 'actions' }>
         {
 
-          @renderActions( className: @classed 'action' )
+          @renderActions( className: classed 'action' )
 
         }
       </div>

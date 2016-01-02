@@ -51,28 +51,30 @@ Field = React.createClass
 
   render: ->=
 
-    Input = @props.type
+    { props, state, classed } = this
 
-    inputProps = @props.props
+    Input = props.type
+
+    inputProps = props.props
 
     value = @getValue()
 
     messages = {}
 
-    _.each @props.messages, ( message, name )->
+    _.each props.messages, ( message, name )->
 
       message = _.funced message, value
 
       if _.isPlainObject message
 
         content = message.content
-        props = message.props || {}
+        messageProps = message.props || {}
         position = message.position || 'after'
 
       else
 
         content = message
-        props = {}
+        messageProps = {}
         position = 'after'
 
       return unless content
@@ -83,9 +85,9 @@ Field = React.createClass
 
         <div
           key={ name }
-          {... props }
-          className={ @mergeClassNames @classed( 'message', "message.-#{ name }" ), props.className }
-          onClick={ if name == 'label' then _.queue @onLabelClick, props.onClick else props.onClick }
+          {... messageProps }
+          className={ @mergeClassNames classed( 'message', "message.-#{ name }" ), messageProps.className }
+          onClick={ if name == 'label' then _.queue @onLabelClick, messageProps.onClick else messageProps.onClick }
         >
           {
             
@@ -100,14 +102,14 @@ Field = React.createClass
 
     <div
       {... @omitProps() }
-      className={ @classed '.', '-focused': @state.focus, '-filled': value != undefined && value != '' }
+      className={ classed '.', '-focused': state.focus, '-filled': value != undefined && value != '' }
     >
       {
         
         @renderBefore messages: messages[ 'before' ]
       
       }
-      <div className={ @classed 'wrapper' }>
+      <div className={ classed 'wrapper' }>
         {
           
           @renderInsideBefore messages: messages[ 'insideBefore' ]
@@ -116,15 +118,15 @@ Field = React.createClass
         <Input
           ref='input'
           {... inputProps }
-          className={ @mergeClassNames @classed( 'input', '-readonly': @props.readOnly ), inputProps.className }
+          className={ @mergeClassNames classed( 'input', '-readonly': props.readOnly ), inputProps.className }
           value={ value }
-          readonly={ @props.readOnly }
+          readonly={ props.readOnly }
           inputDelay={ -1 }
           onChange={ @setValue }
           onTempChange={ @setTempValue }
-          onFocus={ @_queue @_bindary( @setState, @, focused: true ), @props.onFocus }
-          onBlur={ @_queue @_bindary( @setState, @, focused: false ), @props.onBlur }
-          onSubmit={ @props.onSubmit }
+          onFocus={ @_queue @_bindary( @setState, @, focused: true ), props.onFocus }
+          onBlur={ @_queue @_bindary( @setState, @, focused: false ), props.onBlur }
+          onSubmit={ props.onSubmit }
         />
         {
           

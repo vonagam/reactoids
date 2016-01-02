@@ -25,12 +25,14 @@ Checkbox = React.createClass
 
   render: ->=
 
+    { props, classed } = this
+
     value = @getValue()
 
     <input
       {... @omitProps() }
       type='checkbox'
-      className={ @classed '.', '-checked': value, '-readonly': @props.readOnly }
+      className={ classed '.', '-checked': value, '-readonly': props.readOnly }
       checked={ Boolean value }
       onChange={ @onChange }
     />

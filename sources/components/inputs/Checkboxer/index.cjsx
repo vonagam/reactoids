@@ -28,11 +28,13 @@ Checkboxer = React.createClass
     @onClick()
 
   render: ->=
+
+    { props, classed } = this
     
     <div
       {... @omitProps() }
-      className={ @classed '.', '-checked': @getValue(), '-readonly': @props.readOnly }
-      onClick={ _.queue @onClick, @props.onClick }
+      className={ classed '.', '-checked': @getValue(), '-readonly': props.readOnly }
+      onClick={ _.queue @onClick, props.onClick }
     />
 
 

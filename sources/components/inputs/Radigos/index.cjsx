@@ -26,9 +26,11 @@ Radigos = React.createClass
 
   render: ->=
 
+    { props, classed } = this
+
     <div
       {... @omitProps() }
-      className={ @classed '.', '-readonly': @props.readOnly }
+      className={ classed '.', '-readonly': props.readOnly }
     >
       {
 
@@ -36,7 +38,7 @@ Radigos = React.createClass
 
           <div
             key={ index }
-            className={ @classed 'radigo', '-checked': option.selected } 
+            className={ classed 'radigo', '-checked': option.selected } 
             onClick={ _.partial @onClick, option }
           >
             { 
