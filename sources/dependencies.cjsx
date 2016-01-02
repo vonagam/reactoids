@@ -26,4 +26,6 @@ module.exports = {
 
   'd3': undefined # mbostock/d3, https://d3js.org
 
+  'tether': undefined # hubspot/tether, http://tether.io
+
 }
