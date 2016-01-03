@@ -1,3 +1,5 @@
+$ = requireDependency 'jquery'
+
 BaseListenerMixin = requireSource 'mixins/BaseListener'
 
 
@@ -11,14 +13,13 @@ mixin = BaseListenerMixin
 
     listener.target ||= document
 
+    listener.$target = $ listener.target
+
+    listener.callback = _.bind listener.callback, that
+
   toggleListener: ( that, listener, bool )->
 
-    listener.target[ if bool then 'addEventListener' else 'removeEventListener' ](
-
-      listener.event
-      listener.callback
-
-    )
+    listener.$target[ if bool then 'on' else 'off' ]( listener.event, listener.callback )
 
 
 module.exports = mixin

@@ -1,44 +1,57 @@
 describe 'EventListener', ->
 
-  EventListener = requireSubject()
+  dependencies = requireSource 'dependencies'
+
+  jQuery = { on: _.noop, off: _.noop }
+
+  EventListener = undefined
+
+  jQueryBefore = dependencies[ 'jquery' ]
+
+  before ->
+
+    dependencies[ 'jquery' ] = ->= jQuery
+
+    EventListener = requireSubject()
+
+  after ->
+
+    dependencies[ 'jquery' ] = jQueryBefore
+
+    EventListener = undefined
 
 
-  it 'works', ->
+  it 'works', sinon.test ->
+    
+    addStub = @stub jQuery, 'on'
+
+    removeStub = @stub jQuery, 'off'
+
 
     EventListenered = TestMixin.createMixinClass EventListener
 
-    component = TestReact.render <EventListenered />
-
-    addStub = sinon.stub document, 'addEventListener'
-
-    removeStub = sinon.stub document, 'removeEventListener'
-
-    callback = ->
+    component = TestReact.render <EventListenered x={ 1 } />
 
 
-    expect( addStub ).callCount 0
-
-    component.addEventListener 'someListener', {
-
-      event: 'someEvent'
-      callback: callback
-
-    }
-
-    expect( addStub ).callCount 1
-
-    expect( addStub ).calledWith 'someEvent', callback
+    callback = @spy -> expect( this.props.x ).equal 1
 
 
-    expect( removeStub ).callCount 0
+    expect( ->= count: addStub.callCount, evented: addStub.calledWith 'someEvent' ).change
+    
+    .from( count: 0, evented: false ).to( count: 1, evented: true ).when ->
 
-    component.removeEventListener 'someListener'
-
-    expect( removeStub ).callCount 1
-
-    expect( removeStub ).calledWith 'someEvent', callback
+      component.addEventListener 'someListener', event: 'someEvent', callback: callback
 
 
-    addStub.restore()
+    expect( ->= callback.callCount ).change
 
-    removeStub.restore()
+    .from( 0 ).to( 1 ).when ->
+
+      addStub.firstCall.args[ 1 ]()
+
+
+    expect( ->= count: removeStub.callCount, evented: removeStub.calledWith 'someEvent' ).change
+    
+    .from( count: 0, evented: false ).to( count: 1, evented: true ).when ->
+
+      component.removeEventListener 'someListener'
