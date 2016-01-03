@@ -2,26 +2,28 @@ $ = requireDependency 'jquery'
 
 Mixin = requireSource 'various/Mixin'
 
+EventListenerMixin = requireSource 'mixins/EventListener'
+
 
 mixin = Mixin.createArged
 
   args:
 
-    getToken: React.PropTypes.func # ( that, options, originalOptions )->
+    getToken: React.PropTypes.func # ( that, options )->=
+
+  mixins: [ EventListenerMixin ]
 
   mixin: ( ARGS )->=
 
+    mixins: [ EventListenerMixin ]
+
     componentWillMount: ->
 
-      that = this
-
-      $.ajaxPrefilter ( options, originalOptions, xhr )->
-
-        return unless that.isMounted()
+      @addEventListener 'AjaxCSRF', event: 'ajaxSend', callback: ( event, xhr, options )->
 
         return if options.crossDomain
 
-        token = ARGS.getToken that, options, originalOptions
+        token = ARGS.getToken this, options
 
         return unless token
 

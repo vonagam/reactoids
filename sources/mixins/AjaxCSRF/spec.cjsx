@@ -3,51 +3,53 @@ describe 'AjaxCSRF', ->
   AjaxCSRF = requireSubject()
 
 
-  it 'works', ->
+  it 'works', sinon.test ->
 
     token = 'whatever'
 
     ajaxOptions = {}
 
-    ajaxOriginalOptions = {}
+    xhr = setRequestHeader: @spy()
 
-    xhr = setRequestHeader: sinon.spy()
+    ARGS = getToken: @spy ->= token
 
-    ARGS = getToken: sinon.spy ->= token
+
+    AjaxCSRFed = TestMixin.createMixinClass AjaxCSRF ARGS
 
     
     FUNC = undefined
 
-    ajaxPrefilter = sinon.stub $, 'ajaxPrefilter', ( func )->
+    ajaxPrefilter = @stub AjaxCSRFed.prototype, 'addEventListener', ( key, options )->
 
-      FUNC = func
+      expect( key ).equal 'AjaxCSRF'
 
+      expect( options.event ).equal 'ajaxSend'
 
-    AjaxCSRFed = TestMixin.createMixinClass AjaxCSRF ARGS
+      FUNC = options.callback
+
+    delete AjaxCSRFed.prototype.__reactAutoBindMap[ 'addEventListener' ]
+
 
     component = TestReact.render <AjaxCSRFed />
 
 
     expect( ajaxPrefilter ).callCount 1
 
-    FUNC ajaxOptions, ajaxOriginalOptions, xhr
 
-    expect( ARGS.getToken ).callCount 1
+    expect( ->= 
 
-    expect( ARGS.getToken.calledWith component, ajaxOptions, ajaxOriginalOptions ).true
+      token: { count: ARGS.getToken.callCount, arged: ARGS.getToken.calledWith( component, ajaxOptions ) }
 
-    expect( xhr.setRequestHeader ).callCount 1
+      xhr: { count: xhr.setRequestHeader.callCount, arged: xhr.setRequestHeader.calledWith( 'X-CSRF-Token', token ) }
 
-    expect( xhr.setRequestHeader.calledWith 'X-CSRF-Token', token ).true
+    ).change.to( token: { count: 1, arged: true }, xhr: { count: 1, arged: true } ).when ->
 
-
-    FUNC { crossDomain: true }, ajaxOriginalOptions, xhr
-
-    expect( ARGS.getToken ).callCount 1
-
-    expect( xhr.setRequestHeader ).callCount 1
+      FUNC.call component, 'event', xhr, ajaxOptions
 
 
-    ajaxPrefilter.restore()
+    expect( ->= token: ARGS.getToken.callCount, xhr: xhr.setRequestHeader.callCount ).not.change.when ->
+
+      FUNC.call component, 'event', xhr, { crossDomain: true }
+
 
     TestReact.unmount component
