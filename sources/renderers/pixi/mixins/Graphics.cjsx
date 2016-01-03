@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 PixiNodeMixin = requireSource 'renderers/pixi/mixins/Node'
 
 

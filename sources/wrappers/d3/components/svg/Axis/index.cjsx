@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 ComponentMixin = requireSource 'mixins/Component'
 
 D3DomMixin = requireSource 'wrappers/d3/mixins/D3Dom'

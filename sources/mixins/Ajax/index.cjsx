@@ -1,8 +1,6 @@
 $ = requireDependency 'jquery'
 Routes = requireDependency 'js-routes'
 
-Mixin = requireSource 'various/Mixin'
-
 simulateLink = requireSource 'various/simulateLink'
 
 findDOM = requireSource 'various/findDOM'

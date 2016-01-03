@@ -1,6 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
-
 FUNC_MEMBERS = [
 
   'componentDidMount'

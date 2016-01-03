@@ -1,7 +1,5 @@
 Basil = requireDependency 'basil.js'
 
-Mixin = requireSource 'various/Mixin'
-
 ExternalStoreMixin = requireSource 'mixins/ExternalStore'
 
 

@@ -1,6 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
-
 ORDER_ATTRIBUTE = 'data-layer-order'
 
 attachLayer = ( layer )->

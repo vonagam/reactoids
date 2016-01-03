@@ -1,6 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
-
 getTimerFuns = ( constructor, destructor, member )->=
 
   set: ( key, args... )->

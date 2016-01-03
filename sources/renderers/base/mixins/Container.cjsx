@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 ReactMultiChild = require 'react/lib/ReactMultiChild'
 
 

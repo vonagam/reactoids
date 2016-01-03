@@ -14,24 +14,36 @@ AUTO_DEPENDENCIES = [
   {
     variable: 'React'
     package: 'react'
+    require: 'requireDependency'
+    check: /<\w/
   }
   {
     variable: 'ReactDOM'
     package: 'react-dom'
+    require: 'requireDependency'
   }
   {
     variable: '_'
     package: 'lodash'
+    require: 'requireDependency'
   }
   {
     variable: 'PIXI'
     package: 'pixi.js'
-    includes: /renderers\/pixi/
+    includes: /^renderers\/pixi/
+    require: 'requireDependency'
   }
   {
     variable: 'd3'
     package: 'd3'
-    includes: /wrappers\/d3/
+    includes: /^wrappers\/d3/
+    require: 'requireDependency'
+  }
+  {
+    variable: 'Mixin'
+    package: 'various/Mixin'
+    excludes: /^various\/Mixin/
+    require: 'requireSource'
   }
 
 ]
@@ -42,11 +54,13 @@ _.each AUTO_DEPENDENCIES, ( dependency )->
 
   dependency.isNeeded = ( content, path )->=
 
-    return false if /^(\.\.|extend)/.test path
-
-    return true if /spec\.[^\.]+$/.test path
+    return false if @excludes && @excludes.test path
 
     return false if @includes && ! @includes.test path
+
+    return false if /^(\.\.\/tests|extend)/.test path
+
+    return true if @check && @check.test content
 
     return used.test content
 
@@ -72,7 +86,7 @@ build = ( src, options = {} )->=
 
         if dependency.isNeeded content, filePath
 
-          content = "#{ dependency.variable } = requireDependency '#{ dependency.package }';" + content
+          content = "#{ dependency.variable } = #{ dependency.require } '#{ dependency.package }';" + content
 
       content = content.replace /requireSubject\(\)/g, 'require("./index")'
 

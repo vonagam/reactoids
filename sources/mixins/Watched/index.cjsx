@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 UnisonMixin = requireSource 'mixins/Unison'
 
 

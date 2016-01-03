@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 findDOM = requireSource 'various/findDOM'
 
 

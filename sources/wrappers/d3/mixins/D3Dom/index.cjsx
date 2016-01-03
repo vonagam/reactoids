@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 DomMixin = requireSource 'mixins/Dom'
 
 

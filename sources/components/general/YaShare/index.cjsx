@@ -1,4 +1,3 @@
-Mixin = requireSource 'various/Mixin'
 ComponentMixin = requireSource 'mixins/Component'
 
 Dummy = requireSource 'components/general/Dummy'

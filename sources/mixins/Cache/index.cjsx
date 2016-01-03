@@ -1,6 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
-
 mixin = 
 
   Mixin.createPlain

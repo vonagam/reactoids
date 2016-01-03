@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 BaseViewMixin = requireSource 'mixins/BaseView'
 
 HistoryViewMixin = requireSource 'mixins/HistoryView'

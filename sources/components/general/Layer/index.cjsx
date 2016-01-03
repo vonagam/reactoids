@@ -1,4 +1,3 @@
-Mixin = requireSource 'various/Mixin'
 ComponentMixin = requireSource 'mixins/Component'
 LayeredMixin = requireSource 'mixins/Layered'
 

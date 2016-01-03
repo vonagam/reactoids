@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 PureRenderMixin = requireSource 'mixins/PureRender'
 OmitPropsMixin = requireSource 'mixins/OmitProps'
 ClassedMixin = requireSource 'mixins/Classed'

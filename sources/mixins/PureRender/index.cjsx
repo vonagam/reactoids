@@ -1,6 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
-
 customizer = ( a, b )->=
 
   return true if a == b

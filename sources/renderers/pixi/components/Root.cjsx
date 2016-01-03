@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 BaseContainerArgs = requireSource 'renderers/pixi/mixins/BaseContainerArgs'
 
 BaseRootMixin = requireSource 'renderers/base/mixins/Root'

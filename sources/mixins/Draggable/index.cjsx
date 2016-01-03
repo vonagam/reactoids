@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 EventListenerMixin = requireSource 'mixins/EventListener'
 
 

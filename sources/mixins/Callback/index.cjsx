@@ -1,6 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
-
 createObtainer = ( that )->=
 
   _.memoize ( key )->=

@@ -1,5 +1,3 @@
-Mixin = requireSource 'various/Mixin'
-
 ContainerMixin = requireSource 'renderers/base/mixins/Container'
 
 ReactInstanceMap = require 'react/lib/ReactInstanceMap'
