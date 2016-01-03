@@ -27,7 +27,7 @@ Layer = React.createClass
 
     return if _.isEqual nextProps.layer, @props.layer
 
-    @dettachLayer 'layer'
+    @updateLayer 'layer', nextProps.layer
 
   renderLayerLayer: ->=
 

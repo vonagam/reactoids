@@ -43,13 +43,13 @@ dettachLayer = ( layer )->
   
   delete layer.container
 
-removeLayer = ( that, layer )->
+removeLayer = ( that, layer, name )->
 
   dettachLayer layer
 
-  delete that._layers[ layer.name ]
+  delete that._layers[ name ]
 
-renderLayer = ( that, layer )->
+renderLayer = ( that, layer, name )->
 
   content = layer.content that
 
@@ -63,7 +63,7 @@ renderLayer = ( that, layer )->
 
     when layer.temporary
       
-      removeLayer that, layer
+      removeLayer that, layer, name
 
     else
       
@@ -71,9 +71,9 @@ renderLayer = ( that, layer )->
 
 renderLayers = ( that )->
 
-  _.each that._layers, ( layer )-> 
+  _.each that._layers, ( layer, name )-> 
 
-    renderLayer that, layer
+    renderLayer that, layer, name
 
     
 mixin =
@@ -96,9 +96,9 @@ mixin =
 
       _.each @_layers, dettachLayer
 
-    addLayer: ( name, layer )->
+    addLayer: ( name, options )->
 
-      layer = _.defaults { name: name }, layer, {
+      layer = _.defaults {}, options, {
 
         root: ->= document.getElementsByTagName( 'body' )[ 0 ]
         content: @[ "render#{ _.capitalize _.camelCase name }Layer" ]
@@ -108,17 +108,21 @@ mixin =
 
       }
 
-      @_layers[ layer.name ] = layer
+      @_layers[ name ] = layer
 
       renderLayer this, layer if @isMounted()
 
-    dettachLayer: ( name )->
+    updateLayer: ( name, options )->
 
       layer = @_layers[ name ]
 
       throw new Error "LayeredMixin: layer with name '#{ name }' does not exist" unless layer
 
       dettachLayer layer
+
+      _.assign layer, options
+
+      @forceUpdate()
 
 
 module.exports = mixin
