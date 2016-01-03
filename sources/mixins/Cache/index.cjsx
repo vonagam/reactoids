@@ -17,6 +17,11 @@ mixin =
 
       return cache.value if cache
 
+      if arguments.length == 2
+
+        getter = dependencies
+        dependencies = undefined
+
       cache =
 
         dependencies: dependencies
