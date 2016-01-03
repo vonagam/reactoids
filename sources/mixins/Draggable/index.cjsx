@@ -1,6 +1,6 @@
 Mixin = requireSource 'various/Mixin'
 
-EventListener = requireSource 'mixins/EventListener'
+EventListenerMixin = requireSource 'mixins/EventListener'
 
 
 mixin = Mixin.createArged
@@ -16,7 +16,7 @@ mixin = Mixin.createArged
     onStart: _.noop
     onStop: _.noop
 
-  mixins: [ EventListener ]
+  mixins: [ EventListenerMixin ]
 
   mixin: ( ARGS )->=
 
@@ -25,14 +25,14 @@ mixin = Mixin.createArged
       x: event.clientX
       y: event.clientY
 
-    onMove = ( that, event )->
+    onMove = ( event )->
 
       event.preventDefault()
       
-      ARGS.onMove that, getPosition event
+      ARGS.onMove this, getPosition event
 
 
-    mixins: [ EventListener ]
+    mixins: [ EventListenerMixin ]
 
     getInitialState: ->=
 
@@ -40,8 +40,9 @@ mixin = Mixin.createArged
 
     componentWillMount: ->
 
-      @addEventListener 'draggableMousemove', event: 'mousemove', callback: _.partial( onMove, this ), turned: false
+      @addEventListener 'draggableMousemove', event: 'mousemove', callback: onMove, turned: false
       @addEventListener 'draggableMouseup', event: 'mouseup', callback: @stopDragging, turned: false
+      @addEventListener 'draggableMouseleave', event: 'mouseleave', callback: @stopDragging, turned: false
 
     componentWillUpdate: ( nextProps, nextState )->
 
@@ -49,8 +50,11 @@ mixin = Mixin.createArged
 
         @toggleEventListener 'draggableMousemove', nextState.dragging
         @toggleEventListener 'draggableMouseup', nextState.dragging
+        @toggleEventListener 'draggableMouseleave', nextState.dragging
 
     startDragging: ( event )->
+
+      return if @state.dragging == true
 
       @setState dragging: true
 
@@ -61,6 +65,8 @@ mixin = Mixin.createArged
       ARGS.onMove this, position
 
     stopDragging: ( event )->
+
+      return if @state.dragging == false
       
       @setState dragging: false
 
