@@ -9,7 +9,7 @@ mixin =
 
       _cache: undefined
 
-    cache: ( key, dependencies, getter )->=
+    cache: ( key, options )->=
 
       @_cache ||= {}
 
@@ -17,15 +17,24 @@ mixin =
 
       return cache.value if cache
 
-      if arguments.length == 2
+      if options.getter
 
-        getter = dependencies
-        dependencies = undefined
+        value = options.getter.apply this
 
-      cache =
+      else
 
-        dependencies: dependencies
-        value: getter.apply this
+        value = options.value
+
+      if _.isFunction value
+
+        value = _.bind value, this
+
+      cache = {
+
+        value: value
+        depend: options.depend
+
+      }
 
       @_cache[ key ] = cache
 
@@ -33,13 +42,13 @@ mixin =
 
     componentWillUpdate: ( nextProps, nextState, nextContext )->
 
-      return unless @_cache
+      return if _.isEmpty @_cache
 
       next = props: nextProps, state: nextState, context: nextContext
 
       _.each @_cache, ( cache, key )->
 
-        if _.any cache.dependencies, ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
+        if _.any cache.depend, ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
 
           delete cache[ key ]
 
