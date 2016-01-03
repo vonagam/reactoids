@@ -2,11 +2,13 @@ gulp = require 'gulp'
 
 build = require '../_actions/build'
 
+$ = require( 'gulp-load-plugins' )()
+
 
 require './clean'
 
 
-gulp.task 'development-build', [ 'development-clean' ], ( callback )->=
+gulp.task 'development-build', [ 'development-clean' ], ( callback )->
 
   build '../{sources,tests}/**/*.cjsx', 
 
