@@ -14,23 +14,23 @@ mixin =
 
   Mixin.createPlain
 
-    getInitialMembers: ->=
-
-      _obtainCallback: undefined
-
     callback: ( key )->=
 
-      value = _.get this, key
+      obtainCallback = createObtainer this
 
-      if _.isFunction value
+      @callback = ( key )->=
 
-        @_obtainCallback ||= createObtainer this
+        value = _.get this, key
 
-        return @_obtainCallback key
+        if _.isFunction value
 
-      else
+          return obtainCallback key
 
-        return value
+        else
+
+          return value
+
+      @callback key
 
 
 module.exports = mixin
