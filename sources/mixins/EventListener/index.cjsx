@@ -13,13 +13,19 @@ mixin = BaseListenerMixin
 
     listener.target ||= document
 
-    listener.$target = $ listener.target
+    listener.target = $ listener.target unless listener.jquery == false
 
-    listener.callback = _.bind listener.callback, that
+    listener.callback = _.bind listener.callback, that unless listener.bind == false
 
   toggleListener: ( that, listener, bool )->
 
-    listener.$target[ if bool then 'on' else 'off' ]( listener.event, listener.callback )
+    if listener.jquery == false
+
+      listener.target[ if bool then 'addEventListener' else 'removeEventListener' ]( listener.event, listener.callback )
+
+    else
+
+      listener.target[ if bool then 'on' else 'off' ]( listener.event, listener.callback )
 
 
 module.exports = mixin

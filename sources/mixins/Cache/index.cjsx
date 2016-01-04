@@ -22,7 +22,7 @@ mixin =
 
         value = options.value
 
-      if _.isFunction value
+      if _.isFunction( value ) && options.bind != false
 
         value = _.bind value, this
 
