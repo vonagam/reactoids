@@ -1,8 +1,3 @@
-# mixins
-
-InputMixin = requireSource 'mixins/Input'
-
-
 Input = React.createClass
 
   mixins: Mixin.resolve [

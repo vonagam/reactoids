@@ -1,13 +1,11 @@
 # mixins
 
-InputMixin = requireSource 'mixins/Input'
-
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'
 
 
 Field = React.createClass
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
     ComponentMixin
 
@@ -37,15 +35,15 @@ Field = React.createClass
   propTypes:
 
     'type': React.PropTypes.func.isRequired
-    
+
     'props': React.PropTypes.object
-    
+
     'messages': React.PropTypes.object
-    
+
     'onFocus': React.PropTypes.func
-    
+
     'onBlur': React.PropTypes.func
-    
+
     'onSubmit': React.PropTypes.func
 
   ##
@@ -56,13 +54,13 @@ Field = React.createClass
 
 
     'props': {}
-    
+
     'renderBefore': renderMessages
-    
+
     'renderAfter': renderMessages
-    
+
     'renderInsideBefore': renderMessages
-    
+
     'renderInsideAfter': renderMessages
 
   ##
@@ -118,15 +116,15 @@ Field = React.createClass
         <div
 
           key={ name }
-        
+
           {... messageProps }
-        
+
           className={ @mergeClassNames classed( 'message', "message.-#{ name }" ), messageProps.className }
-        
+
           onClick={ if name == 'label' then _.queue @onLabelClick, messageProps.onClick else messageProps.onClick }
 
           children={ content }
-        
+
         />
 
       )
@@ -135,11 +133,11 @@ Field = React.createClass
 
 
     <div
-    
+
       {... @omitProps() }
-    
+
       className={ classed '.', '-focused': state.focus, '-filled': value != undefined && value != '' }
-    
+
     >
 
       {

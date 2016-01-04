@@ -4,8 +4,6 @@
 
 StringedMixin = requireSource 'mixins/Stringed'
 
-InputMixin = requireSource 'mixins/Input'
-
 DomMixin = requireSource 'mixins/Dom'
 
 PureRenderMixin = requireSource 'mixins/PureRender'

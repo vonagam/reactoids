@@ -2,8 +2,6 @@
 
 StringedMixin = requireSource 'mixins/Stringed'
 
-InputMixin = requireSource 'mixins/Input'
-
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'
 
 # components
@@ -20,11 +18,11 @@ Item = React.createClass
     value: React.PropTypes.any
 
     classed: React.PropTypes.func
-    
+
     stringed: React.PropTypes.func
-    
+
     onChange: React.PropTypes.func
-    
+
     onRemove: React.PropTypes.func
 
   ##
@@ -37,9 +35,9 @@ Item = React.createClass
     <div className={ classed 'item' }>
 
       <Input className={ classed 'input' } value={ @props.value } onChange={ @props.onChange } />
-      
+
       <Button className={ classed 'remove' } onClick={ @props.onRemove } text={ stringed 'remove' } />
-    
+
     </div>
 
   ##
@@ -49,7 +47,7 @@ Item = React.createClass
 
 Arrayer = React.createClass
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
     ComponentMixin
 
@@ -90,9 +88,9 @@ Arrayer = React.createClass
   propTypes:
 
     'template': React.PropTypes.funced React.PropTypes.any # ( that )->=
-    
+
     'canAdd': React.PropTypes.funced React.PropTypes.bool # ( value )->=
-    
+
     'canRemove': React.PropTypes.funced React.PropTypes.bool # ( item, value )->=
 
   ##
@@ -100,13 +98,13 @@ Arrayer = React.createClass
   getDefaultProps: ->=
 
     'value': []
-    
+
     'template': ''
-    
+
     'canAdd': _.all
-    
+
     'canRemove': true
-    
+
     'renderItem': ( that, slotProps, userProps )->=
 
       <Item {... slotProps } {... userProps } />
@@ -163,15 +161,15 @@ Arrayer = React.createClass
 
 
     <div
-    
+
       {... @omitProps() }
-    
+
       className={ classed '.', "-#{ if value.length > 0 then 'filled' else 'empty' }", '-readonly': props.readOnly }
-    
+
     >
 
       <div className={ classed 'items' }>
-      
+
         {
 
           _.map value, ( item, index )->=
@@ -179,15 +177,15 @@ Arrayer = React.createClass
             @renderItem(
 
               key: index
-              
+
               value: item
-              
+
               classed: classed
-              
+
               stringed: stringed
-              
+
               onChange: @_partial @onItemChange, index
-              
+
               onRemove: _.funced( props.canRemove, item, value ) && @_partial @onItemRemove, index
 
             )
@@ -195,33 +193,33 @@ Arrayer = React.createClass
           , this
 
         }
-      
+
       </div>
 
       <div className={ classed 'actions' }>
-      
+
         <Button
-          
+
           className={ classed 'action', '-add' }
-          
+
           onClick={ @onAddClick if _.funced props.canAdd, value }
-          
+
           text={ stringed 'add' }
-        
+
         />
-      
+
         <Button
-        
+
           className={ classed 'action', '-clear' }
-        
+
           onClick={ @onClearClick if _.any value, ( ( item )->= _.funced props.canRemove, item, value ), this }
-        
+
           text={ stringed 'clear' }
-        
+
         />
-      
+
       </div>
-    
+
     </div>
 
   ##

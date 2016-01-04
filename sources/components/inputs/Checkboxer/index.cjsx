@@ -1,11 +1,6 @@
-# mixins
-
-InputMixin = requireSource 'mixins/Input'
-
-
 Checkboxer = React.createClass
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
     ComponentMixin
 

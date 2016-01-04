@@ -42,8 +42,20 @@ AUTO_REQUIRES = [
   {
     module: 'mixins/Component'
     variable: 'ComponentMixin'
-    includes: /^components\//
-    check: /ComponentMixin/
+    includes: /\bcomponents\b/
+    check: /\bComponentMixin\b/
+  }
+  {
+    module: 'mixins/Input'
+    variable: 'InputMixin'
+    includes: /\binputs\b/
+    check: /\bInputMixin\b/
+  }
+  {
+    module: 'mixins/OptionsInput'
+    variable: 'OptionsInputMixin'
+    includes: /\binputs\b/
+    check: /\bOptionsInputMixin\b/
   }
 
 ]

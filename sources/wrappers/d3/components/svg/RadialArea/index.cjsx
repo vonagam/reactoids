@@ -1,7 +1,3 @@
-# mixins
-
-ComponentMixin = requireSource 'mixins/Component'
-
 # utils
 
 applyD3Props = requireSource 'wrappers/d3/various/applyD3Props'

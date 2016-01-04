@@ -2,8 +2,6 @@
 
 # mixins
 
-InputMixin = requireSource 'mixins/Input'
-
 AjaxMixin = requireSource 'mixins/Ajax'
 
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'

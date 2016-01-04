@@ -1,8 +1,3 @@
-# mixins
-
-OptionsInputMixin = requireSource 'mixins/OptionsInput'
-
-
 Radigos = React.createClass
 
   mixins: Mixin.resolve [

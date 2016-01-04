@@ -1,8 +1,3 @@
-# mixins
-
-InputMixin = requireSource 'mixins/Input'
-
-
 Textarea = React.createClass
 
   mixins: Mixin.resolve [

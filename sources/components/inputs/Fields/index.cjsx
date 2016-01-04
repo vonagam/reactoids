@@ -1,7 +1,5 @@
 # mixins
 
-InputMixin = requireSource 'mixins/Input'
-
 Field = requireSource 'components/inputs/Field'
 
 

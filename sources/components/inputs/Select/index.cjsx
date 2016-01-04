@@ -1,8 +1,3 @@
-# mixins
-
-OptionsInputMixin = requireSource 'mixins/OptionsInput'
-
-
 Select = React.createClass
 
   mixins: Mixin.resolve [
