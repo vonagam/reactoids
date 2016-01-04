@@ -6,3 +6,7 @@ describe 'Checkbox', ->
   it 'can be rendered', ->
 
     TestReact.render <Checkbox />
+
+  ##
+
+##

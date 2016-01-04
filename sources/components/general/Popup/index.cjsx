@@ -1,35 +1,54 @@
+# dependencies
+
 $ = requireDependency 'jquery'
+
+# components
 
 Layer = requireSource 'components/general/Layer'
 
 
-$body = undefined
+changeCounter = ->=
 
-changeCounter = ( delta )->=
+  $body = $ document.body
 
-  $body ||= $ document.body
+  changeCounter = ( delta )->=
 
-  counter = $body.data( 'reactoids-popup' ) || 0
+    counter = $body.data( 'reactoids-popup' ) || 0
 
-  counter += delta
+    counter += delta
 
-  $body.data 'reactoids-popup', counter
+    $body.data 'reactoids-popup', counter
 
-  counter
+    counter
 
+  ##
 
-ComponentArgs = classes:
+  changeCounter delta
 
-  'layer': ''
+##
 
 
 Popup = React.createClass
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
+  mixins: Mixin.resolve [ 
+
+    ComponentMixin
+
+      classes:
+
+        'layer': ''
+
+      ##
+
+    ##
+
+  ]
 
   propTypes:
 
-    layerProps: React.PropTypes.object
+    'layerProps': React.PropTypes.object
+
+  ##
 
   componentDidMount: ->
 
@@ -37,25 +56,34 @@ Popup = React.createClass
 
     $body.addClass 'reactoids-popup' if counter == 1
 
+  ##
+
   componentWillUnmount: ->
 
     counter = changeCounter -1
 
     $body.removeClass 'reactoids-popup' if counter == 0
 
+  ##
+
   render: ->=
 
     { props, classed } = this
 
-    <Layer
-      {... props.layerProps }
-      className={ classed 'layer' }
-    >
-      <div
-        {... @omitProps() }
-        className={ classed '.' }
-      />
+
+    <Layer {... props.layerProps } className={ classed 'layer' }>
+
+      {
+
+        <div {... @omitProps() } className={ classed '.' } />
+
+      }
+
     </Layer>
+
+  ##
+
+##
 
 
 module.exports = Popup

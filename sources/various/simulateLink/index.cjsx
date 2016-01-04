@@ -11,6 +11,8 @@ simulateLink = ( href, containter = 'body', decorateLink )->
 
     href = Routes[ href ]()
 
+  ##
+
   $link.attr 'href', href
 
   decorateLink $link if decorateLink
@@ -28,6 +30,10 @@ simulateLink = ( href, containter = 'body', decorateLink )->
   else
 
     window.location.href = href
+
+  ##
+
+##
 
 
 module.exports = simulateLink

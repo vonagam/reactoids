@@ -8,10 +8,12 @@ describe 'Processed', ->
     tag: [ 'div', 'span' ]
 
     source: [ 2, '3', { x: 1 } ]
-    
+
     process: [ sinon.spy ( source )->= 'x' + JSON.stringify source ]
 
     'data-unknown': [ 3 ]
+
+  ##
 
 
   tests =
@@ -22,9 +24,13 @@ describe 'Processed', ->
 
         _.isUndefined input.process
 
+      ##
+
       afterEach: ( input )->
 
         input.process.reset()
+
+      ##
 
       it: ( input, props, tag )->=
 
@@ -54,15 +60,23 @@ describe 'Processed', ->
 
         expect( props.className ).string 'processed'
 
+      ##
+
+    ##
+
     render:
 
       skip: ( input )->=
 
         _.isUndefined input.process
 
+      ##
+
       afterEach: ( input )->
 
         input.process.reset()
+
+      ##
 
       it: ( input, component, rerender )->
 
@@ -76,5 +90,13 @@ describe 'Processed', ->
 
         expect( ->= input.process.callCount ).change.by( 1 ).when -> rerender input
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Processed, variants, tests
+
+##

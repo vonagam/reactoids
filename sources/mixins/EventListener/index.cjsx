@@ -17,6 +17,8 @@ mixin = BaseListenerMixin
 
     listener.callback = _.bind listener.callback, that unless listener.bind == false
 
+  ##
+
   toggleListener: ( that, listener, bool )->
 
     if listener.jquery == false
@@ -26,6 +28,12 @@ mixin = BaseListenerMixin
     else
 
       listener.target[ if bool then 'on' else 'off' ]( listener.event, listener.callback )
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

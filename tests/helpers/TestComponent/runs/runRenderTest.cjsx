@@ -15,12 +15,16 @@ ContextWrapper = React.createClass
     getClassNames: React.PropTypes.func
     getStrings: React.PropTypes.func
 
+  ##
+
   getChildContext: _.once ->=
 
     # TODO: check how will adding here prop for context affect test perfomance
 
     getClassNames: getClassNames
     getStrings: getStrings
+
+  ##
 
   render: ->=
 
@@ -32,6 +36,10 @@ ContextWrapper = React.createClass
 
     React.createElement Component, props
 
+  ##
+
+##
+
 
 runRenderTest = ( Component, props, options, test )->
 
@@ -41,6 +49,8 @@ runRenderTest = ( Component, props, options, test )->
 
     options = {}
 
+  ##
+
   wrapper = TestReact.render <ContextWrapper Component={ Component } props={ props } />
 
   component = wrapper.refs.component
@@ -49,13 +59,21 @@ runRenderTest = ( Component, props, options, test )->
 
     TestReact.rerender wrapper, <ContextWrapper Component={ Component } props={ props } />
 
+  ##
+
   try
 
     test component, rerender
 
+  ##
+
   finally
 
     TestReact.unmount wrapper
+
+  ##
+
+##
 
 
 module.exports = runRenderTest

@@ -6,5 +6,9 @@ clamp = ( _ )->=
     return max if value > max
     return value
 
+  ##
+
+##
+
 
 module.exports = clamp

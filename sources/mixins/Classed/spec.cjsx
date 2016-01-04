@@ -19,7 +19,13 @@ describe 'Classed', ->
 
         result[ key ] = ( name + '.' + key ).replace( /\.-/g, '-' ).replace( /\./g, '_' )
 
+      ##
+
+    ##
+
     result
+
+  ##
 
 
   it 'works with context', ->
@@ -40,6 +46,10 @@ describe 'Classed', ->
           <div className={ c 'unknown' } />
         </div>
 
+      ##
+
+    ##
+
 
     expect( TestReact.renderShallow(
 
@@ -59,6 +69,8 @@ describe 'Classed', ->
 
     )
 
+  ##
+
 
   it 'works with context and prop', ->
 
@@ -69,6 +81,10 @@ describe 'Classed', ->
       render: ->=
 
         <div className={ @classed '.', '-mod', 'unknown', undefined } />
+
+      ##
+
+    ##
 
 
     checks = [
@@ -106,3 +122,9 @@ describe 'Classed', ->
         <div className={ check.output } />
 
       )
+
+    ##
+
+  ##
+
+##

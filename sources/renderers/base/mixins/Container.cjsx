@@ -5,9 +5,13 @@ mixin = Mixin.createArged
 
   args:
 
-    containerAttach: React.PropTypes.func # ( that, image )->=
-    containerDetach: React.PropTypes.func # ( that, image )->=
-    containerMove: React.PropTypes.func # ( that, image, toIndex )->=
+    'containerAttach': React.PropTypes.func # ( that, image )->=
+
+    'containerDetach': React.PropTypes.func # ( that, image )->=
+
+    'containerMove': React.PropTypes.func # ( that, image, toIndex )->=
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -19,21 +23,29 @@ mixin = Mixin.createArged
 
         ARGS.containerAttach this, mountImage
 
+      ##
+
       removeChild: ( child )->
 
         ARGS.containerDetach this, child._mountImage
 
         child._mountImage = null
 
+      ##
+
       moveChild: ( child, toIndex )->
 
         ARGS.containerMove this, child._mountImage, toIndex
+
+      ##
 
       # Override to bypass batch updating because it is not necessary ???
 
       updateChildren: ( children, transaction, context )->
 
         @_updateChildren children, transaction, context
+
+      ##
 
       mountAndCreateChildren: ( children, transaction, context )->
 
@@ -46,6 +58,16 @@ mixin = Mixin.createArged
           @createChild child, mountedImages[ i ]
 
           i++
+
+        ##
+
+      ##
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

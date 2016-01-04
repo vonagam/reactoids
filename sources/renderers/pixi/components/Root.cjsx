@@ -17,15 +17,25 @@ BaseRootArgs =
 
     that.applyPixiSizeProps()
 
+  ##
+
   rootDidUpdate: ( that, prevProps )->
 
     if that.props.width != prevProps.width || that.props.height != prevProps.height
 
       that.applyPixiSizeProps()
 
+    ##
+
+  ##
+
   rootRender: ( that )->
 
     that.renderer.render that.pixi
+
+  ##
+
+##
 
 
 Root = React.createClass
@@ -48,6 +58,8 @@ Root = React.createClass
     clearBeforeRender: React.PropTypes.bool
     preserveDrawingBuffer: React.PropTypes.bool
 
+  ##
+
   getDefaultProps: ->=
 
     width: 0
@@ -60,6 +72,8 @@ Root = React.createClass
     clearBeforeRender: false
     preserveDrawingBuffer: false
 
+  ##
+
   ###
 
   applyPixiSizeProps: ->
@@ -67,6 +81,8 @@ Root = React.createClass
     @renderer.resize @props.width, @props.height
     @pixi.width = @props.width
     @pixi.height = @props.height
+
+  ##
 
   componentDidMount: ->
 
@@ -82,6 +98,8 @@ Root = React.createClass
 
     @raf = requestAnimationFrame render
 
+  ##
+
   componentWillUnmount: ->
 
     cancelAnimationFrame @raf if @raf
@@ -90,9 +108,15 @@ Root = React.createClass
 
     @pixi.destroy()
 
+  ##
+
   render: ->=
 
     <canvas />
+
+  ##
+
+##
 
 
 module.exports = Root

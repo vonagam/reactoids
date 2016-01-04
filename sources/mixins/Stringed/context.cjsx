@@ -6,10 +6,14 @@ mixin = Mixin.createArged
     definingType: React.PropTypes.oneOf [ 'standart', 'custom' ]
     contextHandling: React.PropTypes.oneOf [ 'ignore', 'overlap' ]
 
+  ##
+
   defaults:
 
     definingType: 'standart'
     contextHandling: 'ignore'
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -19,12 +23,16 @@ mixin = Mixin.createArged
 
       when 'custom' then ARGS.getStrings
 
+    ##
+
 
     contextTypes = switch ARGS.contextHandling
 
       when 'ignore' then undefined
 
       else { getStrings: React.PropTypes.func }
+
+    ##
 
 
     getChildContext = switch ARGS.contextHandling
@@ -43,6 +51,12 @@ mixin = Mixin.createArged
 
           _.assign {}, contextStrings, ourStrings
 
+        ##
+
+      ##
+
+    ##
+
 
     contextTypes: contextTypes
 
@@ -50,7 +64,13 @@ mixin = Mixin.createArged
 
       getStrings: React.PropTypes.func # ( id, constructor, keys, that )->=
 
+    ##
+
     getChildContext: getChildContext
+
+  ##
+
+##
 
 
 module.exports = mixin

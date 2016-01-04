@@ -9,9 +9,13 @@ describe 'getUrlData', ->
 
     window.location.href = 'http://foo.com:60/bar'
 
+  ##
+
   after ->
 
     window.location.href = hrefBefore
+
+  ##
 
 
   checks = [
@@ -59,3 +63,9 @@ describe 'getUrlData', ->
       data = _.pick data, _.keys check.output
 
       expect( data ).eql check.output
+
+    ##
+
+  ##
+
+##

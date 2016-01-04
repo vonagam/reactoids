@@ -5,13 +5,19 @@ mixin = Mixin.createArged
 
   args:
 
-    filterRequest: React.PropTypes.func # ( that, xhr, options )->=
-    onRequestChange: React.PropTypes.func # ( that, request )->
-    onRequestRemove: React.PropTypes.func # ( that, request )->
+    'filterRequest': React.PropTypes.func # ( that, xhr, options )->=
+
+    'onRequestChange': React.PropTypes.func # ( that, request )->
+
+    'onRequestRemove': React.PropTypes.func # ( that, request )->
+
+  ##
 
   defaults:
 
-    filterRequest: _.constant true
+    'filterRequest': _.constant true
+
+  ##
 
   mixins: [ EventListenerMixin ]
 
@@ -67,6 +73,8 @@ mixin = Mixin.createArged
 
             ARGS.onRequestChange that, request
 
+          ##
+
           listenerKeys = []
 
           _.each { down: xhr, up: xhr.upload }, ( xhr, key )->
@@ -91,6 +99,12 @@ mixin = Mixin.createArged
 
                     setRequest status: status, progress: 1, finishedAt: new Date
 
+                  ##
+
+                ##
+
+              ##
+
 
               listenerKey = "AjaxProgresses:#{ request.id }:#{ key }:#{ status }"
 
@@ -99,9 +113,23 @@ mixin = Mixin.createArged
 
               that.addEventListener listenerKey, target: xhr, event: status, jquery: false, callback: callback
 
+            ##
+
+          ##
+
           setRequest()
 
           xhr
+
+        ##
+
+      ##
+
+    ##
+
+  ##
+
+##
 
 
 mixin = Mixin.createPlain {} unless _.get( window, 'XMLHttpRequest.prototype.addEventListener' ) && window.ProgressEvent

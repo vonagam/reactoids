@@ -3,7 +3,9 @@ createGraphics = requireSource 'renderers/pixi/helpers/createGraphics'
 
 PROPS =
 
-  radius: 0
+  'radius': 0
+
+##
 
 
 Circle = createGraphics 'Circle',
@@ -12,9 +14,15 @@ Circle = createGraphics 'Circle',
 
     nextProps.radius != prevProps.radius
 
+  ##
+
   drawGraphics: ( that, props )->
 
     that.pixi.drawCircle 0, 0, ( props.radius || 0 )
+
+  ##
+
+##
 
 
 module.exports = Circle

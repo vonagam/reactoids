@@ -6,3 +6,7 @@ describe 'Checkboxer', ->
   it 'can be rendered', ->
 
     TestReact.render <Checkboxer />
+
+  ##
+
+##

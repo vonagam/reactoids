@@ -32,9 +32,13 @@ getTranslation = ( model, key, type )->=
 
     scopes.push "attributes"
 
+  ##
+
   scopes = _.map scopes, ( scope )->= scope: "#{ scope }.#{ key }"
 
   I18n.t null, defaults: scopes, defaultValue: ''
+
+##
 
 
 Field = ( model, key, options )->=
@@ -42,7 +46,7 @@ Field = ( model, key, options )->=
   field = _.cloneDeep( options ) || {}
 
   field.key = key
-  
+
   field.type ||= Input
 
   field.messages ||= {}
@@ -55,13 +59,19 @@ Field = ( model, key, options )->=
 
     , field.messages
 
+  ##
+
   label = field.messages.label
 
   if label && ! _.isPlainObject( label ) && ! _.isFunction( label )
 
     field.messages.label = content: label, position: 'before'
 
+  ##
+
   field
+
+##
 
 
 class Node
@@ -72,6 +82,8 @@ class Node
 
     @_fields = []
 
+  ##
+
   fields: ( fields )->
 
     _.transform fields, ( fields, options, key )-> 
@@ -80,9 +92,15 @@ class Node
 
     , @_fields, this
 
+  ##
+
   toProp: ->=
 
     @_fields
+
+  ##
+
+##
 
 
 class Model extends Node
@@ -93,7 +111,11 @@ class Model extends Node
 
     super name
 
-    
+  ##
+
+##
+
+
 class Scheme extends Node
 
   model: ( name, fields )->=
@@ -105,6 +127,8 @@ class Scheme extends Node
     @_fields.push model
 
     model
+
+  ##
 
   toProp: ->=
 
@@ -119,6 +143,14 @@ class Scheme extends Node
       else
 
         field
+
+      ##
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = Scheme

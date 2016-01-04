@@ -9,6 +9,8 @@ describe 'Icon', ->
 
     'data-unknown': [ 3 ]
 
+  ##
+
 
   tests =
 
@@ -17,6 +19,8 @@ describe 'Icon', ->
       only: ( input )->=
 
         true if input.icon
+
+      ##
 
       it: ( input, props, tag )->
 
@@ -38,6 +42,12 @@ describe 'Icon', ->
 
         expect( props.className ).string 'icon'
 
+      ##
+
+    ##
+
+  ##
+
 
   options =
 
@@ -51,5 +61,13 @@ describe 'Icon', ->
 
         result
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Icon, variants, options, tests
+
+##

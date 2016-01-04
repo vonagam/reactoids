@@ -38,3 +38,7 @@ describe 'Timer', ->
         , 5, 'some'
 
     , 1
+
+  ##
+
+##

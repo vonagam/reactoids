@@ -8,6 +8,8 @@ handleWillMounts = ( input )->
 
     delete input.initConstants
 
+  ##
+
   if input.getInitialMembers
 
     getMembers = input.getInitialMembers
@@ -16,13 +18,19 @@ handleWillMounts = ( input )->
 
       _.merge this, getMembers.apply this
 
+    ##
+
     delete input.getInitialMembers
+
+  ##
 
   if input.componentWillMount
 
     willMounts.push input.componentWillMount
 
     delete input.componentWillMount
+
+  ##
 
   switch willMounts.length
 
@@ -31,6 +39,10 @@ handleWillMounts = ( input )->
     when 1 then input.componentWillMount = willMounts[ 0 ]
 
     else input.componentWillMount = _.queue.apply _, willMounts
+
+  ##
+
+##
 
 
 Mixin =
@@ -42,6 +54,8 @@ Mixin =
     handleWillMounts result
 
     result
+
+  ##
 
   createArged: ( input )->=
 
@@ -59,7 +73,13 @@ Mixin =
 
           throw error if error
 
+        ##
+
+      ##
+
       Mixin.createPlain input.mixin ARGS
+
+    ##
 
     _.assign result, input
 
@@ -69,11 +89,17 @@ Mixin =
 
       result.picked = _.union result.picked, mixin.picked if _.isFunction mixin
 
+    ##
+
     result.pick = ( ARGS )->=
 
       _.pick ARGS, result.picked
 
+    ##
+
     result
+
+  ##
 
   resolve: ( inputMixins )->=
 
@@ -89,11 +115,19 @@ Mixin =
 
         outputMixins.push mixin
 
+      ##
+
+    ##
+
     addMixins inputMixins
 
     outputMixins = _.map outputMixins, ( mixin )->= _.omit mixin, 'mixins'
 
     outputMixins
+
+  ##
+
+##
 
 
 module.exports = Mixin

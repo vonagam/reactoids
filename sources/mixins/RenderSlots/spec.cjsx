@@ -14,15 +14,23 @@ describe 'RenderSlots', ->
 
         key: 'value'
 
+      ##
+
       getDefaultProps: ->=
 
         renderFirst: ( component, slotProps, userProps )->=
 
           <div {... slotProps } {... userProps } />
 
+        ##
+
         renderSecond: ( component, slotProps, userProps )->=
 
           <div {... slotProps } {... userProps } />
+
+        ##
+
+      ##
 
       render: ->=
 
@@ -30,6 +38,10 @@ describe 'RenderSlots', ->
           { @renderFirst 'data-slot': 'slot' }
           { @renderSecond 'data-slot': 'slot' }
         </div>
+
+      ##
+
+    ##
 
 
     renderSecond = ( component, slotProps, userProps )->=
@@ -39,6 +51,8 @@ describe 'RenderSlots', ->
         <span key='slot' {... slotProps } />
         <span key='user' {... userProps } />
       ]
+
+    ##
 
 
     expect( TestReact.renderShallow(
@@ -61,3 +75,7 @@ describe 'RenderSlots', ->
       </div>
 
     )
+
+  ##
+
+##

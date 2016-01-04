@@ -27,7 +27,13 @@ class Route
 
         "(#{ @constraints[ name ] || '[\\w\\-]+' })"
 
+      ##
+
+    ##
+
     @pathChecker = RegExp '^' + @pathChecker + '$'
+
+  ##
 
   check: ( path )->=
 
@@ -40,6 +46,10 @@ class Route
       result[ name ] = match[ index + 1 ] || @defaults[ name ]
 
     , {}, this
+
+  ##
+
+##
 
 
 class Router
@@ -60,6 +70,8 @@ class Router
 
         options = {}
 
+      ##
+
       pathScheme =
 
         if Routes && /^[\w_]+$/.test( name ) && Routes[ name ]
@@ -70,10 +82,16 @@ class Router
 
           name
 
+        ##
+
+      ##
+
       @routes[ name ] = new Route pathScheme, options
       @handlers[ name ] = handler
 
     , this
+
+  ##
 
   run: ( url )->=
 
@@ -100,11 +118,19 @@ class Router
           search: search
           params: _.merge {}, params, search
 
+        ##
+
+      ##
+
       return false
 
     , this
 
     result
+
+  ##
+
+##
 
 
 module.exports = Router

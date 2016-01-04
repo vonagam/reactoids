@@ -9,14 +9,18 @@ mapArrayOption = ( variant )->=
   return mapArrayOption variant() if _.isFunction variant
 
   return { value: variant, label: variant } unless _.isObject variant
-  
+
   return { value: variant[ 0 ], label: variant[ 1 ] } if _.isArray variant
-  
+
   return { value: variant.value, label: variant.label }
+
+##
 
 mapObjectOption = ( value, key )->=
 
   return { value: key, label: value }
+
+##
 
 checkOptionsConflict = ( that, props, state )->
 
@@ -32,9 +36,17 @@ checkOptionsConflict = ( that, props, state )->
 
       return
 
+    ##
+
+  ##
+
   if value != undefined && _.none options, 'selected'
 
     that.setValue undefined
+
+  ##
+
+##
 
 
 mixin =
@@ -45,13 +57,19 @@ mixin =
 
     propTypes:
 
-      options: React.PropTypes.collection.isRequired
-      mapOption: React.PropTypes.func
-      allowBlank: React.PropTypes.bool
+      'options': React.PropTypes.collection.isRequired
+
+      'mapOption': React.PropTypes.func
+
+      'allowBlank': React.PropTypes.bool
+
+    ##
 
     getDefaultProps: ->=
 
-      allowBlank: true
+      'allowBlank': true
+
+    ##
 
     getOptions: ( props = @props, state = @state )->=
 
@@ -67,17 +85,31 @@ mixin =
 
         option
 
+      ##
+
+    ##
+
     componentWillMount: ->
 
       checkOptionsConflict this, @props, @state
+
+    ##
 
     componentWillReceiveProps: ( nextProps )->
 
       checkOptionsConflict this, nextProps, @state
 
+    ##
+
     componentDidUpdate: ->
 
       checkOptionsConflict this, @props, @state
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

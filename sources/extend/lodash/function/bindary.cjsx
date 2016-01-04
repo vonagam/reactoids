@@ -6,5 +6,9 @@ bindary = ( _ )->=
 
     _.bind.apply _, arguments
 
+  ##
+
+##
+
 
 module.exports = bindary

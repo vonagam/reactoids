@@ -12,6 +12,10 @@ createGraphics = ( name, ARGS )->=
 
     mixins: [ PixiGraphicsMixin ARGS ]
 
+  ##
+
+##
+
 
 
 module.exports = createGraphics

@@ -3,7 +3,9 @@ createGraphics = requireSource 'renderers/pixi/helpers/createGraphics'
 
 PROPS =
 
-  path: []
+  'path': []
+
+##
 
 
 Polygon = createGraphics 'Polygon',
@@ -12,9 +14,15 @@ Polygon = createGraphics 'Polygon',
 
     ! _.isEqual nextProps.path, prevProps.path
 
+  ##
+
   drawGraphics: ( that, props )->
 
     that.pixi.drawPolygon ( props.path || [] )
+
+  ##
+
+##
 
 
 module.exports = Polygon

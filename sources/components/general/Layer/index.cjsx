@@ -1,25 +1,41 @@
+# mixins
+
 LayeredMixin = requireSource 'mixins/Layered'
-
-
-ComponentArgs = classes:
-
-  {}
 
 
 Layer = React.createClass
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), LayeredMixin ]
+  mixins: Mixin.resolve [ 
+
+    ComponentMixin
+
+      classes: {}
+
+    ##
+
+    LayeredMixin
+
+  ]
 
   propTypes:
 
-    layer: React.PropTypes.shape
-      root: React.PropTypes.funced React.PropTypes.any # ->= # CAUTION isEqual doesn't know how to compare functions
-      order: React.PropTypes.number
-      decorateContainer: React.PropTypes.func # ( container )-> # CAUTION isEqual doesn't know how to compare functions
+    'layer': React.PropTypes.shape
+
+      'root': React.PropTypes.funced React.PropTypes.any # ->= # CAUTION isEqual doesn't know how to compare functions
+
+      'order': React.PropTypes.number
+
+      'decorateContainer': React.PropTypes.func # ( container )-> # CAUTION isEqual doesn't know how to compare functions
+
+    ##
+
+  ##
 
   componentWillMount: ->
 
     @addLayer 'layer', @props.layer
+
+  ##
 
   componentWillUpdate: ( nextProps )->
 
@@ -27,18 +43,30 @@ Layer = React.createClass
 
     @updateLayer 'layer', nextProps.layer
 
+  ##
+
   renderLayerLayer: ->=
 
     { classed } = this
 
+
     <div
+
       {... @omitProps() }
+
       className={ classed '.' }
+
     />
+
+  ##
 
   render: ->=
 
     null
+
+  ##
+
+##
 
 
 module.exports = Layer

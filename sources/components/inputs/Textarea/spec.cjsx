@@ -8,10 +8,12 @@ describe 'Textarea', ->
     onBlur: [ sinon.spy() ]
 
     value: [ 'ivalue' ]
-    
+
     defaultValue: [ 'idefault' ]
 
     readOnly: [ false, true ]
+
+  ##
 
 
   tests =
@@ -32,6 +34,8 @@ describe 'Textarea', ->
 
           value = input.defaultValue
 
+        ##
+
         expect( props.value ).equal value
 
         expect( props.className ).only( value ).string '-value'
@@ -46,15 +50,23 @@ describe 'Textarea', ->
 
         expect( props.className ).string 'textarea'
 
+      ##
+
+    ##
+
     render:
 
       skip: ( input )->=
 
         _.any [ input.onBlur ], _.isUndefined
 
+      ##
+
       afterEach: ( input )->
 
         _.each [ 'onBlur' ], ( key )-> input[ key ].reset()
+
+      ##
 
       it: ( input, component )->
 
@@ -70,5 +82,13 @@ describe 'Textarea', ->
 
         expect( ->= setValue.callCount ).change.by( 1 ).when -> TestReact.do.blur dom
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Textarea, variants, tests
+
+##

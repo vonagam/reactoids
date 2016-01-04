@@ -1,20 +1,27 @@
+# mixins
+
 OptionsInputMixin = requireSource 'mixins/OptionsInput'
-
-
-ComponentArgs =
-
-  classes:
-
-    '-readonly': ''
-    'radigo':
-      '-checked': ''
 
 
 Radigos = React.createClass
 
-  displayName: 'Radigos'
+  mixins: Mixin.resolve [
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), OptionsInputMixin ]
+    ComponentMixin
+
+      classes:
+
+        '-readonly': ''
+        'radigo':
+          '-checked': ''
+
+      ##
+
+    ##
+
+    OptionsInputMixin
+
+  ]
 
   onClick: ( option )->
 
@@ -22,34 +29,40 @@ Radigos = React.createClass
 
     @setValue if option.selected then undefined else option.value
 
+  ##
+
   render: ->=
 
     { props, classed } = this
 
-    <div
-      {... @omitProps() }
-      className={ classed '.', '-readonly': props.readOnly }
-    >
+
+    <div {... @omitProps() } className={ classed '.', '-readonly': props.readOnly }>
+
       {
 
         _.map @getOptions(), ( option, index )->=
 
           <div
+
             key={ index }
-            className={ classed 'radigo', '-checked': option.selected } 
+
+            className={ classed 'radigo', '-checked': option.selected }
+
             onClick={ _.partial @onClick, option }
-          >
-            { 
 
-              option.label
+            children={ option.label }
 
-            }
-          </div>
+          />
 
         , this
 
       }
+
     </div>
+
+  ##
+
+##
 
 
 module.exports = Radigos

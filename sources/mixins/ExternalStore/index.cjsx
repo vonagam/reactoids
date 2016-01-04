@@ -2,13 +2,19 @@ mixin = Mixin.createArged
 
   args:
 
-    name: React.PropTypes.string
-    get: React.PropTypes.func # ( that )->= value
-    set: React.PropTypes.func # ( that, value )->
+    'name': React.PropTypes.string
+
+    'get': React.PropTypes.func # ( that )->= value
+
+    'set': React.PropTypes.func # ( that, value )->
+
+  ##
 
   defaults:
 
-    name: 'store'
+    'name': 'store'
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -24,17 +30,25 @@ mixin = Mixin.createArged
 
       "#{ stateKey }": @[ getStore ]()
 
+    ##
+
     "#{ getStore }": ->=
 
       ARGS.get this
+
+    ##
 
     "#{ getStore }Key": ( key )->=
 
       @[ getStore ]()[ key ]
 
+    ##
+
     "#{ syncStore }": ->
 
       @setState "#{ stateKey }": @[ getStore ]()
+
+    ##
 
     "#{ setStore }": ( value )->
 
@@ -43,6 +57,8 @@ mixin = Mixin.createArged
       ARGS.set this, value
 
       @[ syncStore ]()
+
+    ##
 
     "#{ setStore }Key": ( key, value )->
 
@@ -55,6 +71,12 @@ mixin = Mixin.createArged
       nextValue[ key ] = value
 
       @[ setStore ] nextValue
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

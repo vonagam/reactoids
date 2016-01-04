@@ -6,3 +6,7 @@ describe 'Select', ->
   it 'can be rendered', ->
 
     TestReact.render <Select />
+
+  ##
+
+##

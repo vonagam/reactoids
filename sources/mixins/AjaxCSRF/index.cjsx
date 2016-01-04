@@ -7,7 +7,9 @@ mixin = Mixin.createArged
 
   args:
 
-    getToken: React.PropTypes.func # ( that, options )->=
+    'getToken': React.PropTypes.func # ( that, options )->=
+
+  ##
 
   mixins: [ EventListenerMixin ]
 
@@ -26,6 +28,14 @@ mixin = Mixin.createArged
         return unless token
 
         xhr.setRequestHeader 'X-CSRF-Token', token
+
+      ##
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

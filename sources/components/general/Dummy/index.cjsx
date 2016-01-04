@@ -4,9 +4,15 @@ Dummy = React.createClass
 
     false
 
+  ##
+
   render: ->=
 
     <div />
+
+  ##
+
+##
 
 
 module.exports = Dummy

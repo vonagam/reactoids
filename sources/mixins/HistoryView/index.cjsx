@@ -11,9 +11,13 @@ History =
 
     _.funced ARGS.getHistoryId, component
 
+  ##
+
   startListen: ->
 
     window.addEventListener 'popstate', _.bindKey History, 'onStatePop'
+
+  ##
 
   addComponent: ( component, ARGS )->
 
@@ -27,6 +31,8 @@ History =
 
     @changeState 'replace' unless _.isEqual _.get( @state, "datas.#{ id }" ), ARGS.getHistoryData component
 
+  ##
+
   removeComponent: ( component, ARGS )->
 
     id = @getId component, ARGS
@@ -34,6 +40,8 @@ History =
     delete @instances[ id ]
 
     @changeState 'replace' if _.has @state.datas, id
+
+  ##
 
   changeState: ( position, component, ARGS, options = {} )->=
 
@@ -43,6 +51,8 @@ History =
 
       state = currentState
 
+    ##
+
     if position == 'push'
 
       state = {}
@@ -51,6 +61,8 @@ History =
 
       state.index = currentState.index + 1
 
+    ##
+
     state.HistoryViewMixin = true
 
     state.datas = _.mapValues @instances, ( instance )->= instance.ARGS.getHistoryData instance.component
@@ -58,6 +70,8 @@ History =
     @state = state
 
     window.history[ "#{ position }State" ] state, options.title, options.url
+
+  ##
 
   onStatePop: ( event )->
 
@@ -87,20 +101,34 @@ History =
 
         window.location.reload()
 
+      ##
+
+    ##
+
     @state = eventState
+
+  ##
+
+##
 
 
 mixin = Mixin.createArged
 
   args:
 
-    getHistoryId: React.PropTypes.funced React.PropTypes.string # ( that )->=
-    getHistoryData: React.PropTypes.func # ( that )->=
-    handleHistoryData: React.PropTypes.func # ( that, data, callback )->
+    'getHistoryId': React.PropTypes.funced React.PropTypes.string # ( that )->=
+
+    'getHistoryData': React.PropTypes.func # ( that )->=
+
+    'handleHistoryData': React.PropTypes.func # ( that, data, callback )->
+
+  ##
 
   defaults:
 
-    getHistoryId: 'default'
+    'getHistoryId': 'default'
+
+  ##
 
   mixins: [ BaseViewMixin ]
 
@@ -114,17 +142,27 @@ mixin = Mixin.createArged
 
       History.changeState position, this, ARGS, options
 
+    ##
+
     componentWillMount: ->
 
       return unless window.history
 
       History.addComponent this, ARGS
 
+    ##
+
     componentWillUnmount: ->
 
       return unless window.history
 
       History.removeComponent this, ARGS
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

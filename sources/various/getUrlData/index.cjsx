@@ -14,11 +14,15 @@ getUrlData = ( url )->=
 
     data.protocol = _.constant "#{ protocol }:"
 
+  ##
+
   _.transform PARTS, ( result, part )->
 
     result[ part ] = data[ part ]()
 
   , {}
+
+##
 
 
 module.exports = getUrlData

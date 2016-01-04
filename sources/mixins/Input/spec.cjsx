@@ -19,6 +19,8 @@ describe 'Input', ->
 
     input = undefined
 
+  ##
+
 
   _.each [
 
@@ -37,7 +39,11 @@ describe 'Input', ->
 
       expect( input.getValue() ).equal value
 
-  
+    ##
+
+  ##
+
+
   it 'onChange', ->
 
     input = TestReact.render <Inputed onChange={ onChange } inputDelay={ 0 } />
@@ -45,7 +51,7 @@ describe 'Input', ->
     input.setValue 3
 
     expect( onChange ).callCount 1
-    
+
     expect( onChange.calledWith 3 ).true
 
     input.setTempValue 4
@@ -53,6 +59,8 @@ describe 'Input', ->
     expect( onChange ).callCount 2
 
     expect( onChange.calledWith 4 ).true
+
+  ##
 
 
   it 'onChange and inputDelay', ( done )->
@@ -77,6 +85,8 @@ describe 'Input', ->
 
     , 4
 
+  ##
+
 
   it 'onChange and negative inputDelay', ( done )->
 
@@ -98,6 +108,8 @@ describe 'Input', ->
 
     , 4
 
+  ##
+
 
   it 'onTempChange', ->
 
@@ -108,6 +120,8 @@ describe 'Input', ->
     input.setTempValue 4
 
     expect( onChange ).callCount 0
+
+  ##
 
 
   it 'onTempChange and inputDelay', ->
@@ -124,7 +138,9 @@ describe 'Input', ->
 
     expect( onChange.calledWith 4 ).true
 
-  
+  ##
+
+
   it 'readOnly', ->
 
     input = TestReact.render <Inputed onChange={ onChange } onTempChange={ onChange } readOnly={ true } />
@@ -134,6 +150,8 @@ describe 'Input', ->
     input.setTempValue 4
 
     expect( onChange ).callCount 0
+
+  ##
 
 
   it 'getValue', ( done )->
@@ -155,4 +173,8 @@ describe 'Input', ->
       done()
 
     , 4
+
+  ##
+
+##
 

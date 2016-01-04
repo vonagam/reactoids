@@ -18,7 +18,11 @@ toggleAjax = ( that, name, ajax )->
 
     delete that.ajaxes[ name ]
 
+  ##
+
   that.setState ajaxes: _.mapValues( that.ajaxes, ->= true )
+
+##
 
 
 onAjaxSuccess = ( that, redirect, data, status, xhr )->
@@ -37,7 +41,13 @@ onAjaxSuccess = ( that, redirect, data, status, xhr )->
 
       location = Routes[ location ]()
 
+    ##
+
+  ##
+
   simulateLink location, findDOM that
+
+##
 
 
 mixin =
@@ -48,13 +58,19 @@ mixin =
 
       ajaxes: {}
 
+    ##
+
     getInitialMembers: ->=
 
       ajaxes: {}
 
+    ##
+
     abortAjax: ( name )->
 
       toggleAjax this, name, false
+
+    ##
 
     sendAjax: ( name, options )->
 
@@ -68,15 +84,21 @@ mixin =
 
         @abortAjax name
 
+      ##
+
       options = _.clone options
 
       options = _.mapKeys options, ( value, key )->=
 
         if /^on[A-Z]/.test( key ) then _.camelCase( key.replace /^on/, '' ) else key
 
+      ##
+
       if Routes && /^[\w_]+$/.test( options.url ) && Routes[ options.url ]
 
         options.url = Routes[ options.url ]() 
+
+      ##
 
       if _.has options, 'type'
 
@@ -84,17 +106,23 @@ mixin =
 
         delete options.type
 
+      ##
+
       if options.redirect
 
         options.success = _.queue options.success, _.partial onAjaxSuccess, this, options.redirect
 
         delete options.redirect
 
+      ##
+
       options.complete = _.queue _.partial( toggleAjax, this, name, false ), options.complete
 
       ajax = $.ajax options
 
       toggleAjax this, name, ajax
+
+    ##
 
     componentWillUnmount: ->
 
@@ -103,6 +131,12 @@ mixin =
         @abortAjax name
 
       , this
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

@@ -2,7 +2,9 @@ mixin = Mixin.createArged
 
   args:
 
-    names: React.PropTypes.arrayOf React.PropTypes.string
+    'names': React.PropTypes.arrayOf React.PropTypes.string
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -24,7 +26,15 @@ mixin = Mixin.createArged
 
         _.funced @props[ render ], this, slotProps, userProps
 
+      ##
+
+    ##
+
     result
+
+  ##
+
+##
 
 
 module.exports = mixin

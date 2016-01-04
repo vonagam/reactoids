@@ -4,25 +4,38 @@ mixin =
 
     propTypes:
 
-      value: React.PropTypes.any
-      defaultValue: React.PropTypes.any
-      onChange: React.PropTypes.func
-      onTempChange: React.PropTypes.func
-      readOnly: React.PropTypes.bool
-      inputDelay: React.PropTypes.number
+      'value': React.PropTypes.any
+
+      'defaultValue': React.PropTypes.any
+
+      'onChange': React.PropTypes.func
+
+      'onTempChange': React.PropTypes.func
+
+      'readOnly': React.PropTypes.bool
+
+      'inputDelay': React.PropTypes.number
+
+    ##
 
     getDefaultProps: ->=
 
-      inputDelay: 100
+      'inputDelay': 100
+
+    ##
 
     getInitialState: ->=
 
       inputTemp: undefined
       inputReal: undefined
 
+    ##
+
     getInitialMembers: ->=
 
       inputTimeout: undefined
+
+    ##
 
     getValue: ( props = @props, state = @state )->=
 
@@ -31,13 +44,15 @@ mixin =
       return @state.inputReal if @state.inputReal != undefined
       return @props.defaultValue
 
+    ##
+
     setValue: ( value )->
 
       return if @props.readOnly
 
       clearTimeout @inputTimeout
 
-      @setState( 
+      @setState(
 
         inputTemp: undefined
         inputReal: value
@@ -45,6 +60,8 @@ mixin =
       )
 
       @props.onChange? value
+
+    ##
 
     setTempValue: ( value )->
 
@@ -62,6 +79,8 @@ mixin =
 
       @inputTimeout = setTimeout _.partial( @setValue, value ), @props.inputDelay
 
+    ##
+
     componentWillReceiveProps: ( nextProps )->
 
       if @props.value != nextProps.value
@@ -75,9 +94,19 @@ mixin =
 
         )
 
+      ##
+
+    ##
+
     componentWillUnmount: ->
 
       clearTimeout @inputTimeout
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

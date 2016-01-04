@@ -17,6 +17,8 @@ describe 'OptionsInput', ->
 
     input = undefined
 
+  ##
+
 
   _.each [
 
@@ -67,3 +69,9 @@ describe 'OptionsInput', ->
       expect( input.getOptions() ).eql options
 
       expect( input.getValue() ).equal value
+
+    ##
+
+  ##
+
+##

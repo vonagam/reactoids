@@ -5,13 +5,19 @@ mixin = Mixin.createArged
 
   args:
 
-    name: React.PropTypes.string
-    getValue: React.PropTypes.func # ( element )->=
-    onChange: React.PropTypes.func # ( element, currValue, prevValue )->
+    'name': React.PropTypes.string
+
+    'getValue': React.PropTypes.func # ( element )->=
+
+    'onChange': React.PropTypes.func # ( element, currValue, prevValue )->
+
+  ##
 
   defaults:
 
-    name: ''
+    'name': ''
+
+  ##
 
   mixins: [ UnisonMixin ]
 
@@ -40,12 +46,22 @@ mixin = Mixin.createArged
 
         element[ member ] = currValue
 
+      ##
+
+    ##
+
 
     mixins: [ UnisonMixin( UnisonArgs ) ]
 
     getInitialMembers: ->=
 
       "#{ member }": ARGS.getValue this
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

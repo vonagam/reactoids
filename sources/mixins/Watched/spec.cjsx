@@ -20,11 +20,17 @@ describe 'Watched', ->
 
         if i > 3 then 'newValue' else 'oldValue'
 
+      ##
+
       onChange: sinon.spy ->=
 
         TestReact.unmount component
 
+      ##
+
       duration: 1
+
+    ##
 
 
     Watcheded = TestMixin.createMixinClass Watched ARGS
@@ -45,3 +51,7 @@ describe 'Watched', ->
       done()
 
     , 20
+
+  ##
+
+##

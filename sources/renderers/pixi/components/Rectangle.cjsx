@@ -3,8 +3,10 @@ createGraphics = requireSource 'renderers/pixi/helpers/createGraphics'
 
 PROPS =
 
-  w: 0
-  h: 0
+  'w': 0
+  'h': 0
+
+##
 
 
 Rectangle = createGraphics 'Rectangle',
@@ -13,9 +15,15 @@ Rectangle = createGraphics 'Rectangle',
 
     nextProps.w != prevProps.w || nextProps.h != prevProps.h
 
+  ##
+
   drawGraphics: ( that, props )->
 
     that.pixi.drawRect 0, 0, ( props.w || 0 ), ( props.h || 0 )
+
+  ##
+
+##
 
 
 module.exports = Rectangle

@@ -13,6 +13,8 @@ getScheme = ( variations )->=
 
   , {}
 
+##
+
 
 findReasons = ( variationsAll, variationsBad )->=
 
@@ -21,6 +23,8 @@ findReasons = ( variationsAll, variationsBad )->=
   if variationsAll.length == variationsBad.length
 
     return 'all'
+
+  ##
 
   schemeAll = getScheme variationsAll
 
@@ -38,6 +42,8 @@ findReasons = ( variationsAll, variationsBad )->=
 
       return
 
+    ##
+
     difference = _.difference variantsAll, variantsBad
 
     schemeReasons[ key ] = switch
@@ -54,17 +60,29 @@ findReasons = ( variationsAll, variationsBad )->=
 
         "in ( #{ _.map( variantsBad, getVariantString ).join( ', ' ) } )"
 
+      ##
+
+    ##
+
+  ##
+
   if _.isEmpty schemeReasons
 
     return 'tough case...'
-  
+
+  ##
+
   result = _.map schemeReasons, ( message, key )->= 
 
     "#{ key }(#{ schemeBad[ key ].length }/#{ schemeAll[ key ].length }): #{ message }"
 
+  ##
+
   result = result.join ', '
 
   result
+
+##
 
 
 module.exports = findReasons

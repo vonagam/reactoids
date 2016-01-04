@@ -1,4 +1,7 @@
+# dependencies
+
 tether = requireDependency 'tether'
+
 
 getOptions = ( that, tether )->=
 
@@ -8,10 +11,13 @@ getOptions = ( that, tether )->=
 
   options
 
-# https://github.com/HubSpot/tether/issues/36
+##
+
+
+# Cleaning Up After Tether https://github.com/HubSpot/tether/issues/36
 
 STYLES = _.transform( 
-  
+
   [ 'transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform', 'position', 'top', 'bottom', 'left', 'right' ]
 
   ( ( result, key )-> result[ key ] = '' ), {}
@@ -28,6 +34,10 @@ getClassName = ( node )->=
 
     node.className
 
+  ##
+
+##
+
 setClassName = ( node, className )->
 
   if className
@@ -37,6 +47,10 @@ setClassName = ( node, className )->
   else
 
     node.removeAttribute 'class'
+
+  ##
+
+##
 
 cleanUpTether = ( node, isElement )->
 
@@ -48,34 +62,58 @@ cleanUpTether = ( node, isElement )->
 
   _.assign node.style, STYLES if isElement
 
-
-ComponentArgs = classes:
-
-  {}
+##
 
 
 Tether = React.createClass
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
-  
+  mixins: Mixin.resolve [ 
+
+    ComponentMixin
+
+      classes: {}
+
+    ##
+
+  ]
+
   propTypes:
 
-    enabled: React.PropTypes.bool
-    tether: React.PropTypes.shape
-      target: React.PropTypes.any # DOM node, jQuery element, selector string
-      attachment: React.PropTypes.string # 'vert-attachment horiz-attachment' %w( top middle bottom ) %w( left center right )
-      targetAttachment: React.PropTypes.string
-      offset: React.PropTypes.string # 'vert-offset horiz-offset'
-      targetOffset: React.PropTypes.string
-      targetModifier: React.PropTypes.oneOf [ 'visible', 'scroll-handle' ]
-      optimizations: React.PropTypes.shape
-        moveElemen: React.PropTypes.bool
-        gpu: React.PropTypes.bool
-      constraints: React.PropTypes.arrayOf React.PropTypes.shape
-        to: React.PropTypes.any # A DOM node, bounding box, the string 'window', or the string 'scrollParent'
-        pin: React.PropTypes.oneOfType [ React.PropTypes.bool, React.PropTypes.arrayOf React.PropTypes.string ]
-        attachment: React.PropTypes.string # 'vert-modifier horiz-modifier' %w( none together element target both )
-      addTargetClasses: React.PropTypes.bool
+    'enabled': React.PropTypes.bool
+
+    'tether': React.PropTypes.shape
+    
+      'target': React.PropTypes.any # DOM node, jQuery element, selector string
+    
+      'attachment': React.PropTypes.string # 'vert-attachment horiz-attachment' %w( top middle bottom ) %w( left center right )
+    
+      'targetAttachment': React.PropTypes.string
+    
+      'offset': React.PropTypes.string # 'vert-offset horiz-offset'
+    
+      'targetOffset': React.PropTypes.string
+    
+      'targetModifier': React.PropTypes.oneOf [ 'visible', 'scroll-handle' ]
+    
+      'optimizations': React.PropTypes.shape
+    
+        'moveElemen': React.PropTypes.bool
+    
+        'gpu': React.PropTypes.bool
+    
+      'constraints': React.PropTypes.arrayOf React.PropTypes.shape
+    
+        'to': React.PropTypes.any # A DOM node, bounding box, the string 'window', or the string 'scrollParent'
+    
+        'pin': React.PropTypes.oneOfType [ React.PropTypes.bool, React.PropTypes.arrayOf React.PropTypes.string ]
+    
+        'attachment': React.PropTypes.string # 'vert-modifier horiz-modifier' %w( none together element target both )
+    
+      'addTargetClasses': React.PropTypes.bool
+
+    ##
+
+  ##
 
   componentDidMount: ->
 
@@ -86,6 +124,8 @@ Tether = React.createClass
     @createTether options
 
     @positionTether()
+
+  ##
 
   componentDidUpdate: ( prevProps )->
 
@@ -108,18 +148,30 @@ Tether = React.createClass
           cleanUpTether @target
 
           @target = @tether.target
-    
+
+        ##
+
+      ##
+
+    ##
+
     @positionTether()
+
+  ##
 
   componentWillUnmount: ->
 
     @destroyTether()
+
+  ##
 
   createTether: ( options )->
 
     @tether = new tether options
 
     @target = @tether.target
+
+  ##
 
   destroyTether: ->
 
@@ -135,16 +187,30 @@ Tether = React.createClass
 
     @target = undefined
 
+  ##
+
   positionTether: ->
 
     @tether.position() if @tether
 
+  ##
+
   render: ->=
 
+    { classed } = this
+
+
     <div
+
       {... @omitProps() }
-      className={ @classed '.' }
+    
+      className={ classed '.' }
+    
     />
+
+  ##
+
+##
 
 
 module.exports = Tether

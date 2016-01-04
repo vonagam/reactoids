@@ -5,28 +5,28 @@ $ = require 'jquery'
 
 TestReact =
 
-  render: U.renderIntoDocument
+  'render': U.renderIntoDocument
 
-  where: U.findAllInRenderedTree
-  whereClass: U.scryRenderedDOMComponentsWithClass
-  findClass: U.findRenderedDOMComponentWithClass
-  whereTag: U.scryRenderedDOMComponentsWithTag
-  findTag: U.findRenderedDOMComponentWithTag
-  whereType: U.scryRenderedComponentsWithType
-  findType: U.findRenderedComponentWithType
+  'where': U.findAllInRenderedTree
+  'whereClass': U.scryRenderedDOMComponentsWithClass
+  'findClass': U.findRenderedDOMComponentWithClass
+  'whereTag': U.scryRenderedDOMComponentsWithTag
+  'findTag': U.findRenderedDOMComponentWithTag
+  'whereType': U.scryRenderedComponentsWithType
+  'findType': U.findRenderedComponentWithType
 
-  do: U.Simulate
+  'do': U.Simulate
 
-  isElement: U.isElement
-  isElementOfType: U.isElementOfType
-  isDOMComponent: U.isDOMComponent
-  isDOMComponentElement: U.isDOMComponentElement
-  isCompositeComponent: U.isCompositeComponent
-  isCompositeComponentWithType: U.isCompositeComponentWithType
-  isCompositeComponentElement: U.isCompositeComponentElement
-  isCompositeComponentElementWithType: U.isCompositeComponentElementWithType
+  'isElement': U.isElement
+  'isElementOfType': U.isElementOfType
+  'isDOMComponent': U.isDOMComponent
+  'isDOMComponentElement': U.isDOMComponentElement
+  'isCompositeComponent': U.isCompositeComponent
+  'isCompositeComponentWithType': U.isCompositeComponentWithType
+  'isCompositeComponentElement': U.isCompositeComponentElement
+  'isCompositeComponentElementWithType': U.isCompositeComponentElementWithType
 
-  rerender: ( oldInstance, newInstance )->=
+  'rerender': ( oldInstance, newInstance )->=
 
     div = ReactDOM.findDOMNode oldInstance
 
@@ -34,7 +34,9 @@ TestReact =
 
     ReactDOM.render newInstance, div
 
-  renderShallow: ( element, context )->=
+  ##
+
+  'renderShallow': ( element, context )->=
 
     renderer = U.createRenderer()
 
@@ -42,17 +44,27 @@ TestReact =
 
     renderer.getRenderOutput()
 
-  unmount: ( component )-> 
+  ##
+
+  'unmount': ( component )->
 
     ReactDOM.unmountComponentAtNode ReactDOM.findDOMNode( component ).parentNode
 
-  findDOM: ( component )->=
+  ##
+
+  'findDOM': ( component )->=
 
     ReactDOM.findDOMNode component
 
-  $: ( component )->=
+  ##
+
+  '$': ( component )->=
 
     $ ReactDOM.findDOMNode component
+
+  ##
+
+##
 
 
 module.exports = TestReact

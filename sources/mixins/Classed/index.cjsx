@@ -5,7 +5,9 @@ mixin = Mixin.createArged
 
   args:
 
-    classes: React.PropTypes.object
+    'classes': React.PropTypes.object
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -28,11 +30,19 @@ mixin = Mixin.createArged
 
         KEYS_LOOKUP[ keys.slice( i + 1 ).join( '.' ) ] = key
 
+      ##
+
       if _.isObject value
 
         _.each value, ( val, key )->
 
           fillKeys val, keys.concat key
+
+        ##
+
+      ##
+
+    ##
 
     fillKeys ARGS.classes, []
 
@@ -47,9 +57,13 @@ mixin = Mixin.createArged
 
       return classNames
 
+    ##
+
     mapClassesKeys = ( classes )->=
 
       _.mapKeys classes, ( value, key )->= KEYS_LOOKUP[ key ] || key
+
+    ##
 
     mergeClasseses = ->=
 
@@ -58,6 +72,8 @@ mixin = Mixin.createArged
       args = [ {} ].concat classeses, ( a, b )->= mergeClassNames a, b
 
       _.merge.apply _, args
+
+    ##
 
     classNameToClasses = ( className )->=
 
@@ -68,6 +84,8 @@ mixin = Mixin.createArged
       return mergeClasseses _.map className, classNameToClasses if _.isArray className
 
       return mapClassesKeys className
+
+    ##
 
 
     setPropsClasses = ( that, props )->=
@@ -86,6 +104,8 @@ mixin = Mixin.createArged
 
       return true
 
+    ##
+
     setContextClasses = ( that, context )->=
 
       classesContextInput = _.funced context.getClassNames, ID, that.constructor, KEYS, that
@@ -102,6 +122,8 @@ mixin = Mixin.createArged
 
       return true
 
+    ##
+
     setClasses = ( that, props, context )->
 
       changedProps = setPropsClasses that, props
@@ -114,14 +136,20 @@ mixin = Mixin.createArged
 
       that._classed.cache = {}
 
+    ##
+
 
     propTypes:
 
-      className: React.PropTypes.funced React.PropTypes.string, React.PropTypes.array, React.PropTypes.object # ( that )->=
+      'className': React.PropTypes.funced React.PropTypes.string, React.PropTypes.array, React.PropTypes.object # ( that )->=
+
+    ##
 
     contextTypes:
 
-      getClassNames: React.PropTypes.func # ( id, constructor, keys, that )->=
+      'getClassNames': React.PropTypes.func # ( id, constructor, keys, that )->=
+
+    ##
 
     getInitialMembers: ->=
 
@@ -133,17 +161,27 @@ mixin = Mixin.createArged
         classesContext: {}
         classesContextInput: undefined
 
+      ##
+
+    ##
+
     componentWillMount: ->
 
       setClasses this, @props, @context
+
+    ##
 
     componentWillUpdate: ( nextProps, nextState, nextContext )->
 
       setClasses this, nextProps, nextContext
 
+    ##
+
     mergeClassNames: ->=
 
       mergeClassNames arguments
+
+    ##
 
     classed: ->=
 
@@ -160,6 +198,12 @@ mixin = Mixin.createArged
       cache[ keys ] = result
 
       result
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

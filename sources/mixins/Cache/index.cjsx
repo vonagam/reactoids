@@ -6,6 +6,8 @@ mixin =
 
       _cache: undefined
 
+    ##
+
     cache: ( key, options )->=
 
       @_cache ||= {}
@@ -22,9 +24,13 @@ mixin =
 
         value = options.value
 
+      ##
+
       if _.isFunction( value ) && options.bind != false
 
         value = _.bind value, this
+
+      ##
 
       cache = {
 
@@ -36,6 +42,8 @@ mixin =
       @_cache[ key ] = cache
 
       return cache.value
+
+    ##
 
     componentWillUpdate: ( nextProps, nextState, nextContext )->
 
@@ -50,6 +58,12 @@ mixin =
           delete cache[ key ]
 
       , this
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

@@ -5,13 +5,19 @@ mixin = Mixin.createArged
 
   args:
 
-    update: React.PropTypes.func # ( element )->
-    shouldWatch: React.PropTypes.funced React.PropTypes.bool # ( that )->=
+    'update': React.PropTypes.func # ( element )->
+
+    'shouldWatch': React.PropTypes.funced React.PropTypes.bool # ( that )->=
+
+  ##
 
   defaults:
 
-    update: _.method 'forceUpdate'
-    shouldWatch: true
+    'update': _.method 'forceUpdate'
+
+    'shouldWatch': true
+
+  ##
 
   mixins: [ UnisonMixin ]
 
@@ -40,8 +46,16 @@ mixin = Mixin.createArged
 
         return false
 
+      ##
+
+    ##
+
 
     mixins: [ UnisonMixin UnisonArgs ]
+
+  ##
+
+##
 
 
 module.exports = mixin

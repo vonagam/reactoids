@@ -16,6 +16,8 @@ describe 'simulateLink', ->
 
     window.location.href = hrefBefore
 
+  ##
+
 
   _.each [ true, false ], ( prevented )->
 
@@ -26,3 +28,9 @@ describe 'simulateLink', ->
       simulateLink hrefAfter
 
       expect( window.location.href ).equal if prevented then hrefBefore else hrefAfter
+
+    ##
+
+  ##
+
+##

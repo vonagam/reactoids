@@ -1,4 +1,8 @@
+# dependencies
+
 moment = requireDependency 'moment'
+
+# mixins
 
 UnisonMixin = requireSource 'mixins/Unison'
 
@@ -20,6 +24,8 @@ getTime = ( props )->=
     reference = moment props.reference, props.referenceFormat
 
     return undefined if ! reference.isValid()
+
+  ##
 
   switch format
 
@@ -49,37 +55,61 @@ getTime = ( props )->=
 
       unison: false
 
+    ##
 
-ComponentArgs = classes:
+  ##
 
-  '-enabled': ''
-  '-disabled': ''
-
-UnisonArgs =
-
-  update: _.method 'forceUpdate'
-  duration: 10000
-  shouldUnison: ( that )->= that.shouldUnison
+##
 
 
 Moment = React.createClass
 
-  displayName: 'Moment'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), UnisonMixin( UnisonArgs ) ]
+    ComponentMixin
+
+      classes:
+
+        '-enabled': ''
+        '-disabled': ''
+
+      ##
+
+    ##
+
+    UnisonMixin
+
+      update: _.method 'forceUpdate'
+
+      duration: 10000
+      
+      shouldUnison: _.property 'shouldUnison'
+
+    ##
+
+  ]
 
   propTypes:
 
-    time: React.PropTypes.any
-    timeFormat: React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.arrayOf( React.PropTypes.string ) ]
-    reference: React.PropTypes.any
-    referenceFormat: React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.arrayOf( React.PropTypes.string ) ]
-    format: React.PropTypes.funced( React.PropTypes.string ).isRequired # ( moment )->=
-    suffix: React.PropTypes.bool
+    'time': React.PropTypes.any
+
+    'timeFormat': React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.arrayOf( React.PropTypes.string ) ]
+    
+    'reference': React.PropTypes.any
+    
+    'referenceFormat': React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.arrayOf( React.PropTypes.string ) ]
+    
+    'format': React.PropTypes.funced( React.PropTypes.string ).isRequired # ( moment )->=
+    
+    'suffix': React.PropTypes.bool
+
+  ##
 
   getDefaultProps: ->=
 
-    suffix: true
+    'suffix': true
+
+  ##
 
   render: ->=
 
@@ -91,16 +121,20 @@ Moment = React.createClass
 
     @shouldUnison = Boolean time && time.unison
 
+
     <span
+
       {... @omitProps() }
+
       className={ classed '.', "-#{ if time then 'enabled' else 'disabled' }" }
-    >
-      {
 
-        string
+      children={ string }
 
-      }
-    </span>
+    />
+
+  ##
+
+##
 
 
 module.exports = Moment

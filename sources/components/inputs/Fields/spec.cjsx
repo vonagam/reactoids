@@ -10,3 +10,7 @@ describe 'Fields', ->
     scheme = check: { type: Input }
 
     TestReact.render <Fields scheme={ scheme } />
+
+  ##
+
+##

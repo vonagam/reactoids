@@ -20,24 +20,42 @@ describe 'Scheme', ->
       a:
         {}
 
+      ##
+
       b:
         messages: { label: 'labelB', note: 'noteB' }
 
+      ##
+
       c:
         messages: { label: { content: 'labelC', position: 'after' } }
+
+      ##
+
+    ##
 
     scheme.model( 'b' ).fields
 
       d:
         type: SomeInput
 
+      ##
+
       e:
         props: defaultValue: 'e'
+
+      ##
+
+    ##
 
     scheme.fields
 
       f:
         {}
+
+      ##
+
+    ##
 
     expect( scheme.toProp() ).eql [
 
@@ -86,3 +104,7 @@ describe 'Scheme', ->
       }
 
     ]
+
+  ##
+
+##

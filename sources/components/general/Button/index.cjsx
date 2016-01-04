@@ -1,25 +1,39 @@
+# mixins
+
 AjaxMixin = requireSource 'mixins/Ajax'
-
-
-ComponentArgs = classes:
-
-  '-enabled': ''
-  '-disabled': ''
-  '-waiting': ''
 
 
 Button = React.createClass
 
-  displayName: 'Button'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), AjaxMixin ]
+    ComponentMixin
+
+      classes:
+
+        '-enabled': ''
+        '-disabled': ''
+        '-waiting': ''
+
+      ##
+
+    ##
+
+    AjaxMixin 
+
+  ]
 
   propTypes:
 
-    href: React.PropTypes.string
-    text: React.PropTypes.node
-    onClick: React.PropTypes.func
-    ajax: React.PropTypes.funced React.PropTypes.object # ()->=
+    'href': React.PropTypes.string
+
+    'text': React.PropTypes.node
+
+    'onClick': React.PropTypes.func
+
+    'ajax': React.PropTypes.funced React.PropTypes.object # ()->=
+
+  ##
 
   onClick: ->
 
@@ -29,6 +43,8 @@ Button = React.createClass
 
     @sendAjax 'one', ajax
 
+  ##
+
   render: ->=
 
     { props, state, classed } = this
@@ -37,18 +53,24 @@ Button = React.createClass
 
     enabled = _.isString( props.href ) || props.onClick || ! _.isEmpty _.funced props.ajax
 
+
     <Tag
+
       {... @omitProps() }
+
       className={ classed '.', "-#{ if enabled then 'enabled' else 'disabled' }", '-waiting': state.ajaxes.one }
-      onClick={ @_queue @onClick, props.onClick }
+
       href={ if _.isString props.href then props.href else undefined }
-    >
-      { 
 
-        props.text || props.children
+      onClick={ @_queue @onClick, props.onClick }
 
-      }
-    </Tag>
+      children={ props.text || props.children }
+
+    />
+
+  ##
+
+##
 
 
 module.exports = Button 

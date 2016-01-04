@@ -11,11 +11,15 @@ describe 'Moment', ->
 
     Moment = requireSubject()
 
+  ##
+
   after ->
 
     dependencies.moment = undefined
 
     Moment = undefined
+
+  ##
 
 
   variants =
@@ -29,10 +33,12 @@ describe 'Moment', ->
     referenceFormat: [ "YYYY-MM-DD" ]
 
     format: [ 'calendar', 'fromNow', 'to', 'dddd, MMMM Do YYYY, h:mm:ss a' ]
-    
+
     suffix: [ false, true ]
 
     'data-unknown': [ 3 ]
+
+  ##
 
 
   tests =
@@ -42,6 +48,8 @@ describe 'Moment', ->
       skip: ( input )->=
 
         true if input.format == undefined
+
+      ##
 
       it: ( input, props, tag )->
 
@@ -75,6 +83,14 @@ describe 'Moment', ->
 
                 valid = false
 
+              ##
+
+            ##
+
+          ##
+
+        ##
+
         expect( props.className ).only( valid ).string '-enabled'
 
         expect( props.className ).only( ! valid ).string '-disabled'
@@ -91,11 +107,17 @@ describe 'Moment', ->
 
         expect( props.className ).string 'moment'
 
+      ##
+
+    ##
+
     unison:
 
       skip: ( input )->=
 
         true if input.format == undefined
+
+      ##
 
       it: ( input, component )->
 
@@ -113,7 +135,19 @@ describe 'Moment', ->
 
             inUnison = true
 
+          ##
+
+        ##
+
         expect( component.inUnison ).equal inUnison
+
+      ##
+
+    ##
+
+  ##
 
 
   TestComponent.testComponent Moment, variants, tests
+
+##

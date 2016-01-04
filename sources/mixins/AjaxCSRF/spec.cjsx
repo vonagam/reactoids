@@ -16,7 +16,7 @@ describe 'AjaxCSRF', ->
 
     AjaxCSRFed = TestMixin.createMixinClass AjaxCSRF ARGS
 
-    
+
     FUNC = undefined
 
     ajaxPrefilter = @stub AjaxCSRFed.prototype, 'addEventListener', ( key, options )->
@@ -26,6 +26,8 @@ describe 'AjaxCSRF', ->
       expect( options.event ).equal 'ajaxSend'
 
       FUNC = options.callback
+
+    ##
 
     delete AjaxCSRFed.prototype.__reactAutoBindMap[ 'addEventListener' ]
 
@@ -46,10 +48,18 @@ describe 'AjaxCSRF', ->
 
       FUNC.call component, 'event', xhr, ajaxOptions
 
+    ##
+
 
     expect( ->= token: ARGS.getToken.callCount, xhr: xhr.setRequestHeader.callCount ).not.change.when ->
 
       FUNC.call component, 'event', xhr, { crossDomain: true }
 
+    ##
+
 
     TestReact.unmount component
+
+  ##
+
+##

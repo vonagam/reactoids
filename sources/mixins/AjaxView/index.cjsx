@@ -11,22 +11,29 @@ mixin = Mixin.createArged
 
   args:
 
-    setView: React.PropTypes.func # ( that, data, url )->
-    getHistoryState: React.PropTypes.func # ( that, data, url )->= history state ( { url:, title:, data: } )
-    changeAjaxOptions: React.PropTypes.func # ( that, options )->
+    'setView': React.PropTypes.func # ( that, data, url )->
+
+    'getHistoryState': React.PropTypes.func # ( that, data, url )->= history state ( { url:, title:, data: } )
+
+    'changeAjaxOptions': React.PropTypes.func # ( that, options )->
+
+  ##
 
   defaults:
 
-    getHistoryState: ( that, data, url )->= { url: url }
-    changeAjaxOptions: _.noop
+    'getHistoryState': ( that, data, url )->= { url: url }
+
+    'changeAjaxOptions': _.noop
 
     # HistoryView
 
-    handleHistoryData: ( that, state )->
+    'handleHistoryData': ( that, state )->
 
       that.loadView state.url, 'replace'
 
-    shouldHandleLink: ( that, link )->=
+    ##
+
+    'shouldHandleLink': ( that, link )->=
 
       return false unless BaseViewMixin.defaults.shouldHandleLink that, link
 
@@ -34,13 +41,19 @@ mixin = Mixin.createArged
 
       return true
 
-    handleLink: ( that, link )->=
+    ##
+
+    'handleLink': ( that, link )->=
 
       url = _.map( [ 'pathname', 'search', 'hash' ], _.propertyOf( link ) ).join( '' )
 
       that.loadView url
 
       return true
+
+    ##
+
+  ##
 
   mixins: [ HistoryViewMixin, AjaxMixin ]
 
@@ -60,11 +73,15 @@ mixin = Mixin.createArged
 
         that.changeHistoryState position, state
 
+      ##
+
       uri = new URI url
 
       if ! /\.[^\.]+$/.test uri.pathname()
 
         uri.pathname "#{ uri.pathname() }.json"
+
+      ##
 
       ajaxOptions =
 
@@ -72,9 +89,17 @@ mixin = Mixin.createArged
         dataType: 'json'
         success: onSuccess
 
+      ##
+
       ARGS.changeAjaxOptions this, ajaxOptions
 
       @sendAjax 'AjaxViewMixin', ajaxOptions, force: true
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

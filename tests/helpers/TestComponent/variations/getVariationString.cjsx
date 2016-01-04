@@ -9,9 +9,13 @@ getVariationString = ( variation )->=
 
     "#{ key }:#{ getVariantString variant }"
 
+  ##
+
   result = result.join ' '
 
   result
-  
+
+##
+
 
 module.exports = getVariationString

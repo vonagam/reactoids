@@ -14,6 +14,8 @@ describe 'PureRender', ->
 
       componentDidMount: -> count++
 
+    ##
+
 
     component = TestReact.render <PureRendered />
 
@@ -41,3 +43,7 @@ describe 'PureRender', ->
 
 
     TestReact.unmount component
+
+  ##
+
+##

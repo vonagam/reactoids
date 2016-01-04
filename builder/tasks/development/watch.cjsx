@@ -19,14 +19,14 @@ gulp.task 'development-watch', [ 'development-build' ], ->=
     relativePath = path.relative( './', event.path )
 
     developmentPath = relativePath.replace( /^\.\./, 'build-development' ).replace( /\.\w+$/, '.js' )
-    
+
     specPath = developmentPath.replace( /(\w+)\.js$/, 'spec.js' )
 
     switch event.type
 
       when 'changed', 'renamed'
 
-        build relativePath, 
+        build relativePath,
 
           base: '../'
 
@@ -38,12 +38,26 @@ gulp.task 'development-watch', [ 'development-build' ], ->=
 
             this.destroy()
 
+          ##
+
           sourcemaps: true
+
+        ##
 
         .on 'end', ->
 
           test specPath, plumber: true
 
+        ##
+
       when 'deleted'
 
         clean developmentPath
+
+      ##
+
+    ##
+
+  ##
+
+##

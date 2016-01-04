@@ -13,6 +13,8 @@ describe 'Layered', ->
 
       <div data-id={ mark }>{ that.state.asd }</div>
 
+    ##
+
     renderFunc0 = sinon.spy _.partial renderFunc, 'func'
 
     renderFunc1 = sinon.spy _.partial renderFunc, 'temp'
@@ -26,7 +28,11 @@ describe 'Layered', ->
         asd: 1
         bsa: 2
 
+      ##
+
       renderMyLayer: renderFunc2
+
+    ##
 
 
     component = TestReact.render <Layereded />
@@ -65,3 +71,7 @@ describe 'Layered', ->
       '<div data-layer-order="3"><div data-id="my">2</div></div>'
 
     ].join( '' )
+
+  ##
+
+##

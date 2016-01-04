@@ -30,6 +30,8 @@ describe 'Router', ->
 
     window.location.href = 'http://foo.bar/'
 
+  ##
+
   after ->
 
     dependencies[ 'js-routes' ] = undefined
@@ -37,6 +39,8 @@ describe 'Router', ->
     router = undefined
 
     window.location.href = hrefBefore
+
+  ##
 
 
   checks = [
@@ -115,3 +119,9 @@ describe 'Router', ->
       expect( result.handler ).equal output.handler if output.handler
 
       expect( _.pick result.request, _.keys output.request ).eql output.request if output.request
+
+    ##
+
+  ##
+
+##

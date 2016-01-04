@@ -1,20 +1,29 @@
+# mixins
+
 OptionsInputMixin = requireSource 'mixins/OptionsInput'
-
-
-ComponentArgs = classes:
-
-  '-value': ''
-  '-readonly': ''
-  'option':
-    '-blank': ''
-    '-selected': ''
 
 
 Select = React.createClass
 
-  displayName: 'Select'
+  mixins: Mixin.resolve [
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), OptionsInputMixin ]
+    ComponentMixin
+
+      classes:
+
+        '-value': ''
+        '-readonly': ''
+        'option':
+          '-blank': ''
+          '-selected': ''
+
+      ##
+
+    ##
+
+    OptionsInputMixin
+
+  ]
 
   onChange: ( event )->
 
@@ -28,6 +37,8 @@ Select = React.createClass
 
     event.target.blur()
 
+  ##
+
   render: ->=
 
     { props, classed } = this
@@ -36,40 +47,60 @@ Select = React.createClass
 
     selectedIndex = _.findIndex options, selected: true
 
+
     <select
+
       {... @omitProps() }
+
       className={ classed '.', '-value': selectedIndex != -1, '-readonly': props.readOnly }
+
       value={ selectedIndex }
+
       onChange={ @onChange }
+
     >
+
       {
 
         if props.allowBlank
 
           <option
+
             className={ classed 'option', '-blank', '-selected': selectedIndex == -1 }
+
             value={ -1 }
+
           />
 
+        ##
+
       }
+
       {
 
         _.map options, ( option, index )->=
 
           <option
+
             key={ index }
+
             className={ classed 'option', '-selected': option.selected }
+
             value={ index }
-          >
-            {
 
-              option.label
+            children={ option.label }
 
-            }
-          </option>
+          />
+
+        ##
 
       }
+
     </select>
+
+  ##
+
+##
 
 
 module.exports = Select

@@ -38,3 +38,9 @@ describe 'classes', ->
     it "input: #{ check.title }", ->
 
       expect( classes.apply _, check.input ).equal check.output
+
+    ##
+
+  ##
+
+##

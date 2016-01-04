@@ -8,3 +8,7 @@ describe 'Field', ->
   it 'can be rendered', ->
 
     TestReact.render <Field type={ Input } />
+
+  ##
+
+##

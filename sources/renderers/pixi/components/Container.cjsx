@@ -3,8 +3,10 @@ createNode = requireSource 'renderers/pixi/helpers/createNode'
 
 PROPS =
 
-  width: 0
-  height: 0
+  'width': 0
+  'height': 0
+
+##
 
 
 Container = createNode 'Container',
@@ -13,9 +15,15 @@ Container = createNode 'Container',
 
     new PIXI.Container()
 
+  ##
+
   updatePixi: ( that, prevProps, nextProps )->
 
     that.applyRootPixiProps that.pixi, PROPS, prevProps, nextProps
+
+  ##
+
+##
 
 
 module.exports = Container

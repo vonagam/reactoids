@@ -1,38 +1,53 @@
-ComponentArgs = classes:
-  
-  {}
-
-
-doProcessing = ( props )->=
+getStateFromProps = ( props )->=
 
   processed: props.process props.source
+
+##
 
 
 Processed = React.createClass
 
-  displayName: 'Processed'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
+    ComponentMixin
+
+      classes: {}
+
+    ## 
+
+  ]
 
   propTypes:
 
-    tag: React.PropTypes.any
-    source: React.PropTypes.any
-    process: React.PropTypes.func.isRequired
+    'tag': React.PropTypes.any
+
+    'source': React.PropTypes.any
+    
+    'process': React.PropTypes.func.isRequired
+
+  ##
 
   getDefaultProps: ->=
 
-    tag: 'div'
+    'tag': 'div'
+
+  ##
 
   getInitialState: ->=
 
-    doProcessing @props
+    getStateFromProps @props
+
+  ##
 
   componentWillReceiveProps: ( nextProps )->
 
     unless _.isEqual( nextProps.source, @props.source ) && _.isEqual( nextProps.process, @props.process )
 
-      @setState doProcessing nextProps
+      @setState getStateFromProps nextProps
+
+    ##
+
+  ##
 
   render: ->=
 
@@ -40,11 +55,20 @@ Processed = React.createClass
 
     Tag = props.tag
 
+
     <Tag
+
       {... @omitProps() }
+    
       className={ classed '.' } 
+    
       dangerouslySetInnerHTML={ __html: state.processed }
+    
     />
+
+  ##
+
+##
 
 
 module.exports = Processed

@@ -31,6 +31,12 @@ describe 'Unison', ->
 
           when 1 then element.toggleMyUnison false if element.state.i == 3
 
+        ##
+
+      ##
+
+    ##
+
 
     Unisoned = TestMixin.createMixinClass Unison( ARGS ),
 
@@ -38,17 +44,27 @@ describe 'Unison', ->
 
         expect( @inMyUnison ).equal false
 
+      ##
+
       componentDidMount: ->
 
         expect( @inMyUnison ).equal true
+
+      ##
 
       getInitialState: ->=
 
         i: 0
 
+      ##
+
       render: ->=
 
         <div data-i={ @state.i } />
+
+      ##
+
+    ##
 
 
     root = TestReact.render(
@@ -73,3 +89,9 @@ describe 'Unison', ->
       TestReact.unmount root
 
       done()
+
+    ##
+
+  ##
+
+##

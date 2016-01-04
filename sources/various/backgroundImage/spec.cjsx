@@ -26,3 +26,11 @@ describe 'backgroundImage', ->
       it "#{ check.title } input: #{ input }", ->
 
         expect( backgroundImage input ).eql check.output( input )
+
+      ##
+
+    ##
+
+  ##
+
+##

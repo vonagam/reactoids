@@ -1,23 +1,33 @@
-ComponentArgs = classes:
-
-  '-enabled': ''
-  '-disabled': ''
-
-
 Image = React.createClass
 
-  displayName: 'Image'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
+    ComponentMixin
+
+      classes:
+
+        '-enabled': ''
+        '-disabled': ''
+
+      ##
+
+    ##
+
+  ]
 
   propTypes:
 
-    tag: React.PropTypes.string
-    src: React.PropTypes.string
+    'tag': React.PropTypes.string
+
+    'src': React.PropTypes.string
+
+  ##
 
   getDefaultProps: ->=
 
-    tag: 'img'
+    'tag': 'img'
+
+  ##
 
   render: ->=
 
@@ -39,11 +49,26 @@ Image = React.createClass
 
           style: _.assign {}, props.style, backgroundImage: "url(#{ src })"
 
+        ##
+
+      ##
+
+    ##
+
+
     <Tag
+
       {... @omitProps() }
+
       {... style }
+
       className={ classed '.', "-#{ if src then 'enabled' else 'disabled' }" }
+
     />
+
+  ##
+
+##
 
 
 module.exports = Image

@@ -17,6 +17,8 @@ describe 'Button', ->
 
     'data-unknown': [ 3 ]
 
+  ##
+
 
   tests =
 
@@ -35,8 +37,10 @@ describe 'Button', ->
         else
 
           expect( tag ).equal 'span'
-          
+
           expect( props.href ).equal undefined
+
+        ##
 
         # text
 
@@ -48,6 +52,8 @@ describe 'Button', ->
 
           expect( props.children ).equal input.children
 
+        ##
+
         # data-unknown
 
         expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
@@ -55,9 +61,9 @@ describe 'Button', ->
         # mix
 
         enabled = _.isString( input.href ) || input.onClick || ! _.isEmpty _.funced input.ajax
-        
+
         expect( props.className ).only( enabled ).string '-enabled'
-          
+
         expect( props.className ).only( ! enabled ).string '-disabled'
 
         # always
@@ -65,6 +71,10 @@ describe 'Button', ->
         expect( props.className ).string 'button'
 
         expect( props.className ).not.string '-waiting'
+
+      ##
+
+    ##
 
     onClick: (->=
 
@@ -74,15 +84,21 @@ describe 'Button', ->
 
         ajaxStub = sinon.stub $, 'ajax', ->= { abort: _.noop }
 
+      ##
+
       afterEach: ( input )->
 
         ajaxStub.reset()
 
         input.onClick.reset() if input.onClick
 
+      ##
+
       after: ->
 
         ajaxStub.restore()
+
+      ##
 
       it: ( input, component )->
 
@@ -108,5 +124,9 @@ describe 'Button', ->
 
     )()
 
+  ##
+
 
   TestComponent.testComponent Button, variants, tests
+
+##

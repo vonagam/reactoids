@@ -1,3 +1,5 @@
+# mixins
+
 StringedMixin = requireSource 'mixins/Stringed'
 
 
@@ -8,36 +10,54 @@ PAGES =
   next: ( current, total )->= if current == total - 1 then undefined else current + 1
   last: ( current, total )->= total - 1
 
-
-ComponentArgs = classes:
-
-  'separator': ''
-  'button':
-    '-number': ''
-    '-named': ''
-    '-enabled': ''
-    '-disabled': ''
-    '-current': ''
-
-StringedArgs = strings: [ 'first', 'prev', 'next', 'last' ]
+##
 
 
 Paginator = React.createClass
 
-  displayName: 'Paginator'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), StringedMixin( StringedArgs ) ]
+    ComponentMixin
+
+      classes:
+
+        'separator': ''
+        'button':
+          '-number': ''
+          '-named': ''
+          '-enabled': ''
+          '-disabled': ''
+          '-current': ''
+
+      ##
+
+    ##
+
+    StringedMixin
+
+      strings: [ 'first', 'prev', 'next', 'last' ]
+
+    ##
+
+  ]
 
   propTypes:
 
-    current: React.PropTypes.number.isRequired
-    total: React.PropTypes.number.isRequired
-    size: React.PropTypes.number.isRequired
-    url: React.PropTypes.func.isRequired # ( page )->=
+    'current': React.PropTypes.number.isRequired
+
+    'total': React.PropTypes.number.isRequired
+    
+    'size': React.PropTypes.number.isRequired
+    
+    'url': React.PropTypes.func.isRequired # ( page )->=
+
+  ##
 
   getDefaultProps: ->=
 
-    size: 2
+    'size': 2
+
+  ##
 
   render: ->=
 
@@ -84,15 +104,18 @@ Paginator = React.createClass
 
         _.append items, _.range total - side, total
 
+      ##
+
+    ##
+
     _.prepend items, [ 'first', 'prev' ]
 
     _.append items, [ 'next', 'last' ]
 
-    <div
-      {... @omitProps() }
-      className={ classed '.' }
-    >
-      { 
+
+    <div {... @omitProps() } className={ classed '.' }>
+
+      {
 
         _.map items, ( item, index )->=
 
@@ -118,35 +141,48 @@ Paginator = React.createClass
 
               content = stringed item
 
+            ##
+
             isCurrent = page == current
 
             isEnabled = page != undefined && page != current
 
             key = 'c' + key if isEnabled # https://github.com/facebook/react/issues/1448
 
+
             <a
+
               key={ key }
+            
               className={ classed 'button', type, "-#{ if isEnabled then 'enabled' else 'disabled' }", '-current': isCurrent }
+            
               href={ if isEnabled then props.url page else undefined }
-            >
-              {
 
-                content
+              children={ content }
 
-              }
-            </a>
+            />
 
           else
 
             <span
+
               key={ 's' + index }
+
               className={ classed 'separator' }
+
             />
+
+          ##
 
         , this
 
       }
+
     </div>
+
+  ##
+
+##
 
 
 module.exports = Paginator

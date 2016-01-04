@@ -1,7 +1,7 @@
 describe 'ExternalStore', ->
 
   ExternalStore = requireSubject()
-  
+
 
   it 'works', ->
 
@@ -15,6 +15,8 @@ describe 'ExternalStore', ->
       get: ( that )->= storedValue
 
       set: ( that, value )-> storedValue = value
+
+    ##
 
 
     ExternalStored = TestMixin.createMixinClass ExternalStore( ARGS )
@@ -47,3 +49,7 @@ describe 'ExternalStore', ->
 
 
     TestReact.unmount component
+
+  ##
+
+##

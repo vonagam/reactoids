@@ -15,6 +15,8 @@ runShallowTest = ( Component, props, options, test )->
 
     options = {}
 
+  ##
+
   context = _.defaults {}, options.context, {
 
     getClassNames: getClassNames
@@ -25,6 +27,8 @@ runShallowTest = ( Component, props, options, test )->
   result = TestReact.renderShallow <Component {... props } />, context
 
   test result.props, result.type
+
+##
 
 
 module.exports = runShallowTest

@@ -45,6 +45,8 @@ getMergedFunceds = ( values, context )->=
 
   , {}
 
+##
+
 
 mergeStatics = ( mixins, Component )->
 
@@ -58,7 +60,15 @@ mergeStatics = ( mixins, Component )->
 
         return
 
+      ##
+
       Component[ key ] = value
+
+    ##
+
+  ##
+
+##
 
 
 mergeTypesMembers = ( mixins, Component )->
@@ -77,14 +87,24 @@ mergeTypesMembers = ( mixins, Component )->
 
             return
 
+          ##
+
           result[ key ] = value
 
       , {}
+
+    ##
+
+  ##
+
+##
 
 
 mergeDefaultProps = ( mixins, Component )->
 
   Component.defaultProps = getMergedFunceds _.map mixins, 'getDefaultProps'
+
+##
 
 
 mergeFuncMembers = ( mixins, Component )->
@@ -109,6 +129,8 @@ mergeFuncMembers = ( mixins, Component )->
 
             return true if true == func.apply this, arguments
 
+          ##
+
           return false
 
       else
@@ -118,6 +140,18 @@ mergeFuncMembers = ( mixins, Component )->
           for func in funcs
 
             func.apply this, arguments
+
+          ##
+
+        ##
+
+      ##
+
+    ##
+
+  ##
+
+##
 
 
 transferCustomMembers = ( mixins, Component )->
@@ -136,7 +170,15 @@ transferCustomMembers = ( mixins, Component )->
 
         return
 
+      ##
+
       proto[ key ] = value
+
+    ##
+
+  ##
+
+##
 
 
 createComponent = ( scheme )->=
@@ -155,6 +197,8 @@ createComponent = ( scheme )->=
 
     @state = getMergedFunceds getInitialStates, this
 
+  ##
+
   Component.displayName = scheme.displayName
 
   prototype = Component.prototype
@@ -162,7 +206,7 @@ createComponent = ( scheme )->=
   prototype.mixins = mixins
 
   prototype.construct = _.noop # unnecessary but required by React method
-  
+
   mergeStatics mixins, Component
 
   mergeTypesMembers mixins, Component
@@ -174,6 +218,8 @@ createComponent = ( scheme )->=
   transferCustomMembers mixins, Component
 
   Component
+
+##
 
 
 module.exports = createComponent

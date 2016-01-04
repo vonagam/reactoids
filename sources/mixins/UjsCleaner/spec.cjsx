@@ -20,3 +20,7 @@ describe 'UjsCleaner', ->
     expect( root.getAttribute 'data-check' ).equal 'exist'
 
     TestReact.unmount root
+
+  ##
+
+##

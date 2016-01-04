@@ -1,32 +1,43 @@
-ComponentArgs = classes: 
-
-  '-unknown': ''
-
-
 Icon = React.createClass
 
-  displayName: 'Icon'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
+    ComponentMixin
+
+      classes: 
+
+        '-unknown': ''
+
+      ##
+
+    ##
+
+  ]
 
   propTypes:
 
-    icon: React.PropTypes.string.isRequired
+    'icon': React.PropTypes.string.isRequired
+
+  ##
 
   render: ->=
 
     { props, classed } = this
 
-    icon = classed "-#{ props.icon }"
+    icon = classed( "-#{ props.icon }" ) || classed( '-unknown' )
 
-    if ! icon
 
-      icon = classed "-unknown"
+    <i 
 
-    <i
       {... @omitProps() }
-      className={ @mergeClassNames @classed( '.' ), icon }
+
+      className={ @mergeClassNames classed( '.' ), icon }
+
     />
+
+  ##
+
+##
 
 
 module.exports = Icon

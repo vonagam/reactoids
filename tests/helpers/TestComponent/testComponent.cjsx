@@ -15,6 +15,8 @@ testComponent = ( Component, values, options, tests )->
 
     options = {}
 
+  ##
+
   variations = getVariations values
 
   _.each tests, ( test, name )->
@@ -31,6 +33,8 @@ testComponent = ( Component, values, options, tests )->
 
         runTest = runRenderTest
 
+      ##
+
       test = { it: test } if _.isFunction test
 
       test.before() if test.before
@@ -43,6 +47,8 @@ testComponent = ( Component, values, options, tests )->
 
         return true
 
+      ##
+
       this.timeout 2000 + variations.length * 3
 
       _.each variations, ( variation )->
@@ -52,6 +58,8 @@ testComponent = ( Component, values, options, tests )->
         try
 
           runTest Component, variation, options, _.partial test.it, variation
+
+        ##
 
         catch error
 
@@ -67,9 +75,17 @@ testComponent = ( Component, values, options, tests )->
 
             problems.push problem
 
+          ##
+
+        ##
+
         finally
 
           test.afterEach variation if test.afterEach
+
+        ##
+
+      ##
 
       test.after() if test.after
 
@@ -84,6 +100,14 @@ testComponent = ( Component, values, options, tests )->
         error.message = "#{ reasons }: #{ error.message }"
 
         throw error
+
+      ##
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = testComponent

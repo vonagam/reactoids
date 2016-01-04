@@ -66,6 +66,10 @@ _.each AUTO_REQUIRES, ( autoRequire )->
 
     return used.test content
 
+  ##
+
+##
+
 
 sourcesDirectoryPath = path.resolve '../sources'
 
@@ -90,6 +94,10 @@ build = ( src, options = {} )->=
 
           content = "#{ autoRequire.variable } = require#{ autoRequire.type } '#{ autoRequire.module }';" + content
 
+        ##
+
+      ##
+
       content = content.replace /requireSubject\(\)/g, 'require("./index")'
 
       content = content.replace /requireDependency\s'([^']+)'/g, "requireSource('dependencies')['$1']"
@@ -100,6 +108,8 @@ build = ( src, options = {} )->=
 
       content
 
+    ##
+
     $.sourcemaps.init() if options.sourcemaps
 
     $.coffeeReactVoid bare: true
@@ -109,6 +119,8 @@ build = ( src, options = {} )->=
     gulp.dest options.dest
 
   ]
+
+##
 
 
 module.exports = build

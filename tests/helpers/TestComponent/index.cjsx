@@ -16,5 +16,7 @@ TestComponent =
 
   testComponent: require './testComponent'
 
+##
+
 
 module.exports = TestComponent

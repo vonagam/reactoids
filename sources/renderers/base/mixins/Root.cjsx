@@ -8,9 +8,13 @@ mixin = Mixin.createArged
 
   args:
 
-    rootDidMount: React.PropTypes.func # ( that )->
-    rootDidUpdate: React.PropTypes.func # ( that, prevProps, prevState, prevContext )->
-    rootRender: React.PropTypes.func # ( that )->
+    'rootDidMount': React.PropTypes.func # ( that )->
+
+    'rootDidUpdate': React.PropTypes.func # ( that, prevProps, prevState, prevContext )->
+
+    'rootRender': React.PropTypes.func # ( that )->
+
+  ##
 
   mixins: [ ContainerMixin ]
 
@@ -19,7 +23,7 @@ mixin = Mixin.createArged
     performOnChildren = ( that, method )->
 
       transaction = ReactUpdates.ReactReconcileTransaction.getPooled()
-      
+
       transaction.perform(
 
         method
@@ -29,10 +33,12 @@ mixin = Mixin.createArged
         ReactInstanceMap.get( that )._context
 
       )
-      
+
       ReactUpdates.ReactReconcileTransaction.release transaction
 
       ARGS.rootRender that
+
+    ##
 
 
     mixins: [ ContainerMixin( ContainerMixin.pick ARGS ) ]
@@ -43,15 +49,25 @@ mixin = Mixin.createArged
 
       performOnChildren this, @mountAndCreateChildren
 
+    ##
+
     componentDidUpdate: ( prevProps, prevState, prevContext )->
 
       ARGS.rootDidUpdate this, prevProps, prevState, prevContext
 
       performOnChildren this, @updateChildren
 
+    ##
+
     componentWillUnmount: ->
 
       @unmountChildren()
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

@@ -11,6 +11,8 @@ describe 'BaseView', ->
 
       /hello/.test link.href
 
+    ##
+
 
     BaseViewed = TestMixin.createMixinClass BaseView( handleLink: handleLink )
 
@@ -47,3 +49,7 @@ describe 'BaseView', ->
 
 
     TestReact.unmount component
+
+  ##
+
+##

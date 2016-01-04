@@ -10,5 +10,11 @@ eacho = ( _ )->=
 
       iteratee.call thisArg, value
 
+    ##
+
+  ##
+
+##
+
 
 module.exports = eacho

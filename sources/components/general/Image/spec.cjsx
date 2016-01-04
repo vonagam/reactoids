@@ -13,6 +13,8 @@ describe 'Image', ->
 
     'data-unknown': [ 3 ]
 
+  ##
+
 
   tests =
 
@@ -46,6 +48,8 @@ describe 'Image', ->
 
           expect( _.get props, 'style.backgroundImage' ).equal _.get input, 'style.backgroundImage'
 
+        ##
+
         # style
 
         expect( _.get props, 'style.display' ).equal _.get input, 'style.display'
@@ -58,5 +62,13 @@ describe 'Image', ->
 
         expect( props.className ).string 'image'
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Image, variants, tests
+
+##

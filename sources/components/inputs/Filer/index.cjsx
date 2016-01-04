@@ -1,31 +1,51 @@
 #§global 'FileReader', 'window'
+
+# mixins
+
 StringedMixin = requireSource 'mixins/Stringed'
+
 InputMixin = requireSource 'mixins/Input'
+
 DomMixin = requireSource 'mixins/Dom'
+
 PureRenderMixin = requireSource 'mixins/PureRender'
+
+# components
 
 Button = requireSource 'elements/button'
 
 
 File = React.createClass
 
-  displayName: 'File'
+  mixins: [
 
-  mixins: [ PureRenderMixin, DomMixin ]
+    PureRenderMixin
+
+    DomMixin
+
+  ]
 
   propTypes:
 
-    file: React.PropTypes.any
-    preview: React.PropTypes.bool
-    classed: React.PropTypes.func
-    stringed: React.PropTypes.func
-    onRemove: React.PropTypes.func
+    'file': React.PropTypes.any
+
+    'preview': React.PropTypes.bool
+
+    'classed': React.PropTypes.func
+
+    'stringed': React.PropTypes.func
+
+    'onRemove': React.PropTypes.func
+
+  ##
 
   onDataUrlLoad: ( reader )->
 
     return unless @isMounted()
 
     @dom( 'preview' ).src = reader.result
+
+  ##
 
   createDataUrl: ->=
 
@@ -35,11 +55,17 @@ File = React.createClass
 
     reader.readAsDataURL @props.file
 
+  ##
+
   componentDidMount: ->
 
     if @props.preview
 
       @createDataUrl()
+
+    ##
+
+  ##
 
   componentDidUpdate: ( prevProps )->
 
@@ -47,11 +73,19 @@ File = React.createClass
 
       @createDataUrl()
 
+    ##
+
+  ##
+
   componentWillReceiveProps: ( nextProps )->
 
     if @props.preview && nextProps.file != @props.file
 
-      @dom( 'preview' ).src = '' 
+      @dom( 'preview' ).src = ''
+
+    ##
+
+  ##
 
   render: ->=
 
@@ -59,62 +93,86 @@ File = React.createClass
 
     { file, classed, stringed } = props
 
+
     <div className={ classed 'file' }>
-      <div className={ classed 'name' }>{ file.name }</div>
-      { 
+
+      <div className={ classed 'name' } children={ file.name } />
+
+      {
 
         <img ref='preview' className={ classed 'preview' } /> if props.preview
 
       }
-      <Button
-        className={ classed 'remove' }
-        onClick={ props.onRemove }
-        text={ stringed 'remove' }
-      />
+
+      <Button className={ classed 'remove' } onClick={ props.onRemove } text={ stringed 'remove' } />
+
     </div>
 
+  ##
 
-ComponentArgs = classes:
-
-  '-readonly': ''
-  '-multiple': ''
-  '-empty': ''
-  '-filled': ''
-  '-dragging': ''
-  'files':
-    'file':
-      'name': ''
-      'preview': ''
-      'remove': ''
-  'dropzone':
-    'drop': ''
-  'actions':
-    'action':
-      '-select': ''
-      '-clear': ''
-
-StringedArgs = strings: [ 'select', 'clear', 'remove', 'drop' ]
+##
 
 
 Filer = React.createClass
 
-  displayName: 'Filer'
+  mixins: Mixin.resolve [
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), StringedMixin( StringedArgs ), InputMixin ]
+    ComponentMixin
+
+      classes:
+
+        '-readonly': ''
+        '-multiple': ''
+        '-empty': ''
+        '-filled': ''
+        '-dragging': ''
+        'files':
+          'file':
+            'name': ''
+            'preview': ''
+            'remove': ''
+        'dropzone':
+          'drop': ''
+        'actions':
+          'action':
+            '-select': ''
+            '-clear': ''
+
+      ##
+
+    ##
+
+    StringedMixin
+
+      strings: [ 'select', 'clear', 'remove', 'drop' ]
+
+    ##
+
+    InputMixin
+
+  ]
 
   propTypes:
 
-    multiple: React.PropTypes.bool
-    preview: React.PropTypes.bool
+    'multiple': React.PropTypes.bool
+
+    'preview': React.PropTypes.bool
+
+  ##
 
   getDefaultProps: ->=
 
-    multiple: false
-    preview: true
+    'multiple': false
+
+    'preview': true
+
+  ##
 
   getInitialState: ->=
 
     dragging: false
+
+  ##
 
   onChange: ( event )->
 
@@ -132,7 +190,11 @@ Filer = React.createClass
 
       value = files[ 0 ]
 
+    ##
+
     @setValue value
+
+  ##
 
   onFileRemove: ( file )->
 
@@ -150,19 +212,29 @@ Filer = React.createClass
 
       value = undefined if file == currentValue
 
+    ##
+
     @setValue value
+
+  ##
 
   onSelectClick: ->
 
     @dom( 'input' ).click()
 
+  ##
+
   onLabelClick: ->
 
     @onSelectClick()
 
+  ##
+
   onClearClick: ->
 
     @setValue undefined
+
+  ##
 
   componentWillReceiveProps: ( next_props )->
 
@@ -170,9 +242,15 @@ Filer = React.createClass
 
       @dom( 'input' ).value = ''
 
+    ##
+
+  ##
+
   onDragLeave: ->
 
     @setState dragging: false
+
+  ##
 
   onDragOver: ( event )->
 
@@ -182,6 +260,8 @@ Filer = React.createClass
 
     event.preventDefault()
 
+  ##
+
   onDrop: ( event )->
 
     @setState dragging: false
@@ -190,17 +270,22 @@ Filer = React.createClass
 
     event.preventDefault()
 
+  ##
+
   render: ->=
 
     { props, classed, stringed } = this
 
     value = @getValue()
 
-    <div
-      {... @omitProps() }
-      className={ 
 
-        classed( '.', 
+    <div
+
+      {... @omitProps() }
+
+      className={
+
+        classed( '.',
 
           "-#{ if value then 'filled' else 'empty' }"
           '-readonly': props.readOnly
@@ -210,8 +295,11 @@ Filer = React.createClass
         )
 
       }
+
     >
+
       <div className={ classed 'files' }>
+
         {
 
           if value
@@ -219,47 +307,88 @@ Filer = React.createClass
             _.map _.wrapInArray( value ), ( file, index )->=
 
               <File
+
                 key={ index }
+
                 file={ file }
+
                 preview={ props.preview }
+
                 classed={ classed }
+
                 stringed={ stringed }
+
                 onRemove={ @_partial @onFileRemove, file }
+
               />
 
             , this
 
+          ##
+
         }
+
       </div>
+
       <div
+
         className={ classed 'dropzone' }
+
         onClick={ @onLabelClick }
+
         onDragLeave={ @onDragLeave }
+
         onDragOver={ @onDragOver }
+
         onDrop={ @onDrop }
-      >
-        <div className={ classed 'drop' }>{ stringed 'drop' }</div>
-      </div>
-      <div className={ classed 'actions' }>
-        <Button
-          className={ classed 'action', '-select' }
-          onClick={ @onSelectClick }
-          text={ stringed 'select', value: value, multiple: props.multiple }
-        />
-        <Button
-          className={ classed 'action', '-clear' }
-          onClick={ @onClearClick if value }
-          text={ stringed 'crear' }
-        />
-      </div>
-      <input
-        ref='input'
-        style={ display: 'none' }
-        type='file'
-        multiple={ props.multiple }
-        onChange={ @onChange }
+
+        children={ <div className={ classed 'drop' } children={ stringed 'drop' } /> }
+
       />
+
+      <div className={ classed 'actions' }>
+
+        <Button
+
+          className={ classed 'action', '-select' }
+
+          onClick={ @onSelectClick }
+
+          text={ stringed 'select', value: value, multiple: props.multiple }
+
+        />
+
+        <Button
+
+          className={ classed 'action', '-clear' }
+
+          onClick={ @onClearClick if value }
+
+          text={ stringed 'crear' }
+
+        />
+
+      </div>
+
+      <input
+
+        ref='input'
+
+        style={ display: 'none' }
+
+        type='file'
+
+        multiple={ props.multiple }
+
+        onChange={ @onChange }
+
+      />
+
     </div>
+
+  ##
+
+##
 
 
 module.exports = Filer

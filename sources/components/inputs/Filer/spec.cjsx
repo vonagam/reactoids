@@ -6,3 +6,7 @@ describe 'Filer', ->
   it 'can be rendered', ->
 
     TestReact.render <Filer />
+
+  ##
+
+##

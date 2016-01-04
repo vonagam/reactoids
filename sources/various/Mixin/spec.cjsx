@@ -42,11 +42,21 @@ describe 'Mixin', ->
 
           mixin.componentWillMount.apply component
 
+        ##
+
         _.each check, ( spy, key )-> 
 
           expect( spy ).callCount if key == 'initConstants' then 1 else 2
 
+        ##
+
         expect( component ).eql if check.getInitialMembers then { member: 'check' } else {}
+
+      ##
+
+    ##
+
+  ##
 
 
   describe '.createArged', ->
@@ -60,15 +70,23 @@ describe 'Mixin', ->
           asd: React.PropTypes.number
           bsa: React.PropTypes.number
 
+        ##
+
         defaults:
 
           bsa: 2
+
+        ##
 
         mixin: ( ARGS )->=
 
           getInitialMembers: ->= member0: ARGS.asd, member1: ARGS.bsa
 
           componentWillMount: _.noop
+
+        ##
+
+      ##
 
 
       expect( -> mixinFunc() ).throw()
@@ -81,6 +99,10 @@ describe 'Mixin', ->
       mixin.componentWillMount.apply component
 
       expect( component ).eql { member0: 1, member1: 2 }
+
+    ##
+
+  ##
 
 
   describe '.resolve', ->
@@ -104,3 +126,9 @@ describe 'Mixin', ->
         }
 
       ]
+
+    ##
+
+  ##
+
+##

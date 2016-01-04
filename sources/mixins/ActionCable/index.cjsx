@@ -7,13 +7,19 @@ mixin = Mixin.createArged
 
   args:
 
-    url: React.PropTypes.string
-    timeout: React.PropTypes.number
+    'url': React.PropTypes.string
+
+    'timeout': React.PropTypes.number
+
+  ##
 
   defaults:
 
-    url: '/cable'
-    timeout: 1000
+    'url': '/cable'
+
+    'timeout': 1000
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -21,7 +27,7 @@ mixin = Mixin.createArged
 
     count = 0
 
-    timeoutId = undefined 
+    timeoutId = undefined
 
     openConnection = ->
 
@@ -34,6 +40,10 @@ mixin = Mixin.createArged
       else if count == 1 && consumer.connection.isState 'closed'
 
         consumer.connection.open()
+
+      ##
+
+    ##
 
     closeConnection = ->
 
@@ -51,10 +61,16 @@ mixin = Mixin.createArged
 
         , ARGS.timeout
 
+      ##
+
+    ##
+
 
     getInitialMembers: ->=
 
       _cables: {}
+
+    ##
 
     connectCable: ( name, channel, mixin )->
 
@@ -66,15 +82,21 @@ mixin = Mixin.createArged
 
         name = if _.isString channel then channel else channel.channel
 
+      ##
+
       if mixin
 
         mixin = _.mapValues mixin, ( ( value )->= _.bind value, this ), this
+
+      ##
 
       throw new Error "ActionCableMixin: cable with name '#{ name }' is already connected" if @_cables[ name ]
 
       openConnection()
 
       @_cables[ name ] = consumer.subscriptions.create channel, mixin
+
+    ##
 
     disconnectCable: ( name )->
 
@@ -86,13 +108,19 @@ mixin = Mixin.createArged
 
       closeConnection()
 
+    ##
+
     sendCable: ( name, data )->
 
       @_cables[ name ].send data
 
+    ##
+
     performCable: ( name, action, data )->
 
       @_cables[ name ].perform action, data
+
+    ##
 
     componentWillUnmount: ->
 
@@ -101,6 +129,12 @@ mixin = Mixin.createArged
         @disconnectCable name
 
       , this
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

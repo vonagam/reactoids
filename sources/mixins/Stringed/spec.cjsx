@@ -48,6 +48,10 @@ describe 'Stringed', ->
             <span>{ @stringed 'bsa' }</span>
           </div>
 
+        ##
+
+      ##
+
       expect( TestReact.renderShallow(
 
         <MyStringeded {... check.props } />,
@@ -62,3 +66,9 @@ describe 'Stringed', ->
         </div>
 
       )
+
+    ##
+
+  ##
+
+##

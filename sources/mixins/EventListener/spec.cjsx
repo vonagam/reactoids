@@ -14,15 +14,19 @@ describe 'EventListener', ->
 
     EventListener = requireSubject()
 
+  ##
+
   after ->
 
     dependencies[ 'jquery' ] = jQueryBefore
 
     EventListener = undefined
 
+  ##
+
 
   it 'works', sinon.test ->
-    
+
     addStub = @stub jQuery, 'on'
 
     removeStub = @stub jQuery, 'off'
@@ -37,10 +41,12 @@ describe 'EventListener', ->
 
 
     expect( ->= count: addStub.callCount, evented: addStub.calledWith 'someEvent' ).change
-    
+
     .from( count: 0, evented: false ).to( count: 1, evented: true ).when ->
 
       component.addEventListener 'someListener', event: 'someEvent', callback: callback
+
+    ##
 
 
     expect( ->= callback.callCount ).change
@@ -49,9 +55,17 @@ describe 'EventListener', ->
 
       addStub.firstCall.args[ 1 ]()
 
+    ##
+
 
     expect( ->= count: removeStub.callCount, evented: removeStub.calledWith 'someEvent' ).change
-    
+
     .from( count: 0, evented: false ).to( count: 1, evented: true ).when ->
 
       component.removeEventListener 'someListener'
+
+    ##
+
+  ##
+
+##

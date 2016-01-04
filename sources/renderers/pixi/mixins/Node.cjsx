@@ -5,28 +5,30 @@ BaseNodeMixin = requireSource 'renderers/base/mixins/Node'
 
 PROPS =
 
-  position: new PIXI.Point 0, 0
-  scale: new PIXI.Point 1, 1
-  pivot: new PIXI.Point 0, 0
-  rotation: 0
-  alpha: 1
-  visible: true
-  renderable: true
-  filterArea: null
-  cacheAsBitmap: false
+  'position': new PIXI.Point 0, 0
+  'scale': new PIXI.Point 1, 1
+  'pivot': new PIXI.Point 0, 0
+  'rotation': 0
+  'alpha': 1
+  'visible': true
+  'renderable': true
+  'filterArea': null
+  'cacheAsBitmap': false
 
-  x: 0
-  y: 0
-  mask: null
-  filters: null
+  'x': 0
+  'y': 0
+  'mask': null
+  'filters': null
 
-  hitArea: null
-  interactive: false
-  buttonMode: false
-  interactiveChildren: true
-  defaultCursor: 'pointer'
+  'hitArea': null
+  'interactive': false
+  'buttonMode': false
+  'interactiveChildren': true
+  'defaultCursor': 'pointer'
 
-EVENTS = 
+##
+
+EVENTS =
 
   _.transform( [
 
@@ -53,6 +55,8 @@ EVENTS =
 
   , {} )
 
+##
+
 
 undefnull = ( value )->= value == undefined || value == null
 
@@ -73,6 +77,10 @@ applyRootPixiProps = ( target, scheme, prev, next )->=
 
       changeIsMade = true
 
+    ##
+
+  ##
+
   for key of next
 
     continue unless scheme.hasOwnProperty key
@@ -83,7 +91,13 @@ applyRootPixiProps = ( target, scheme, prev, next )->=
 
       changeIsMade = true
 
+    ##
+
+  ##
+
   changeIsMade
+
+##
 
 # This can be slightly rewritten, but let's keep them similar
 
@@ -101,6 +115,10 @@ applyEventPixiProps = ( target, scheme, prev, next )->=
 
       changeIsMade = true
 
+    ##
+
+  ##
+
   for key of next
 
     continue unless scheme.hasOwnProperty key
@@ -113,13 +131,21 @@ applyEventPixiProps = ( target, scheme, prev, next )->=
 
       changeIsMade = true
 
+    ##
+
+  ##
+
   changeIsMade
+
+##
 
 applyBasePixiProps = ( that, prevProps, nextProps )->
 
   applyRootPixiProps that.pixi, PROPS, prevProps, nextProps
 
   applyEventPixiProps that.pixi, EVENTS, prevProps, nextProps
+
+##
 
 
 mixin = Mixin.createArged
@@ -128,6 +154,8 @@ mixin = Mixin.createArged
 
     createPixi: React.PropTypes.func # ( that, props )->=
     updatePixi: React.PropTypes.func # ( that, prevProps, nextProps )->
+
+  ##
 
   mixins: [ BaseNodeMixin ]
 
@@ -139,11 +167,15 @@ mixin = Mixin.createArged
 
         that.pixi
 
+      ##
+
       nodeCreate: ( that, props )->=
 
         that.pixi = ARGS.createPixi that, props
 
         that.pixi
+
+      ##
 
       nodeUpdate: ( that, prevProps, nextProps )->
 
@@ -151,14 +183,24 @@ mixin = Mixin.createArged
 
         ARGS.updatePixi that, prevProps, nextProps
 
+      ##
+
       nodeDestroy: ( that )->
 
         that.pixi.destroy()
+
+      ##
+
+    ##
 
 
     mixins: [ BaseNodeMixin( _.assign {}, BaseContainerArgs, BaseNodeArgs ) ]
 
     applyRootPixiProps: applyRootPixiProps
+
+  ##
+
+##
 
 
 module.exports = mixin

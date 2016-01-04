@@ -1,6 +1,12 @@
+# dependencies
+
 $ = requireDependency 'jquery'
 
+# mixins
+
 TimerMixin = requireSource 'mixins/Timer'
+
+# components
 
 Button = requireSource 'components/general/Button'
 
@@ -23,9 +29,13 @@ isShownInContainer = ( $container, nodeTop, nodeBottom )->=
 
     return false if containerScroll > nodeLocalBottom || containerScroll + containerHeight < nodeLocalBottom
 
+  ##
+
   return true if $container[ 0 ] == window || $container[ 0 ] == document.body
 
   return isShownInContainer $container.parent(), nodeTop, nodeBottom
+
+##
 
 isShown = ( that )->=
 
@@ -39,6 +49,8 @@ isShown = ( that )->=
 
   return isShownInContainer $node.parent(), nodeTop, nodeBottom
 
+##
+
 isVisible = ( that )->=
 
   $node = $ that.dom()
@@ -50,6 +62,8 @@ isVisible = ( that )->=
     ( index, element )->= $( element ).css( 'opacity' ) == '0' || $( element ).css( 'visibility' ) == 'hidden'
 
   ).length == 0
+
+##
 
 doScrollenCheck = ( that )->
 
@@ -66,32 +80,44 @@ doScrollenCheck = ( that )->
 
     $( that.dom() ).trigger 'click'
 
+  ##
 
-ComponentArgs =
-
-  classes:
-
-    {}
+##
 
 
 Scrollen = React.createClass
 
-  displayName: 'Scrollen'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), TimerMixin ]
+    ComponentMixin
+
+      classes: {}
+
+    ##
+
+    TimerMixin 
+
+  ]
 
   propTypes:
 
-    tag: React.PropTypes.any
+    'tag': React.PropTypes.any
+
+  ##
 
   getDefaultProps: ->=
 
-    tag: Button
+    'tag': Button
+
+  ##
 
   getInitialMembers: ->=
 
     visible: false
+
     shown: false
+
+  ##
 
   componentDidMount: ->
 
@@ -99,16 +125,26 @@ Scrollen = React.createClass
 
     setInterval 'checks', doScrollenCheck, 100, this
 
+  ##
+
   render: ->=
 
     { props, classed } = this
 
     Tag = props.tag
 
+
     <Tag
+
       {... @omitProps() }
+    
       className={ classed '.' }
+    
     />
+
+  ##
+
+##
 
 
 module.exports = Scrollen

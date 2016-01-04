@@ -9,17 +9,21 @@ describe 'HistoryView', ->
 
     window.location.href = 'http://foo.bar'
 
+  ##
+
   after ->
 
     window.location.href = hrefBefore
 
-  
+  ##
+
+
   it 'works', ->
 
     ARGS =
 
       getHistoryId: 'myId'
-    
+
       getHistoryData: sinon.spy ( that )->= that.state.history
 
       handleHistoryData: sinon.spy ( that, data, callback )->= that.setState history: data, callback
@@ -30,7 +34,13 @@ describe 'HistoryView', ->
 
           that.changeHistoryState 'push', url: 'myUrl', title: 'myTitle'
 
+        ##
+
         return true
+
+      ##
+
+    ##
 
 
     HistoryViewed = TestMixin.createMixinClass HistoryView( ARGS ),
@@ -38,6 +48,10 @@ describe 'HistoryView', ->
       getInitialState: ->=
 
         history: 'start'
+
+      ##
+
+    ##
 
 
     stubs =
@@ -48,12 +62,14 @@ describe 'HistoryView', ->
 
       addEventListener: sinon.stub window, 'addEventListener'
 
+    ##
+
 
     component = TestReact.render <HistoryViewed><a href='http://foo.bar/hello/world' /></HistoryViewed>
 
 
     expect( ARGS.getHistoryData ).callCount 2
-    
+
     expect( ARGS.handleHistoryData ).callCount 0
 
     expect( stubs.pushState ).callCount 0
@@ -112,3 +128,7 @@ describe 'HistoryView', ->
     _.each stubs, ( stub )-> stub.restore()
 
     TestReact.unmount component
+
+  ##
+
+##

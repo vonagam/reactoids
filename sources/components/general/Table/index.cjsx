@@ -6,31 +6,43 @@ toProps = ( value )->=
 
   return { children: value }
 
-
-ComponentArgs = classes: 
-
-  'table':
-    'head':
-      'row': ''
-      'cell': ''
-    'body':
-      'row': ''
-      'cell': '' 
-    'foot': ''
+##
 
 
 Table = React.createClass
 
-  displayName: 'Table'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ) ]
+    ComponentMixin
+
+      classes: 
+
+        'table':
+          'head':
+            'row': ''
+            'cell': ''
+          'body':
+            'row': ''
+            'cell': ''
+          'foot': ''
+
+      ##
+
+    ##
+
+  ]
 
   propTypes:
 
-    collection: React.PropTypes.array.isRequired
-    columns: React.PropTypes.collection.isRequired
-    tfoot: React.PropTypes.any
-    tr: React.PropTypes.funced React.PropTypes.object
+    'collection': React.PropTypes.array.isRequired
+
+    'columns': React.PropTypes.collection.isRequired
+    
+    'tfoot': React.PropTypes.any
+    
+    'tr': React.PropTypes.funced React.PropTypes.object
+
+  ##
 
   render: ->=
 
@@ -38,43 +50,43 @@ Table = React.createClass
 
     { collection, columns } = props
 
-    <table
-      {... @omitProps() }
-      className={ classed '.' }
-    >
+
+    <table {... @omitProps() } className={ classed '.' }>
+
       <thead className={ classed 'head' }>
+
         <tr className={ classed 'head.row' }>
+
           { 
-            
+
             _.map columns, ( column, key )->=
 
               th = toProps _.funced column.th, column, key, columns
 
-              <th
-                key={ key }
-                {... th }
-                className={ @mergeClassNames classed( 'head.cell' ), th.className }
-              />
+
+              <th key={ key } {... th } className={ @mergeClassNames classed( 'head.cell' ), th.className } />
 
             , this
 
           }
+
         </tr>
+
       </thead>
+
       <tbody className={ classed 'body' }>
+
         {
 
           _.map collection, ( item, index )->=
 
             tr = _.funced( props.tr, item, index, collection ) || {}
 
-            <tr
-              key={ index }
-              {... tr }
-              className={ @mergeClassNames classed( 'body.row' ), tr.className }
-            >
+
+            <tr key={ index } {... tr } className={ @mergeClassNames classed( 'body.row' ), tr.className }>
+
               {
-              
+
                 _.map columns, ( column, key )->=
 
                   td = column.td
@@ -87,35 +99,34 @@ Table = React.createClass
 
                     td = toProps _.funced td, item, column
 
-                  <td
-                    key={ key }
-                    {... td }
-                    className={ @mergeClassNames classed( 'body.cell' ), td.className }
-                  />
+                  ##
+
+
+                  <td key={ key } {... td } className={ @mergeClassNames classed( 'body.cell' ), td.className } />
 
                 , this
-              
+
               }
+
             </tr>
 
           , this
-        
+
         }
+
       </tbody>
+
       {
 
-        if props.tfoot
-
-          <tfoot className={ classed 'foot' }>
-            { 
-
-              _.funced props.tfoot, 
-
-            }
-          </tfoot> 
+        <tfoot className={ classed 'foot' } children={ _.funced props.tfoot } /> if props.tfoot
 
       }
+
     </table>
+
+  ##
+
+##
 
 
 module.exports = Table

@@ -7,14 +7,19 @@ mixin = Mixin.createArged
 
   args:
 
-    options: React.PropTypes.object
-    key: React.PropTypes.string
+    'options': React.PropTypes.object
+
+    'key': React.PropTypes.string
+
+  ##
 
   defaults:
 
     # ExtenralStore
 
-    name: 'basil'
+    'name': 'basil'
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -27,8 +32,14 @@ mixin = Mixin.createArged
 
       set: ( that, value )-> basil.set ARGS.key, value
 
+    ##
+
 
     mixins: [ ExternalStoreMixin( ExternalStoreArgs ) ]
+
+  ##
+
+##
 
 
 module.exports = mixin

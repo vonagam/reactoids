@@ -21,7 +21,13 @@ getVariantString = ( variant )->=
 
       variant
 
+    ##
+
+  ##
+
   result
+
+##
 
 
 module.exports = getVariantString

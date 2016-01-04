@@ -1,63 +1,107 @@
 #§global 'FormData', 'window'
+
+# mixins
+
 InputMixin = requireSource 'mixins/Input'
+
 AjaxMixin = requireSource 'mixins/Ajax'
+
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'
 
+# components
+
 Fields = requireSource 'components/inputs/Fields'
+
 Button = requireSource 'components/general/Button'
+
+# utils
 
 toFormData = requireSource 'various/toFormData'
 
 
-ComponentArgs = classes:
-
-  '-readonly': ''
-  '-waiting': ''
-  'fields': ''
-  'actions':
-    'action': ''
-
-RenderSlotsArgs = names: [ 'actions' ]
-
-
 Form = React.createClass
 
-  displayName: 'Form'
+  mixins: Mixin.resolve [
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), InputMixin, AjaxMixin, RenderSlotsMixin( RenderSlotsArgs ) ]
+    ComponentMixin
+
+      classes:
+
+        '-readonly': ''
+        '-waiting': ''
+        'fields': ''
+        'actions':
+          'action': ''
+
+      ##
+
+    ##
+
+    InputMixin
+
+    AjaxMixin
+
+    RenderSlotsMixin
+
+      names: [ 'actions' ]
+
+    ##
+
+  ]
 
   propTypes:
 
-    ajax: React.PropTypes.funced( React.PropTypes.object ).isRequired # ( that, value )->=
-    scheme: React.PropTypes.funced( React.PropTypes.collection ).isRequired
-    messages: React.PropTypes.object
-    getErrors: React.PropTypes.func.isRequired # ( that, jqXHR )->=
+    'ajax': React.PropTypes.funced( React.PropTypes.object ).isRequired # ( that, value )->=
+
+    'scheme': React.PropTypes.funced( React.PropTypes.collection ).isRequired
+
+    'messages': React.PropTypes.object
+
+    'getErrors': React.PropTypes.func.isRequired # ( that, jqXHR )->=
+
+  ##
 
   getDefaultProps: ->=
 
-    defaultValue: {}
-    getErrors: ( that, jqXHR )->= _.get jqXHR, 'responseJSON.errors'
-    renderActions: ( that, slotProps, userProps )->=
+    'getErrors': ( that, jqXHR )->= _.get jqXHR, 'responseJSON.errors'
+
+    'defaultValue': {}
+
+    'renderActions': ( that, slotProps, userProps )->=
 
       <Button
+
         {... userProps }
+
         className={ that.mergeClassNames slotProps.className, userProps.className }
+
         onClick={ that._queue that.submit, userProps.onClick }
+
       />
+
+    ##
+
+  ##
 
   getInitialState: ->=
 
     errors: {}
 
+  ##
+
   onAjaxBefore: ->=
 
     @setState errors: {}
+
+  ##
 
   onAjaxError: ( jqXHR )->
 
     errors = @props.getErrors this, jqXHR
 
     @setState errors: errors if errors
+
+  ##
 
   submit: ->=
 
@@ -87,9 +131,15 @@ Form = React.createClass
         ajax.processData = false
         ajax.contentType = false
 
+      ##
+
+    ##
+
     toFormData ajax unless _.isEmpty ajax.data
 
     @sendAjax 'one', ajax
+
+  ##
 
   render: ->=
 
@@ -101,28 +151,48 @@ Form = React.createClass
 
     readOnly = props.readOnly || state.ajaxes.one
 
+
     <div
+
       {... @omitProps() }
+
       className={ classed '.', '-waiting': state.ajaxes.one, '-readonly': readOnly }
+
     >
+
       <Fields
+
         {... @omitProps() }
+
         className={ classed 'fields' }
+
         scheme={ props.scheme }
+
         messages={ messages }
+
         value={ @getValue() }
+
         readOnly={ readOnly }
+
         onChange={ @setValue }
+
         onSubmit={ @submit }
+
       />
-      <div className={ classed 'actions' }>
-        {
 
-          @renderActions( className: classed 'action' )
+      <div
 
-        }
-      </div>
+        className={ classed 'actions' }
+
+        children={ @renderActions className: classed 'action' }
+
+      />
+
     </div>
+
+  ##
+
+##
 
 
 module.exports = Form

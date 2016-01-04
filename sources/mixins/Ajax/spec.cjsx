@@ -23,15 +23,23 @@ describe 'Ajax', ->
 
       abort: $abort
 
+    ##
+
+  ##
+
   afterEach ->
 
     $ajax.reset()
 
     $abort.reset()
 
+  ##
+
   after ->
 
     $ajax.restore()
+
+  ##
 
   ###
 
@@ -41,27 +49,47 @@ describe 'Ajax', ->
     'onSuccess':
       input:
         onSuccess: sinon.spy()
+
+      ##
       output: ( input, output )->=
         success: input.onSuccess
         complete: output.complete
 
+      ##
+
+    ##
+
     'type':
       input:
         type: 'asd'
+
+      ##
       output: ( input, output )->=
         method: 'ASD'
         complete: output.complete
 
+      ##
+
+    ##
+
     'redirect true':
       input:
         redirect: true
+
+      ##
       output: ( input, output )->=
         success: output.success
         complete: output.complete
 
+      ##
+
+    ##
+
     'redirect string'
       input:
         redirect: 'http://foo.bar/'
+
+      ##
       output: ( input, output )->=
         success: output.success
         complete: output.complete
@@ -79,6 +107,8 @@ describe 'Ajax', ->
         onSuccess: -> 1
         complete: -> 2
 
+      ##
+
       input: i
       output: o
 
@@ -87,7 +117,7 @@ describe 'Ajax', ->
 
   it 'works', ->
 
-    
+
 
 
     component = TestReact.render <Ajaxed />
@@ -98,6 +128,8 @@ describe 'Ajax', ->
     ajax = sinon.stub $, 'ajax', ->=
 
       abort: abort
+
+    ##
 
 
     options = {
@@ -135,6 +167,8 @@ describe 'Ajax', ->
 
     TestReact.unmount component
 
+  ##
+
   ###
 
 
@@ -146,9 +180,13 @@ describe 'Ajax', ->
 
       window.location.href = 'http://asd.bsa/'
 
+    ##
+
     after ->
 
       window.location.href = hrefBefore
+
+    ##
 
     variants = [
 
@@ -195,8 +233,22 @@ describe 'Ajax', ->
 
               $( 'body' ).one 'click', _.method 'preventDefault'
 
+            ##
+
             $options.success undefined, undefined, xhr
 
             expect( window.location.href ).only( ! willChange ).equal 'http://asd.bsa/'
 
             TestReact.unmount component
+
+          ##
+
+        ##
+
+      ##
+
+    ##
+
+  ##
+
+##

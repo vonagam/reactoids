@@ -1,25 +1,38 @@
+# mixins
+
 InputMixin = requireSource 'mixins/Input'
-
-
-ComponentArgs = classes:
-
-  '-readonly': ''
-  '-checked': ''
 
 
 Checkbox = React.createClass
 
-  displayName: 'Checkbox'
+  mixins: Mixin.resolve [ 
 
-  mixins: Mixin.resolve [ ComponentMixin( ComponentArgs ), InputMixin ]
+    ComponentMixin
+
+      classes:
+
+        '-readonly': ''
+        '-checked': ''
+
+      ##
+
+    ##
+
+    InputMixin 
+
+  ]
 
   onChange: ->
 
     @setValue ! Boolean @getValue()
 
+  ##
+
   onLabelClick: ->
 
     @onChange()
+
+  ##
 
   render: ->=
 
@@ -27,13 +40,24 @@ Checkbox = React.createClass
 
     value = @getValue()
 
+
     <input
+
       {... @omitProps() }
+
       type='checkbox'
+
       className={ classed '.', '-checked': value, '-readonly': props.readOnly }
+
       checked={ Boolean value }
+
       onChange={ @onChange }
+
     />
+
+  ##
+
+##
 
 
 module.exports = Checkbox

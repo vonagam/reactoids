@@ -6,3 +6,7 @@ describe 'Arrayer', ->
   it 'can be rendered', ->
 
     TestReact.render <Arrayer />
+
+  ##
+
+##

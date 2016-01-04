@@ -11,9 +11,15 @@ describe 'OmitProps', ->
 
         'data-hello': React.PropTypes.any
 
+      ##
+
       render: ->=
 
         <div {... @omitProps() } />
+
+      ##
+
+    ##
 
 
     expect( TestReact.renderShallow(
@@ -25,3 +31,7 @@ describe 'OmitProps', ->
       <div data-world='2' />
 
     )
+
+  ##
+
+##

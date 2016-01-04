@@ -2,7 +2,9 @@ mixin = Mixin.createArged
 
   args:
 
-    strings: React.PropTypes.arrayOf React.PropTypes.string
+    'strings': React.PropTypes.arrayOf React.PropTypes.string
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -16,6 +18,8 @@ mixin = Mixin.createArged
       return _.transform input, ( ( result, input )-> _.merge result, input ), {} if _.isArray input
 
       return input
+
+    ##
 
 
     setPropsStrings = ( that, props )->=
@@ -34,6 +38,8 @@ mixin = Mixin.createArged
 
       return true
 
+    ##
+
     setContextStrings = ( that, context )->=
 
       stringsContextInput = _.funced context.getStrings, ID, that.constructor, ARGS.strings, that
@@ -50,6 +56,8 @@ mixin = Mixin.createArged
 
       return true
 
+    ##
+
     setStrings = ( that, props, context )->
 
       changedProps = setPropsStrings that, props
@@ -60,14 +68,20 @@ mixin = Mixin.createArged
 
       that._stringed.strings = _.merge {}, that._stringed.stringsContext, that._stringed.stringsProps
 
+    ##
+
 
     propTypes:
 
       strings: React.PropTypes.funced React.PropTypes.object, React.PropTypes.array # ( that )->=
 
+    ##
+
     contextTypes:
 
       getStrings: React.PropTypes.func # ( id, constructor, keys, that )->=
+
+    ##
 
     getInitialMembers: ->=
 
@@ -78,19 +92,33 @@ mixin = Mixin.createArged
         stringsContext: {}
         stringsContextInput: undefined
 
+      ##
+
+    ##
+
     componentWillMount: ->
 
       setStrings this, @props, @context
 
+    ##
+
     componentWillUpdate: ( nextProps, nextState, nextContext )->
 
       setStrings this, nextProps, nextContext
+
+    ##
 
     stringed: ( key, params )->=
 
       strings = @_stringed.strings
 
       _.funced strings[ key ], params, this
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

@@ -1,3 +1,5 @@
+# components
+
 Dummy = requireSource 'components/general/Dummy'
 
 
@@ -25,23 +27,42 @@ afterYandexScripts = ( callback )->
 
     document.getElementsByTagName( 'head' )[ 0 ].appendChild script
 
+  ##
+
   setTimeout callback, 1
+
+##
 
 
 YaShare = React.createClass
 
-  mixins: Mixin.resolve [ ComponentMixin( {} ) ]
+  mixins: Mixin.resolve [ 
+
+    ComponentMixin
+
+      classes: {}
+
+    ##
+
+  ]
 
   propTypes:
 
-    content: React.PropTypes.object
-    contentByService: React.PropTypes.object
-    theme: React.PropTypes.object
-    hooks: React.PropTypes.object
+    'content': React.PropTypes.object
+
+    'contentByService': React.PropTypes.object
+
+    'theme': React.PropTypes.object
+
+    'hooks': React.PropTypes.object
+
+  ##
 
   componentDidMount: ->=
 
     afterYandexScripts @applyShare
+
+  ##
 
   componentWillReceiveProps: ( nextProps )->
 
@@ -49,39 +70,56 @@ YaShare = React.createClass
 
     @applyShare()
 
+  ##
+
   applyShare: ->
 
     node = ReactDOM.findDOMNode @refs.node
 
     Ya.share2 node, {
 
-      content: @props.content
-      contentByService: @props.contentByService
-      theme: @props.theme
-      hooks: 
-        onready: _.partial @onHook, 'onready'
-        onshare: _.partial @onHook, 'onshare'
+      'content': @props.content
+
+      'contentByService': @props.contentByService
+      
+      'theme': @props.theme
+      
+      'hooks': 
+      
+        'onready': _.partial @onHook, 'onready'
+      
+        'onshare': _.partial @onHook, 'onshare'
+
+      ##
 
     }
 
+  ##
+
   onHook: ( name )->
 
-    hook = @props.hooks?[ name ]
+    hook = _.get @props, [ 'hooks', name ]
 
     return unless hook
 
     hook.apply undefined, _.slice arguments, 1
 
+  ##
+
   render: ->=
 
     { classed } = this
 
-    <div
-      {... @omitProps() }
-      className={ classed '.' }
-    >
+
+    <div {... @omitProps() } className={ classed '.' }>
+
       <Dummy ref='node' />
+    
     </div>
+
+  ##
+
+##
 
 
 module.exports = YaShare

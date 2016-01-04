@@ -6,7 +6,7 @@ describe 'Paginator', ->
   variants =
 
     current: [ 0, 3, 6, 11 ]
-    
+
     total: [ 12, 17 ]
 
     size: [ 2, 4, 9 ]
@@ -14,6 +14,8 @@ describe 'Paginator', ->
     url: [ ( page )->= "url#{ page }" ]
 
     'data-unknown': [ 3 ]
+
+  ##
 
 
   tests =
@@ -23,6 +25,8 @@ describe 'Paginator', ->
       skip: ( input )->=
 
         _.any _.pick( input, 'current', 'total', 'size', 'url' ), _.isUndefined
+
+      ##
 
       it: ( input, props, tag )->=
 
@@ -80,5 +84,13 @@ describe 'Paginator', ->
 
         expect( props.className ).string 'paginator'
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Paginator, variants, tests
+
+##

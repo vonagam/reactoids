@@ -6,3 +6,7 @@ describe 'Form', ->
   it 'can be rendered', ->
 
     TestReact.render <Form />
+
+  ##
+
+##

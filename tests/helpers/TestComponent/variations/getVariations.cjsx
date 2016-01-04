@@ -7,7 +7,7 @@ getVariations = ( scheme )->=
 
   return Array.prototype.concat.apply [], _.map scheme, getVariations if _.isArray scheme
 
-  
+
   variations = []
 
   values = _.map scheme, ( variants, key )->=
@@ -19,6 +19,8 @@ getVariations = ( scheme )->=
     value.variants = [ undefined ].concat variants
 
     value
+
+  ##
 
   variantsIndexes = _.times values.length, ->= 0
 
@@ -53,8 +55,16 @@ getVariations = ( scheme )->=
 
         break
 
+      ##
+
+    ##
+
+  ##
+
 
   variations
+
+##
 
 
 module.exports = getVariations

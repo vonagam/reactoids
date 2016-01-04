@@ -21,6 +21,10 @@ describe 'BaseListener', ->
 
       component = undefined
 
+    ##
+
+  ##
+
   expectSpies = ( listener, init, toggle, action )->
 
     beforeInits = initListener.callCount
@@ -39,6 +43,8 @@ describe 'BaseListener', ->
 
       expect( initListener ).callCount beforeInits
 
+    ##
+
     if toggle != null
 
       expect( toggleListener ).callCount beforeToggles + 1
@@ -48,6 +54,10 @@ describe 'BaseListener', ->
     else
 
       expect( toggleListener ).callCount beforeToggles
+
+    ##
+
+  ##
 
 
   it 'single', ->
@@ -79,6 +89,8 @@ describe 'BaseListener', ->
 
     expectSpies listener2, null, null, -> component.removeSingleListener()
 
+  ##
+
 
   it 'single redefining warn', ->
 
@@ -104,6 +116,8 @@ describe 'BaseListener', ->
     expect( stub.calledWith 'listener already exists' ).true
 
     stub.restore()
+
+  ##
 
 
   it 'multiply', ->
@@ -143,6 +157,8 @@ describe 'BaseListener', ->
 
     expectSpies listener2, null, null, -> component.removeMultiplyListener 'againKey'
 
+  ##
+
 
   it 'multiply redefining warn', ->
 
@@ -168,3 +184,7 @@ describe 'BaseListener', ->
     expect( stub.calledWith "listener with key 'someKey' already exists" ).true
 
     stub.restore()
+
+  ##
+
+##

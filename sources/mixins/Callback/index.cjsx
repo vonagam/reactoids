@@ -6,6 +6,12 @@ createObtainer = ( that )->=
 
       _.get( that, key ).apply that, arguments
 
+    ##
+
+  ##
+
+##
+
 
 mixin = 
 
@@ -27,7 +33,17 @@ mixin =
 
           return value
 
+        ##
+
+      ##
+
       @callback key
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

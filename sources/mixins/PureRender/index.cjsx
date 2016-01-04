@@ -8,9 +8,15 @@ customizer = ( a, b )->=
 
       return _.isEqual a._args, b._args, customizer
 
+    ##
+
     return false
 
+  ##
+
   return undefined
+
+##
 
 
 mixin =
@@ -19,6 +25,10 @@ mixin =
 
     ! _.isEqual( @props, nextProps, customizer ) || 
     ! _.isEqual( @state, nextState, customizer )
+
+  ##
+
+##
 
 
 _.each [
@@ -44,6 +54,12 @@ _.each [
 
       result
 
+    ##
+
+  ##
+
+##
+
 
 __queue = mixin._queue
 
@@ -54,6 +70,8 @@ mixin._queue = ->=
   return funcs[ 0 ] if funcs.length < 2
 
   __queue.apply null, funcs
+
+##
 
 
 mixin = Mixin.createPlain mixin

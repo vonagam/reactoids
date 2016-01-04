@@ -8,16 +8,18 @@ describe 'Input', ->
     type: [ 'text', 'number' ]
 
     onBlur: [ sinon.spy() ]
-    
+
     onKeyDown: [ sinon.spy() ]
-    
+
     onSubmit: [ sinon.spy() ]
 
     value: [ 'ivalue' ]
-    
+
     defaultValue: [ 'idefault' ]
 
     readOnly: [ false, true ]
+
+  ##
 
 
   tests =
@@ -42,6 +44,8 @@ describe 'Input', ->
 
           value = input.defaultValue
 
+        ##
+
         expect( props.value ).equal value
 
         expect( props.className ).only( value ).string '-value'
@@ -56,15 +60,23 @@ describe 'Input', ->
 
         expect( props.className ).string 'input'
 
+      ##
+
+    ##
+
     render:
 
       skip: ( input )->=
 
         _.any [ input.onBlur, input.onKeyDown, input.onSubmit ], _.isUndefined
 
+      ##
+
       afterEach: ( input )->
 
         _.each [ 'onBlur', 'onKeyDown', 'onSubmit' ], ( key )-> input[ key ].reset()
+
+      ##
 
       it: ( input, component )->
 
@@ -84,5 +96,13 @@ describe 'Input', ->
 
         expect( ->= input.onSubmit.callCount ).change.to( 1 ).when -> TestReact.do.keyDown dom, key: 'Enter'
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Input, variants, tests
+
+##

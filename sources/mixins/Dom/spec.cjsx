@@ -14,6 +14,10 @@ describe 'FindDOM', ->
           <div ref='bar' className='bar' />
         </div>
 
+      ##
+
+    ##
+
 
     component = TestReact.render <FindDOMed />
 
@@ -28,3 +32,7 @@ describe 'FindDOM', ->
 
 
     TestReact.unmount component
+
+  ##
+
+##

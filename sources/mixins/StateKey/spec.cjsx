@@ -12,6 +12,10 @@ describe 'StateKey', ->
         bool: true
         key: 3
 
+      ##
+
+    ##
+
     component = TestReact.render <StateKeyed />
 
     expect( component.getStateKey 'bool' ).equal true
@@ -24,3 +28,7 @@ describe 'StateKey', ->
     expect( component.getStateKey 'key' ).equal 4
 
     TestReact.unmount component
+
+  ##
+
+##

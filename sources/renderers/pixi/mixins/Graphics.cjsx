@@ -3,20 +3,24 @@ PixiNodeMixin = requireSource 'renderers/pixi/mixins/Node'
 
 COMMON_PROPS =
 
-  width: 0
-  height: 0
-  tint: 0xFFFFFF
-  blendMode: PIXI.BLEND_MODES.NORMAL
-  isMask: false
-  boundsPadding: 0
+  'width': 0
+  'height': 0
+  'tint': 0xFFFFFF
+  'blendMode': PIXI.BLEND_MODES.NORMAL
+  'isMask': false
+  'boundsPadding': 0
+
+##
 
 GRAPHICS_PROPS =
 
-  fillColor: 0
-  fillAlpha: 1
-  lineWidth: 0
-  lineColor: 0
-  lineAlpha: 1
+  'fillColor': 0
+  'fillAlpha': 1
+  'lineWidth': 0
+  'lineColor': 0
+  'lineAlpha': 1
+
+##
 
 
 mixin = Mixin.createArged
@@ -26,6 +30,8 @@ mixin = Mixin.createArged
     updateGraphics: React.PropTypes.func # ( that, prevProps, nextProps )->= bool ( true if changed )
 
     drawGraphics: React.PropTypes.func # ( that, props )->
+
+  ##
 
   mixins: [ PixiNodeMixin ]
 
@@ -40,6 +46,8 @@ mixin = Mixin.createArged
         graphics.settings = {}
 
         graphics
+
+      ##
 
       updatePixi: ( that, prevProps, nextProps )->
 
@@ -63,8 +71,18 @@ mixin = Mixin.createArged
 
           pixi.endFill()
 
+        ##
+
+      ##
+
+    ##
+
 
     PixiNodeMixin PixiNodeArgs
+
+  ##
+
+##
 
 
 module.exports = mixin

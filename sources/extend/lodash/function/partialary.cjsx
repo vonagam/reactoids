@@ -6,5 +6,9 @@ partialary = ( _ )->=
 
     _.partial.apply _, arguments
 
+  ##
+
+##
+
 
 module.exports = partialary

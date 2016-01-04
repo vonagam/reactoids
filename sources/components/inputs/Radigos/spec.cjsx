@@ -6,3 +6,7 @@ describe 'Radigos', ->
   it 'can be rendered', ->
 
     TestReact.render <Radigos />
+
+  ##
+
+##

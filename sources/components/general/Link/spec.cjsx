@@ -9,9 +9,13 @@ describe 'Link', ->
 
     window.location.href = 'http://asd.com'
 
+  ##
+
   after ->
 
     window.location.href = hrefBefore
+
+  ##
 
 
   SAME_HREFS = [ '', '/', 'http://asd.com', 'http://asd.com/?#' ]
@@ -27,6 +31,8 @@ describe 'Link', ->
 
     'data-unknown': [ 3 ]
 
+  ##
+
 
   tests =
 
@@ -35,6 +41,8 @@ describe 'Link', ->
       afterEach: ( input )->
 
         input.isCurrent.reset() if _.isFunction input.isCurrent
+
+      ##
 
       it: ( input, props, tag )->
 
@@ -51,6 +59,8 @@ describe 'Link', ->
           expect( props.href ).equal undefined
 
           expect( props.className ).string '-disabled'
+
+        ##
 
         # mix
 
@@ -78,7 +88,11 @@ describe 'Link', ->
 
             expect( input.isCurrent ).callCount 0
 
+          ##
+
           isCurrent = false
+
+        ##
 
         if isCurrent
 
@@ -87,6 +101,8 @@ describe 'Link', ->
         else
 
           expect( props.className ).not.string '-current'
+
+        ##
 
         # data-unknown
 
@@ -98,5 +114,13 @@ describe 'Link', ->
 
         expect( props.className ).string 'link'
 
+      ##
+
+    ##
+
+  ##
+
 
   TestComponent.testComponent Link, variants, tests
+
+##

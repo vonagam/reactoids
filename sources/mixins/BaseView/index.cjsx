@@ -7,12 +7,15 @@ mixin = Mixin.createArged
 
   args:
 
-    shouldHandleLink: React.PropTypes.func # ( that, link )->= bool
-    handleLink: React.PropTypes.func # ( that, link )->= true if handled
+    'shouldHandleLink': React.PropTypes.func # ( that, link )->= bool
+
+    'handleLink': React.PropTypes.func # ( that, link )->= true if handled
+
+  ##
 
   defaults:
 
-    shouldHandleLink: ( that, link )->=
+    'shouldHandleLink': ( that, link )->=
 
       return false unless /^https?:$/.test link.protocol
 
@@ -21,6 +24,10 @@ mixin = Mixin.createArged
       return false if link.host != window.location.host
 
       return true
+
+    ##
+
+  ##
 
   mixin: ( ARGS )->=
 
@@ -37,6 +44,12 @@ mixin = Mixin.createArged
         event.preventDefault() if handled
 
       , this
+
+    ##
+
+  ##
+
+##
 
 
 module.exports = mixin

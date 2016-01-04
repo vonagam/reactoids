@@ -6,5 +6,9 @@ myChai = ( chai, utils )->
 
     utils.flag this, 'negate', ! bool
 
+  ##
+
+##
+
 
 module.exports = myChai
