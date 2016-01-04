@@ -1,4 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
 AjaxMixin = requireSource 'mixins/Ajax'
 
 

@@ -1,6 +1,5 @@
 moment = requireDependency 'moment'
 
-ComponentMixin = requireSource 'mixins/Component'
 UnisonMixin = requireSource 'mixins/Unison'
 
 

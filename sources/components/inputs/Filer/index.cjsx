@@ -1,5 +1,4 @@
 #§global 'FileReader', 'window'
-ComponentMixin = requireSource 'mixins/Component'
 StringedMixin = requireSource 'mixins/Stringed'
 InputMixin = requireSource 'mixins/Input'
 DomMixin = requireSource 'mixins/Dom'

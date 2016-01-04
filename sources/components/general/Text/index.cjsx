@@ -1,5 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
-
 Processed = requireSource 'components/general/Processed'
 
 

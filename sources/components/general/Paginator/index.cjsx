@@ -1,4 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
 StringedMixin = requireSource 'mixins/Stringed'
 
 

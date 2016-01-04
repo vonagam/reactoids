@@ -1,4 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
 OptionsInputMixin = requireSource 'mixins/OptionsInput'
 
 

@@ -1,4 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
 LayeredMixin = requireSource 'mixins/Layered'
 
 

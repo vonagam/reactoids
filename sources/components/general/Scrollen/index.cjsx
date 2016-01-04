@@ -1,6 +1,5 @@
 $ = requireDependency 'jquery'
 
-ComponentMixin = requireSource 'mixins/Component'
 TimerMixin = requireSource 'mixins/Timer'
 
 Button = requireSource 'components/general/Button'

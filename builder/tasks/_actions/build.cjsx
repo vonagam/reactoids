@@ -9,50 +9,52 @@ path = require 'path'
 pipe = require './pipe'
 
 
-AUTO_DEPENDENCIES = [
+AUTO_REQUIRES = [
 
   {
+    module: 'react'
     variable: 'React'
-    package: 'react'
-    require: 'requireDependency'
     check: /<\w/
   }
   {
+    module: 'react-dom'
     variable: 'ReactDOM'
-    package: 'react-dom'
-    require: 'requireDependency'
   }
   {
+    module: 'lodash'
     variable: '_'
-    package: 'lodash'
-    require: 'requireDependency'
   }
   {
+    module: 'pixi.js'
     variable: 'PIXI'
-    package: 'pixi.js'
     includes: /^renderers\/pixi/
-    require: 'requireDependency'
   }
   {
+    module: 'd3'
     variable: 'd3'
-    package: 'd3'
     includes: /^wrappers\/d3/
-    require: 'requireDependency'
   }
   {
+    module: 'various/Mixin'
     variable: 'Mixin'
-    package: 'various/Mixin'
     excludes: /^various\/Mixin/
-    require: 'requireSource'
+  }
+  {
+    module: 'mixins/Component'
+    variable: 'ComponentMixin'
+    includes: /^components\//
+    check: /ComponentMixin/
   }
 
 ]
 
-_.each AUTO_DEPENDENCIES, ( dependency )->
+_.each AUTO_REQUIRES, ( autoRequire )->
 
-  used = RegExp "\\b#{ dependency.variable }[\\.\\[]"
+  used = RegExp "\\b#{ autoRequire.variable }[\\.\\[\\(]"
 
-  dependency.isNeeded = ( content, path )->=
+  autoRequire.type = if /\//.test autoRequire.module then 'Source' else 'Dependency'
+
+  autoRequire.isNeeded = ( content, path )->=
 
     return false if @excludes && @excludes.test path
 
@@ -82,11 +84,11 @@ build = ( src, options = {} )->=
 
       sourcesPath = path.relative path.dirname( file.path ), sourcesDirectoryPath
 
-      _.each AUTO_DEPENDENCIES, ( dependency )->
+      _.each AUTO_REQUIRES, ( autoRequire )->
 
-        if dependency.isNeeded content, filePath
+        if autoRequire.isNeeded content, filePath
 
-          content = "#{ dependency.variable } = #{ dependency.require } '#{ dependency.package }';" + content
+          content = "#{ autoRequire.variable } = require#{ autoRequire.type } '#{ autoRequire.module }';" + content
 
       content = content.replace /requireSubject\(\)/g, 'require("./index")'
 

@@ -1,5 +1,4 @@
 #§global 'FormData', 'window'
-ComponentMixin = requireSource 'mixins/Component'
 InputMixin = requireSource 'mixins/Input'
 AjaxMixin = requireSource 'mixins/Ajax'
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'

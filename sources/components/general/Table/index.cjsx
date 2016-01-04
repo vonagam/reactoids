@@ -1,6 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
-
-
 toProps = ( value )->=
 
   return {} if ! value

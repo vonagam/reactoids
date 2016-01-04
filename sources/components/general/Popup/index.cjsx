@@ -1,7 +1,5 @@
 $ = requireDependency 'jquery'
 
-ComponentMixin = requireSource 'mixins/Component'
-
 Layer = requireSource 'components/general/Layer'
 
 

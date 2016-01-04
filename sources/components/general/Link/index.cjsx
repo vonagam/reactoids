@@ -1,4 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
 UrlWatcherMixin = requireSource 'mixins/UrlWatcher'
 
 getUrlData = requireSource 'various/getUrlData'

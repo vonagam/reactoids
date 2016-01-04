@@ -1,8 +1,5 @@
 tether = requireDependency 'tether'
 
-ComponentMixin = requireSource 'mixins/Component'
-
-
 getOptions = ( that, tether )->=
 
   options = _.clone that.props.tether

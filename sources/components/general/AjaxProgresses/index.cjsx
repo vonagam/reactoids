@@ -1,5 +1,3 @@
-ComponentMixin = requireSource 'mixins/Component'
-
 AjaxProgressesMixin = requireSource 'mixins/AjaxProgresses'
 
 FuncedChildMixin = requireSource 'mixins/FuncedChild'
