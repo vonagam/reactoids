@@ -6,10 +6,6 @@ $ = requireDependency 'jquery'
 
 TimerMixin = requireSource 'mixins/Timer'
 
-# components
-
-Button = requireSource 'components/general/Button'
-
 
 isShownInContainer = ( $container, nodeTop, nodeBottom )->=
 
@@ -78,7 +74,7 @@ doScrollenCheck = ( that )->
 
   if beforeVisible == true && beforeShown == false && afterShown == true
 
-    $( that.dom() ).trigger 'click'
+    that.props.onReveal that
 
   ##
 
@@ -87,7 +83,7 @@ doScrollenCheck = ( that )->
 
 Scrollen = React.createClass
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
     ComponentMixin
 
@@ -95,19 +91,19 @@ Scrollen = React.createClass
 
     ##
 
-    TimerMixin 
+    TimerMixin
 
   ]
 
   propTypes:
 
-    'tag': React.PropTypes.any
+    'onReveal': React.PropTypes.func # ( that )->
 
   ##
 
   getDefaultProps: ->=
 
-    'tag': Button
+    'onReveal': _.noop
 
   ##
 
@@ -123,7 +119,7 @@ Scrollen = React.createClass
 
     doScrollenCheck this
 
-    setInterval 'checks', doScrollenCheck, 100, this
+    @setInterval 'checks', doScrollenCheck, 100, this
 
   ##
 
@@ -131,16 +127,8 @@ Scrollen = React.createClass
 
     { props, classed } = this
 
-    Tag = props.tag
 
-
-    <Tag
-
-      {... @omitProps() }
-    
-      className={ classed '.' }
-    
-    />
+    <div {... @omitProps() } className={ classed '.' } />
 
   ##
 

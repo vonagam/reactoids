@@ -2,17 +2,11 @@ describe 'Scrollen', ->
 
   Scrollen = requireSubject()
 
-  Button = requireSource 'components/general/Button'
-
-  Link = requireSource 'components/general/Link'
-
 
   it 'should be better tested'
 
 
   variants =
-
-    tag: [ Link, 'span' ]
 
     'data-unknown': [ 3 ]
 
@@ -24,10 +18,6 @@ describe 'Scrollen', ->
     shallow:
 
       it: ( input, props, tag )->
-
-        # tag
-
-        expect( tag ).equal input.tag || Button
 
         # data-unknown
 
