@@ -25,7 +25,7 @@ class Route
 
         @captures.push name
 
-        "(#{ @constraints[ name ] || '[\\w\\-]+' })"
+        "(#{ @constraints[ name ] || '[^\/]+?' })"
 
       ##
 
