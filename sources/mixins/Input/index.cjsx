@@ -52,12 +52,9 @@ mixin =
 
       clearTimeout @inputTimeout
 
-      @setState(
+      @setState inputReal: value
 
-        inputTemp: undefined
-        inputReal: value
-
-      )
+      @inputTimeout = setTimeout _.bind( @setState, this, inputTemp: undefined ), 0 if @state.inputTemp != undefined
 
       @props.onChange? value
 
