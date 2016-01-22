@@ -59,8 +59,6 @@ testComponent = ( Component, values, options, tests )->
 
           runTest Component, variation, options, _.partial test.it, variation
 
-        ##
-
         catch error
 
           problem = _.find problems, ( problem )->= _.isEqual problem.error.stack, error.stack
@@ -76,8 +74,6 @@ testComponent = ( Component, values, options, tests )->
             problems.push problem
 
           ##
-
-        ##
 
         finally
 
