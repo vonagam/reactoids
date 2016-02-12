@@ -28,4 +28,6 @@ module.exports = {
 
   'tether': undefined # hubspot/tether, http://tether.io
 
+  'trix': undefined # basecamp/trix, https://trix-editor.org
+
 }
