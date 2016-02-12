@@ -4,11 +4,9 @@ countWhere = ( _ )->=
 
     matches = _.matches source
 
-    _.reduce collection, ( count, value )->
+    _.reduce collection, ( count, value )->=
 
-      return count + 1 if matches value
-
-      return count
+      count + ( matches value )
 
     , 0
 
