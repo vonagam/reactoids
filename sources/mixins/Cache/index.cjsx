@@ -1,4 +1,4 @@
-mixin = 
+mixin =
 
   Mixin.createPlain
 
@@ -35,6 +35,7 @@ mixin =
       cache = {
 
         value: value
+
         depend: options.depend
 
       }
@@ -56,6 +57,8 @@ mixin =
         if _.any cache.depend, ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
 
           delete cache[ key ]
+
+        ##
 
       , this
 
