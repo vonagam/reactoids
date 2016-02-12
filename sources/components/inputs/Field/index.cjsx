@@ -164,7 +164,7 @@ Field = React.createClass
 
           value={ value }
 
-          readonly={ props.readOnly }
+          readOnly={ props.readOnly }
 
           inputDelay={ -1 }
 

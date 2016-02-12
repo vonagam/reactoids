@@ -82,7 +82,7 @@ Fields = React.createClass
 
             messages={ _.merge messages, field.messages }
 
-            readonly={ props.readOnly || field.readonly }
+            readOnly={ props.readOnly || field.readOnly }
 
             onChange={ @_queue @_partial( @onChange, key ), field.onChange }
 
