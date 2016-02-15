@@ -40,13 +40,13 @@ mixin =
 
     getValue: ( props = @props, state = @state )->=
 
-      return @state.inputTemp if @state.inputTemp != undefined
+      return state.inputTemp if state.inputTemp != undefined
 
-      return @props.value if @props.value != undefined
+      return props.value if props.value != undefined
 
-      return @state.inputReal if @state.inputReal != undefined
+      return state.inputReal if state.inputReal != undefined
 
-      return @props.defaultValue
+      return props.defaultValue
 
     ##
 
