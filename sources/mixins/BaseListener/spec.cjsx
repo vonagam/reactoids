@@ -1,4 +1,4 @@
-describe 'BaseListener', ->
+describe.skip 'BaseListener', ->
 
   BaseListener = requireSubject()
 
@@ -62,7 +62,7 @@ describe 'BaseListener', ->
 
   it 'single', ->
 
-    BaseListenered = TestMixin.createMixinClass BaseListener( 
+    BaseListenered = createMixinClass BaseListener(
 
       name: 'single'
       multiplyListeners: false
@@ -94,7 +94,7 @@ describe 'BaseListener', ->
 
   it 'single redefining warn', ->
 
-    BaseListenered = TestMixin.createMixinClass BaseListener( 
+    BaseListenered = createMixinClass BaseListener(
 
       name: 'single'
       multiplyListeners: false
@@ -122,7 +122,7 @@ describe 'BaseListener', ->
 
   it 'multiply', ->
 
-    BaseListenered = TestMixin.createMixinClass BaseListener( 
+    BaseListenered = createMixinClass BaseListener(
 
       name: 'multiply'
       multiplyListeners: true
@@ -162,7 +162,7 @@ describe 'BaseListener', ->
 
   it 'multiply redefining warn', ->
 
-    BaseListenered = TestMixin.createMixinClass BaseListener( 
+    BaseListenered = createMixinClass BaseListener(
 
       name: 'multiply'
       multiplyListeners: true

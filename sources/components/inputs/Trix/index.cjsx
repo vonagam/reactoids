@@ -1,6 +1,6 @@
 # dependencies
 
-requireDependency 'trix'
+TrixEditor = requireDependency 'trix' # basecamp/trix, https://trix-editor.org
 
 
 EVENTS = [
@@ -101,7 +101,7 @@ Trix = React.createClass
 
     value = @getValue()
 
-    nextDoc = window.Trix.deserializeFromContentType value, 'text/html'
+    nextDoc = TrixEditor.deserializeFromContentType value, 'text/html'
 
     return if nextDoc.isEqualTo prevDoc
 
@@ -115,7 +115,7 @@ Trix = React.createClass
 
     toolbar = @dom 'toolbar'
 
-    _.each EVENTS, ( event )->
+    _.each EVENTS, _.bind ( event )->
 
       editor.addEventListener "trix-#{ event }", @callback "props.#{ _.camelCase "on-#{ event }" }"
 

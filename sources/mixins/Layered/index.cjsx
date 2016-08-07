@@ -1,97 +1,145 @@
-ORDER_ATTRIBUTE = 'data-layer-order'
+mixin = Mixin.createArged {
 
-attachLayer = ( layer )->
+  args: {}
 
-  return if layer.container
+  mixin: ->=
 
-  div = document.createElement 'div'
+    LayerContextPasser = null
 
-  div.setAttribute ORDER_ATTRIBUTE, layer.order
 
-  layer.decorateContainer div
+    ORDER_ATTRIBUTE = 'data-layer-order'
 
-  layer.container = div
+    attachLayer = ( layer )->
 
-  root = _.funced layer.root
+      return if layer.container
 
-  root.appendChild div
 
-  _( root.children )
+      div = document.createElement 'div'
 
-  .filter ( node )->= node.getAttribute ORDER_ATTRIBUTE
+      div.setAttribute ORDER_ATTRIBUTE, layer.order
 
-  .sortBy ( node )->= parseFloat node.getAttribute ORDER_ATTRIBUTE
+      layer.decorateContainer div
 
-  .each ( node )-> root.appendChild node
+      layer.container = div
 
-  .value()
 
-##
+      root = _.funced layer.root
 
-dettachLayer = ( layer )->
+      root.appendChild div
 
-  return unless layer.container
 
-  div = layer.container
+      children = _.filter root.children, ( node )->= node.getAttribute ORDER_ATTRIBUTE
 
-  ReactDOM.unmountComponentAtNode div
+      children = _.sortBy children, ( node )->= parseFloat node.getAttribute ORDER_ATTRIBUTE
 
-  root = div.parentNode
-
-  root.removeChild div
-
-  delete layer.container
-
-##
-
-removeLayer = ( that, layer, name )->
-
-  dettachLayer layer
-
-  delete that._layers[ name ]
-
-##
-
-renderLayer = ( that, layer, name )->
-
-  content = layer.content that
-
-  switch
-
-    when content
-
-      attachLayer layer
-
-      ReactDOM.render content, layer.container
-
-    when layer.temporary
-
-      removeLayer that, layer, name
-
-    else
-
-      dettachLayer layer
+      _.each children, ( node )-> root.appendChild node
 
     ##
 
-  ##
+    dettachLayer = ( layer )->
 
-##
+      return unless layer.container
 
-renderLayers = ( that )->
+      div = layer.container
 
-  _.each that._layers, ( layer, name )->
+      ReactDOM.unmountComponentAtNode div
 
-    renderLayer that, layer, name
+      root = div.parentNode
 
-  ##
+      root.removeChild div
 
-##
+      delete layer.container
+
+    ##
+
+    removeLayer = ( that, layer, name )->
+
+      dettachLayer layer
+
+      delete that._layers[ name ]
+
+    ##
+
+    renderLayer = ( that, layer, name )->
+
+      content = layer.content that
+
+      switch
+
+        when content
+
+          attachLayer layer
+
+          ReactDOM.render <LayerContextPasser that={ that } children={ content } />, layer.container
+
+        when layer.temporary
+
+          removeLayer that, layer, name
+
+        else
+
+          dettachLayer layer
+
+        ##
+
+      ##
+
+    ##
+
+    renderLayers = ( that )->
+
+      _.each that._layers, ( layer, name )->
+
+        renderLayer that, layer, name
+
+      ##
+
+    ##
 
 
-mixin =
+    initConstants: ->
 
-  Mixin.createPlain
+      { contextTypes, childContextTypes } = @constructor
+
+
+      return LayerContextPasser = ( ( props )->= props.children ) unless contextTypes || childContextTypes
+
+
+      LayerContextPasser = React.createClass {
+
+        propTypes: {
+
+          that: React.PropTypes.instanceOf @constructor
+
+        }
+
+        childContextTypes: _.assign {}, contextTypes, childContextTypes
+
+        getChildContext: ->=
+
+          { that } = @props
+
+          context = {}
+
+          _.assign context, _.pick( that.context, _.keys contextTypes ) if contextTypes
+
+          _.assign context, that.getChildContext() if childContextTypes
+
+          context
+
+        ##
+
+        render: ->=
+
+          children = @props.children
+
+          children && React.Children.only children
+
+        ##
+
+      }
+
+    ##
 
     getInitialMembers: ->=
 
@@ -122,16 +170,20 @@ mixin =
       layer = _.defaults {}, options, {
 
         'root': ->= document.getElementsByTagName( 'body' )[ 0 ]
-        'content': @[ "render#{ _.capitalize _.camelCase name }Layer" ]
+
+        'content': @[ "render#{ _.pascalCase name }Layer" ]
+
         'order': 0
+
         'temporary': false
+
         'decorateContainer': _.noop
 
       }
 
       @_layers[ name ] = layer
 
-      renderLayer this, layer if @isMounted()
+      renderLayer this, layer, name if @isMounted()
 
     ##
 
@@ -151,7 +203,7 @@ mixin =
 
   ##
 
-##
+}
 
 
 module.exports = mixin

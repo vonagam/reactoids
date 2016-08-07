@@ -1,10 +1,10 @@
+# mixins
+
 BaseViewMixin = requireSource 'mixins/BaseView'
 
 HistoryViewMixin = requireSource 'mixins/HistoryView'
 
 AjaxMixin = requireSource 'mixins/Ajax'
-
-URI = require 'urijs'
 
 
 mixin = Mixin.createArged
@@ -13,7 +13,7 @@ mixin = Mixin.createArged
 
     'setView': React.PropTypes.func # ( that, data, url )->
 
-    'getHistoryState': React.PropTypes.func # ( that, data, url )->= history state ( { url:, title:, data: } )
+    'getHistoryState': React.PropTypes.func # ( that, data, url )->= history state ( { url:, title: } )
 
     'changeAjaxOptions': React.PropTypes.func # ( that, options )->
 
@@ -26,12 +26,6 @@ mixin = Mixin.createArged
     'changeAjaxOptions': _.noop
 
     # HistoryView
-
-    'handleHistoryData': ( that, state )->
-
-      that.loadView state.url, 'replace'
-
-    ##
 
     'shouldHandleLink': ( that, link )->=
 
@@ -63,35 +57,36 @@ mixin = Mixin.createArged
 
     loadView: ( url, position = 'push' )->
 
-      that = this
+      onSuccess = _.bind ( data )->
 
-      onSuccess = ( data )->
+        state = ARGS.getHistoryState this, data, url
 
-        state = ARGS.getHistoryState that, data, url
+        ARGS.setView this, data, url
 
-        ARGS.setView that, data, url
+        @changeHistoryState position, state
 
-        that.changeHistoryState position, state
+      , this
 
-      ##
 
-      uri = new URI url
+      target = document.createElement 'a'
 
-      if ! /\.[^\.]+$/.test uri.pathname()
+      target.href = url
 
-        uri.pathname "#{ uri.pathname() }.json"
+      target.pathname += '.json' unless /\.[^\.]+$/.test target.pathname
 
-      ##
 
-      ajaxOptions =
+      ajaxOptions = {
 
-        url: uri.toString()
+        url: target.href
+
         dataType: 'json'
+
         success: onSuccess
 
-      ##
+      }
 
       ARGS.changeAjaxOptions this, ajaxOptions
+
 
       @sendAjax 'AjaxViewMixin', ajaxOptions, force: true
 

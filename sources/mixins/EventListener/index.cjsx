@@ -1,4 +1,8 @@
-$ = requireDependency 'jquery'
+# dependencies
+
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
+# mixins
 
 BaseListenerMixin = requireSource 'mixins/BaseListener'
 

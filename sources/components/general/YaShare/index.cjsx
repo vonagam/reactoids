@@ -1,125 +1,138 @@
+# dependencies
+
+window = requireDependency 'window' # Ya.share2 https://tech.yandex.ru/share/doc/dg/api-docpage/
+
+# mixins
+
+ScriptInjectorMixin = requireSource 'mixins/ScriptInjector'
+
 # components
 
 Dummy = requireSource 'components/general/Dummy'
 
 
-# https://tech.yandex.ru/share/doc/dg/api-docpage/
+contentPropType = React.PropTypes.shape {
 
-SCRIPTS_SRCS = [
+  'description': React.PropTypes.string
 
-  '//yastatic.net/es5-shims/0.0.2/es5-shims.min.js'
+  'image': React.PropTypes.string
 
-  '//yastatic.net/share2/share.js'
+  'title': React.PropTypes.string
 
-]
+  'url': React.PropTypes.string
 
-afterYandexScripts = ( callback )->
-
-  return callback() if window.Ya && window.Ya.share2
-
-  _.each SCRIPTS_SRCS, ( scriptSrc )->
-
-    script = document.createElement 'script'
-
-    script.charset = 'utf-8'
-
-    script.src = scriptSrc
-
-    document.getElementsByTagName( 'head' )[ 0 ].appendChild script
-
-  ##
-
-  setTimeout callback, 1
-
-##
+}
 
 
-YaShare = React.createClass
+YaShare = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
       classes: {}
 
-    ##
+    }
+
+    ScriptInjectorMixin {
+
+      scripts: [
+
+        '//yastatic.net/es5-shims/0.0.2/es5-shims.min.js'
+
+        '//yastatic.net/share2/share.js'
+
+      ]
+
+      check: ->= _.has window, 'Ya.share2'
+
+      decorateScript: ( script )-> script.charset = 'utf-8'
+
+      callback: ( that )-> that.applyShare()
+
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
-    'content': React.PropTypes.object
+    'content': contentPropType
 
-    'contentByService': React.PropTypes.object
+    'contentByService': React.PropTypes.objectOf contentPropType
 
-    'theme': React.PropTypes.object
+    'theme': React.PropTypes.shape {
 
-    'hooks': React.PropTypes.object
+      'bare': React.PropTypes.bool
 
-  ##
+      'copy': React.PropTypes.oneOf [ 'last', 'first', 'hidden' ]
 
-  componentDidMount: ->=
+      'counter': React.PropTypes.bool
 
-    afterYandexScripts @applyShare
+      'lang': React.PropTypes.oneOf [ 'az', 'be', 'en', 'hy', 'ka', 'kk', 'ro', 'ru', 'tr', 'tt', 'uk' ]
 
-  ##
+      'limit': React.PropTypes.number
+
+      'services': React.PropTypes.string
+
+      'size': React.PropTypes.oneOf [ 's', 'm' ]
+
+    }
+
+    'hooks': React.PropTypes.shape {
+
+      'onready': React.PropTypes.func
+
+      'onshare': React.PropTypes.func
+
+    }
+
+  }
 
   componentWillReceiveProps: ( nextProps )->
 
-    return if _.isEqualPick @props, nextProps, [ 'content', 'contentByService', 'theme' ]
-
-    @applyShare()
+    @applyShare() unless _.isEqualPick @props, nextProps, [ 'content', 'contentByService', 'theme' ]
 
   ##
 
   applyShare: ->
 
-    node = ReactDOM.findDOMNode @refs.node
+    node = @dom 'node'
 
-    Ya.share2 node, {
+
+    window.Ya.share2 node, {
 
       'content': @props.content
 
       'contentByService': @props.contentByService
-      
-      'theme': @props.theme
-      
-      'hooks': 
-      
-        'onready': _.partial @onHook, 'onready'
-      
-        'onshare': _.partial @onHook, 'onshare'
 
-      ##
+      'theme': @props.theme
+
+      'hooks': {
+
+        'onready': @callback 'props.hooks.onready'
+
+        'onshare': @callback 'props.hooks.onshare'
+
+      }
 
     }
 
   ##
 
-  onHook: ( name )->
-
-    hook = _.get @props, [ 'hooks', name ]
-
-    return unless hook
-
-    hook.apply undefined, _.slice arguments, 1
-
-  ##
-
   render: ->=
 
-    { classed } = this
+    { props, classed } = this
 
 
     <div {... @omitProps() } className={ classed '.' }>
 
       <Dummy ref='node' />
-    
+
     </div>
 
   ##
 
-##
+}
 
 
 module.exports = YaShare

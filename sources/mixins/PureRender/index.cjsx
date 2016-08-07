@@ -6,7 +6,7 @@ customizer = ( a, b )->=
 
     if a._args && b._args && a._method == b._method
 
-      return _.isEqual a._args, b._args, customizer
+      return _.isEqualWith a._args, b._args, customizer
 
     ##
 
@@ -23,8 +23,8 @@ mixin =
 
   shouldComponentUpdate: ( nextProps, nextState, nextContext )->=
 
-    ! _.isEqual( @props, nextProps, customizer ) || 
-    ! _.isEqual( @state, nextState, customizer )
+    ! _.isEqualWith( @props, nextProps, customizer ) ||
+    ! _.isEqualWith( @state, nextState, customizer )
 
   ##
 
@@ -33,28 +33,22 @@ mixin =
 
 _.each [
 
-    'bind'
-    'partial'
-    'ary'
-    'bindary'
-    'partialary'
-    'queue'
+  'bind' # _.bind
+  'partial' # _.partial
+  'ary' # _.ary
+  'queue' # _.queue
 
-  ],
+], ( method )->
 
-  ( method )->
+  mixin[ "_#{ method }" ] = ->=
 
-    mixin[ "_#{ method }" ] = ->=
+    result = _[ method ].apply _, arguments
 
-      result = _[ method ].apply _, arguments
+    result._method = _[ method ]
 
-      result._method = _[ method ]
+    result._args = arguments
 
-      result._args = arguments
-
-      result
-
-    ##
+    result
 
   ##
 

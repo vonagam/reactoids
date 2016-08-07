@@ -3,27 +3,27 @@
 AjaxMixin = requireSource 'mixins/Ajax'
 
 
-Button = React.createClass
+Button = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-enabled': ''
         '-disabled': ''
         '-waiting': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    AjaxMixin 
+    AjaxMixin
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'href': React.PropTypes.string
 
@@ -33,7 +33,7 @@ Button = React.createClass
 
     'ajax': React.PropTypes.funced React.PropTypes.object # ()->=
 
-  ##
+  }
 
   onClick: ->
 
@@ -49,12 +49,10 @@ Button = React.createClass
 
     { props, state, classed } = this
 
-    Tag = if _.isString props.href then 'a' else 'span'
-
     enabled = _.isString( props.href ) || props.onClick || ! _.isEmpty _.funced props.ajax
 
 
-    <Tag
+    <a
 
       {... @omitProps() }
 
@@ -62,7 +60,7 @@ Button = React.createClass
 
       href={ if _.isString props.href then props.href else undefined }
 
-      onClick={ @_queue @onClick, props.onClick }
+      onClick={ @callback 'onClick, props.onClick' }
 
       children={ props.text || props.children }
 
@@ -70,8 +68,8 @@ Button = React.createClass
 
   ##
 
-##
+}
 
 
-module.exports = Button 
+module.exports = Button
 

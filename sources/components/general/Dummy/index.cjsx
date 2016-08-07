@@ -1,4 +1,4 @@
-Dummy = React.createClass
+Dummy = React.createClass {
 
   shouldComponentUpdate: ->=
 
@@ -12,7 +12,7 @@ Dummy = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Dummy

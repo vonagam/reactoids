@@ -3,54 +3,57 @@
 require( 'source-map-support' ).install environment: 'node', handleUncaughtExceptions: false
 
 
+# jsdom
+
+if typeof window == 'undefined'
+
+  global.window = require './window'
+
+  global.document = window.document
+
+  global.navigator = window.navigator
+
+##
+
+
 # chai
 
 chai = require 'chai'
 
-GLOBAL.expect = chai.expect
+global.expect = chai.expect
 
-GLOBAL.sinon = require 'sinon'
+global.sinon = require 'sinon'
 
 
 chai.use require 'sinon-chai'
 
 chai.use require 'chai-changes'
 
-chai.use require './helpers/myChai'
+chai.use require( 'chai-enzyme' )()
+
+chai.use require './chai/onlyIf'
+
+
+# extends
+
+require '../sources/extends'
+
+require '../sources/extends/lodash'
 
 
 # helpers
 
-GLOBAL.TestReact = require './helpers/TestReact'
+require './react/enzyme'
 
-GLOBAL.TestMixin = require './helpers/TestMixin'
+global.itVariations = require './variations/runVariations'
 
-GLOBAL.TestComponent = require './helpers/TestComponent'
-
-
-# jsdom
-
-jsdom = require 'jsdom'
-
-GLOBAL.document = jsdom.jsdom '<!doctype html><html><body></body></html>'
-
-GLOBAL.window = document.defaultView
-
-GLOBAL.navigator = window.navigator # for ReactDOM
+global.createMixinClass = require './react/createMixinClass'
 
 
-# dependencies
+# globals
 
-dependencies = require '../sources/dependencies'
+global.React = require 'react'
 
-dependencies[ 'lodash' ] = require 'lodash'
+global.ReactDOM = require 'react-dom'
 
-dependencies[ 'jquery' ] = require 'jquery'
-
-dependencies[ 'react' ] = require 'react'
-
-dependencies[ 'react-dom' ] = require 'react-dom'
-
-require( '../sources/extend/lodash' )( dependencies[ 'lodash' ] )
-
-require( '../sources/extend/react' )( dependencies[ 'react' ] )
+global._ = require 'lodash'

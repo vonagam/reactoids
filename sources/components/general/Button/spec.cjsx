@@ -1,9 +1,11 @@
 describe 'Button', ->
 
+  $ = requireDependency 'jquery'
+
   Button = requireSubject()
 
 
-  variants =
+  variants = {
 
     href: [ '', 'ihref' ]
 
@@ -17,116 +19,81 @@ describe 'Button', ->
 
     'data-unknown': [ 3 ]
 
+  }
+
+
+  itVariations 'renders [s]', variants, ( variation )->
+
+    { href, text, children } = variation
+
+    unknown = variation[ 'data-unknown' ]
+
+
+    instance = shallow <Button {... variation } />
+
+
+    expect( instance ).to.match 'a.button'
+
+    expect( instance ).onlyIf( unknown ).to.have.data 'unknown', unknown
+
+
+    expect( instance ).onlyIf( _.isString href ).to.have.attr 'href', href
+
+    expect( instance ).onlyIf( text || children ).to.have.prop 'children', text || children
+
+
+    enabled = _.isString( variation.href ) || variation.onClick || ! _.isEmpty _.funced variation.ajax
+
+    expect( instance ).onlyIf( enabled ).to.have.className '-enabled'
+
+    expect( instance ).onlyIf( ! enabled ).to.have.className '-disabled'
+
+    expect( instance ).not.to.have.className '-waiting'
+
   ##
 
 
-  tests =
+  options = {
 
-    shallow: 
+    afterEach: ( variation )->
 
-      it: ( input, props, tag )->
-
-        # href
-
-        if _.isString input.href
-
-          expect( tag ).equal 'a'
-
-          expect( props.href ).equal input.href
-
-        else
-
-          expect( tag ).equal 'span'
-
-          expect( props.href ).equal undefined
-
-        ##
-
-        # text
-
-        if input.text
-
-          expect( props.children ).equal input.text
-
-        else
-
-          expect( props.children ).equal input.children
-
-        ##
-
-        # data-unknown
-
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # mix
-
-        enabled = _.isString( input.href ) || input.onClick || ! _.isEmpty _.funced input.ajax
-
-        expect( props.className ).only( enabled ).string '-enabled'
-
-        expect( props.className ).only( ! enabled ).string '-disabled'
-
-        # always
-
-        expect( props.className ).string 'button'
-
-        expect( props.className ).not.string '-waiting'
-
-      ##
+      variation.onClick.reset() if variation.onClick
 
     ##
 
-    onClick: (->=
+  }
 
-      ajaxStub = undefined
+  itVariations 'responds to clicks [m]', variants, options, sinon.test ( variation )->
 
-      before: ->
+    sinon = this
 
-        ajaxStub = sinon.stub $, 'ajax', ->= { abort: _.noop }
 
-      ##
+    ajaxStub = sinon.stub $, 'ajax', ->= { abort: _.noop }
 
-      afterEach: ( input )->
+    willAjax = ! _.isEmpty _.funced variation.ajax
 
-        ajaxStub.reset()
 
-        input.onClick.reset() if input.onClick
+    instance = mount <Button {... variation } />
 
-      ##
+    ajaxSpy = sinon.spy instance.node, 'sendAjax'
 
-      after: ->
 
-        ajaxStub.restore()
+    expect( instance.find 'a' ).not.to.have.className '-waiting'
 
-      ##
 
-      it: ( input, component )->
+    instance.simulate 'click'
 
-        ajaxSpy = sinon.spy component, 'sendAjax'
 
-        willAjax = ! _.isEmpty _.funced input.ajax
+    expect( ajaxStub ).to.have.callCount if willAjax then 1 else 0
 
-        dom = component.dom()
+    expect( ajaxSpy ).to.have.callCount if willAjax then 1 else 0
 
-        expect( dom.className ).not.string '-waiting'
+    expect( ajaxSpy ).to.be.calledWith 'one', _.funced variation.ajax if willAjax
 
-        TestReact.do.click dom
+    expect( instance.find 'a' ).onlyIf( willAjax ).to.have.className '-waiting'
 
-        expect( ajaxStub ).callCount if willAjax then 1 else 0
-
-        expect( ajaxSpy ).callCount if willAjax then 1 else 0
-
-        expect( ajaxSpy ).calledWith 'one', _.funced input.ajax if willAjax
-
-        expect( dom.className ).only( willAjax ).string '-waiting'
-
-        expect( input.onClick ).callCount 1 if input.onClick 
-
-    )()
+    expect( variation.onClick ).to.be.calledOnce if variation.onClick
 
   ##
-
-
-  TestComponent.testComponent Button, variants, tests
 
 ##

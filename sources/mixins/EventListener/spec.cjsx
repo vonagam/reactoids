@@ -1,4 +1,4 @@
-describe 'EventListener', ->
+describe.skip 'EventListener', ->
 
   dependencies = requireSource 'dependencies'
 
@@ -32,7 +32,7 @@ describe 'EventListener', ->
     removeStub = @stub jQuery, 'off'
 
 
-    EventListenered = TestMixin.createMixinClass EventListener
+    EventListenered = createMixinClass EventListener
 
     component = TestReact.render <EventListenered x={ 1 } />
 

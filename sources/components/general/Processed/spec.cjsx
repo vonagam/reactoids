@@ -3,7 +3,7 @@ describe 'Processed', ->
   Processed = requireSubject()
 
 
-  variants =
+  variants = {
 
     tag: [ 'div', 'span' ]
 
@@ -13,90 +13,55 @@ describe 'Processed', ->
 
     'data-unknown': [ 3 ]
 
-  ##
+  }
 
+  options = {
 
-  tests =
+    skip: ( variation )->=
 
-    shallow:
-
-      skip: ( input )->=
-
-        _.isUndefined input.process
-
-      ##
-
-      afterEach: ( input )->
-
-        input.process.reset()
-
-      ##
-
-      it: ( input, props, tag )->=
-
-        # process and source
-
-        inner = props.dangerouslySetInnerHTML
-
-        expect( _.isObject inner ).equal true
-
-        expect( _.has inner, '__html' ).equal true
-
-        expect( inner.__html ).equal input.process input.source
-
-        # data-unknown
-
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # tag
-
-        expect( tag ).equal input.tag || 'div'
-
-        # data-unknown
-
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # always
-
-        expect( props.className ).string 'processed'
-
-      ##
+      _.isUndefined variation.process
 
     ##
 
-    render:
+    afterEach: ( variation )->
 
-      skip: ( input )->=
-
-        _.isUndefined input.process
-
-      ##
-
-      afterEach: ( input )->
-
-        input.process.reset()
-
-      ##
-
-      it: ( input, component, rerender )->
-
-        expect( input.process ).callCount 1
-
-        input = _.assign {}, input
-
-        expect( ->= input.process.callCount ).not.change.when -> rerender input
-
-        input = _.assign {}, input, source: 'other'
-
-        expect( ->= input.process.callCount ).change.by( 1 ).when -> rerender input
-
-      ##
+      variation.process.reset()
 
     ##
 
+  }
+
+
+  itVariations 'renders processed source inside specified tag [s]', variants, options, ( variation )->
+
+    { tag, source, process } = variation
+
+
+    instance = shallow <Processed {... variation } />
+
+
+    expect( instance ).to.have.tagName tag || 'div'
+
+    expect( instance ).to.have.className 'processed'
+
+    expect( instance ).onlyIf( variation[ 'data-unknown' ] ).to.have.data 'unknown', variation[ 'data-unknown' ]
+
+    expect( instance ).to.have.prop( 'dangerouslySetInnerHTML' ).deep.equal __html: process source
+
   ##
 
+  itVariations 'updates text only if source or process function have changed [m]', variants, options, ( variation )->
 
-  TestComponent.testComponent Processed, variants, tests
+    { process } = variation
+
+
+    instance = mount <Processed {... variation } />
+
+
+    expect( ->= process.callCount ).to.not.change.when -> instance.setProps {}
+
+    expect( ->= process.callCount ).to.change.by( 1 ).when -> instance.setProps { source: 'other' }
+
+  ##
 
 ##

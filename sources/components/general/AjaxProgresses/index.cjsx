@@ -5,17 +5,17 @@ AjaxProgressesMixin = requireSource 'mixins/AjaxProgresses'
 FuncedChildMixin = requireSource 'mixins/FuncedChild'
 
 
-AjaxProgresses = React.createClass
+AjaxProgresses = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
       classes: {}
 
-    ##
+    }
 
-    AjaxProgressesMixin
+    AjaxProgressesMixin {
 
       filterRequest: ( that, xhr, options )->=
 
@@ -47,9 +47,9 @@ AjaxProgresses = React.createClass
 
       ##
 
-    ##
+    }
 
-    FuncedChildMixin
+    FuncedChildMixin {
 
       getChildArgs: ( that )->=
 
@@ -57,11 +57,11 @@ AjaxProgresses = React.createClass
 
       ##
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'filterRequest': React.PropTypes.funced React.PropTypes.bool # ( that, xhr, options )->=
 
@@ -69,7 +69,7 @@ AjaxProgresses = React.createClass
 
     'onRequestRemove': React.PropTypes.func # ( that, request, requests )->
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -83,7 +83,7 @@ AjaxProgresses = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = AjaxProgresses

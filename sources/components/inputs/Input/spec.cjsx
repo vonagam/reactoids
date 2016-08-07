@@ -3,7 +3,7 @@ describe 'Input', ->
   Input = requireSubject()
 
 
-  variants =
+  variants = {
 
     type: [ 'text', 'number' ]
 
@@ -19,56 +19,42 @@ describe 'Input', ->
 
     readOnly: [ false, true ]
 
+    'data-unknown': [ 3 ]
+
+  }
+
+
+  shallowVariants = _.omit variants, [ 'onBlur', 'onKeyDown', 'onSubmit' ]
+
+  itVariations 'renders [s]', renderVariants, ( variation )->
+
+    value = variation.value || variation.defaultValue || ''
+
+
+    instance = shallow <Input {... variation } />
+
+
+    expect( instance ).to.match 'input.input'
+
+    expect( instance ).onlyIf( variation[ 'data-unknown' ] ).to.have.data 'unknown', variation[ 'data-unknown' ]
+
+    expect( instance ).to.have.attr 'type', variation.type || 'text'
+
+    expect( instance ).to.have.attr 'value', value
+
+    expect( instance ).onlyIf( value ).to.have.className '-value'
+
+    expect( instance ).onlyIf( variation.readOnly ).to.have.className '-readonly'
+
   ##
 
-
-  tests =
-
-    shallow:
-
-      it: ( input, props, tag )->
-
-        # type
-
-        expect( props.type ).equal input.type || 'text'
-
-        # value and defaultValue
-
-        value = ''
-
-        if input.value != undefined
-
-          value = input.value
-
-        else if input.defaultValue != undefined
-
-          value = input.defaultValue
-
-        ##
-
-        expect( props.value ).equal value
-
-        expect( props.className ).only( value ).string '-value'
-
-        # readOnly
-
-        expect( props.className ).only( input.readOnly ).string '-readonly'
-
-        # always
-
-        expect( tag ).equal 'input'
-
-        expect( props.className ).string 'input'
-
-      ##
-
-    ##
+  ###
 
     render:
 
       skip: ( input )->=
 
-        _.any [ input.onBlur, input.onKeyDown, input.onSubmit ], _.isUndefined
+        _.some [ input.onBlur, input.onKeyDown, input.onSubmit ], _.isUndefined
 
       ##
 
@@ -100,9 +86,6 @@ describe 'Input', ->
 
     ##
 
-  ##
-
-
-  TestComponent.testComponent Input, variants, tests
+  ###
 
 ##

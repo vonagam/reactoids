@@ -1,13 +1,17 @@
-.DS_Store
+*
+!*/
 
-node_modules
-npm-debug.log
-npm-shrinkwrap.json
+!/builder/gulpfile.cjsx
+!/builder/tasks/**/*.cjsx
 
-/builder/build-development
-/builder/build-production
+!/sources/**/*.cjsx
+!/sources/**/*.js
 
-/notes
+!/tests/**/*.cjsx
+!/tests/**/*.js
 
-/sources/**/_*
-/tests/**/_*
+!/.gitignore
+!/.iron-node.js
+!/npm-shrinkwrap.json
+!/package.json
+!/README.md

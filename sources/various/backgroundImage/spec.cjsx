@@ -3,31 +3,28 @@ describe 'backgroundImage', ->
   backgroundImage = requireSubject()
 
 
-  checks = [
+  variants = {
 
-    {
-      title: 'falsey'
-      inputs: [ undefined, null, false, 0, '' ]
-      output: ( input )->= undefined
-    }
-    {
-      title: 'truthy'
-      inputs: [ true, 1, 'string' ]
-      output: ( input )->= { backgroundImage: "url(#{ input })" }
-    }
+    input: [ null, false, 0, '', true, 1, 'string' ]
 
-  ]
+  }
 
 
-  _.each checks, ( check )->
+  itVariations 'works', variants, ( variation )->
 
-    _.each check.inputs, ( input )->
+    { input } = variation
 
-      it "#{ check.title } input: #{ input }", ->
 
-        expect( backgroundImage input ).eql check.output( input )
+    result = backgroundImage input
 
-      ##
+
+    if input
+
+      expect( result ).to.deep.equal { backgroundImage: "url(#{ input })" }
+
+    else
+
+      expect( result ).to.be.undefined
 
     ##
 

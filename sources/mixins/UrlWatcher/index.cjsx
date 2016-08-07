@@ -1,3 +1,9 @@
+# dependencies
+
+window = requireDependency 'window' # location
+
+# mixins
+
 UnisonMixin = requireSource 'mixins/Unison'
 
 

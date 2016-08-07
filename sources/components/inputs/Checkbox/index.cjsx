@@ -1,23 +1,24 @@
-Checkbox = React.createClass
+Checkbox = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-readonly': ''
-        '-checked': ''
+        '-selected': ''
+        'input': ''
 
-      ##
+      }
 
-    ##
+    }
 
     InputMixin
 
   ]
 
-  onChange: ->
+  onClick: ->
 
     @setValue ! Boolean @getValue()
 
@@ -25,7 +26,7 @@ Checkbox = React.createClass
 
   onLabelClick: ->
 
-    @onChange()
+    @onClick()
 
   ##
 
@@ -36,23 +37,33 @@ Checkbox = React.createClass
     value = @getValue()
 
 
-    <input
+    <div
 
       {... @omitProps() }
 
-      type='checkbox'
+      className={ classed '.', '-selected': value, '-readonly': props.readOnly }
 
-      className={ classed '.', '-checked': value, '-readonly': props.readOnly }
+      onClick={ @callback 'onClick, props.onClick' }
 
-      checked={ Boolean value }
+    >
 
-      onChange={ @onChange }
+      <input
 
-    />
+        type='checkbox'
+
+        className={ classed 'input' }
+
+        checked={ Boolean value }
+
+        onChange={ _.noop }
+
+      />
+
+    </div>
 
   ##
 
-##
+}
 
 
 module.exports = Checkbox

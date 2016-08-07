@@ -1,27 +1,25 @@
-$ = requireDependency 'jquery'
+# dependencies
 
-Routes = requireDependency 'js-routes'
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
+window = requireDependency 'window' # location
 
 
 simulateLink = ( href, containter = 'body', decorateLink )->
 
   $link = $ '<a>'
 
-  if Routes && /^[\w_]+$/.test( href ) && Routes[ href ]
-
-    href = Routes[ href ]()
-
-  ##
-
   $link.attr 'href', href
+
+  $link.appendTo containter
 
   decorateLink $link if decorateLink
 
-  $link.appendTo containter
 
   event = $.Event 'click'
 
   $link.trigger event
+
 
   if event.isDefaultPrevented()
 

@@ -1,9 +1,11 @@
+# mixins
+
 DomMixin = requireSource 'mixins/Dom'
 
 
 mixin =
 
-  Mixin.createPlain
+  Mixin.createPlain {
 
     mixins: [ DomMixin ]
 
@@ -13,7 +15,7 @@ mixin =
 
     ##
 
-  ##
+  }
 
 ##
 

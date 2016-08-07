@@ -1,6 +1,6 @@
 # dependencies
 
-moment = requireDependency 'moment'
+moment = requireDependency 'moment' # moment/moment, http://momentjs.com
 
 # mixins
 
@@ -62,48 +62,48 @@ getTime = ( props )->=
 ##
 
 
-Moment = React.createClass
+Moment = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-enabled': ''
         '-disabled': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    UnisonMixin
+    UnisonMixin {
 
       update: _.method 'forceUpdate'
 
       duration: 10000
-      
+
       shouldUnison: _.property 'shouldUnison'
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'time': React.PropTypes.any
 
     'timeFormat': React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.arrayOf( React.PropTypes.string ) ]
-    
+
     'reference': React.PropTypes.any
-    
+
     'referenceFormat': React.PropTypes.oneOfType [ React.PropTypes.string, React.PropTypes.arrayOf( React.PropTypes.string ) ]
-    
+
     'format': React.PropTypes.funced( React.PropTypes.string ).isRequired # ( moment )->=
-    
+
     'suffix': React.PropTypes.bool
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -119,7 +119,7 @@ Moment = React.createClass
 
     string = time && time.string
 
-    @shouldUnison = Boolean time && time.unison
+    @shouldUnison = time && time.unison
 
 
     <span
@@ -134,7 +134,7 @@ Moment = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Moment

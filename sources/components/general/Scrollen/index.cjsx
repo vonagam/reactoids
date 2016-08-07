@@ -1,6 +1,8 @@
 # dependencies
 
-$ = requireDependency 'jquery'
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
+window = requireDependency 'window' # itself
 
 # mixins
 
@@ -81,31 +83,25 @@ doScrollenCheck = ( that )->
 ##
 
 
-Scrollen = React.createClass
+Scrollen = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
       classes: {}
 
-    ##
+    }
 
     TimerMixin
 
   ]
 
-  propTypes:
+  propTypes: {
 
-    'onReveal': React.PropTypes.func # ( that )->
+    'onReveal': React.PropTypes.func.isRequired # ( that )->
 
-  ##
-
-  getDefaultProps: ->=
-
-    'onReveal': _.noop
-
-  ##
+  }
 
   getInitialMembers: ->=
 
@@ -132,7 +128,7 @@ Scrollen = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Scrollen

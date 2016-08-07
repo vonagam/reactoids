@@ -1,4 +1,6 @@
-ActionCable = requireDependency 'actioncable'
+# dependencies
+
+ActionCable = requireDependency 'actioncable' # rails/rails/tree/master/actioncable, rhyzx/actioncable
 
 # TODO use something like crosstab to use only 1 connection between multiply tabs
 
@@ -59,6 +61,8 @@ mixin = Mixin.createArged
 
             consumer.connection.close()
 
+          ##
+
         , ARGS.timeout
 
       ##
@@ -86,7 +90,7 @@ mixin = Mixin.createArged
 
       if mixin
 
-        mixin = _.mapValues mixin, ( ( value )->= _.bind value, this ), this
+        mixin = _.mapValues mixin, _.bind ( ( value )->= _.bind value, this ), this
 
       ##
 
@@ -124,7 +128,7 @@ mixin = Mixin.createArged
 
     componentWillUnmount: ->
 
-      _.each @_cables, ( cable, name )->
+      _.each @_cables, _.bind ( cable, name )->
 
         @disconnectCable name
 

@@ -1,9 +1,10 @@
-$ = requireDependency 'jquery'
-Routes = requireDependency 'js-routes'
+# dependencies
+
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
+# various
 
 simulateLink = requireSource 'various/simulateLink'
-
-findDOM = requireSource 'various/findDOM'
 
 
 toggleAjax = ( that, name, ajax )->
@@ -33,19 +34,11 @@ onAjaxSuccess = ( that, redirect, data, status, xhr )->
 
   return unless allow == true || _.isString allow
 
-  if _.isString allow
+  location = allow if _.isString allow
 
-    location = allow
+  return unless _.isString location
 
-    if Routes && /^[\w_]+$/.test( location ) && Routes[ location ]
-
-      location = Routes[ location ]()
-
-    ##
-
-  ##
-
-  simulateLink location, findDOM that
+  simulateLink location, ReactDOM.findDOMNode that
 
 ##
 
@@ -94,20 +87,6 @@ mixin =
 
       ##
 
-      if Routes && /^[\w_]+$/.test( options.url ) && Routes[ options.url ]
-
-        options.url = Routes[ options.url ]() 
-
-      ##
-
-      if _.has options, 'type'
-
-        options.method = options.method || options.type
-
-        delete options.type
-
-      ##
-
       if options.redirect
 
         options.success = _.queue options.success, _.partial onAjaxSuccess, this, options.redirect
@@ -126,7 +105,7 @@ mixin =
 
     componentWillUnmount: ->
 
-      _.each @ajaxes, ( ajax, name )->
+      _.each @ajaxes, _.bind ( ajax, name )->
 
         @abortAjax name
 

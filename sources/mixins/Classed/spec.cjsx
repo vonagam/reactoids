@@ -30,34 +30,30 @@ describe 'Classed', ->
 
   it 'works with context', ->
 
-    Classeded = TestMixin.createMixinClass Classed( classes: { 'nested': { '-modifier': '' } } ),
+    Classeded = createMixinClass Classed( classes: { 'nested': { '-modifier': '' } } ),
 
       displayName: 'Classeded'
 
       render: ->=
 
-        c = @classed
+        { classed } = this
 
-        <div className={ c '.' }>
-          <div className={ c 'nested -modifier' } />
-          <div className={ c 'nested', '-modifier' } />
-          <div className={ c [ 'nested', '-modifier' ] } />
-          <div className={ c 'nested nested.-modifier' } />
-          <div className={ c 'unknown' } />
+
+        <div className={ classed '.' }>
+          <div className={ classed 'nested -modifier' } />
+          <div className={ classed 'nested', '-modifier' } />
+          <div className={ classed [ 'nested', '-modifier' ] } />
+          <div className={ classed 'nested nested.-modifier' } />
+          <div className={ classed 'unknown' } />
         </div>
 
       ##
 
     ##
 
+    instance = shallow <Classeded className='asd' />, context: { 'getClassNames': getClassNames }
 
-    expect( TestReact.renderShallow(
-
-      <Classeded className='asd' />,
-
-      getClassNames: getClassNames
-
-    ) ).eql(
+    expect( instance ).to.contain(
 
       <div className='classeded asd'>
         <div className='classeded_nested classeded_nested-modifier' />
@@ -71,10 +67,9 @@ describe 'Classed', ->
 
   ##
 
-
   it 'works with context and prop', ->
 
-    Classeded = TestMixin.createMixinClass Classed( classes: { '-mod': '' } ),
+    Classeded = createMixinClass Classed( classes: { '-mod': '' } ),
 
       displayName: 'Check'
 
@@ -111,17 +106,9 @@ describe 'Classed', ->
 
     _.each checks, ( check )->
 
-      expect( TestReact.renderShallow(
+      instance = shallow <Classeded className={ check.input } />, context: { 'getClassNames': getClassNames }
 
-        <Classeded className={ check.input } />,
-
-        getClassNames: getClassNames
-
-      ) ).eql(
-
-        <div className={ check.output } />
-
-      )
+      expect( instance ).to.contain( <div className={ check.output } /> )
 
     ##
 

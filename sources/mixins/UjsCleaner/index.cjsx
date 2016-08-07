@@ -1,13 +1,10 @@
-findDOM = requireSource 'various/findDOM'
-
-
 mixin =
 
   Mixin.createPlain
 
     componentDidMount: ->
 
-      node = findDOM this
+      node = ReactDOM.findDOMNode this
 
       _.each [ 'class', 'props' ], ( attr )->
 

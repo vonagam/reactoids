@@ -3,7 +3,7 @@ describe 'Image', ->
   Image = requireSubject()
 
 
-  variants =
+  variants = {
 
     tag: [ 'img', 'div' ]
 
@@ -13,62 +13,49 @@ describe 'Image', ->
 
     'data-unknown': [ 3 ]
 
-  ##
+  }
 
 
-  tests =
+  itVariations 'renders [s]', variants, ( variation )->
 
-    shallow: 
+    { tag, src } = variation
 
-      it: ( input, props, tag )->
+    img = tag == undefined || tag == 'img'
 
-        # tag 
 
-        expect( tag ).equal if input.tag then input.tag else 'img'
+    instance = shallow <Image {... variation } />
 
-        # src
+    props = instance.props()
 
-        expect( props.className ).only( input.src ).string '-enabled'
 
-        expect( props.className ).only( ! input.src ).string '-disabled'
+    expect( instance ).to.have.tagName tag || 'img'
 
-        # mix
+    expect( instance ).to.have.className 'image'
 
-        image = input.tag == undefined || input.tag == 'img'
+    expect( instance ).onlyIf( variation[ 'data-unknown' ] ).to.have.data 'unknown', variation[ 'data-unknown' ]
 
-        if input.src
+    expect( _.get props, 'style.display' ).equal _.get variation, 'style.display'
 
-          expect( props.src ).only( image ).equal input.src
 
-          expect( _.get props, 'style.backgroundImage' ).only( ! image ).equal "url(#{ input.src })"
+    expect( instance ).onlyIf( src ).to.have.className '-enabled'
 
-        else
+    expect( instance ).onlyIf( ! src ).to.have.className '-disabled'
 
-          expect( props.src ).equal undefined
 
-          expect( _.get props, 'style.backgroundImage' ).equal _.get input, 'style.backgroundImage'
+    if src
 
-        ##
+      expect( instance ).onlyIf( img && src ).to.have.attr 'src', src
 
-        # style
+      expect( _.get props, 'style.backgroundImage' ).onlyIf( ! img ).equal "url(#{ src })"
 
-        expect( _.get props, 'style.display' ).equal _.get input, 'style.display'
+    else
 
-        # data-unknown
+      expect( instance ).to.not.have.attr 'src'
 
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # always
-
-        expect( props.className ).string 'image'
-
-      ##
+      expect( _.get props, 'style.backgroundImage' ).equal _.get variation, 'style.backgroundImage'
 
     ##
 
   ##
-
-
-  TestComponent.testComponent Image, variants, tests
 
 ##

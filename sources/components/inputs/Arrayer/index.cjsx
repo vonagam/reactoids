@@ -101,7 +101,7 @@ Arrayer = React.createClass
 
     'template': ''
 
-    'canAdd': _.all
+    'canAdd': _.every
 
     'canRemove': true
 
@@ -147,7 +147,7 @@ Arrayer = React.createClass
 
     values = _.clone @getValue()
 
-    values = _.reject values, ( ( item )->= _.funced @props.canRemove, item, values ), this
+    values = _.reject values, _.bind ( ( item )->= _.funced @props.canRemove, item, values ), this
 
     @setValue values
 
@@ -172,7 +172,7 @@ Arrayer = React.createClass
 
         {
 
-          _.map value, ( item, index )->=
+          _.map value, _.bind ( item, index )->=
 
             @renderItem(
 
@@ -212,7 +212,7 @@ Arrayer = React.createClass
 
           className={ classed 'action', '-clear' }
 
-          onClick={ @onClearClick if _.any value, ( ( item )->= _.funced props.canRemove, item, value ), this }
+          onClick={ @onClearClick if _.any value, ( item )->= _.funced props.canRemove, item, value }
 
           text={ stringed 'clear' }
 

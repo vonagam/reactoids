@@ -1,3 +1,5 @@
+# mixins
+
 UnisonMixin = requireSource 'mixins/Unison'
 
 
@@ -7,9 +9,11 @@ mixin = Mixin.createArged
 
     'name': React.PropTypes.string
 
-    'getValue': React.PropTypes.func # ( element )->=
+    'getValue': React.PropTypes.func # ( that )->=
 
-    'onChange': React.PropTypes.func # ( element, currValue, prevValue )->
+    'onChange': React.PropTypes.func # ( that, currValue, prevValue )->
+
+    'callOnMount': React.PropTypes.bool
 
   ##
 
@@ -17,13 +21,15 @@ mixin = Mixin.createArged
 
     'name': ''
 
+    'callOnMount': false
+
   ##
 
   mixins: [ UnisonMixin ]
 
   mixin: ( ARGS )->=
 
-    member = "_watched#{ _.capitalize ARGS.name }"
+    member = "_watched#{ _.pascalCase ARGS.name }"
 
 
     UnisonArgs = _.assign UnisonMixin.pick( ARGS ),
@@ -34,17 +40,17 @@ mixin = Mixin.createArged
 
       shouldSkip: false
 
-      update: ( element )->
+      update: ( that )->
 
-        currValue = ARGS.getValue element
+        currValue = ARGS.getValue that
 
-        prevValue = element[ member ]
+        prevValue = that[ member ]
 
         return if _.isEqual currValue, prevValue
 
-        ARGS.onChange element, currValue, prevValue
+        ARGS.onChange that, currValue, prevValue
 
-        element[ member ] = currValue
+        that[ member ] = currValue
 
       ##
 
@@ -56,6 +62,14 @@ mixin = Mixin.createArged
     getInitialMembers: ->=
 
       "#{ member }": ARGS.getValue this
+
+    ##
+
+    componentDidMount: ->
+
+      return unless ARGS.callOnMount
+
+      ARGS.onChange this, @[ member ], undefined
 
     ##
 

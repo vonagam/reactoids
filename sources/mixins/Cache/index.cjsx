@@ -50,11 +50,11 @@ mixin =
 
       return if _.isEmpty @_cache
 
-      next = props: nextProps, state: nextState, context: nextContext
+      next = { props: nextProps, state: nextState, context: nextContext }
 
-      _.each @_cache, ( cache, key )->
+      _.each @_cache, _.bind ( cache, key )->
 
-        if _.any cache.depend, ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
+        if _.some cache.depend, _.bind ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
 
           delete cache[ key ]
 

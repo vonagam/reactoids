@@ -1,10 +1,10 @@
-mixin = Mixin.createArged
+mixin = Mixin.createArged {
 
-  args:
+  args: {
 
     'name': React.PropTypes.string
 
-    'update': React.PropTypes.func # ( element )->
+    'update': React.PropTypes.func # ( that )->
 
     'duration': React.PropTypes.number
 
@@ -12,9 +12,9 @@ mixin = Mixin.createArged
 
     'shouldSkip': React.PropTypes.funced React.PropTypes.bool # ()->=
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'name': ''
 
@@ -22,11 +22,11 @@ mixin = Mixin.createArged
 
     'shouldSkip': false
 
-  ##
+  }
 
   mixin: ( ARGS )->=
 
-    Unison =
+    Unison = {
 
       insideUpdate: false
 
@@ -108,12 +108,12 @@ mixin = Mixin.createArged
 
       ##
 
-    ##
+    }
 
 
-    member = "in#{ _.capitalize ARGS.name }Unison"
+    member = "in#{ _.pascalCase ARGS.name }Unison"
 
-    method = "toggle#{ _.capitalize ARGS.name }Unison"
+    method = "toggle#{ _.pascalCase ARGS.name }Unison"
 
 
     getInitialMembers: ->=
@@ -152,7 +152,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
 module.exports = mixin

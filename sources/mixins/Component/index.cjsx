@@ -1,8 +1,15 @@
+# mixins
+
 PureRenderMixin = requireSource 'mixins/PureRender'
+
 OmitPropsMixin = requireSource 'mixins/OmitProps'
+
 ClassedMixin = requireSource 'mixins/Classed'
+
 DomMixin = requireSource 'mixins/Dom'
+
 CacheMixin = requireSource 'mixins/Cache'
+
 CallbackMixin = requireSource 'mixins/Callback'
 
 

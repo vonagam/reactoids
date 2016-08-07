@@ -1,33 +1,29 @@
-Input = React.createClass
+Input = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-value': ''
         '-readonly': ''
 
-      ##
+      }
 
-    ##
+    }
 
     InputMixin
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'type': React.PropTypes.string
 
-    'onBlur': React.PropTypes.func
-
-    'onKeyDown': React.PropTypes.func
-
     'onSubmit': React.PropTypes.func
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -63,7 +59,19 @@ Input = React.createClass
 
   onLabelClick: ->
 
+    @focus()
+
+  ##
+
+  focus: ->
+
     @dom().focus()
+
+  ##
+
+  blur: ->
+
+    @dom().blur()
 
   ##
 
@@ -86,15 +94,15 @@ Input = React.createClass
 
       onChange={ @onChange }
 
-      onBlur={ _.queue @onBlur, props.onBlur }
+      onBlur={ @callback 'onBlur, props.onBlur' }
 
-      onKeyDown={ _.queue @onKeyDown, props.onKeyDown }
+      onKeyDown={ @callback 'onKeyDown, props.onKeyDown' }
 
     />
 
   ##
 
-##
+}
 
 
 module.exports = Input

@@ -1,8 +1,8 @@
-describe 'Input', ->
+describe.skip 'Input', ->
 
   Input = requireSubject()
 
-  Inputed = TestMixin.createMixinClass Input
+  Inputed = createMixinClass Input
 
 
   input = undefined

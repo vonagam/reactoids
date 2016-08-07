@@ -10,7 +10,7 @@ require './clean'
 
 gulp.task 'production-build', [ 'production-clean' ], ( callback )->
 
-  build '../sources/**/*.cjsx',
+  build [ '../sources/**/*.cjsx', '!../sources/**/spec.cjsx' ], {
 
     base: '../sources'
 
@@ -20,7 +20,7 @@ gulp.task 'production-build', [ 'production-clean' ], ( callback )->
 
     sourcemaps: false
 
-  ##
+  }
 
   .on 'end', ->
 

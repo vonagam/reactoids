@@ -1,8 +1,12 @@
+# dependencies
+
+window = requireDependency 'window' # location
+
 # mixins
 
 UrlWatcherMixin = requireSource 'mixins/UrlWatcher'
 
-# utils
+# various
 
 getUrlData = requireSource 'various/getUrlData'
 
@@ -13,44 +17,39 @@ clearHref = ( href )->=
 
 ##
 
-clearHost = ( host )->=
 
-  host.replace /^www\./, ''
+Link = React.createClass {
 
-##
+  mixins: Mixin.resolve [
 
+    ComponentMixin {
 
-Link = React.createClass
-
-  mixins: Mixin.resolve [ 
-
-    ComponentMixin
-
-      classes:
+      classes: {
 
         '-current': ''
+        '-another': ''
         '-enabled': ''
         '-disabled': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    UrlWatcherMixin
+    UrlWatcherMixin {
 
       shouldWatch: _.property 'shouldWatchUrl'
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'href': React.PropTypes.string
 
     'isCurrent': React.PropTypes.funced React.PropTypes.bool # ( url0, url1 )->=
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -68,13 +67,14 @@ Link = React.createClass
 
     { props, classed } = this
 
+
     if _.isString props.href
 
       href = props.href
 
       urlData = getUrlData href
 
-      @shouldWatchUrl = clearHost( urlData.host ) == clearHost( window.location.host )
+      @shouldWatchUrl = urlData.host == window.location.host
 
       current = _.isString( href ) && _.funced props.isCurrent, urlData, window.location
 
@@ -87,23 +87,27 @@ Link = React.createClass
     ##
 
 
-    # key - https://github.com/facebook/react/issues/1448
-
     <a
 
-      key={ if href then '1' else '0' }
-    
       {... @omitProps() }
-    
-      className={ classed '.', "-#{ if _.isString href then 'enabled' else 'disabled' }", '-current': current }
-    
+
+      className={ classed(
+
+        '.'
+
+        "-#{ if _.isString href then 'enabled' else 'disabled' }"
+
+        "-#{ if current then 'current' else 'another' }"
+
+      ) }
+
       href={ href }
-    
+
     />
 
   ##
 
-##
+}
 
 
 module.exports = Link

@@ -1,4 +1,4 @@
-describe 'Filer', ->
+describe.skip 'Filer', ->
 
   Filer = requireSubject()
 

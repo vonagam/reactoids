@@ -1,11 +1,11 @@
-describe 'FindDOM', ->
+describe.skip 'FindDOM', ->
 
   FindDOM = requireSubject()
 
 
   it 'works', ->
 
-    FindDOMed = TestMixin.createMixinClass FindDOM,
+    FindDOMed = createMixinClass FindDOM,
 
       render: ->=
 

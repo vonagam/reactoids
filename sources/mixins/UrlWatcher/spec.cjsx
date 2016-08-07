@@ -1,6 +1,8 @@
-describe 'UrlWatcher', ->
+describe.skip 'UrlWatcher', ->
 
   UrlWatcher = requireSubject()
+
+  window = requireDependency 'window' # location
 
 
   hrefBefore = window.location.href
@@ -16,7 +18,7 @@ describe 'UrlWatcher', ->
 
     ARGS = {}
 
-    UrlWatchered = TestMixin.createMixinClass UrlWatcher( ARGS )
+    UrlWatchered = createMixinClass UrlWatcher( ARGS )
 
     component = TestReact.render <UrlWatchered />
 

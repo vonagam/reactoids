@@ -1,5 +1,3 @@
-#§global 'FormData', 'window'
-
 # mixins
 
 AjaxMixin = requireSource 'mixins/Ajax'
@@ -12,7 +10,7 @@ Fields = requireSource 'components/inputs/Fields'
 
 Button = requireSource 'components/general/Button'
 
-# utils
+# various
 
 toFormData = requireSource 'various/toFormData'
 
@@ -117,8 +115,6 @@ Form = React.createClass
 
     ajax.error = _.queue @onAjaxError, ajax.error
 
-    ajax.success = _.queue @onAjaxSuccess, ajax.success
-
     unless _.isEmpty ajax.data
 
       data = toFormData ajax.data
@@ -126,14 +122,14 @@ Form = React.createClass
       if data
 
         ajax.data = data
+
         ajax.processData = false
+
         ajax.contentType = false
 
       ##
 
     ##
-
-    toFormData ajax unless _.isEmpty ajax.data
 
     @sendAjax 'one', ajax
 

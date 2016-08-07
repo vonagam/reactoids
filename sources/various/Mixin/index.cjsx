@@ -109,7 +109,7 @@ Mixin =
 
       _.each mixins, ( mixin )->
 
-        return if _.include outputMixins, mixin
+        return if _.includes outputMixins, mixin
 
         addMixins mixin.mixins
 

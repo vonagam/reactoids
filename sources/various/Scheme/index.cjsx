@@ -1,4 +1,8 @@
-I18n = requireDependency 'i18n-js'
+# dependencies
+
+I18n = requireDependency 'i18n-js' # fnando/i18n-js
+
+# components
 
 Fields = requireSource 'components/inputs/Fields'
 
@@ -86,11 +90,11 @@ class Node
 
   fields: ( fields )->
 
-    _.transform fields, ( fields, options, key )-> 
+    _.transform fields, _.bind( ( fields, options, key )->
 
       fields.push new Field @name, key, options
 
-    , @_fields, this
+    , this ), @_fields
 
   ##
 
@@ -107,9 +111,11 @@ class Model extends Node
 
   constructor: ( name, scheme )->
 
-    name = _( [ name, scheme.name ] ).compact().map( _.snakeCase ).join '.'
+    names = _.compact [ name, scheme.name ]
 
-    super name
+    names = _.map names, _.snakeCase
+
+    super names.join( '.' )
 
   ##
 

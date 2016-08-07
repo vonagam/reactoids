@@ -1,6 +1,6 @@
 # dependencies
 
-tether = requireDependency 'tether'
+Tether = requireDependency 'tether' # hubspot/tether, http://tether.io
 
 
 getOptions = ( that, tether )->=
@@ -16,7 +16,7 @@ getOptions = ( that, tether )->=
 
 # Cleaning Up After Tether https://github.com/HubSpot/tether/issues/36
 
-STYLES = _.transform( 
+STYLES = _.transform(
 
   [ 'transform', 'webkitTransform', 'OTransform', 'MozTransform', 'msTransform', 'position', 'top', 'bottom', 'left', 'right' ]
 
@@ -65,55 +65,59 @@ cleanUpTether = ( node, isElement )->
 ##
 
 
-Tether = React.createClass
+Tether = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
       classes: {}
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'enabled': React.PropTypes.bool
 
-    'tether': React.PropTypes.shape
-    
+    'tether': React.PropTypes.shape {
+
       'target': React.PropTypes.any # DOM node, jQuery element, selector string
-    
+
       'attachment': React.PropTypes.string # 'vert-attachment horiz-attachment' %w( top middle bottom ) %w( left center right )
-    
+
       'targetAttachment': React.PropTypes.string
-    
+
       'offset': React.PropTypes.string # 'vert-offset horiz-offset'
-    
+
       'targetOffset': React.PropTypes.string
-    
+
       'targetModifier': React.PropTypes.oneOf [ 'visible', 'scroll-handle' ]
-    
-      'optimizations': React.PropTypes.shape
-    
+
+      'optimizations': React.PropTypes.shape {
+
         'moveElemen': React.PropTypes.bool
-    
+
         'gpu': React.PropTypes.bool
-    
-      'constraints': React.PropTypes.arrayOf React.PropTypes.shape
-    
+
+      }
+
+      'constraints': React.PropTypes.arrayOf React.PropTypes.shape {
+
         'to': React.PropTypes.any # A DOM node, bounding box, the string 'window', or the string 'scrollParent'
-    
+
         'pin': React.PropTypes.oneOfType [ React.PropTypes.bool, React.PropTypes.arrayOf React.PropTypes.string ]
-    
+
         'attachment': React.PropTypes.string # 'vert-modifier horiz-modifier' %w( none together element target both )
-    
+
+      }
+
       'addTargetClasses': React.PropTypes.bool
 
-    ##
+    }
 
-  ##
+  }
 
   componentDidMount: ->
 
@@ -167,7 +171,7 @@ Tether = React.createClass
 
   createTether: ( options )->
 
-    @tether = new tether options
+    @tether = new Tether options
 
     @target = @tether.target
 
@@ -200,17 +204,11 @@ Tether = React.createClass
     { classed } = this
 
 
-    <div
-
-      {... @omitProps() }
-    
-      className={ classed '.' }
-    
-    />
+    <div {... @omitProps() } className={ classed '.' } />
 
   ##
 
-##
+}
 
 
 module.exports = Tether

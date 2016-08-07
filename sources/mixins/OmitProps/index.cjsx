@@ -1,8 +1,11 @@
-mixin = ->=
+mixin = Mixin.createArged {
 
-  KEYS = undefined
+  args: {}
 
-  Mixin.createPlain
+  mixin: ->=
+
+    KEYS = undefined
+
 
     initConstants: ->
 
@@ -18,7 +21,7 @@ mixin = ->=
 
   ##
 
-##
+}
 
 
 module.exports = mixin

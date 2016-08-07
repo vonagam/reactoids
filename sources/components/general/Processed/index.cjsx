@@ -5,27 +5,27 @@ getStateFromProps = ( props )->=
 ##
 
 
-Processed = React.createClass
+Processed = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
       classes: {}
 
-    ## 
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
-    'tag': React.PropTypes.any
+    'tag': React.PropTypes.string
 
     'source': React.PropTypes.any
-    
+
     'process': React.PropTypes.func.isRequired
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -59,16 +59,16 @@ Processed = React.createClass
     <Tag
 
       {... @omitProps() }
-    
-      className={ classed '.' } 
-    
+
+      className={ classed '.' }
+
       dangerouslySetInnerHTML={ __html: state.processed }
-    
+
     />
 
   ##
 
-##
+}
 
 
 module.exports = Processed

@@ -1,9 +1,9 @@
-describe 'Mixin', ->
+describe.skip 'Mixin', ->
 
   Mixin = requireSubject()
 
 
-  describe '.createPlain', ->
+  describe.skip '.createPlain', ->
 
     checks = [
 
@@ -38,13 +38,13 @@ describe 'Mixin', ->
 
         expect( _.keys mixin ).eql [ 'componentWillMount' ]
 
-        _.times 2, -> 
+        _.times 2, ->
 
           mixin.componentWillMount.apply component
 
         ##
 
-        _.each check, ( spy, key )-> 
+        _.each check, ( spy, key )->
 
           expect( spy ).callCount if key == 'initConstants' then 1 else 2
 
@@ -59,11 +59,11 @@ describe 'Mixin', ->
   ##
 
 
-  describe '.createArged', ->
+  describe.skip '.createArged', ->
 
     it 'works', ->
 
-      mixinFunc = Mixin.createArged 
+      mixinFunc = Mixin.createArged
 
         args:
 
@@ -105,7 +105,7 @@ describe 'Mixin', ->
   ##
 
 
-  describe '.resolve', ->
+  describe.skip '.resolve', ->
 
     it 'works', ->
 

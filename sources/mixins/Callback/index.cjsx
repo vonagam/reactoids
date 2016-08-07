@@ -1,43 +1,30 @@
-createObtainer = ( that )->=
-
-  _.memoize ( key )->=
-
-    ->=
-
-      _.get( that, key ).apply that, arguments
-
-    ##
-
-  ##
-
-##
-
-
-mixin = 
+mixin =
 
   Mixin.createPlain
 
-    callback: ( key )->=
+    callback: ( keys )->=
 
-      obtainCallback = createObtainer this
+      that = this
 
-      @callback = ( key )->=
 
-        value = _.get this, key
+      @callback = _.memoize ( keys )->=
 
-        if _.isFunction value
+        keys = keys.split /\s*,\s*/
 
-          return obtainCallback key
+        ->
 
-        else
+          for key in keys
 
-          return value
+            _.get( that, key, _.noop ).apply that, arguments
+
+          ##
 
         ##
 
       ##
 
-      @callback key
+
+      @callback keys
 
     ##
 

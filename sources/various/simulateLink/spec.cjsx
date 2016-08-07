@@ -1,36 +1,78 @@
 describe 'simulateLink', ->
 
-  simulateLink = requireSubject()
-
   $ = requireDependency 'jquery'
 
-  # TODO: add tests for decorators and container arguments
+  window = requireDependency 'window' # location
+
+  simulateLink = requireSubject()
 
 
   hrefBefore = window.location.href
 
-  hrefAfter = 'https://foo.bar/'
 
+  variants = {
 
-  afterEach ->
+    prevent: [ true ]
 
-    window.location.href = hrefBefore
+    containter: [ $( '<div>' ) ]
 
-  ##
+    decorateLink: [ ( $link )-> $link.attr 'data-unknown', 3 ]
 
+  }
 
-  _.each [ true, false ], ( prevented )->
+  options = {
 
-    it "prevented: #{ prevented }", ->
+    only: ( variation )->=
 
-      $( 'body' ).one 'click', _.method 'preventDefault' if prevented
-
-      simulateLink hrefAfter
-
-      expect( window.location.href ).equal if prevented then hrefBefore else hrefAfter
+      variation.href
 
     ##
 
+    afterEach: ->
+
+      window.location.href = hrefBefore
+
+    ##
+
+  }
+
+  itVariations 'works', variants, options, ( variation )->
+
+    $link = undefined
+
+    href = 'https://foo.bar/'
+
+
+    onClick = sinon.spy ( event )->
+
+      $link = $ event.target
+
+      event.preventDefault() if variation.prevent
+
+    ##
+
+    containter = variation.containter || $( 'body' )
+
+    containter.one 'click', onClick
+
+
+    simulateLink href, variation.containter, variation.decorateLink
+
+
+    expect( onClick ).to.be.calledOnce
+
+    expect( $link.is 'a' ).to.be.true
+
+    expect( $link.attr 'data-unknown' ).onlyIf( variation.decorateLink ).to.equal '3'
+
+    expect( $link.parent() ).onlyIf( variation.prevent ).to.have.lengthOf 0
+
+    # TODO expect( window.location.href ).to.equal if variation.prevent then hrefBefore else href
+
+    $link.remove()
+
   ##
+
+  it 'should be tested better'
 
 ##

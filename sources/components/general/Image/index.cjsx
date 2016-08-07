@@ -1,27 +1,27 @@
-Image = React.createClass
+Image = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-enabled': ''
         '-disabled': ''
 
-      ##
+      }
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'tag': React.PropTypes.string
 
     'src': React.PropTypes.string
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -33,9 +33,10 @@ Image = React.createClass
 
     { props, classed } = this
 
+    { src } = props
+
     Tag = props.tag
 
-    src = props.src
 
     if src
 
@@ -68,7 +69,7 @@ Image = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Image

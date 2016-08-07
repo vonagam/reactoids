@@ -3,31 +3,31 @@
 Processed = requireSource 'components/general/Processed'
 
 
-Text = React.createClass
+Text = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         'paragraph': ''
 
-      ##
+      }
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'text': React.PropTypes.string
-    
+
     'preProcess': React.PropTypes.func
-    
+
     'postProcess': React.PropTypes.func
 
-  ##
+  }
 
   processText: ( text )->=
 
@@ -38,9 +38,9 @@ Text = React.createClass
     text = @props.preProcess text if @props.preProcess
 
     text = '<p class="' + className + '">' + text + '</p>'
-    
+
     text = text.replace /\n{2,}/g, '</p><p class="' + className + '">'
-    
+
     text = text.replace /\n/g, '<br/>'
 
     text = @props.postProcess text if @props.postProcess
@@ -57,18 +57,18 @@ Text = React.createClass
     <Processed
 
       {... @omitProps() }
-    
-      className={ classed '.' } 
-    
+
+      className={ classed '.' }
+
       source={ props.text }
-    
+
       process={ @processText }
-    
+
     />
 
   ##
 
-##
+}
 
 
 module.exports = Text

@@ -16,17 +16,18 @@ gulp.task 'development-watch', [ 'development-build' ], ->=
 
   gulp.watch '../{sources,tests}/**/*', ( event )->
 
-    relativePath = path.relative( './', event.path )
+    relativePath = path.relative './', event.path
 
-    developmentPath = relativePath.replace( /^\.\./, 'build-development' ).replace( /\.\w+$/, '.js' )
+    developmentPath = relativePath.replace( /^\.\./, 'build-development' ).replace /\.\w+$/, '.js'
 
-    specPath = developmentPath.replace( /(\w+)\.js$/, 'spec.js' )
+    specPath = developmentPath.replace /(\w+)\.js$/, 'spec.js'
+
 
     switch event.type
 
       when 'changed', 'renamed'
 
-        build relativePath,
+        build relativePath, {
 
           base: '../'
 
@@ -36,13 +37,13 @@ gulp.task 'development-watch', [ 'development-build' ], ->=
 
             console.log error.toString()
 
-            this.destroy()
+            this.destroy error
 
           ##
 
           sourcemaps: true
 
-        ##
+        }
 
         .on 'end', ->
 

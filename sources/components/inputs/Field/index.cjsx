@@ -89,7 +89,7 @@ Field = React.createClass
 
     messages = {}
 
-    _.each props.messages, ( message, name )->
+    _.each props.messages, _.bind ( message, name )->
 
       message = _.funced message, value
 

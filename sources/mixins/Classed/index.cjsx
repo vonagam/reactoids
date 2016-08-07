@@ -1,13 +1,15 @@
+# various
+
 argsToString = requireSource 'various/classes'
 
 
-mixin = Mixin.createArged
+mixin = Mixin.createArged {
 
-  args:
+  args: {
 
     'classes': React.PropTypes.object
 
-  ##
+  }
 
   mixin: ( ARGS )->=
 
@@ -53,7 +55,7 @@ mixin = Mixin.createArged
 
       return classNames[ 0 ] if classNames.length < 2
 
-      return classNames.join ' ' if _.all classNames, _.isString
+      return classNames.join ' ' if _.every classNames, _.isString
 
       return classNames
 
@@ -71,7 +73,7 @@ mixin = Mixin.createArged
 
       args = [ {} ].concat classeses, ( a, b )->= mergeClassNames a, b
 
-      _.merge.apply _, args
+      _.mergeWith.apply _, args
 
     ##
 
@@ -139,21 +141,22 @@ mixin = Mixin.createArged
     ##
 
 
-    propTypes:
+    propTypes: {
 
       'className': React.PropTypes.funced React.PropTypes.string, React.PropTypes.array, React.PropTypes.object # ( that )->=
 
-    ##
+    }
 
-    contextTypes:
+    contextTypes: {
 
       'getClassNames': React.PropTypes.func # ( id, constructor, keys, that )->=
 
-    ##
+    }
 
     getInitialMembers: ->=
 
-      _classed:
+      _classed: {
+
         cache: {}
         classes: {}
         classesProps: {}
@@ -161,7 +164,7 @@ mixin = Mixin.createArged
         classesContext: {}
         classesContextInput: undefined
 
-      ##
+      }
 
     ##
 
@@ -203,7 +206,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
 module.exports = mixin

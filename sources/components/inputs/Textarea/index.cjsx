@@ -1,27 +1,21 @@
-Textarea = React.createClass
+Textarea = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-value': ''
         '-readonly': ''
 
-      ##
+      }
 
-    ##
+    }
 
     InputMixin
 
   ]
-
-  propTypes:
-
-    'onBlur': React.PropTypes.func
-
-  ##
 
   getDefaultProps: ->=
 
@@ -43,7 +37,19 @@ Textarea = React.createClass
 
   onLabelClick: ->
 
+    @focus()
+
+  ##
+
+  focus: ->
+
     @dom().focus()
+
+  ##
+
+  blur: ->
+
+    @dom().blur()
 
   ##
 
@@ -64,13 +70,13 @@ Textarea = React.createClass
 
       onChange={ @onChange }
 
-      onBlur={ _.queue @onBlur, props.onBlur }
+      onBlur={ @callback 'onBlur, props.onBlur' }
 
     />
 
   ##
 
-##
+}
 
 
 module.exports = Textarea

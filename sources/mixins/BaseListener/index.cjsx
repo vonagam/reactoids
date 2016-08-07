@@ -24,7 +24,7 @@ mixin = Mixin.createArged
 
   mixin: ( ARGS )->=
 
-    method = _.capitalize _.camelCase "#{ ARGS.name }Listener"
+    method = _.pascalCase "#{ ARGS.name }Listener"
     member = _.camelCase "#{ method }#{ if ARGS.multiplyListeners then 's' else '' }"
 
 
@@ -113,11 +113,13 @@ mixin = Mixin.createArged
 
         listeners = @[ member ]
 
-        _.each listeners, ( listener )->
+        _.each listeners, _.bind ( listener )->
 
           toggleListener this, listener, false
 
         , this
+
+      ##
 
     else
 

@@ -1,7 +1,5 @@
 gulp = require 'gulp'
 
-_ = require 'lodash'
-
 $ = require( 'gulp-load-plugins' )()
 
 path = require 'path'
@@ -9,78 +7,7 @@ path = require 'path'
 pipe = require './pipe'
 
 
-AUTO_REQUIRES = [
-
-  {
-    module: 'react'
-    variable: 'React'
-    check: /<\w/
-  }
-  {
-    module: 'react-dom'
-    variable: 'ReactDOM'
-  }
-  {
-    module: 'lodash'
-    variable: '_'
-  }
-  {
-    module: 'pixi.js'
-    variable: 'PIXI'
-    includes: /^renderers\/pixi/
-  }
-  {
-    module: 'd3'
-    variable: 'd3'
-    includes: /^wrappers\/d3/
-  }
-  {
-    module: 'various/Mixin'
-    variable: 'Mixin'
-    excludes: /^various\/Mixin/
-  }
-  {
-    module: 'mixins/Component'
-    variable: 'ComponentMixin'
-    includes: /\bcomponents\b/
-    check: /\bComponentMixin\b/
-  }
-  {
-    module: 'mixins/Input'
-    variable: 'InputMixin'
-    includes: /\binputs\b/
-    check: /\bInputMixin\b/
-  }
-  {
-    module: 'mixins/OptionsInput'
-    variable: 'OptionsInputMixin'
-    includes: /\binputs\b/
-    check: /\bOptionsInputMixin\b/
-  }
-
-]
-
-_.each AUTO_REQUIRES, ( autoRequire )->
-
-  used = RegExp "\\b#{ autoRequire.variable }[\\.\\[\\(]"
-
-  autoRequire.type = if /\//.test autoRequire.module then 'Source' else 'Dependency'
-
-  autoRequire.isNeeded = ( content, path )->=
-
-    return false if @excludes && @excludes.test path
-
-    return false if @includes && ! @includes.test path
-
-    return false if /^(\.\.\/tests|extend)/.test path
-
-    return true if @check && @check.test content
-
-    return used.test content
-
-  ##
-
-##
+addAutoRequires = require './build/addAutoRequires'
 
 
 sourcesDirectoryPath = path.resolve '../sources'
@@ -94,29 +21,31 @@ build = ( src, options = {} )->=
 
     $.plumber errorHandler: options.plumber if options.plumber
 
+    $.rename ( path )->=
+
+      path.dirname = path.dirname.replace /lodash\/\w+$/, 'lodash'
+
+      path
+
+    ##
+
     $.insert.transform ( content, file )->=
 
       filePath = path.relative sourcesDirectoryPath, file.path
 
       sourcesPath = path.relative path.dirname( file.path ), sourcesDirectoryPath
 
-      _.each AUTO_REQUIRES, ( autoRequire )->
-
-        if autoRequire.isNeeded content, filePath
-
-          content = "#{ autoRequire.variable } = require#{ autoRequire.type } '#{ autoRequire.module }';" + content
-
-        ##
-
-      ##
+      content = addAutoRequires content, filePath
 
       content = content.replace /requireSubject\(\)/g, 'require("./index")'
 
-      content = content.replace /requireDependency\s'([^']+)'/g, "requireSource('dependencies')['$1']"
+      content = content.replace /requireDependency(\(|\s)/g, 'require$1'
 
       content = content.replace /requireSource(\(|\s)'/g, "require$1'#{ sourcesPath }/"
 
-      content = '"use strict";' + content
+      content = content.replace /window = require 'window'/g, '# window'
+
+      content = '"use strict"\n\n' + content
 
       content
 

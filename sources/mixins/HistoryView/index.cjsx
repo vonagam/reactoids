@@ -1,3 +1,9 @@
+# dependencies
+
+window = requireDependency 'window' # history, location, addEventListener
+
+# mixins
+
 BaseViewMixin = requireSource 'mixins/BaseView'
 
 
@@ -138,15 +144,11 @@ mixin = Mixin.createArged
 
     changeHistoryState: ( position, options )->
 
-      return unless window.history
-
       History.changeState position, this, ARGS, options
 
     ##
 
     componentWillMount: ->
-
-      return unless window.history
 
       History.addComponent this, ARGS
 
@@ -154,13 +156,18 @@ mixin = Mixin.createArged
 
     componentWillUnmount: ->
 
-      return unless window.history
-
       History.removeComponent this, ARGS
 
     ##
 
   ##
+
+##
+
+
+unless window.history
+
+  mixin = Mixin.createArged mixin: ->= { changeHistoryState: _.noop }
 
 ##
 

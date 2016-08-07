@@ -61,7 +61,7 @@ Fields = React.createClass
 
       {
 
-        _.map _.funced( props.scheme, value ), ( field, key )->=
+        _.map _.funced( props.scheme, value ), _.bind ( field, key )->=
 
           key = field.key || key
 

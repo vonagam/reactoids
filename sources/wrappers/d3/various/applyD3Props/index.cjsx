@@ -17,6 +17,7 @@ applyD3Props = ( target, props, defaults, args )->=
 
   modifiers = _.defaults {}, getModifiers( props, args ), getModifiers( defaults, args )
 
+
   _.each modifiers, ( value, key )->
 
     return if value == undefined
@@ -24,6 +25,7 @@ applyD3Props = ( target, props, defaults, args )->=
     target[ key ]( value )
 
   ##
+
 
   target
 

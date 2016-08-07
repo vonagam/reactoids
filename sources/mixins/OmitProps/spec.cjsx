@@ -1,11 +1,11 @@
-describe 'OmitProps', ->
+describe.skip 'OmitProps', ->
 
   OmitProps = requireSubject()
 
 
   it 'works', ->
 
-    OmitPropsed = TestMixin.createMixinClass OmitProps(),
+    OmitPropsed = createMixinClass OmitProps(),
 
       propTypes:
 

@@ -1,4 +1,4 @@
-describe 'Stringed', ->
+describe.skip 'Stringed', ->
 
   Stringed = requireSubject()
 
@@ -39,7 +39,7 @@ describe 'Stringed', ->
 
       ARGS = strings: [ 'asd', 'bsa' ]
 
-      MyStringeded = TestMixin.createMixinClass Stringed( ARGS ),
+      MyStringeded = createMixinClass Stringed( ARGS ),
 
         render: ->=
 

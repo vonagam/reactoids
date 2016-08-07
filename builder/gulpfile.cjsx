@@ -11,4 +11,3 @@ require './tasks/development/test'
 require './tasks/production/clean'
 
 require './tasks/production/build'
-

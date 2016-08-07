@@ -1,6 +1,8 @@
-describe 'Router', ->
+describe.skip 'Router', ->
 
   dependencies = requireSource 'dependencies'
+
+  window = requireDependency 'window' # location
 
   router = undefined
 
@@ -9,7 +11,7 @@ describe 'Router', ->
 
   before ->
 
-    dependencies[ 'js-routes' ] = { 
+    dependencies[ 'js-routes' ] = {
 
       inRoutes: '/defined/in/routes'
 

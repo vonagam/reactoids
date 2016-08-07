@@ -1,6 +1,10 @@
 URI = require 'urijs'
 
-Routes = requireDependency 'js-routes'
+# dependencies
+
+Routes = requireDependency 'js-routes' # railsware/js-routes
+
+# various
 
 getUrlData = requireSource 'various/getUrlData'
 
@@ -41,11 +45,11 @@ class Route
 
     return unless match
 
-    _.transform @captures, ( result, name, index )->
+    _.transform @captures, _.bind( ( result, name, index )->
 
       result[ name ] = match[ index + 1 ] || @defaults[ name ]
 
-    , {}, this
+    , this ), {}
 
   ##
 
@@ -59,7 +63,7 @@ class Router
     @routes = {}
     @handlers = {}
 
-    _.each handlers, ( handler, name )->
+    _.each handlers, _.bind ( handler, name )->
 
       if _.isArray handler
 
@@ -103,7 +107,7 @@ class Router
 
     result = undefined
 
-    _.each @routes, ( route, name )->=
+    _.each @routes, _.bind ( route, name )->=
 
       params = route.check path
 

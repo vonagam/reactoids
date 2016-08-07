@@ -3,27 +3,12 @@ describe 'Link', ->
   Link = requireSubject()
 
 
-  hrefBefore = window.location.href
+  SAME_HREFS = [ '/tests', '//reactoids.com/tests', 'https://reactoids.com/tests/?#' ]
 
-  before ->
-
-    window.location.href = 'http://asd.com'
-
-  ##
-
-  after ->
-
-    window.location.href = hrefBefore
-
-  ##
+  OTHER_HREFS = [ '/check', 'https://asd.com', 'https://reactoids.com:60/tests' ]
 
 
-  SAME_HREFS = [ '', '/', 'http://asd.com', 'http://asd.com/?#' ]
-
-  OTHER_HREFS = [ '/asd', 'https://asd.com', 'http://asd.com:60', 'http://foo.bar' ]
-
-
-  variants =
+  variants = {
 
     href: SAME_HREFS.concat OTHER_HREFS
 
@@ -31,96 +16,70 @@ describe 'Link', ->
 
     'data-unknown': [ 3 ]
 
-  ##
+  }
 
+  options = {
 
-  tests =
+    afterEach: ( variation )->
 
-    shallow:
-
-      afterEach: ( input )->
-
-        input.isCurrent.reset() if _.isFunction input.isCurrent
-
-      ##
-
-      it: ( input, props, tag )->
-
-        # href
-
-        if _.isString input.href
-
-          expect( props.href ).equal input.href
-
-          expect( props.className ).string '-enabled'            
-
-        else
-
-          expect( props.href ).equal undefined
-
-          expect( props.className ).string '-disabled'
-
-        ##
-
-        # mix
-
-        if _.isString input.href
-
-          if input.isCurrent != undefined
-
-            if _.isFunction input.isCurrent
-
-              expect( input.isCurrent ).callCount 1
-
-              isCurrent = input.isCurrent.returnValues[ 0 ]
-
-            else
-
-              isCurrent = input.isCurrent
-
-          else
-
-            isCurrent = _.includes SAME_HREFS, input.href
-
-        else
-
-          if _.isFunction input.isCurrent
-
-            expect( input.isCurrent ).callCount 0
-
-          ##
-
-          isCurrent = false
-
-        ##
-
-        if isCurrent
-
-          expect( props.className ).string '-current'
-
-        else
-
-          expect( props.className ).not.string '-current'
-
-        ##
-
-        # data-unknown
-
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # always
-
-        expect( tag ).equal 'a'
-
-        expect( props.className ).string 'link'
-
-      ##
+      variation.isCurrent.reset() if _.isFunction variation.isCurrent
 
     ##
 
+  }
+
+  itVariations 'renders [s]', variants, options, ( variation )->
+
+    instance = shallow <Link {... variation } />
+
+
+    expect( instance ).to.match 'a.link'
+
+    expect( instance ).onlyIf( variation.href ).to.have.attr 'href', variation.href
+
+    expect( instance ).onlyIf( variation[ 'data-unknown' ] ).to.have.data 'unknown', variation[ 'data-unknown' ]
+
+    expect( instance ).onlyIf( _.isString variation.href ).to.have.className '-enabled'
+
+    expect( instance ).onlyIf( ! _.isString variation.href ).to.have.className '-disabled'
+
+
+    if variation.href
+
+      if variation.isCurrent != undefined
+
+        if _.isFunction variation.isCurrent
+
+          expect( variation.isCurrent ).callCount 1
+
+          isCurrent = variation.isCurrent.returnValues[ 0 ]
+
+        else
+
+          isCurrent = variation.isCurrent
+
+        ##
+
+      else
+
+        isCurrent = _.includes SAME_HREFS, variation.href
+
+      ##
+
+    else
+
+      if _.isFunction variation.isCurrent
+
+        expect( variation.isCurrent ).not.to.have.been.called
+
+      ##
+
+      isCurrent = false
+
+    ##
+
+    expect( instance ).onlyIf( isCurrent ).to.have.className '-current'
+
   ##
-
-
-  TestComponent.testComponent Link, variants, tests
 
 ##

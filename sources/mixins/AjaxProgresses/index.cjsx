@@ -1,3 +1,9 @@
+# dependencies
+
+window = requireDependency 'window' # XMLHttpRequest, ProgressEvent
+
+# mixins
+
 EventListenerMixin = requireSource 'mixins/EventListener'
 
 
@@ -16,6 +22,8 @@ mixin = Mixin.createArged
   defaults:
 
     'filterRequest': _.constant true
+
+    'onRequestRemove': _.noop
 
   ##
 
@@ -132,7 +140,11 @@ mixin = Mixin.createArged
 ##
 
 
-mixin = Mixin.createPlain {} unless _.get( window, 'XMLHttpRequest.prototype.addEventListener' ) && window.ProgressEvent
+unless _.get( window.XMLHttpRequest, 'prototype.addEventListener' ) && window.ProgressEvent
+
+  mixin = Mixin.createArged mixin: ->= {}
+
+##
 
 
 module.exports = mixin

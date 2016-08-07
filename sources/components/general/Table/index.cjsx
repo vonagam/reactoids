@@ -1,6 +1,11 @@
+# mixins
+
+RenderSlotsMixin = requireSource 'mixins/RenderSlots'
+
+
 toProps = ( value )->=
 
-  return {} if ! value
+  return {} unless _.isExist value
 
   return value if _.isPlainObject value
 
@@ -9,38 +14,162 @@ toProps = ( value )->=
 ##
 
 
-Table = React.createClass
+Table = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes: 
+      classes: {
 
-        'table':
-          'head':
-            'row': ''
-            'cell': ''
-          'body':
-            'row': ''
-            'cell': ''
-          'foot': ''
+        'head':
+          'row': ''
+          'cell': ''
+        'body':
+          'row': ''
+          'cell': ''
+        'foot':
+          'row': ''
+          'cell': ''
 
-      ##
+      }
 
-    ##
+    }
+
+    RenderSlotsMixin names: [ 'head', 'body', 'foot' ]
 
   ]
 
-  propTypes:
+  propTypes: {
 
-    'collection': React.PropTypes.array.isRequired
+    'collection': React.PropTypes.collection.isRequired
 
     'columns': React.PropTypes.collection.isRequired
-    
-    'tfoot': React.PropTypes.any
-    
-    'tr': React.PropTypes.funced React.PropTypes.object
+
+    'tr': React.PropTypes.funced React.PropTypes.object # ( item, itemKey, collection, columns )->= trProps
+
+  }
+
+  getDefaultProps: ->=
+
+    'renderHead': ( that, slotProps, userProps )->=
+
+      { classed } = that
+
+      { columns } = slotProps
+
+
+      return unless _.some columns, 'th'
+
+
+      <thead className={ classed 'head' }>
+
+        <tr className={ classed 'head.row' }>
+
+          {
+
+            _.map columns, _.bind ( column, key )->=
+
+              th = toProps _.funced column.th, column, key
+
+
+              <th key={ key } {... th } className={ @mergeClassNames classed( 'head.cell' ), th.className } />
+
+            , that
+
+          }
+
+        </tr>
+
+      </thead>
+
+    ##
+
+    'renderBody': ( that, slotProps, userProps )->=
+
+      { classed, props } = that
+
+      { collection } = props
+
+      { columns } = slotProps
+
+
+      <tbody className={ classed 'body' }>
+
+        {
+
+          _.map collection, _.bind ( item, itemKey )->=
+
+            tr = toProps _.funced props.tr, item, itemKey, collection, columns
+
+
+            <tr key={ itemKey } {... tr } className={ @mergeClassNames classed( 'body.row' ), tr.className }>
+
+              {
+
+                _.map columns, _.bind ( column, columnKey )->=
+
+                  td = column.td
+
+                  if _.isString td
+
+                    td = { children: _.get item, td }
+
+                  else
+
+                    td = toProps _.funced td, item, itemKey, column, columnKey
+
+                  ##
+
+
+                  <td key={ columnKey } {... td } className={ @mergeClassNames classed( 'body.cell' ), td.className } />
+
+                , that
+
+              }
+
+            </tr>
+
+          , that
+
+        }
+
+      </tbody>
+
+    ##
+
+    'renderFoot': ( that, slotProps, userProps )->=
+
+      { classed } = that
+
+      { columns } = slotProps
+
+
+      return unless _.some columns, 'tf'
+
+
+      <tfoot className={ classed 'foot' }>
+
+        <tr className={ classed 'foot.row' }>
+
+          {
+
+            _.map columns, _.bind ( column, key )->=
+
+              tf = toProps _.funced column.tf, column, key
+
+
+              <td key={ key } {... tf } className={ @mergeClassNames classed( 'foot.cell' ), tf.className } />
+
+            , that
+
+          }
+
+        </tr>
+
+      </tfoot>
+
+    ##
 
   ##
 
@@ -51,82 +180,26 @@ Table = React.createClass
     { collection, columns } = props
 
 
+    columns = _.transform columns, ( columns, column, key )->
+
+      columns[ key ] = _.funced column, collection, key
+
+    ##
+
+
     <table {... @omitProps() } className={ classed '.' }>
 
-      <thead className={ classed 'head' }>
+      { @renderHead columns: columns }
 
-        <tr className={ classed 'head.row' }>
+      { @renderBody columns: columns }
 
-          { 
-
-            _.map columns, ( column, key )->=
-
-              th = toProps _.funced column.th, column, key, columns
-
-
-              <th key={ key } {... th } className={ @mergeClassNames classed( 'head.cell' ), th.className } />
-
-            , this
-
-          }
-
-        </tr>
-
-      </thead>
-
-      <tbody className={ classed 'body' }>
-
-        {
-
-          _.map collection, ( item, index )->=
-
-            tr = _.funced( props.tr, item, index, collection ) || {}
-
-
-            <tr key={ index } {... tr } className={ @mergeClassNames classed( 'body.row' ), tr.className }>
-
-              {
-
-                _.map columns, ( column, key )->=
-
-                  td = column.td
-
-                  if _.isString td
-
-                    td = { className: "-#{ _.camelCase td }", children: _.get item, td }
-
-                  else
-
-                    td = toProps _.funced td, item, column
-
-                  ##
-
-
-                  <td key={ key } {... td } className={ @mergeClassNames classed( 'body.cell' ), td.className } />
-
-                , this
-
-              }
-
-            </tr>
-
-          , this
-
-        }
-
-      </tbody>
-
-      {
-
-        <tfoot className={ classed 'foot' } children={ _.funced props.tfoot } /> if props.tfoot
-
-      }
+      { @renderFoot columns: columns }
 
     </table>
 
   ##
 
-##
+}
 
 
 module.exports = Table

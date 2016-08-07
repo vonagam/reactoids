@@ -1,4 +1,6 @@
-#§global 'FileReader', 'window'
+# dependencies
+
+window = requireDependency 'window' # FileReader
 
 # mixins
 
@@ -10,7 +12,7 @@ PureRenderMixin = requireSource 'mixins/PureRender'
 
 # components
 
-Button = requireSource 'elements/button'
+Button = requireSource 'components/general/Button'
 
 
 File = React.createClass
@@ -47,7 +49,7 @@ File = React.createClass
 
   createDataUrl: ->=
 
-    reader = new FileReader
+    reader = new window.FileReader
 
     reader.onload = _.partial @onDataUrlLoad, reader
 
@@ -302,7 +304,7 @@ Filer = React.createClass
 
           if value
 
-            _.map _.wrapInArray( value ), ( file, index )->=
+            _.map ( if props.multiple then value else [ value ] ), _.bind ( file, index )->=
 
               <File
 

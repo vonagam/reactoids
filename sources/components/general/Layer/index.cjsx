@@ -2,24 +2,28 @@
 
 LayeredMixin = requireSource 'mixins/Layered'
 
+StringedMixin = requireSource 'mixins/Stringed'
 
-Layer = React.createClass
 
-  mixins: Mixin.resolve [ 
+Layer = React.createClass {
 
-    ComponentMixin
+  mixins: Mixin.resolve [
+
+    ComponentMixin {
 
       classes: {}
 
-    ##
+    }
 
-    LayeredMixin
+    StringedMixin strings: []
+
+    LayeredMixin()
 
   ]
 
-  propTypes:
+  propTypes: {
 
-    'layer': React.PropTypes.shape
+    'layer': React.PropTypes.shape {
 
       'root': React.PropTypes.funced React.PropTypes.any # ->= # CAUTION isEqual doesn't know how to compare functions
 
@@ -27,13 +31,13 @@ Layer = React.createClass
 
       'decorateContainer': React.PropTypes.func # ( container )-> # CAUTION isEqual doesn't know how to compare functions
 
-    ##
+    }
 
-  ##
+  }
 
   componentWillMount: ->
 
-    @addLayer 'layer', @props.layer
+    @addLayer '', @props.layer
 
   ##
 
@@ -41,13 +45,13 @@ Layer = React.createClass
 
     return if _.isEqual nextProps.layer, @props.layer
 
-    @updateLayer 'layer', nextProps.layer
+    @updateLayer '', nextProps.layer
 
   ##
 
-  renderLayerLayer: ->=
+  renderLayer: ->=
 
-    { classed } = this
+    { context, classed } = this
 
 
     <div
@@ -66,7 +70,7 @@ Layer = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Layer

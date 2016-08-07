@@ -1,8 +1,8 @@
 gulp = require 'gulp'
 
-build = require '../_actions/build'
-
 $ = require( 'gulp-load-plugins' )()
+
+build = require '../_actions/build'
 
 
 require './clean'
@@ -10,7 +10,7 @@ require './clean'
 
 gulp.task 'development-build', [ 'development-clean' ], ( callback )->
 
-  build '../{sources,tests}/**/*.cjsx', 
+  build '../{sources,tests}/**/*.cjsx', {
 
     base: '../'
 
@@ -20,13 +20,13 @@ gulp.task 'development-build', [ 'development-clean' ], ( callback )->
 
     sourcemaps: true
 
-  ##
+  }
 
   .on 'end', ->
 
     $.pipe [
 
-      gulp.src [ '../package.json', '../sources/**/*.js' ]
+      gulp.src [ '../package.json', '../{sources,tests}/**/*.js' ]
 
       gulp.dest 'build-development'
 

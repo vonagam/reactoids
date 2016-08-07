@@ -14,9 +14,9 @@ mixin = Mixin.createArged
 
     _.each ARGS.names, ( name )->
 
-      render = "render#{ _.capitalize _.camelCase name }"
+      render = "render#{ _.pascalCase name }"
 
-      result.propTypes[ name ] = React.PropTypes.funced React.PropTypes.object
+      result.propTypes[ name ] = React.PropTypes.funced React.PropTypes.object # ( that )->=
 
       result.propTypes[ render ] = React.PropTypes.funced React.PropTypes.node # ( that, slotProps, userProps )->=
 

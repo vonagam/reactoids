@@ -2,21 +2,19 @@ classes = ->=
 
   args = _.flattenDeep arguments
 
-  _.transform( args, ( result, arg )->
 
-    if _.isObject arg
+  _.reduce args, ( result, arg )->=
 
-      arg = _.truthyKeys( arg ).join ' '
+    arg = _.truthyKeys( arg ).join ' ' if _.isObject arg
 
-    ##
 
-    if arg
+    return result unless arg
 
-      result.push arg
+    return arg unless result
 
-    ##
+    return result + ' ' + arg
 
-  , [] ).join ' '
+  , ''
 
 ##
 

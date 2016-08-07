@@ -1,15 +1,15 @@
-describe 'Layered', ->
+describe.skip 'Layered', ->
 
   Layered = requireSubject()
 
 
   it 'works', ->
 
-    root = window.document.createElement 'div'
+    root = document.createElement 'div'
 
     renderFunc = ( mark, that )->=
 
-      return if that.state.asd > 2 
+      return if that.state.asd > 2
 
       <div data-id={ mark }>{ that.state.asd }</div>
 
@@ -21,7 +21,7 @@ describe 'Layered', ->
 
     renderFunc2 = sinon.spy ->= <div data-id='my'>{ @state.bsa }</div>
 
-    Layereded = TestMixin.createMixinClass Layered,
+    Layereded = createMixinClass Layered,
 
       getInitialState: ->=
 

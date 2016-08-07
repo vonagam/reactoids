@@ -1,4 +1,6 @@
-URI = require 'urijs'
+# dependencies
+
+window = requireDependency 'window' # location
 
 
 PARTS = [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 'hash' ]
@@ -6,19 +8,14 @@ PARTS = [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 
 
 getUrlData = ( url )->=
 
-  data = new URI url, window.location.href
+  link = document.createElement 'a'
 
-  protocol = data.protocol()
+  link.href = url
 
-  if protocol && ! /:$/.test protocol
-
-    data.protocol = _.constant "#{ protocol }:"
-
-  ##
 
   _.transform PARTS, ( result, part )->
 
-    result[ part ] = data[ part ]()
+    result[ part ] = link[ part ]
 
   , {}
 

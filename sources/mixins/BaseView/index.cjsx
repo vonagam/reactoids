@@ -1,6 +1,8 @@
-$ = requireDependency 'jquery'
+# dependencies
 
-findDOM = requireSource 'various/findDOM'
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
+window = requireDependency 'window' # location
 
 
 mixin = Mixin.createArged
@@ -33,7 +35,7 @@ mixin = Mixin.createArged
 
     componentDidMount: ->
 
-      $( findDOM this ).on 'click', 'a[href]', _.bind ( event )->
+      $( ReactDOM.findDOMNode this ).on 'click', 'a[href]', _.bind ( event )->
 
         link = event.currentTarget
 

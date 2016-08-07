@@ -1,4 +1,4 @@
-describe 'Scheme', ->
+describe.skip 'Scheme', ->
 
   Scheme = requireSubject()
 

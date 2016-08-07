@@ -3,7 +3,7 @@ describe 'Textarea', ->
   Textarea = requireSubject()
 
 
-  variants =
+  variants = {
 
     onBlur: [ sinon.spy() ]
 
@@ -13,82 +13,79 @@ describe 'Textarea', ->
 
     readOnly: [ false, true ]
 
-  ##
+    'data-unknown': [ 3 ]
+
+  }
 
 
-  tests =
+  itVariations 'renders [s]', variants, ( variation )->
 
-    shallow:
+    unknown = variation[ 'data-unknown' ]
 
-      it: ( input, props, tag )->
 
-        # value and defaultValue
+    value =
 
-        value = ''
+      switch
 
-        if input.value != undefined
+        when variation.value != undefined then variation.value
 
-          value = input.value
+        when variation.defaultValue != undefined then variation.defaultValue
 
-        else if input.defaultValue != undefined
-
-          value = input.defaultValue
-
-        ##
-
-        expect( props.value ).equal value
-
-        expect( props.className ).only( value ).string '-value'
-
-        # readOnly
-
-        expect( props.className ).only( input.readOnly ).string '-readonly'
-
-        # always
-
-        expect( tag ).equal 'textarea'
-
-        expect( props.className ).string 'textarea'
+        else ''
 
       ##
 
     ##
 
-    render:
 
-      skip: ( input )->=
+    instance = shallow <Textarea {... variation } />
 
-        _.any [ input.onBlur ], _.isUndefined
 
-      ##
+    expect( instance ).to.match 'textarea.textarea'
 
-      afterEach: ( input )->
+    expect( instance ).onlyIf( unknown ).to.have.data 'unknown', unknown
 
-        _.each [ 'onBlur' ], ( key )-> input[ key ].reset()
+    expect( instance ).to.have.prop 'value', value
 
-      ##
+    expect( instance ).onlyIf( value ).to.have.className '-value'
 
-      it: ( input, component )->
-
-        dom = component.dom()
-
-        setValue = sinon.stub component, 'setValue'
-
-        setTempValue = sinon.stub component, 'setTempValue'
-
-        expect( ->= setTempValue.callCount ).change.to( 1 ).when -> TestReact.do.change dom
-
-        expect( ->= input.onBlur.callCount ).change.to( 1 ).when -> TestReact.do.blur dom
-
-        expect( ->= setValue.callCount ).change.by( 1 ).when -> TestReact.do.blur dom
-
-      ##
-
-    ##
+    expect( instance ).onlyIf( variation.readOnly ).to.have.className '-readonly'
 
   ##
 
 
-  TestComponent.testComponent Textarea, variants, tests
+  options = {
+
+    skip: ( variation )->=
+
+      _.some _.pick( variation, 'onBlur' ), _.isUndefined
+
+    ##
+
+    afterEach: ( variation )->
+
+      _.each _.pick( variation, 'onBlur' ), _.method 'reset'
+
+    ##
+
+  }
+
+  itVariations 'sets values on change and blur [m]', variants, options, ( variation )->
+
+    instance = mount <Textarea {... variation } />
+
+
+    setValue = sinon.stub instance.node, 'setValue'
+
+    setTempValue = sinon.stub instance.node, 'setTempValue'
+
+
+    expect( ->= setTempValue.callCount ).to.change.to( 1 ).when -> instance.simulate 'change'
+
+    expect( ->= variation.onBlur.callCount ).to.change.to( 1 ).when -> instance.simulate 'blur'
+
+    expect( ->= setValue.callCount ).to.change.by( 1 ).when -> instance.simulate 'blur'
+
+  ##
 
 ##

@@ -3,9 +3,16 @@
   "version": "1.2.0",
   "description": "Bunch of React components",
   "scripts": {
-    "build": "gulp --require coffee-react-void/register --cwd builder production-build",
-    "watch": "gulp --require coffee-react-void/register --cwd builder development-watch",
-    "test": "gulp --require coffee-react-void/register --cwd builder development-test"
+    "gulp": "gulp --require coffee-react-void/register --cwd builder",
+    "iron": "iron-node $(npm bin)/gulp --require coffee-react-void/register --cwd builder",
+    "dev:build": "npm run gulp -- development-build",
+    "dev:clean": "npm run gulp -- development-clean",
+    "dev:test": "npm run gulp -- development-test",
+    "dev:watch": "npm run gulp -- development-watch",
+    "prod:build": "npm run gulp -- production-build",
+    "prod:clean": "npm run gulp -- production-clean",
+    "iron:test": "npm run iron -- development-test",
+    "iron:watch": "npm run iron -- development-watch"
   },
   "repository": {
     "type": "git",
@@ -21,28 +28,38 @@
   },
   "homepage": "https://github.com/vonagam/reactoids",
   "devDependencies": {
-    "chai": "^3.4.1",
+    "chai": "^3.5.0",
     "chai-changes": "^1.3.6",
-    "del": "^2.1.0",
-    "gulp": "^3.9.0",
-    "gulp-coffee-react-void": "^2.3.2",
+    "chai-enzyme": "^0.5.0",
+    "del": "^2.2.1",
+    "enzyme": "^2.4.1",
+    "glob": "^7.0.5",
+    "gulp": "^3.9.1",
+    "gulp-coffee-react-void": "^2.4.0",
     "gulp-insert": "^0.5.0",
-    "gulp-load-plugins": "^1.1.0",
-    "gulp-mocha": "^2.2.0",
+    "gulp-load-plugins": "^1.2.4",
+    "gulp-mocha": "^3.0.0",
     "gulp-pipe": "^1.0.4",
-    "gulp-plumber": "^1.0.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^1.6.0",
-    "jquery": "^2.1.4",
-    "jsdom": "^7.0.2",
-    "lodash": "^3.10.1",
-    "moment": "^2.10.6",
-    "react": "^0.14.3",
-    "react-dom": "^0.14.3",
-    "sinon": "^1.17.2",
+    "jsdom": "^9.4.1",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
-    "source-map-support": "^0.3.3"
+    "source-map-support": "^0.4.2"
   },
   "dependencies": {
-    "urijs": "^1.17.0"
+    "jquery": "^3.1.0",
+    "lodash": "^4.14.1",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
+  },
+  "optionalDependencies": {
+    "basil.js": "^0.4.4",
+    "d3": "^4.2.1",
+    "moment": "^2.14.1",
+    "pixi.js": "^4.0.0-rc3",
+    "tether": "^1.3.4"
   }
 }

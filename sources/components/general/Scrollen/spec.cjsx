@@ -3,37 +3,30 @@ describe 'Scrollen', ->
   Scrollen = requireSubject()
 
 
-  it 'should be better tested'
+  it 'can be static rendered [s]', ->
+
+    props = {
+
+      'className': 'check'
+
+      'onReveal': _.noop
+
+      'children': <div>gogo</div>
+
+      'data-unknown': 3
+
+    }
 
 
-  variants =
-
-    'data-unknown': [ 3 ]
-
-  ##
+    instance = shallow <Scrollen {... props } />
 
 
-  tests =
+    expect( instance ).to.match 'div.scrollen.check[data-unknown]'
 
-    shallow:
-
-      it: ( input, props, tag )->
-
-        # data-unknown
-
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # always
-
-        expect( props.className ).string 'scrollen'
-
-      ##
-
-    ##
+    expect( instance ).to.contain props.children
 
   ##
 
-
-  TestComponent.testComponent Scrollen, variants, tests
+  it 'should be tested better'
 
 ##

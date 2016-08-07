@@ -1,68 +1,94 @@
 # dependencies
 
-$ = requireDependency 'jquery'
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
 
 # components
 
 Layer = requireSource 'components/general/Layer'
 
 
-changeCounter = ->=
+updateBodyClassName = (->=
 
-  $body = $ document.body
+  bodyClassNames = {}
 
-  changeCounter = ( delta )->=
-
-    counter = $body.data( 'reactoids-popup' ) || 0
-
-    counter += delta
-
-    $body.data 'reactoids-popup', counter
-
-    counter
-
-  ##
-
-  changeCounter delta
-
-##
+  bodyClassName = ''
 
 
-Popup = React.createClass
+  ( id, className )->
 
-  mixins: Mixin.resolve [ 
+    return if bodyClassNames[ id ] == className
 
-    ComponentMixin
 
-      classes:
+    if className
 
-        'layer': ''
+      bodyClassNames[ id ] = className
 
-      ##
+    else
+
+      delete bodyClassNames[ id ]
 
     ##
 
-  ]
 
-  propTypes:
+    $body = $ 'body'
 
-    'layerProps': React.PropTypes.object
+    $body.removeClass bodyClassName
+
+    bodyClassName = _.values( bodyClassNames ).join ' '
+
+    $body.addClass bodyClassName
 
   ##
 
+)()
+
+
+Popup = React.createClass {
+
+  mixins: Mixin.resolve [
+
+    ComponentMixin {
+
+      classes: {
+
+        'body': ''
+        'layer': ''
+
+      }
+
+    }
+
+  ]
+
+  propTypes: {
+
+    'layerProps': React.PropTypes.object
+
+  }
+
   componentDidMount: ->
 
-    counter = changeCounter +1
+    @id = _.uniqueId()
 
-    $body.addClass 'reactoids-popup' if counter == 1
+    @updateBodyClassName @classed 'body'
+
+  ##
+
+  componentDidUpdate: ->
+
+    @updateBodyClassName @classed 'body'
 
   ##
 
   componentWillUnmount: ->
 
-    counter = changeCounter -1
+    @updateBodyClassName null
 
-    $body.removeClass 'reactoids-popup' if counter == 0
+  ##
+
+  updateBodyClassName: ( className )->
+
+    updateBodyClassName @id, className
 
   ##
 
@@ -73,17 +99,13 @@ Popup = React.createClass
 
     <Layer {... props.layerProps } className={ classed 'layer' }>
 
-      {
-
-        <div {... @omitProps() } className={ classed '.' } />
-
-      }
+      <div {... @omitProps() } className={ classed '.' } />
 
     </Layer>
 
   ##
 
-##
+}
 
 
 module.exports = Popup

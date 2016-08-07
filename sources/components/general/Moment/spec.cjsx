@@ -1,28 +1,11 @@
 describe 'Moment', ->
 
-  dependencies = requireSource 'dependencies'
+  moment = require 'moment'
 
-  Moment = undefined
-
-
-  before ->
-
-    dependencies.moment = require 'moment'
-
-    Moment = requireSubject()
-
-  ##
-
-  after ->
-
-    dependencies.moment = undefined
-
-    Moment = undefined
-
-  ##
+  Moment = requireSubject()
 
 
-  variants =
+  variants = {
 
     time: [ 1318781876406, '1995-12-25' ]
 
@@ -38,116 +21,98 @@ describe 'Moment', ->
 
     'data-unknown': [ 3 ]
 
-  ##
+  }
+
+  options = {
+
+    skip: ( variation )->=
+
+      variation.format == undefined
+
+    ##
+
+  }
+
+  itVariations 'renders [s]', variants, options, ( variation )->
+
+    instance = shallow <Moment {... variation } />
 
 
-  tests =
+    expect( instance ).to.match 'span.moment'
 
-    shallow:
+    expect( instance ).onlyIf( variation[ 'data-unknown' ] ).to.have.data 'unknown', variation[ 'data-unknown' ]
 
-      skip: ( input )->=
 
-        true if input.format == undefined
+    valid = true
 
-      ##
+    time = moment variation.time, variation.timeFormat
 
-      it: ( input, props, tag )->
+    reference = moment variation.reference, variation.referenceFormat
 
-        # mix
+    format = _.funced variation.format, time
 
-        valid = true
+    if variation.time == undefined || ! time.isValid()
 
-        time = moment input.time, input.timeFormat
+      valid = false
 
-        reference = moment input.reference, input.referenceFormat
+    else
 
-        format = _.funced input.format, time
+      if variation.reference == undefined
 
-        if input.time == undefined || ! time.isValid()
+        if _.includes [ 'from', 'to' ], format
 
           valid = false
 
-        else
+        ##
 
-          if input.reference == undefined
+      else
 
-            if _.includes [ 'from', 'to' ], format
+        if _.includes [ 'calendar', 'from', 'to' ], format
 
-              valid = false
+          if ! reference.isValid()
 
-          else
-
-            if _.includes [ 'calendar', 'from', 'to' ], format
-
-              if ! reference.isValid()
-
-                valid = false
-
-              ##
-
-            ##
+            valid = false
 
           ##
 
         ##
 
-        expect( props.className ).only( valid ).string '-enabled'
-
-        expect( props.className ).only( ! valid ).string '-disabled'
-
-        expect( props.children ).only( ! valid ).equal undefined
-
-        # data-unknown
-
-        expect( props[ 'data-unknown' ] ).equal input[ 'data-unknown' ]
-
-        # always
-
-        expect( tag ).equal 'span'
-
-        expect( props.className ).string 'moment'
-
       ##
 
     ##
 
-    unison:
+    expect( instance ).onlyIf( valid ).to.have.className '-enabled'
 
-      skip: ( input )->=
+    expect( instance ).onlyIf( ! valid ).to.have.className '-disabled'
 
-        true if input.format == undefined
-
-      ##
-
-      it: ( input, component )->
-
-        valid = ~ component.dom().className.indexOf '-enabled'
-
-        inUnison = false
-
-        if valid
-
-          time = moment input.time, input.timeFormat
-
-          format = _.funced input.format, time
-
-          if _.includes( [ 'fromNow', 'toNow' ], format ) || ( format == 'calendar' && input.reference == undefined )
-
-            inUnison = true
-
-          ##
-
-        ##
-
-        expect( component.inUnison ).equal inUnison
-
-      ##
-
-    ##
+    expect( instance.children() ).onlyIf( valid ).to.be.present()
 
   ##
 
+  itVariations 'rightly sets inUnison member [m]', variants, options, ( variation )->
 
-  TestComponent.testComponent Moment, variants, tests
+    instance = mount <Moment {... variation } />
+
+
+    inUnison = false
+
+    if instance.find( '.moment' ).hasClass '-enabled'
+
+      time = moment variation.time, variation.timeFormat
+
+      format = _.funced variation.format, time
+
+      if _.includes( [ 'fromNow', 'toNow' ], format ) || ( format == 'calendar' && variation.reference == undefined )
+
+        inUnison = true
+
+      ##
+
+    ##
+
+
+    expect( instance.node.inUnison ).equal inUnison
+
+  ##
 
 ##

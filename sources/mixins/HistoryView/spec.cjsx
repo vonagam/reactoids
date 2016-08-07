@@ -1,6 +1,8 @@
-describe 'HistoryView', ->
+describe.skip 'HistoryView', ->
 
   HistoryView = requireSubject()
+
+  window = requireDependency 'window' # history, location, addEventListener
 
 
   hrefBefore = window.location.href
@@ -43,7 +45,7 @@ describe 'HistoryView', ->
     ##
 
 
-    HistoryViewed = TestMixin.createMixinClass HistoryView( ARGS ),
+    HistoryViewed = createMixinClass HistoryView( ARGS ),
 
       getInitialState: ->=
 
@@ -105,7 +107,7 @@ describe 'HistoryView', ->
     )
 
 
-    stubs.addEventListener.lastCall.args[ 1 ]( 
+    stubs.addEventListener.lastCall.args[ 1 ](
 
       { state: { HistoryViewMixin: true, index: 0, datas: { myId: 'start' } } }
 

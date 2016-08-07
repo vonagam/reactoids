@@ -1,10 +1,15 @@
-Select = React.createClass
+# mixins
+
+SingleOptionInputMixin = requireSource 'mixins/SingleOptionInput'
+
+
+Select = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-value': ''
         '-readonly': ''
@@ -12,11 +17,11 @@ Select = React.createClass
           '-blank': ''
           '-selected': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    OptionsInputMixin
+    SingleOptionInputMixin
 
   ]
 
@@ -24,13 +29,45 @@ Select = React.createClass
 
     options = @getOptions()
 
-    selectValue = event.target.value
+    optionIndex = event.target.value
 
-    value = options[ selectValue ].value
+
+    value = if optionIndex == '-1' then undefined else options[ optionIndex ].value
 
     @setValue value
 
+
     event.target.blur()
+
+  ##
+
+  onLabelClick: ->
+
+    @focus()
+
+  ##
+
+  focus: ->
+
+    @dom().focus()
+
+    try
+
+      event = document.createEvent 'MouseEvents'
+
+      event.initMouseEvent 'mousedown', true, true, window
+
+      @dom().dispatchEvent event
+
+    catch
+
+    ##
+
+  ##
+
+  blur: ->
+
+    @dom().blur()
 
   ##
 
@@ -95,7 +132,7 @@ Select = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Select

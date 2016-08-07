@@ -1,19 +1,22 @@
-mixin = Mixin.createArged
+mixin = Mixin.createArged {
 
-  args:
+  args: {
 
-    getClassNames: React.PropTypes.func # ( constructor, keys )->= OR ( id, constructor, keys, that )->=
-    definingType: React.PropTypes.oneOf [ 'standart', 'custom' ]
-    contextHandling: React.PropTypes.oneOf [ 'ignore', 'combine', 'overlap' ]
+    'getClassNames': React.PropTypes.func # ( constructor, keys )->= OR ( id, constructor, keys, that )->=
 
-  ##
+    'definingType': React.PropTypes.oneOf [ 'standart', 'custom' ]
 
-  defaults:
+    'contextHandling': React.PropTypes.oneOf [ 'ignore', 'combine', 'overlap' ]
 
-    definingType: 'standart'
-    contextHandling: 'ignore'
+  }
 
-  ##
+  defaults: {
+
+    'definingType': 'standart'
+
+    'contextHandling': 'ignore'
+
+  }
 
   mixin: ( ARGS )->=
 
@@ -66,17 +69,17 @@ mixin = Mixin.createArged
 
     contextTypes: contextTypes
 
-    childContextTypes:
+    childContextTypes: {
 
       getClassNames: React.PropTypes.func # ( id, constructor, keys, that )->=
 
-    ##
+    }
 
     getChildContext: getChildContext
 
   ##
 
-##
+}
 
 
 module.exports = mixin

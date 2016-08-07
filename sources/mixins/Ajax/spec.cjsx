@@ -1,10 +1,12 @@
-describe 'Ajax', ->
+describe.skip 'Ajax', ->
 
   Ajax = requireSubject()
 
-  Ajaxed = TestMixin.createMixinClass Ajax
+  Ajaxed = createMixinClass Ajax
 
   $ = requireDependency 'jquery'
+
+  window = requireDependency 'window' # location
 
 
   $options = undefined
@@ -160,7 +162,7 @@ describe 'Ajax', ->
       url: '/asd'
       method: 'GET'
       unknown: 34
-      success: 
+      success:
 
     }
 
@@ -172,7 +174,7 @@ describe 'Ajax', ->
   ###
 
 
-  describe 'redirects', ->
+  describe.skip 'redirects', ->
 
     hrefBefore = window.location.href
 
@@ -237,7 +239,7 @@ describe 'Ajax', ->
 
             $options.success undefined, undefined, xhr
 
-            expect( window.location.href ).only( ! willChange ).equal 'http://asd.bsa/'
+            expect( window.location.href ).onlyIf( ! willChange ).equal 'http://asd.bsa/'
 
             TestReact.unmount component
 

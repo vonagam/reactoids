@@ -11,7 +11,7 @@ describe 'Unison', ->
     count = 0
 
 
-    ARGS =
+    ARGS = {
 
       name: 'my'
 
@@ -35,10 +35,10 @@ describe 'Unison', ->
 
       ##
 
-    ##
+    }
 
 
-    Unisoned = TestMixin.createMixinClass Unison( ARGS ),
+    Unisoned = createMixinClass Unison( ARGS ), {
 
       componentWillUnmount: ->
 
@@ -64,17 +64,19 @@ describe 'Unison', ->
 
       ##
 
-    ##
+    }
 
 
-    root = TestReact.render(
+    instance = mount(
 
       <div>
+
         {
 
           _.times 3, ( n )->= <Unisoned key={ n } index={ n } />
 
         }
+
       </div>
 
     )
@@ -82,11 +84,12 @@ describe 'Unison', ->
 
     finishIt = ->
 
-      datais = _.map root.getElementsByTagName( 'div' ), ( node )->= node.getAttribute 'data-i' 
+      datais = instance.find( '[data-i]' ).map ( node )->= node.prop 'data-i'
 
-      expect( datais ).eql [ '1', '3', '4' ]
+      expect( datais ).to.deep.equal [ 1, 3, 4 ]
 
-      TestReact.unmount root
+
+      instance.unmount()
 
       done()
 

@@ -1,11 +1,15 @@
-FormData = window.FormData
+# dependencies
+
+window = requireDependency 'window' # FormData
 
 
 toFormData = ( data )->=
 
-  return unless FormData
+  return unless window.FormData
+
 
   flattened = _.toFlattenedPlainObject data, ( value )->= _.isArray( value ) || _.isPlainObject( value )
+
 
   _.transform flattened, ( data, value, key )->
 
@@ -13,7 +17,7 @@ toFormData = ( data )->=
 
     data.append key, value
 
-  , new FormData
+  , new window.FormData
 
 ##
 

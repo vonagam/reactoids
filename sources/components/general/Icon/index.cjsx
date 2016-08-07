@@ -1,24 +1,24 @@
-Icon = React.createClass
+Icon = React.createClass {
 
-  mixins: Mixin.resolve [ 
+  mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes: 
+      classes: {
 
         '-unknown': ''
 
-      ##
+      }
 
-    ##
+    }
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'icon': React.PropTypes.string.isRequired
 
-  ##
+  }
 
   render: ->=
 
@@ -27,7 +27,7 @@ Icon = React.createClass
     icon = classed( "-#{ props.icon }" ) || classed( '-unknown' )
 
 
-    <i 
+    <i
 
       {... @omitProps() }
 
@@ -37,7 +37,7 @@ Icon = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Icon
