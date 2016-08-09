@@ -69,11 +69,7 @@ Tether = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin {
-
-      classes: {}
-
-    }
+    ComponentMixin()
 
   ]
 

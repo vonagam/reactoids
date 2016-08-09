@@ -24,7 +24,7 @@ describe 'Layer', ->
 
       mixins: Mixin.resolve [
 
-        ClassedMixin classes: {}
+        ClassedMixin()
 
         StringedMixin strings: [ 'context' ]
 

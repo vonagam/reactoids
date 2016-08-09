@@ -11,6 +11,12 @@ mixin = Mixin.createArged {
 
   }
 
+  defaults: {
+
+    'classes': {}
+
+  }
+
   mixin: ( ARGS )->=
 
     ID = _.uniqueId()

@@ -87,11 +87,7 @@ Scrollen = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin {
-
-      classes: {}
-
-    }
+    ComponentMixin()
 
     TimerMixin
 

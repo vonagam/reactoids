@@ -9,11 +9,7 @@ Layer = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin {
-
-      classes: {}
-
-    }
+    ComponentMixin()
 
     StringedMixin strings: []
 

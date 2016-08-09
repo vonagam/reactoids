@@ -9,11 +9,7 @@ Processed = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin {
-
-      classes: {}
-
-    }
+    ComponentMixin()
 
   ]
 

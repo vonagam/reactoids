@@ -28,11 +28,7 @@ YaShare = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin {
-
-      classes: {}
-
-    }
+    ComponentMixin()
 
     ScriptInjectorMixin {
 
