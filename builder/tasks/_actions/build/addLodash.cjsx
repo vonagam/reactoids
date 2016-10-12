@@ -18,11 +18,11 @@ addLodash = ( content, path )->=
 
     if _.includes extentions, method
 
-      before += "Source('extends/lodash/#{ method }')"
+      before += "Source( 'extends/lodash/#{ method }' )"
 
     else
 
-      before += "('lodash/#{ method }')"
+      before += "( 'lodash/#{ method }' )"
 
     ##
 
