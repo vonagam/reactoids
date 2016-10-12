@@ -1,3 +1,6 @@
+ReactPropTypesSecret = require 'react/lib/ReactPropTypesSecret'
+
+
 handleWillMounts = ( input )->
 
   willMounts = []
@@ -69,7 +72,7 @@ Mixin =
 
           check = check.isRequired unless _.has input.defaults, key
 
-          error = check ARGS, key, 'arged Mixin constructor'
+          error = check ARGS, key, 'arged Mixin constructor', 'reactoids_mixin', null, ReactPropTypesSecret
 
           throw error if error
 

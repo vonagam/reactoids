@@ -2,20 +2,24 @@ describe.skip 'HistoryView', ->
 
   HistoryView = requireSubject()
 
-  window = requireDependency 'window' # history, location, addEventListener
+  window = requireWindow 'window' # https://developer.mozilla.org/en-US/docs/Web/API/Window
+
+  windowHistory = requireWindow 'history' # https://developer.mozilla.org/en-US/docs/Web/API/History
+
+  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 
-  hrefBefore = window.location.href
+  hrefBefore = windowLocation.href
 
   before ->
 
-    window.location.href = 'http://foo.bar'
+    windowLocation.href = 'http://foo.bar'
 
   ##
 
   after ->
 
-    window.location.href = hrefBefore
+    windowLocation.href = hrefBefore
 
   ##
 
@@ -58,9 +62,9 @@ describe.skip 'HistoryView', ->
 
     stubs =
 
-      pushState: sinon.stub window.history, 'pushState'
+      pushState: sinon.stub windowHistory, 'pushState'
 
-      replaceState: sinon.stub window.history, 'replaceState'
+      replaceState: sinon.stub windowHistory, 'replaceState'
 
       addEventListener: sinon.stub window, 'addEventListener'
 

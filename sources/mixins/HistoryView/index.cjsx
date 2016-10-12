@@ -1,6 +1,10 @@
 # dependencies
 
-window = requireDependency 'window' # history, location, addEventListener
+windowHistory = requireWindow 'history' # https://developer.mozilla.org/en-US/docs/Web/API/History
+
+windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+
+addWindowEventListener = requireWindow 'addEventListener' # https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
 # mixins
 
@@ -21,7 +25,7 @@ History =
 
   startListen: ->
 
-    window.addEventListener 'popstate', _.bindKey History, 'onStatePop'
+    addWindowEventListener 'popstate', _.bindKey History, 'onStatePop'
 
   ##
 
@@ -51,7 +55,7 @@ History =
 
   changeState: ( position, component, ARGS, options = {} )->=
 
-    currentState = _.defaults {}, window.history.state, index: 0, datas: {}
+    currentState = _.defaults {}, windowHistory.state, index: 0, datas: {}
 
     if position == 'replace'
 
@@ -75,7 +79,7 @@ History =
 
     @state = state
 
-    window.history[ "#{ position }State" ] state, options.title, options.url
+    windowHistory[ "#{ position }State" ] state, options.title, options.url
 
   ##
 
@@ -91,7 +95,7 @@ History =
 
     instance = @instances[ id ]
 
-    return window.location.reload() if instance == undefined
+    return windowLocation.reload() if instance == undefined
 
     if Math.abs( eventState.index - historyState.index ) == 1
 
@@ -105,7 +109,7 @@ History =
 
       else
 
-        window.location.reload()
+        windowLocation.reload()
 
       ##
 
@@ -165,7 +169,7 @@ mixin = Mixin.createArged
 ##
 
 
-unless window.history
+unless windowHistory
 
   mixin = Mixin.createArged mixin: ->= { changeHistoryState: _.noop }
 

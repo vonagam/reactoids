@@ -1,6 +1,6 @@
 # dependencies
 
-window = requireDependency 'window' # location
+windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 # mixins
 
@@ -29,7 +29,7 @@ mixin = Mixin.createArged
 
   mixin: ( ARGS )->=
 
-    currHref = window.location.href
+    currHref = windowLocation.href
 
 
     UnisonArgs =
@@ -44,7 +44,7 @@ mixin = Mixin.createArged
 
       shouldSkip: ->=
 
-        nextHref = window.location.href
+        nextHref = windowLocation.href
 
         return true if nextHref == currHref
 

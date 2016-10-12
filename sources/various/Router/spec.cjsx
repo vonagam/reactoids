@@ -2,11 +2,11 @@ describe.skip 'Router', ->
 
   dependencies = requireSource 'dependencies'
 
-  window = requireDependency 'window' # location
+  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
   router = undefined
 
-  hrefBefore = window.location.href
+  hrefBefore = windowLocation.href
 
 
   before ->
@@ -30,7 +30,7 @@ describe.skip 'Router', ->
 
     }
 
-    window.location.href = 'http://foo.bar/'
+    windowLocation.href = 'http://foo.bar/'
 
   ##
 
@@ -40,7 +40,7 @@ describe.skip 'Router', ->
 
     router = undefined
 
-    window.location.href = hrefBefore
+    windowLocation.href = hrefBefore
 
   ##
 

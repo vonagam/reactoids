@@ -1,11 +1,11 @@
 # dependencies
 
-window = requireDependency 'window' # FormData
+FormData = requireWindow 'FormData' # https://developer.mozilla.org/en-US/docs/Web/API/FormData
 
 
 toFormData = ( data )->=
 
-  return unless window.FormData
+  return unless FormData
 
 
   flattened = _.toFlattenedPlainObject data, ( value )->= _.isArray( value ) || _.isPlainObject( value )
@@ -17,7 +17,7 @@ toFormData = ( data )->=
 
     data.append key, value
 
-  , new window.FormData
+  , new FormData
 
 ##
 

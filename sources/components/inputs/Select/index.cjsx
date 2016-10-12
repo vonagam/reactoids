@@ -51,18 +51,6 @@ Select = React.createClass {
 
     @dom().focus()
 
-    try
-
-      event = document.createEvent 'MouseEvents'
-
-      event.initMouseEvent 'mousedown', true, true, window
-
-      @dom().dispatchEvent event
-
-    catch
-
-    ##
-
   ##
 
   blur: ->

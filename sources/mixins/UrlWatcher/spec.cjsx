@@ -2,14 +2,14 @@ describe.skip 'UrlWatcher', ->
 
   UrlWatcher = requireSubject()
 
-  window = requireDependency 'window' # location
+  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 
-  hrefBefore = window.location.href
+  hrefBefore = windowLocation.href
 
   afterEach ->
 
-    window.location.href = hrefBefore
+    windowLocation.href = hrefBefore
 
   ##
 
@@ -28,7 +28,7 @@ describe.skip 'UrlWatcher', ->
 
       expect( updateSpy ).callCount 0
 
-      window.location.href = 'http://foo.bar/'
+      windowLocation.href = 'http://foo.bar/'
 
       setTimeout ->
 

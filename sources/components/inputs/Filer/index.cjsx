@@ -1,6 +1,6 @@
 # dependencies
 
-window = requireDependency 'window' # FileReader
+FileReader = requireWindow 'FileReader' # https://developer.mozilla.org/en-US/docs/Web/API/FileReader
 
 # mixins
 
@@ -49,7 +49,7 @@ File = React.createClass
 
   createDataUrl: ->=
 
-    reader = new window.FileReader
+    reader = new FileReader
 
     reader.onload = _.partial @onDataUrlLoad, reader
 

@@ -1,8 +1,3 @@
-# dependencies
-
-window = requireDependency 'window' # location
-
-
 PARTS = [ 'href', 'protocol', 'host', 'hostname', 'port', 'pathname', 'search', 'hash' ]
 
 

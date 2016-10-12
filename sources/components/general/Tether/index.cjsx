@@ -1,6 +1,6 @@
 # dependencies
 
-Tether = requireDependency 'tether' # hubspot/tether, http://tether.io
+tether = requireDependency 'tether' # hubspot/tether, http://tether.io
 
 
 getOptions = ( that, tether )->=
@@ -93,7 +93,7 @@ Tether = React.createClass {
 
       'optimizations': React.PropTypes.shape {
 
-        'moveElemen': React.PropTypes.bool
+        'moveElement': React.PropTypes.bool
 
         'gpu': React.PropTypes.bool
 
@@ -129,7 +129,7 @@ Tether = React.createClass {
 
   componentDidUpdate: ( prevProps )->
 
-    unless _.isEqual prevProps.tether, @props.tether
+    unless _.isEqualPick @props, prevProps, [ 'tether', 'enabled' ]
 
       return @destroyTether() if @props.enabled == false
 
@@ -167,7 +167,7 @@ Tether = React.createClass {
 
   createTether: ( options )->
 
-    @tether = new Tether options
+    @tether = new tether options
 
     @target = @tether.target
 

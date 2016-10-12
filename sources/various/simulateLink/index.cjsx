@@ -2,7 +2,7 @@
 
 $ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
 
-window = requireDependency 'window' # location
+windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 
 simulateLink = ( href, containter = 'body', decorateLink )->
@@ -27,7 +27,7 @@ simulateLink = ( href, containter = 'body', decorateLink )->
 
   else
 
-    window.location.href = href
+    windowLocation.href = href
 
   ##
 

@@ -1,6 +1,6 @@
 # dependencies
 
-window = requireDependency 'window' # Ya.share2 https://tech.yandex.ru/share/doc/dg/api-docpage/
+window = requireWindow 'window' # Ya.share2 https://tech.yandex.ru/share/doc/dg/api-docpage/
 
 # mixins
 
@@ -84,9 +84,23 @@ YaShare = React.createClass {
 
   }
 
-  componentWillReceiveProps: ( nextProps )->
+  componentDidUpdate: ( prevProps )->
 
-    @applyShare() unless _.isEqualPick @props, nextProps, [ 'content', 'contentByService', 'theme' ]
+    @applyShare() unless _.isEqualPick @props, prevProps, [ 'content', 'contentByService', 'theme' ]
+
+  ##
+
+  componentWillUnmount: ->
+
+    @destroyShare()
+
+  ##
+
+  destroyShare: ->
+
+    @share.destroy() if @share
+
+    @share = undefined
 
   ##
 
@@ -94,8 +108,9 @@ YaShare = React.createClass {
 
     node = @dom 'node'
 
+    @destroyShare()
 
-    window.Ya.share2 node, {
+    @share = window.Ya.share2 node, {
 
       'content': @props.content
 

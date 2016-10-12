@@ -37,13 +37,13 @@ build = ( src, options = {} )->=
 
       content = addAutoRequires content, filePath
 
+      content = content.replace /requireWindow\(? '([^']+)'( \))?/g, 'window.$1'
+
       content = content.replace /requireSubject\(\)/g, 'require("./index")'
 
-      content = content.replace /requireDependency(\(|\s)/g, 'require$1'
+      content = content.replace /requireDependency(\(?) '/g, "require$1 '"
 
-      content = content.replace /requireSource(\(|\s)'/g, "require$1'#{ sourcesPath }/"
-
-      content = content.replace /window = require 'window'/g, '# window'
+      content = content.replace /requireSource(\(?) '/g, "require$1 '#{ sourcesPath }/"
 
       content = '"use strict"\n\n' + content
 

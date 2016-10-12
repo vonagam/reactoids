@@ -34,7 +34,7 @@ updateBodyClassName = (->=
 
     $body.removeClass bodyClassName
 
-    bodyClassName = _.values( bodyClassNames ).join ' '
+    bodyClassName = _.uniq( _.values( bodyClassNames ).join( ' ' ).split( ' ' ) ).join ' '
 
     $body.addClass bodyClassName
 
@@ -64,7 +64,15 @@ Popup = React.createClass {
 
     'layerProps': React.PropTypes.object
 
+    'focusTrap': React.PropTypes.oneOfType [ React.PropTypes.bool, React.PropTypes.object ]
+
   }
+
+  getDefaultProps: ->=
+
+    'focusTrap': true
+
+  ##
 
   componentDidMount: ->
 
@@ -99,7 +107,7 @@ Popup = React.createClass {
 
     <Layer {... props.layerProps } className={ classed 'layer' }>
 
-      <div {... @omitProps() } className={ classed '.' } />
+      <div ref='popup' tabindex='-1' {... @omitProps() } className={ classed '.' } />
 
     </Layer>
 

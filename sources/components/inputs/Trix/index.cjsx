@@ -1,6 +1,6 @@
 # dependencies
 
-TrixEditor = requireDependency 'trix' # basecamp/trix, https://trix-editor.org
+TrixEditor = requireDependency( 'trix' ) && requireWindow( 'window' ).Trix # basecamp/trix, https://trix-editor.org
 
 
 EVENTS = [

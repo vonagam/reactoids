@@ -2,7 +2,7 @@ describe 'toFormData', ->
 
   toFormData = requireSubject()
 
-  window = requireDependency 'window' # FormData
+  FormData = requireWindow 'FormData' # https://developer.mozilla.org/en-US/docs/Web/API/FormData
 
 
   it 'works', ->
@@ -13,7 +13,7 @@ describe 'toFormData', ->
     formData = toFormData data
 
 
-    expect( formData ).to.be.instanceof window.FormData
+    expect( formData ).to.be.instanceof FormData
 
 
     _.each [ 'foo[bar]', 'foo[asd][bsa]', 'arr[1]' ], ( path )->

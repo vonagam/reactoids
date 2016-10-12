@@ -2,7 +2,7 @@
 
 $ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
 
-window = requireDependency 'window' # itself
+window = requireWindow 'window' # https://developer.mozilla.org/en-US/docs/Web/API/Window
 
 # mixins
 

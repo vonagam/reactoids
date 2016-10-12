@@ -62,6 +62,8 @@ _.each autoRequires, ( autoRequire )->
 
     return false if @includes && ! @includes.test path
 
+    return true if @check && @check.test content
+
     return used.test content
 
   ##

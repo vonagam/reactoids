@@ -1,6 +1,8 @@
 # dependencies
 
-window = requireDependency 'window' # XMLHttpRequest, ProgressEvent
+XMLHttpRequest = requireWindow 'XMLHttpRequest' # https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+
+ProgressEvent = requireWindow 'ProgressEvent' # https://developer.mozilla.org/en-US/docs/Web/API/ProgressEvent
 
 # mixins
 
@@ -140,7 +142,7 @@ mixin = Mixin.createArged
 ##
 
 
-unless _.get( window.XMLHttpRequest, 'prototype.addEventListener' ) && window.ProgressEvent
+unless _.get( XMLHttpRequest, 'prototype.addEventListener' ) && ProgressEvent
 
   mixin = Mixin.createArged mixin: ->= {}
 

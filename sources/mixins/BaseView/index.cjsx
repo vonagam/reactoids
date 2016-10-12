@@ -2,7 +2,7 @@
 
 $ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
 
-window = requireDependency 'window' # location
+windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 
 mixin = Mixin.createArged
@@ -23,7 +23,7 @@ mixin = Mixin.createArged
 
       return false if link.target && link.target != '_self'
 
-      return false if link.host != window.location.host
+      return false if link.host != windowLocation.host
 
       return true
 

@@ -6,7 +6,7 @@ describe.skip 'Ajax', ->
 
   $ = requireDependency 'jquery'
 
-  window = requireDependency 'window' # location
+  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 
   $options = undefined
@@ -176,17 +176,17 @@ describe.skip 'Ajax', ->
 
   describe.skip 'redirects', ->
 
-    hrefBefore = window.location.href
+    hrefBefore = windowLocation.href
 
     beforeEach ->
 
-      window.location.href = 'http://asd.bsa/'
+      windowLocation.href = 'http://asd.bsa/'
 
     ##
 
     after ->
 
-      window.location.href = hrefBefore
+      windowLocation.href = hrefBefore
 
     ##
 
@@ -239,7 +239,7 @@ describe.skip 'Ajax', ->
 
             $options.success undefined, undefined, xhr
 
-            expect( window.location.href ).onlyIf( ! willChange ).equal 'http://asd.bsa/'
+            expect( windowLocation.href ).onlyIf( ! willChange ).equal 'http://asd.bsa/'
 
             TestReact.unmount component
 
