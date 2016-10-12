@@ -1,6 +1,6 @@
 {
   "name": "reactoids",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Bunch of React components",
   "scripts": {
     "gulp": "gulp --require coffee-react-void/register --cwd builder",
