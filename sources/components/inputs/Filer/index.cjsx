@@ -200,7 +200,7 @@ Filer = React.createClass
 
     currentValue = @getValue()
 
-    return unless current_value
+    return unless currentValue
 
     if @props.multiple
 
@@ -236,7 +236,7 @@ Filer = React.createClass
 
   ##
 
-  componentWillReceiveProps: ( next_props )->
+  componentWillReceiveProps: ( nextProps )->
 
     if @props.value != undefined && nextProps.value == undefined
 
