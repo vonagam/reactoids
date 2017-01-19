@@ -1,6 +1,8 @@
-mixin = Mixin.createArged
+BaseListenerMixin = Mixin.create {
 
-  args:
+  name: 'BaseListenerMixin'
+
+  args: {
 
     'name': React.PropTypes.string
 
@@ -10,9 +12,9 @@ mixin = Mixin.createArged
 
     'toggleListener': React.PropTypes.func # ( that, listener, bool )->
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'name': ''
 
@@ -20,23 +22,14 @@ mixin = Mixin.createArged
 
     'initListener': _.noop
 
-  ##
+  }
 
   mixin: ( ARGS )->=
 
     method = _.pascalCase "#{ ARGS.name }Listener"
+
     member = _.camelCase "#{ method }#{ if ARGS.multiplyListeners then 's' else '' }"
 
-
-    toggleListener = ( that, listener, bool )->
-
-      return if listener.turned == bool
-
-      ARGS.toggleListener that, listener, bool
-
-      listener.turned = bool
-
-    ##
 
     initListener = ( that, listener )->
 
@@ -52,12 +45,34 @@ mixin = Mixin.createArged
 
     ##
 
+    toggleListener = ( that, listener, bool )->
+
+      return if listener.turned == bool
+
+      ARGS.toggleListener that, listener, bool
+
+      listener.turned = bool
+
+    ##
+
 
     if ARGS.multiplyListeners
 
       getInitialMembers: ->=
 
         "#{ member }": {}
+
+      ##
+
+      componentWillUnmount: ->
+
+        listeners = @[ member ]
+
+        _.each listeners, _.bind ( listener )->
+
+          toggleListener this, listener, false
+
+        , this
 
       ##
 
@@ -87,6 +102,14 @@ mixin = Mixin.createArged
 
       ##
 
+      "toggle#{ method }": ( key, bool )->
+
+        listener = @[ member ][ key ]
+
+        toggleListener this, listener, bool
+
+      ##
+
       "remove#{ method }": ( key )->
 
         listeners = @[ member ]
@@ -101,31 +124,19 @@ mixin = Mixin.createArged
 
       ##
 
-      "toggle#{ method }": ( key, bool )->
-
-        listener = @[ member ][ key ]
-
-        toggleListener this, listener, bool
-
-      ##
-
-      componentWillUnmount: ->
-
-        listeners = @[ member ]
-
-        _.each listeners, _.bind ( listener )->
-
-          toggleListener this, listener, false
-
-        , this
-
-      ##
-
     else
 
       getInitialMembers: ->=
 
         "#{ member }": undefined
+
+      ##
+
+      componentWillUnmount: ->
+
+        listener = @[ member ]
+
+        toggleListener this, listener, false if listener
 
       ##
 
@@ -145,6 +156,14 @@ mixin = Mixin.createArged
 
       ##
 
+      "toggle#{ method }": ( bool )->
+
+        listener = @[ member ]
+
+        toggleListener this, listener, bool if listener
+
+      ##
+
       "remove#{ method }": ->
 
         listener = @[ member ]
@@ -157,27 +176,11 @@ mixin = Mixin.createArged
 
       ##
 
-      "toggle#{ method }": ( bool )->
-
-        listener = @[ member ]
-
-        toggleListener this, listener, bool if listener
-
-      ##
-
-      componentWillUnmount: ->
-
-        listener = @[ member ]
-
-        toggleListener this, listener, false if listener
-
-      ##
-
     ##
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = BaseListenerMixin

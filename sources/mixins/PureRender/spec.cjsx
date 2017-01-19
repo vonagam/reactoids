@@ -8,7 +8,7 @@ describe.skip 'PureRender', ->
     count = 0
 
 
-    PureRendered = createMixinClass PureRender,
+    PureRendered = createMixinClass PureRender(),
 
       componentDidUpdate: -> count++
 

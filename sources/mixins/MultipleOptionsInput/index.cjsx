@@ -1,43 +1,72 @@
 # mixins
 
-BaseOptionsInput = requireSource 'mixins/BaseOptionsInput'
+BaseOptionsInputMixin = requireSource 'mixins/BaseOptionsInput'
 
 
-mixin = BaseOptionsInput {
+MultipleOptionsInputMixins = Mixin.create {
 
-  isOptionSelected: ( option, selectedValue )->=
+  name: 'MultipleOptionsInputMixins'
 
-    _.includes selectedValue, option.value
+  mixins: [
 
-  ##
+    BaseOptionsInputMixin
 
-  checkOptionsConflict: ( that, props, state )->
+  ]
 
-    selectedValues = that.getValue props, state
+  mixin: _.once ->=
 
-    options = that.getOptions props, state
+    BaseOptionsInputArgs = {
 
-    optionsValues = _.map options, 'value'
+      isOptionSelected: ( option, selectedValue )->=
 
-    allowedValues = _.difference selectedValues, optionsValues
-
-
-    if allowedValues.length == 0
-
-      if props.allowBlank == false && options.length > 0
-
-        that.setValue [ options[ 0 ].value ]
-
-        return
+        _.includes selectedValue, option.value
 
       ##
 
-    ##
+      checkOptionsConflict: ( that, props, state )->
+
+        selectedValues = that.getValue props, state
+
+        options = that.getOptions props, state
+
+        optionsValues = _.map options, 'value'
+
+        allowedValues = _.difference selectedValues, optionsValues
 
 
-    if allowedValues.length != selectedValues.length
+        if allowedValues.length == 0
 
-      that.setValue allowedValues
+          if props.allowBlank == false && options.length > 0
+
+            that.setValue [ options[ 0 ].value ]
+
+            return
+
+          ##
+
+        ##
+
+
+        if allowedValues.length != selectedValues.length
+
+          that.setValue allowedValues
+
+        ##
+
+      ##
+
+    }
+
+
+    mixins: [
+
+      BaseOptionsInputMixin BaseOptionsInputArgs
+
+    ]
+
+    getDefaultProps: ->=
+
+      'defaultValue': []
 
     ##
 
@@ -46,17 +75,4 @@ mixin = BaseOptionsInput {
 }
 
 
-mixin = {
-
-  mixins: [ mixin ]
-
-  getDefaultProps: ->=
-
-    'defaultValue': []
-
-  ##
-
-}
-
-
-module.exports = mixin
+module.exports = MultipleOptionsInputMixins

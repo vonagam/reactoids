@@ -1,7 +1,13 @@
 {
   "name": "reactoids",
+  "description": "Bunch of React components, mixins, helpers",
   "version": "1.2.1",
-  "description": "Bunch of React components",
+  "repository": "vonagam/reactoids",
+  "author": "Dmitry Maganov <vonagam@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "react"
+  ],
   "scripts": {
     "gulp": "gulp --require coffee-react-void/register --cwd builder",
     "iron": "iron-node $(npm bin)/gulp --require coffee-react-void/register --cwd builder",
@@ -15,26 +21,26 @@
     "iron:watch": "npm run iron -- development-watch",
     "storybook": "start-storybook -p 8888 -c ./builder/storybook"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/vonagam/reactoids.git"
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "lodash": "^4.14.1",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
   },
-  "keywords": [
-    "react"
-  ],
-  "author": "Dmitry Maganov <vonagam@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/vonagam/reactoids/issues"
+  "optionalDependencies": {
+    "basil.js": "^0.4.4",
+    "d3": "^4.2.1",
+    "moment": "^2.14.1",
+    "pixi.js": "^4.0.0-rc3",
+    "tether": "^1.3.4"
   },
-  "homepage": "https://github.com/vonagam/reactoids",
   "devDependencies": {
     "@kadira/storybook": "^2.2.0",
     "chai": "^3.5.0",
     "chai-changes": "^1.3.6",
     "chai-enzyme": "^0.5.0",
     "del": "^2.2.1",
-    "enzyme": "^2.4.1",
+    "enzyme": "^2.7.0",
     "glob": "^7.0.5",
     "gulp": "^3.9.1",
     "gulp-coffee-react-void": "^2.4.0",
@@ -51,18 +57,5 @@
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
     "source-map-support": "^0.4.2"
-  },
-  "dependencies": {
-    "jquery": "^3.1.0",
-    "lodash": "^4.14.1",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0"
-  },
-  "optionalDependencies": {
-    "basil.js": "^0.4.4",
-    "d3": "^4.2.1",
-    "moment": "^2.14.1",
-    "pixi.js": "^4.0.0-rc3",
-    "tether": "^1.3.4"
   }
 }

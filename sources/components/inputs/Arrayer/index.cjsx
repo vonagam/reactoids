@@ -11,47 +11,49 @@ Input = requireSource 'components/inputs/Input'
 Button = requireSource 'components/general/Button'
 
 
-Item = React.createClass
+Item = React.createClass {
 
-  propTypes:
+  propTypes: {
 
-    value: React.PropTypes.any
+    'value': React.PropTypes.any
 
-    classed: React.PropTypes.func
+    'classed': React.PropTypes.func
 
-    stringed: React.PropTypes.func
+    'stringed': React.PropTypes.func
 
-    onChange: React.PropTypes.func
+    'onChange': React.PropTypes.func
 
-    onRemove: React.PropTypes.func
+    'onRemove': React.PropTypes.func
 
-  ##
+  }
 
   render: ->=
 
-    { classed, stringed } = @props
+    { props } = this
+
+    { classed, stringed } = props
 
 
     <div className={ classed 'item' }>
 
-      <Input className={ classed 'input' } value={ @props.value } onChange={ @props.onChange } />
+      <Input className={ classed 'input' } value={ props.value } onChange={ props.onChange } />
 
-      <Button className={ classed 'remove' } onClick={ @props.onRemove } text={ stringed 'remove' } />
+      <Button className={ classed 'remove' } onClick={ props.onRemove } children={ stringed 'remove' } />
 
     </div>
 
   ##
 
-##
+}
 
 
-Arrayer = React.createClass
+Arrayer = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-readonly': ''
         '-filled': ''
@@ -65,27 +67,19 @@ Arrayer = React.createClass
             '-add': ''
             '-clear': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    StringedMixin
+    StringedMixin strings: [ 'remove', 'add', 'clear' ]
 
-      strings: [ 'remove', 'add', 'clear' ]
+    InputMixin()
 
-    ##
-
-    InputMixin
-
-    RenderSlotsMixin
-
-      names: [ 'item' ]
-
-    ##
+    RenderSlotsMixin names: [ 'item' ]
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'template': React.PropTypes.funced React.PropTypes.any # ( that )->=
 
@@ -93,7 +87,7 @@ Arrayer = React.createClass
 
     'canRemove': React.PropTypes.funced React.PropTypes.bool # ( item, value )->=
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -204,7 +198,7 @@ Arrayer = React.createClass
 
           onClick={ @onAddClick if _.funced props.canAdd, value }
 
-          text={ stringed 'add' }
+          children={ stringed 'add' }
 
         />
 
@@ -214,7 +208,7 @@ Arrayer = React.createClass
 
           onClick={ @onClearClick if _.any value, ( item )->= _.funced props.canRemove, item, value }
 
-          text={ stringed 'clear' }
+          children={ stringed 'clear' }
 
         />
 
@@ -224,7 +218,7 @@ Arrayer = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Arrayer

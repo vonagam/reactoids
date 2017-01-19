@@ -1,14 +1,18 @@
-mixin =
+UjsCleanerMixin = Mixin.create {
 
-  Mixin.createPlain
+  name: 'UjsCleanerMixin'
+
+  mixin: _.once ->=
 
     componentDidMount: ->
 
       node = ReactDOM.findDOMNode this
 
+      parent = node.parentNode
+
       _.each [ 'class', 'props' ], ( attr )->
 
-        node.parentNode.removeAttribute "data-react-#{ attr }"
+        parent.removeAttribute "data-react-#{ attr }"
 
       ##
 
@@ -16,7 +20,7 @@ mixin =
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = UjsCleanerMixin

@@ -2,7 +2,7 @@ describe 'Tether', ->
 
   proxyquire = require( 'proxyquire' ).noCallThru()
 
-  Tether = proxyquire './index.js', tether: {}
+  Tether = proxyquire './index.js', 'tether': {}
 
 
   it 'can be static rendered [s]', ->

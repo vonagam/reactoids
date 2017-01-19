@@ -1,15 +1,26 @@
 _ = require 'lodash'
 
 
-getClassNames = ( id, constructor, keys )->=
-
-  name = _.snakeCase constructor.displayName
+getClassNames = ( constructor, keys, id )->=
 
   classNames = _.transform keys, ( classNames, key )->
 
-    classNames[ key ] = if key == '.' then name else _.last key.split '.'
+    classNames[ key ] = (
+
+      if key == '.'
+
+        _.snakeCase constructor.displayName
+
+      else
+
+        _.last key.split '.'
+
+      ##
+
+    )
 
   , {}
+
 
   classNames
 

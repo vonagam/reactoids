@@ -1,6 +1,8 @@
-mixin =
+DomMixin = Mixin.create {
 
-  Mixin.createPlain {
+  name: 'DomMixin'
+
+  mixin: _.once ->=
 
     dom: ( ref )->=
 
@@ -12,9 +14,9 @@ mixin =
 
     ##
 
-  }
+  ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = DomMixin

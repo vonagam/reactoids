@@ -5,15 +5,16 @@ React = require 'react'
 
 createMixinClass = ( mixin, additionals )->=
 
-  options = _.clone( additionals ) || {}
+  options = _.defaults {}, additionals, {
 
+    mixins: []
 
-  options.mixins ||= []
+    render: ->= <div>{ @props.children }</div>
+
+  }
+
 
   options.mixins.unshift mixin
-
-
-  options.render ||= ->= <div>{ @props.children }</div>
 
 
   React.createClass options

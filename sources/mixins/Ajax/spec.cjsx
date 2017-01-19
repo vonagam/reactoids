@@ -1,19 +1,21 @@
-describe.skip 'Ajax', ->
+describe 'Ajax', ->
 
-  Ajax = requireSubject()
+  proxyquire = require( 'proxyquire' ).noCallThru()
 
-  Ajaxed = createMixinClass Ajax
+  simulateLink = sinon.spy()
+
+  AjaxMixin = proxyquire './index.js', '../../various/simulateLink': simulateLink
+
+  AjaxComponent = createMixinClass AjaxMixin()
 
   $ = requireDependency 'jquery'
 
-  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
-
-
-  $options = undefined
 
   $ajax = undefined
 
   $abort = undefined
+
+  $options = undefined
 
   before ->
 
@@ -31,9 +33,13 @@ describe.skip 'Ajax', ->
 
   afterEach ->
 
+    simulateLink.reset()
+
     $ajax.reset()
 
     $abort.reset()
+
+    $options = undefined
 
   ##
 
@@ -43,213 +49,289 @@ describe.skip 'Ajax', ->
 
   ##
 
-  ###
+
+  it 'empty [m]', ->
+
+    input = {}
+
+    instance = mount <AjaxComponent />
+
+    expect( ->= $ajax.callCount ).not.to.change.when -> instance.node.sendAjax 'check', input
+
+  ##
 
 
-  checks = {
+  it 'state and member [m]', ( done )->
 
-    'onSuccess':
-      input:
-        onSuccess: sinon.spy()
+    input = { url: '' }
 
-      ##
-      output: ( input, output )->=
-        success: input.onSuccess
-        complete: output.complete
+    instance = mount <AjaxComponent />
 
-      ##
+    expect( instance.node ).to.have.property 'ajaxes'
 
-    ##
+    expect( instance.node.state ).to.have.property 'ajaxes'
 
-    'type':
-      input:
-        type: 'asd'
 
-      ##
-      output: ( input, output )->=
-        method: 'ASD'
-        complete: output.complete
+    Promise.resolve()
 
-      ##
+    .then ->=
 
-    ##
+      whenPromised [
 
-    'redirect true':
-      input:
-        redirect: true
+        expect( ->= _.has instance.node.ajaxes, 'check' ).to.change.to( true )
 
-      ##
-      output: ( input, output )->=
-        success: output.success
-        complete: output.complete
+        expect( ->= _.has instance.node.state.ajaxes, 'check' ).to.change.to( true )
+
+      ], ->
+
+        instance.node.sendAjax 'check', input
 
       ##
 
-    ##
+    .then ->=
 
-    'redirect string'
-      input:
-        redirect: 'http://foo.bar/'
+      whenPromised [
 
-      ##
-      output: ( input, output )->=
-        success: output.success
-        complete: output.complete
+        expect( ->= _.has instance.node.ajaxes, 'check' ).to.change.to( false )
 
-  }
+        expect( ->= _.has instance.node.state.ajaxes, 'check' ).to.change.to( false )
 
+      ], ->
 
-  checks = [
-
-    ->=
-
-      i =
-        unknown: 34
-        url: 'asd'
-        onSuccess: -> 1
-        complete: -> 2
+        $options.complete()
 
       ##
 
-      input: i
-      output: o
+    .then done
 
-  ]
-
-
-  it 'works', ->
+  ##
 
 
+  it 'callbacks [m]', ->
 
+    input = {
 
-    component = TestReact.render <Ajaxed />
+      success: sinon.spy()
 
+      error: sinon.spy()
 
-    abort = sinon.spy()
-
-    ajax = sinon.stub $, 'ajax', ->=
-
-      abort: abort
-
-    ##
-
-
-    options = {
-
-      url: '/asd'
-      unknown: 34
-      onSuccess: sinon.spy()
       complete: sinon.spy()
 
     }
 
 
-    component.sendAjax 'check', options
+    instance = mount <AjaxComponent />
+
+    expect( ->= $ajax.callCount ).to.change.to( 1 ).when -> instance.node.sendAjax 'check', input
 
 
-    expect( ajax ).callCount 1
+    output = $options
 
+    expect( ->= input.success.callCount ).to.change.to( 1 ).when -> output.success {}, 'success', { getResponseHeader: _.noop }
 
-    ajaxOptions = ajax.getCall( 0 ).args[ 0 ]
+    expect( ->= input.error.callCount ).to.change.to( 1 ).when -> output.error()
 
-    expect( _.keys ajaxOptions ).eql [ 'method', 'url', 'success', 'complete' ]
-    expect( ajaxOptions.url ).equal '/asd'
-    expect( ajaxOptions.method ).equal 'GET'
-    expect( ajaxOptions.unknown ).equal 34
-
-    expect( ajax.getCall( 0 ).args ).eql {
-
-      url: '/asd'
-      method: 'GET'
-      unknown: 34
-      success:
-
-    }
-
-
-    TestReact.unmount component
+    expect( ->= input.complete.callCount ).to.change.to( 1 ).when -> output.complete()
 
   ##
 
-  ###
 
+  variants = {
 
-  describe.skip 'redirects', ->
-
-    hrefBefore = windowLocation.href
-
-    beforeEach ->
-
-      windowLocation.href = 'http://asd.bsa/'
-
-    ##
-
-    after ->
-
-      windowLocation.href = hrefBefore
-
-    ##
-
-    variants = [
+    force: [
 
       false
-      true
-      ''
-      '/asd'
 
-    ]
-
-    funced = [
-
-      false
       true
 
     ]
 
-    locations = [
+  }
 
-      undefined
-      'http://foo.bar/'
+  options = {
+
+    afterEach: ->
+
+      $ajax.reset()
+
+    ##
+
+  }
+
+  itVariations 'force [m]', variants, options, ( { force } )->
+
+    input = { url: '', force: force }
+
+    instance = mount <AjaxComponent />
+
+    expect( ->= $ajax.callCount ).to.change.to( 1 ).when -> instance.node.sendAjax 'check', input
+
+    expect( $options ).not.to.have.property 'force'
+
+    expect( ->= $ajax.callCount ).onlyIf( force ).to.change.to( 2 ).when -> instance.node.sendAjax 'check', input
+
+    expect( $options ).not.to.have.property 'force'
+
+  ##
+
+
+  variants = {
+
+    location: [
+
+      'example.com'
 
     ]
 
-    _.each locations, ( location )->
+    funced: [
 
-      _.each funced, ( funced )->
+      true
 
-        _.each variants, ( variant )->
+    ]
 
-          it JSON.stringify( location: location, variant: variant, funced: funced ), ->
+    redirect: [
 
-            component = TestReact.render <Ajaxed />
+      false
 
-            redirect = if funced then _.constant variant else variant
+      true
 
-            component.sendAjax 'check', redirect: redirect
+      'example.info'
 
-            xhr = getResponseHeader: _.constant location
+    ]
 
-            willChange = _.isString( variant ) || ( variant == true && location )
+  }
 
-            if willChange
+  options = {
 
-              $( 'body' ).one 'click', _.method 'preventDefault'
+    afterEach: ->
 
-            ##
-
-            $options.success undefined, undefined, xhr
-
-            expect( windowLocation.href ).onlyIf( ! willChange ).equal 'http://asd.bsa/'
-
-            TestReact.unmount component
-
-          ##
-
-        ##
-
-      ##
+      simulateLink.reset()
 
     ##
+
+  }
+
+  itVariations 'redirects [m]', variants, options, ( { location, redirect, funced } )->
+
+    input = { url: '', redirect: redirect }
+
+    input.redirect = sinon.spy _.constant redirect if funced
+
+
+    instance = mount <AjaxComponent />
+
+    instance.node.sendAjax 'check', input
+
+
+    expect( $options ).not.to.have.property 'redirect'
+
+    expect( $options ).to.have.property 'success'
+
+
+    data = {}
+
+    status = 'success'
+
+    xhr = getResponseHeader: _.constant location
+
+    $options.success data, status, xhr
+
+
+    if funced
+
+      expect( input.redirect ).to.have.callCount 1
+
+      expect( input.redirect ).to.have.been.calledWith location, data, status, xhr
+
+    ##
+
+
+    result = _.funced redirect, location, data, status, xhr
+
+    dom = ReactDOM.findDOMNode instance.node
+
+    if _.isString result
+
+      expect( simulateLink ).to.have.callCount 1
+
+      expect( simulateLink ).to.have.been.calledWith result, dom
+
+    else if result && location
+
+      expect( simulateLink ).to.have.callCount 1
+
+      expect( simulateLink ).to.have.been.calledWith location, dom
+
+    else
+
+      expect( simulateLink ).to.have.callCount 0
+
+    ##
+
+  ##
+
+
+  it 'isWaitingAjax [m]', ->
+
+    input = { url: '' }
+
+    instance = mount <AjaxComponent />
+
+    expect( instance.node.isWaitingAjax() ).to.be false
+
+    expect( instance.node.isWaitingAjax 'check' ).to.be false
+
+    instance.node.sendAjax 'check', input
+
+    expect( instance.node.isWaitingAjax() ).to.be true
+
+    expect( instance.node.isWaitingAjax 'check' ).to.be true
+
+    $options.complete()
+
+    expect( instance.node.isWaitingAjax() ).to.be false
+
+    expect( instance.node.isWaitingAjax 'check' ).to.be false
+
+  ##
+
+
+  it 'abortAjax [m]', ->
+
+    input = { url: '' }
+
+    instance = mount <AjaxComponent />
+
+    instance.node.sendAjax 'check', input
+
+    whenPromised [
+
+      expect( ->= $abort.callCount ).to.change.to( 1 )
+
+      expect( ->= instance.node.isWaitingAjax 'check' ).to.change.to( false )
+
+    ], ->
+
+      instance.node.abortAjax 'check'
+
+    ##
+
+  ##
+
+
+  it 'unmount [m]', ->
+
+    input = { url: '' }
+
+    instance = mount <AjaxComponent />
+
+    instance.node.sendAjax 'check', input
+
+    abort = sinon.spy instance.node, 'abortAjax'
+
+    expect( ->= abort.callCount ).to.change.to( 1 ).when -> instance.unmount()
+
+    expect( abort ).to.be.calledWith 'check'
 
   ##
 

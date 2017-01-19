@@ -4,46 +4,66 @@ Basil = requireDependency 'basil.js' # wisembly/basil.js, http://wisembly.github
 
 # mixins
 
-ExternalStoreMixin = requireSource 'mixins/ExternalStore'
+BaseStorageMixin = requireSource 'mixins/BaseStorage'
 
 
-mixin = Mixin.createArged
+BasilStorageMixin = Mixin.create {
 
-  args:
+  name: 'BasilStorageMixin'
+
+  args: {
 
     'options': React.PropTypes.object
 
     'key': React.PropTypes.string
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
-    # ExtenralStore
+    # ExternalStoreMixin
 
     'name': 'basil'
 
-  ##
+  }
+
+  mixins: [
+
+    BaseStorageMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
     basil = new Basil ARGS.options
 
 
-    ExternalStoreArgs = _.assign {}, ARGS,
+    BaseStorageArgs = {
+
+      name: ARGS.name
 
       get: ( that )->= basil.get ARGS.key
 
-      set: ( that, value )-> basil.set ARGS.key, value
+      set: ( that, value, callback )->
 
-    ##
+        basil.set ARGS.key, value
+
+        callback.call that
+
+      ##
+
+    }
 
 
-    mixins: [ ExternalStoreMixin( ExternalStoreArgs ) ]
+    mixins: [
+
+      BaseStorageMixin BaseStorageArgs
+
+    ]
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = BasilStorageMixin

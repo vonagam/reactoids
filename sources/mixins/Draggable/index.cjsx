@@ -3,9 +3,11 @@
 EventListenerMixin = requireSource 'mixins/EventListener'
 
 
-mixin = Mixin.createArged
+DraggableMixin = Mixin.create {
 
-  args:
+  name: 'DraggableMixin'
+
+  args: {
 
     'onMove': React.PropTypes.func # ( that, position )->
 
@@ -13,48 +15,51 @@ mixin = Mixin.createArged
 
     'onStop': React.PropTypes.func # ( that, position )->
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'onStart': _.noop
 
     'onStop': _.noop
 
-  ##
+  }
 
-  mixins: [ EventListenerMixin ]
+  mixins: [
+
+    EventListenerMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
     getPosition = ( event )->=
 
       x: event.clientX
+
       y: event.clientY
 
     ##
 
-    onMove = ( event )->
 
-      event.preventDefault()
+    mixins: [
 
-      ARGS.onMove this, getPosition event
+      EventListenerMixin()
 
-    ##
-
-
-    mixins: [ EventListenerMixin ]
+    ]
 
     getInitialState: ->=
 
-      dragging: false
+      'dragging': false
 
     ##
 
     componentWillMount: ->
 
-      @addEventListener 'draggableMousemove', event: 'mousemove', callback: onMove, turned: false
+      @addEventListener 'draggableMousemove', event: 'mousemove', callback: @doDragging, turned: false
+
       @addEventListener 'draggableMouseup', event: 'mouseup', callback: @stopDragging, turned: false
+
       @addEventListener 'draggableMouseleave', event: 'mouseleave', callback: @stopDragging, turned: false
 
     ##
@@ -64,7 +69,9 @@ mixin = Mixin.createArged
       if nextState.dragging != @state.dragging
 
         @toggleEventListener 'draggableMousemove', nextState.dragging
+
         @toggleEventListener 'draggableMouseup', nextState.dragging
+
         @toggleEventListener 'draggableMouseleave', nextState.dragging
 
       ##
@@ -85,6 +92,16 @@ mixin = Mixin.createArged
 
     ##
 
+    doDragging: ( event )->
+
+      return if @state.dragging == false
+
+      ARGS.onMove this, getPosition event
+
+      event.preventDefault()
+
+    ##
+
     stopDragging: ( event )->
 
       return if @state.dragging == false
@@ -101,7 +118,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = DraggableMixin

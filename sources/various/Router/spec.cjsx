@@ -1,48 +1,21 @@
 describe.skip 'Router', ->
 
-  dependencies = requireSource 'dependencies'
+  proxyquire = require( 'proxyquire' ).noCallThru()
 
-  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+  Router = proxyquire './index.js', 'js-routes': {
 
-  router = undefined
+    inRoutes: '/defined/in/routes'
 
-  hrefBefore = windowLocation.href
+  }
 
 
-  before ->
+  Location = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
-    dependencies[ 'js-routes' ] = {
+  hrefBefore = Location.href
 
-      inRoutes: '/defined/in/routes'
+  before -> Location.href = 'http://foo.bar/'
 
-    }
-
-    Router = requireSubject()
-
-    router = new Router {
-
-      inRoutes: 0
-      '/one': 1
-      '/two/:asd': 2
-      '/three(/:asd)': 3
-      '/four(/:asd)': [ 4, { defaults: { asd: 'def' } } ]
-      '/five/:asd': [ 5, { constraints: { asd: 'sin|cos' } } ]
-
-    }
-
-    windowLocation.href = 'http://foo.bar/'
-
-  ##
-
-  after ->
-
-    dependencies[ 'js-routes' ] = undefined
-
-    router = undefined
-
-    windowLocation.href = hrefBefore
-
-  ##
+  after -> Location.href = hrefBefore
 
 
   checks = [
@@ -109,6 +82,17 @@ describe.skip 'Router', ->
   _.each checks, ( check )->
 
     it check.title, ->
+
+      router = new Router {
+
+        inRoutes: 0
+        '/one': 1
+        '/two/:asd': 2
+        '/three(/:asd)': 3
+        '/four(/:asd)': [ 4, { defaults: { asd: 'def' } } ]
+        '/five/:asd': [ 5, { constraints: { asd: 'sin|cos' } } ]
+
+      }
 
       result = router.run check.input
 

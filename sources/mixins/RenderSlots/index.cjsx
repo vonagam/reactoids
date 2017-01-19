@@ -1,10 +1,12 @@
-mixin = Mixin.createArged
+RenderSlotsMixin = Mixin.create {
 
-  args:
+  name: 'RenderSlotsMixin'
+
+  args: {
 
     'names': React.PropTypes.arrayOf React.PropTypes.string
 
-  ##
+  }
 
   mixin: ( ARGS )->=
 
@@ -16,9 +18,9 @@ mixin = Mixin.createArged
 
       render = "render#{ _.pascalCase name }"
 
-      result.propTypes[ name ] = React.PropTypes.funced React.PropTypes.object # ( that )->=
+      result.propTypes[ name ] = React.PropTypes.funced React.PropTypes.object # ( that )->= userProps for slot
 
-      result.propTypes[ render ] = React.PropTypes.funced React.PropTypes.node # ( that, slotProps, userProps )->=
+      result.propTypes[ render ] = React.PropTypes.funced React.PropTypes.node # ( that, slotProps, userProps )->= node for slot
 
       result[ render ] = ( slotProps )->=
 
@@ -34,7 +36,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = RenderSlotsMixin

@@ -3,17 +3,23 @@
 InputMixin = requireSource 'mixins/Input'
 
 
-mixin = Mixin.createArged {
+BaseOptionsInputMixin = Mixin.create {
+
+  name: 'BaseOptionsInputMixin'
 
   args: {
 
-    isOptionSelected: React.PropTypes.func # ( option, selectedValue )->=
+    'isOptionSelected': React.PropTypes.func # ( option, selectedValue )->= bool
 
-    checkOptionsConflict: React.PropTypes.func # ( that, props, state )->
+    'checkOptionsConflict': React.PropTypes.func # ( that, props, state )->
 
   }
 
-  mixins: [ InputMixin ]
+  mixins: [
+
+    InputMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
@@ -21,11 +27,11 @@ mixin = Mixin.createArged {
 
       return mapArrayOption variant() if _.isFunction variant
 
-      return { value: variant, label: variant } unless _.isObject variant
-
       return { value: variant[ 0 ], label: variant[ 1 ] } if _.isArray variant
 
-      return { value: variant.value, label: variant.label }
+      return { value: variant.value, label: variant.label } if _.isObject variant
+
+      return { value: variant, label: variant }
 
     ##
 
@@ -36,13 +42,17 @@ mixin = Mixin.createArged {
     ##
 
 
-    mixins: [ InputMixin ]
+    mixins: [
+
+      InputMixin()
+
+    ]
 
     propTypes: {
 
       'options': React.PropTypes.collection.isRequired
 
-      'mapOption': React.PropTypes.func
+      'mapOption': React.PropTypes.func # ( value, key )->= { :value, :label }
 
       'allowBlank': React.PropTypes.bool
 
@@ -51,24 +61,6 @@ mixin = Mixin.createArged {
     getDefaultProps: ->=
 
       'allowBlank': true
-
-    ##
-
-    getOptions: ( props = @props, state = @state )->=
-
-      selectedValue = @getValue props, state
-
-      mapOption = props.mapOption || ( if _.isArray props.options then mapArrayOption else mapObjectOption )
-
-      _.map props.options, ( value, key )->=
-
-        option = mapOption value, key
-
-        option.selected = ARGS.isOptionSelected option, selectedValue
-
-        option
-
-      ##
 
     ##
 
@@ -90,9 +82,27 @@ mixin = Mixin.createArged {
 
     ##
 
+    getOptions: ( props = @props, state = @state )->=
+
+      selectedValue = @getValue props, state
+
+      mapOption = props.mapOption || ( if _.isArray props.options then mapArrayOption else mapObjectOption )
+
+      _.map props.options, ( value, key )->=
+
+        option = mapOption value, key
+
+        option.selected = ARGS.isOptionSelected option, selectedValue
+
+        option
+
+      ##
+
+    ##
+
   ##
 
 }
 
 
-module.exports = mixin
+module.exports = BaseOptionsInputMixin

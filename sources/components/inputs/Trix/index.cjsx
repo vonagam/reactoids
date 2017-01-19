@@ -2,13 +2,19 @@
 
 TrixEditor = requireDependency( 'trix' ) && requireWindow( 'window' ).Trix # basecamp/trix, https://trix-editor.org
 
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
+# mixins
+
+EventListenerMixin = requireSource 'mixins/EventListener'
+
 
 EVENTS = [
 
   'initialize'
   'selection-change'
-  'focus'
-  'blur'
+  #'focus'
+  #'blur'
   'file-accept'
   'attachment-add'
   'attachment-remove'
@@ -16,28 +22,38 @@ EVENTS = [
 ]
 
 
-Trix = React.createClass
+Trix = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-readonly': ''
         '-focus': ''
         'editor': ''
         'toolbar': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    InputMixin
+    InputMixin()
+
+    FocusMixin findFocusables: ( that )->= that.dom 'editor'
+
+    EventListenerMixin()
 
   ]
 
-  propTypes:
+  propTypes: {
+
+    'inputProps': React.PropTypes.object
+
+    'toolbarProps': React.PropTypes.object
+
+    'editorProps': React.PropTypes.object
 
     'onInitialize': React.PropTypes.func
 
@@ -53,7 +69,9 @@ Trix = React.createClass
 
     'onAttachmentRemove': React.PropTypes.func
 
-  ##
+    'placeholder': React.PropTypes.string
+
+  }
 
   getDefaultProps: ->=
 
@@ -63,7 +81,7 @@ Trix = React.createClass
 
   getInitialState: ->=
 
-    focus: 0
+    'focus': 0
 
   ##
 
@@ -73,11 +91,91 @@ Trix = React.createClass
 
   ##
 
+  componentDidMount: ->
+
+    editor = @dom 'editor'
+
+    toolbar = @dom 'toolbar'
+
+
+    @addEventListener target: toolbar, event: 'mousedown', callback: ( event )-> event.target.tagName == 'DIV' && event.preventDefault()
+
+
+    addEditorListener = _.bind ( event, callback )->
+
+      @addEventListener target: editor, event: event, callback: callback
+
+    , this
+
+
+    addEditorListener 'trix-initialize', _.bind ->
+
+      @trix = editor.editor
+
+      @syncTrixValue()
+
+      @onFocusChange( +1 ) if editor == document.activeElement
+
+
+      addEditorListener 'trix-change', @onChange
+
+      addEditorListener 'trix-blur', @onBlur
+
+      addEditorListener 'trix-file-accept', _.bind ( ( event )-> ! @props.onAttachmentAdd && event.preventDefault() ), this
+
+      addEditorListener 'keydown', _.bind ( ( event )-> @props.readOnly && event.preventDefault() ), this
+
+      addEditorListener 'trix-focus', _.partial @onFocusChange, +1
+
+      addEditorListener 'trix-blur', _.partial @onFocusChange, -1
+
+      addEditorListener 'trix-toolbar-dialog-show', _.partial @onFocusChange, +1
+
+      addEditorListener 'trix-toolbar-dialog-hide', _.partial @onFocusChange, -1
+
+
+      _.each EVENTS, _.bind ( event )->
+
+        addEditorListener "trix-#{ event }", @callback "props.#{ _.camelCase "on-#{ event }" }"
+
+      , this
+
+
+      @props.onInitialize?()
+
+    , this
+
+  ##
+
+  componentDidUpdate: ( prevProps, prevState )->
+
+    return if _.isEqual @getValue(), @getValue( prevProps, prevState )
+
+    @syncTrixValue()
+
+  ##
+
+  syncTrixValue: ->
+
+    trix = @trix
+
+    return unless trix
+
+    trixValue = @refs.input.value
+
+    currValue = @getValue()
+
+    return if trixValue == currValue
+
+    trix.loadHTML currValue
+
+  ##
+
   onChange: ( event )->
 
     @setTempValue event.target.value
 
-    @syncEditorValue() if @props.readOnly
+    @syncTrixValue() if @props.readOnly
 
   ##
 
@@ -89,67 +187,17 @@ Trix = React.createClass
 
   onFocusChange: ( delta )->
 
-    @setState focus: @state.focus + delta
+    @updateStateKey 'focus', _.bind ( prevFocus )->=
 
-  ##
+      nextFocus = _.clamp prevFocus + delta, 0, 2
 
-  syncEditorValue: ->
+      _.funced @props.onFocus if nextFocus == 1 && prevFocus == 0
 
-    editor = @editor
+      _.funced @props.onBlur if nextFocus == 0 && prevFocus == 1
 
-    prevDoc = editor.getDocument()
-
-    value = @getValue()
-
-    nextDoc = TrixEditor.deserializeFromContentType value, 'text/html'
-
-    return if nextDoc.isEqualTo prevDoc
-
-    editor.loadDocument nextDoc
-
-  ##
-
-  componentDidMount: ->
-
-    editor = @dom 'editor'
-
-    toolbar = @dom 'toolbar'
-
-    _.each EVENTS, _.bind ( event )->
-
-      editor.addEventListener "trix-#{ event }", @callback "props.#{ _.camelCase "on-#{ event }" }"
+      nextFocus
 
     , this
-
-    editor.addEventListener 'trix-change', @onChange
-
-    editor.addEventListener 'trix-blur', @onBlur
-
-    editor.addEventListener 'trix-file-accept', _.bind ( ( event )-> ! @props.onAttachmentAdd && event.preventDefault() ), this
-
-    editor.addEventListener 'keydown', _.bind ( ( event )-> @props.readOnly && event.preventDefault() ), this
-
-    editor.addEventListener 'trix-focus', _.partial @onFocusChange, +1
-
-    editor.addEventListener 'trix-blur', _.partial @onFocusChange, -1
-
-    editor.addEventListener 'trix-toolbar-dialog-show', _.partial @onFocusChange, +1
-
-    editor.addEventListener 'trix-toolbar-dialog-hide', _.partial @onFocusChange, -1
-
-    toolbar.addEventListener 'mousedown', ( event )-> event.target.tagName == 'DIV' && event.preventDefault()
-
-    @editor = editor.editor
-
-    @syncEditorValue()
-
-  ##
-
-  componentDidUpdate: ( prevProps, prevState )->
-
-    return if _.isEqual @getValue(), @getValue( prevProps, prevState )
-
-    @syncEditorValue()
 
   ##
 
@@ -157,12 +205,26 @@ Trix = React.createClass
 
     { props, state, classed } = this
 
+    { inputProps, toolbarProps, editorProps, placeholder } = props
+
 
     <div {... @omitProps() } className={ classed '.', '-focus': state.focus > 0, '-readonly': props.readOnly }>
 
-      <input id={ "#{ @trixId }_input" } type='hidden' />
+      <input
+
+        {... inputProps }
+
+        ref='input'
+
+        id={ "#{ @trixId }_input" }
+
+        type='hidden'
+
+      />
 
       <trix-toolbar
+
+        {... toolbarProps }
 
         ref='toolbar'
 
@@ -174,6 +236,8 @@ Trix = React.createClass
 
       <trix-editor
 
+        {... editorProps }
+
         ref='editor'
 
         class={ classed 'editor' }
@@ -182,13 +246,15 @@ Trix = React.createClass
 
         toolbar={ "#{ @trixId }_toolbar" }
 
+        placeholder={ placeholder }
+
       />
 
     </div>
 
   ##
 
-##
+}
 
 
 module.exports = Trix

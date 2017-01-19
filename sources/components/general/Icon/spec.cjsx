@@ -5,9 +5,9 @@ describe 'Icon', ->
 
   getDefaultClassNames = requireSource '../tests/react/contexts/getClassNames'
 
-  getClassNames = ( id, constructor, keys )->=
+  getClassNames = ( constructor, keys, id )->=
 
-    result = getDefaultClassNames id, constructor, keys
+    result = getDefaultClassNames constructor, keys, id
 
     result[ '-iknown' ] = '-youknown'
 
@@ -38,13 +38,15 @@ describe 'Icon', ->
 
     known = variation.icon == 'iknown'
 
+    unknown = variation[ 'data-unknown' ]
+
 
     instance = shallow <Icon {... variation } />, context: { getClassNames: getClassNames }
 
 
     expect( instance ).to.match 'i.icon'
 
-    expect( instance ).onlyIf( variation[ 'data-unknown' ] ).to.have.data 'unknown', variation[ 'data-unknown' ]
+    expect( instance ).onlyIf( unknown ).to.have.data 'unknown', unknown
 
 
     expect( instance ).onlyIf( known ).to.have.className '-youknown'

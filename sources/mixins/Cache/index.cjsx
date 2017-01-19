@@ -1,10 +1,30 @@
-mixin =
+CacheMixin = Mixin.create {
 
-  Mixin.createPlain
+  name: 'CacheMixin'
+
+  mixin: ->=
 
     getInitialMembers: ->=
 
-      _cache: undefined
+      '_cache': undefined
+
+    ##
+
+    componentWillUpdate: ( nextProps, nextState, nextContext )->
+
+      return if _.isEmpty @_cache
+
+      next = { props: nextProps, state: nextState, context: nextContext }
+
+      _.each @_cache, _.bind ( cache, key )->
+
+        if _.some cache.depend, _.bind ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
+
+          delete cache[ key ]
+
+        ##
+
+      , this
 
     ##
 
@@ -46,27 +66,9 @@ mixin =
 
     ##
 
-    componentWillUpdate: ( nextProps, nextState, nextContext )->
-
-      return if _.isEmpty @_cache
-
-      next = { props: nextProps, state: nextState, context: nextContext }
-
-      _.each @_cache, _.bind ( cache, key )->
-
-        if _.some cache.depend, _.bind ( ( key )->= ! _.isEqual _.get( this, key ), _.get( next, key ) ), this
-
-          delete cache[ key ]
-
-        ##
-
-      , this
-
-    ##
-
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = CacheMixin

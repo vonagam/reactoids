@@ -54,7 +54,7 @@ describe 'Unison', ->
 
       getInitialState: ->=
 
-        i: 0
+        'i': 0
 
       ##
 

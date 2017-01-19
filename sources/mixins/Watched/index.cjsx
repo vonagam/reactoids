@@ -3,36 +3,42 @@
 UnisonMixin = requireSource 'mixins/Unison'
 
 
-mixin = Mixin.createArged
+WatchedMixin = Mixin.create {
 
-  args:
+  name: 'WatchedMixin'
+
+  args: {
 
     'name': React.PropTypes.string
 
-    'getValue': React.PropTypes.func # ( that )->=
+    'getValue': React.PropTypes.func # ( that )->= any watched value
 
     'onChange': React.PropTypes.func # ( that, currValue, prevValue )->
 
     'callOnMount': React.PropTypes.bool
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'name': ''
 
     'callOnMount': false
 
-  ##
+  }
 
-  mixins: [ UnisonMixin ]
+  mixins: [
+
+    UnisonMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
     member = "_watched#{ _.pascalCase ARGS.name }"
 
 
-    UnisonArgs = _.assign UnisonMixin.pick( ARGS ),
+    UnisonArgs = _.assign UnisonMixin.pick( ARGS ), {
 
       name: "#{ ARGS.name }Watching"
 
@@ -54,10 +60,14 @@ mixin = Mixin.createArged
 
       ##
 
-    ##
+    }
 
 
-    mixins: [ UnisonMixin( UnisonArgs ) ]
+    mixins: [
+
+      UnisonMixin UnisonArgs
+
+    ]
 
     getInitialMembers: ->=
 
@@ -75,7 +85,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = WatchedMixin

@@ -1,6 +1,6 @@
 # dependencies
 
-window = requireWindow 'window' # Ya.share2 https://tech.yandex.ru/share/doc/dg/api-docpage/
+Window = requireWindow 'window' # Ya.share2 https://tech.yandex.ru/share/doc/dg/api-docpage/
 
 # mixins
 
@@ -40,7 +40,7 @@ YaShare = React.createClass {
 
       ]
 
-      check: ->= _.has window, 'Ya.share2'
+      check: ->= _.has Window, 'Ya.share2'
 
       decorateScript: ( script )-> script.charset = 'utf-8'
 
@@ -96,21 +96,13 @@ YaShare = React.createClass {
 
   ##
 
-  destroyShare: ->
-
-    @share.destroy() if @share
-
-    @share = undefined
-
-  ##
-
   applyShare: ->
 
     node = @dom 'node'
 
     @destroyShare()
 
-    @share = window.Ya.share2 node, {
+    @share = Window.Ya.share2 node, {
 
       'content': @props.content
 
@@ -127,6 +119,16 @@ YaShare = React.createClass {
       }
 
     }
+
+  ##
+
+  destroyShare: ->
+
+    return unless @share
+
+    @share.destroy()
+
+    @share = undefined
 
   ##
 

@@ -44,6 +44,16 @@ autoRequires = [
     variable: 'InputMixin'
     includes: /\binputs\b/
   }
+  {
+    module: 'mixins/Focus'
+    variable: 'FocusMixin'
+    includes: /\binputs\b/
+  }
+  {
+    module: 'mixins/Focus/pass'
+    variable: 'FocusPassMixin'
+    includes: /\binputs\b/
+  }
 
 ]
 

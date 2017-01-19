@@ -52,7 +52,7 @@ setClassName = ( node, className )->
 
 ##
 
-cleanUpTether = ( node, isElement )->
+cleanUpTether = ( node, { type } )->
 
   className = getClassName node
 
@@ -60,7 +60,7 @@ cleanUpTether = ( node, isElement )->
 
   setClassName node, className
 
-  _.assign node.style, STYLES if isElement
+  _.assign node.style, STYLES if type == 'element'
 
 ##
 
@@ -74,8 +74,6 @@ Tether = React.createClass {
   ]
 
   propTypes: {
-
-    'enabled': React.PropTypes.bool
 
     'tether': React.PropTypes.shape {
 
@@ -113,6 +111,8 @@ Tether = React.createClass {
 
     }
 
+    'enabled': React.PropTypes.bool
+
   }
 
   componentDidMount: ->
@@ -135,7 +135,7 @@ Tether = React.createClass {
 
       options = getOptions this, @tether
 
-      if ! @tether
+      if @tether == undefined
 
         @createTether options
 
@@ -145,7 +145,7 @@ Tether = React.createClass {
 
         if @tether.target != @target
 
-          cleanUpTether @target
+          cleanUpTether @target, type: 'target'
 
           @target = @tether.target
 
@@ -177,9 +177,9 @@ Tether = React.createClass {
 
     return unless @tether
 
-    cleanUpTether @tether.target
+    cleanUpTether @tether.target, type: 'target'
 
-    cleanUpTether @tether.element, true
+    cleanUpTether @tether.element, type: 'element'
 
     @tether.destroy()
 

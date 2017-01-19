@@ -1,10 +1,12 @@
-mixin = Mixin.createArged
+StringedMixin = Mixin.create {
 
-  args:
+  name: 'StringedMixin'
+
+  args: {
 
     'strings': React.PropTypes.arrayOf React.PropTypes.string
 
-  ##
+  }
 
   mixin: ( ARGS )->=
 
@@ -20,7 +22,6 @@ mixin = Mixin.createArged
       return input
 
     ##
-
 
     setPropsStrings = ( that, props )->=
 
@@ -71,28 +72,29 @@ mixin = Mixin.createArged
     ##
 
 
-    propTypes:
+    propTypes: {
 
       strings: React.PropTypes.funced React.PropTypes.object, React.PropTypes.array # ( that )->=
 
-    ##
+    }
 
-    contextTypes:
+    contextTypes: {
 
       getStrings: React.PropTypes.func # ( id, constructor, keys, that )->=
 
-    ##
+    }
 
     getInitialMembers: ->=
 
-      _stringed:
+      '_stringed': {
+
         strings: {}
         stringsProps: {}
         stringsPropsInput: undefined
         stringsContext: {}
         stringsContextInput: undefined
 
-      ##
+      }
 
     ##
 
@@ -118,7 +120,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = StringedMixin

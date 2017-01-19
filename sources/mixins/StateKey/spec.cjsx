@@ -5,12 +5,12 @@ describe.skip 'StateKey', ->
 
   it 'works', ->
 
-    StateKeyed = createMixinClass StateKey,
+    StateKeyed = createMixinClass StateKey(),
 
       getInitialState: ->=
 
-        bool: true
-        key: 3
+        'bool': true
+        'key': 3
 
       ##
 

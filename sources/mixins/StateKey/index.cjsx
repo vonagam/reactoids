@@ -1,28 +1,40 @@
-mixin =
+# mixins
 
-  Mixin.createPlain
+BaseKeyMixin = requireSource 'mixins/BaseKey'
 
-    getStateKey: ( key )->=
 
-      @state[ key ]
+StateKeyMixin = Mixin.create {
 
-    ##
+  name: 'StateKeyMixin'
 
-    setStateKey: ( key, value, callback )->
+  mixins: [
 
-      @setState "#{ key }": value, callback
+    BaseKeyMixin
 
-    ##
+  ]
 
-    toggleStateKey: ( key, callback )->
+  mixin: _.once ->=
 
-      @setState "#{ key }": ! @state[ key ], callback
+    BaseKeyArgs = {
 
-    ##
+      name: 'state'
+
+      get: ( that, props, state )->= state
+
+      set: ( that, value, callback )-> that.setState value, callback
+
+    }
+
+
+    mixins: [
+
+      BaseKeyMixin BaseKeyArgs
+
+    ]
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = StateKeyMixin

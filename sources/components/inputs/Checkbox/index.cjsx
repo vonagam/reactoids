@@ -14,7 +14,9 @@ Checkbox = React.createClass {
 
     }
 
-    InputMixin
+    InputMixin()
+
+    FocusMixin findFocusables: ( that )->= that.dom 'input'
 
   ]
 
@@ -48,6 +50,8 @@ Checkbox = React.createClass {
     >
 
       <input
+
+        ref='input'
 
         type='checkbox'
 

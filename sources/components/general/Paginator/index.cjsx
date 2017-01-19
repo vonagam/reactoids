@@ -37,11 +37,7 @@ Paginator = React.createClass {
 
     }
 
-    StringedMixin {
-
-      strings: [ 'first', 'prev', 'next', 'last' ]
-
-    }
+    StringedMixin strings: [ 'first', 'prev', 'next', 'last' ]
 
   ]
 

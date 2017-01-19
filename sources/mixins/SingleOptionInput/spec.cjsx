@@ -62,7 +62,7 @@ describe.skip 'OptionsInput', ->
 
     it "check #{ index }", ->
 
-      OptionsInputed = createMixinClass OptionsInput
+      OptionsInputed = createMixinClass OptionsInput()
 
       input = TestReact.render <OptionsInputed {... props } />
 

@@ -12,9 +12,9 @@ stories.add 'demo', ->=
 
     props={
 
-      'className': P.string( 'meaningless' )
+      'className': P.string '_className_'
 
-      'data-unknown': P.string( 'meaningless' )
+      'data-unknown': P.string '_unknown_'
 
       'onClick': P.callback.log()
 

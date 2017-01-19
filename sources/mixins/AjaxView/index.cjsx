@@ -7,25 +7,27 @@ HistoryViewMixin = requireSource 'mixins/HistoryView'
 AjaxMixin = requireSource 'mixins/Ajax'
 
 
-mixin = Mixin.createArged
+AjaxViewMixin = Mixin.create {
 
-  args:
+  name: 'AjaxViewMixin'
+
+  args: {
 
     'setView': React.PropTypes.func # ( that, data, url )->
 
-    'getHistoryState': React.PropTypes.func # ( that, data, url )->= history state ( { url:, title: } )
+    'getHistoryState': React.PropTypes.func # ( that, data, url )->= history state { url:, title: }
 
     'changeAjaxOptions': React.PropTypes.func # ( that, options )->
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'getHistoryState': ( that, data, url )->= { url: url }
 
     'changeAjaxOptions': _.noop
 
-    # HistoryView
+    # HistoryViewMixin
 
     'shouldHandleLink': ( that, link )->=
 
@@ -47,13 +49,25 @@ mixin = Mixin.createArged
 
     ##
 
-  ##
+  }
 
-  mixins: [ HistoryViewMixin, AjaxMixin ]
+  mixins: [
+
+    HistoryViewMixin
+
+    AjaxMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
-    mixins: [ HistoryViewMixin( HistoryViewMixin.pick ARGS ), AjaxMixin ]
+    mixins: [
+
+      HistoryViewMixin HistoryViewMixin.pick ARGS
+
+      AjaxMixin()
+
+    ]
 
     loadView: ( url, position = 'push' )->
 
@@ -94,7 +108,7 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = AjaxViewMixin

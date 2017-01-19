@@ -1,38 +1,20 @@
 describe.skip 'EventListener', ->
 
-  dependencies = requireSource 'dependencies'
+  proxyquire = require( 'proxyquire' ).noCallThru()
 
   jQuery = { on: _.noop, off: _.noop }
 
-  EventListener = undefined
-
-  jQueryBefore = dependencies[ 'jquery' ]
-
-  before ->
-
-    dependencies[ 'jquery' ] = ->= jQuery
-
-    EventListener = requireSubject()
-
-  ##
-
-  after ->
-
-    dependencies[ 'jquery' ] = jQueryBefore
-
-    EventListener = undefined
-
-  ##
+  EventListener = proxyquire './index.js', 'jquery': jQuery
 
 
   it 'works', sinon.test ->
 
-    addStub = @stub jQuery, 'on'
+    onStub = @stub jQuery, 'on'
 
-    removeStub = @stub jQuery, 'off'
+    offStub = @stub jQuery, 'off'
 
 
-    EventListenered = createMixinClass EventListener
+    EventListenered = createMixinClass EventListener()
 
     component = TestReact.render <EventListenered x={ 1 } />
 
@@ -40,7 +22,7 @@ describe.skip 'EventListener', ->
     callback = @spy -> expect( this.props.x ).equal 1
 
 
-    expect( ->= count: addStub.callCount, evented: addStub.calledWith 'someEvent' ).change
+    expect( ->= count: onStub.callCount, evented: onStub.calledWith 'someEvent' ).change
 
     .from( count: 0, evented: false ).to( count: 1, evented: true ).when ->
 
@@ -53,12 +35,12 @@ describe.skip 'EventListener', ->
 
     .from( 0 ).to( 1 ).when ->
 
-      addStub.firstCall.args[ 1 ]()
+      onStub.firstCall.args[ 1 ]()
 
     ##
 
 
-    expect( ->= count: removeStub.callCount, evented: removeStub.calledWith 'someEvent' ).change
+    expect( ->= count: offStub.callCount, evented: offStub.calledWith 'someEvent' ).change
 
     .from( count: 0, evented: false ).to( count: 1, evented: true ).when ->
 

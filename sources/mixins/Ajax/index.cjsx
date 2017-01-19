@@ -32,74 +32,36 @@ onAjaxSuccess = ( that, redirect, data, status, xhr )->
 
   allow = _.funced redirect, location, data, status, xhr
 
-  return unless allow == true || _.isString allow
+  if _.isString allow
 
-  location = allow if _.isString allow
+    location = allow
 
-  return unless _.isString location
+    allow = true
+
+  ##
+
+  return unless allow == true && _.isString location
 
   simulateLink location, ReactDOM.findDOMNode that
 
 ##
 
 
-mixin =
+AjaxMixin = Mixin.create {
 
-  Mixin.createPlain
+  name: 'AjaxMixin'
+
+  mixin: _.once ->=
 
     getInitialState: ->=
 
-      ajaxes: {}
+      'ajaxes': {}
 
     ##
 
     getInitialMembers: ->=
 
-      ajaxes: {}
-
-    ##
-
-    abortAjax: ( name )->
-
-      toggleAjax this, name, false
-
-    ##
-
-    sendAjax: ( name, options )->
-
-      return if _.isEmpty options
-
-      if @ajaxes[ name ]
-
-        return unless options.force
-
-        delete options.force
-
-        @abortAjax name
-
-      ##
-
-      options = _.clone options
-
-      options = _.mapKeys options, ( value, key )->=
-
-        if /^on[A-Z]/.test( key ) then _.camelCase( key.replace /^on/, '' ) else key
-
-      ##
-
-      if options.redirect
-
-        options.success = _.queue options.success, _.partial onAjaxSuccess, this, options.redirect
-
-        delete options.redirect
-
-      ##
-
-      options.complete = _.queue _.partial( toggleAjax, this, name, false ), options.complete
-
-      ajax = $.ajax options
-
-      toggleAjax this, name, ajax
+      'ajaxes': {}
 
     ##
 
@@ -113,9 +75,60 @@ mixin =
 
     ##
 
+    sendAjax: ( name, options )->
+
+      options = _.clone options
+
+      return if _.isEmpty options
+
+
+      if @ajaxes[ name ]
+
+        return unless options.force
+
+        @abortAjax name
+
+      ##
+
+      delete options.force
+
+
+      options.success = _.queue options.success, _.partial onAjaxSuccess, this, options.redirect
+
+      delete options.redirect
+
+
+      options.complete = _.queue _.partial( toggleAjax, this, name, false ), options.complete
+
+      ajax = $.ajax options
+
+      toggleAjax this, name, ajax
+
+    ##
+
+    isWaitingAjax: ( name )->=
+
+      if arguments.length == 0
+
+        ! _.isEmpty @ajaxes
+
+      else
+
+        Boolean @ajaxes[ name ]
+
+      ##
+
+    ##
+
+    abortAjax: ( name )->
+
+      toggleAjax this, name, false
+
+    ##
+
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = AjaxMixin

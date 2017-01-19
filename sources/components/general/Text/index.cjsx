@@ -29,13 +29,21 @@ Text = React.createClass {
 
   }
 
+  getDefaultProps: ->=
+
+    'preProcess': _.identity
+
+    'postProcess': _.identity
+
+  ##
+
   processText: ( text )->=
 
     return '' unless text
 
     className = @classed 'paragraph'
 
-    text = @props.preProcess text if @props.preProcess
+    text = @props.preProcess text
 
     text = '<p class="' + className + '">' + text + '</p>'
 
@@ -43,7 +51,7 @@ Text = React.createClass {
 
     text = text.replace /\n/g, '<br/>'
 
-    text = @props.postProcess text if @props.postProcess
+    text = @props.postProcess text
 
     text
 
@@ -62,7 +70,7 @@ Text = React.createClass {
 
       source={ props.text }
 
-      process={ @processText }
+      process={ @callback 'processText' }
 
     />
 

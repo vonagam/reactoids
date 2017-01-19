@@ -12,19 +12,19 @@ describe.skip 'RenderSlots', ->
 
       getInitialState: ->=
 
-        key: 'value'
+        'key': 'value'
 
       ##
 
       getDefaultProps: ->=
 
-        renderFirst: ( component, slotProps, userProps )->=
+        'renderFirst': ( component, slotProps, userProps )->=
 
           <div {... slotProps } {... userProps } />
 
         ##
 
-        renderSecond: ( component, slotProps, userProps )->=
+        'renderSecond': ( component, slotProps, userProps )->=
 
           <div {... slotProps } {... userProps } />
 

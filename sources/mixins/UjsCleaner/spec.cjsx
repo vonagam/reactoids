@@ -5,7 +5,7 @@ describe.skip 'UjsCleaner', ->
 
   it 'works', ->
 
-    UjsCleaned = createMixinClass UjsCleaner
+    UjsCleaned = createMixinClass UjsCleaner()
 
     root = TestReact.render(
 

@@ -13,7 +13,9 @@ Input = React.createClass {
 
     }
 
-    InputMixin
+    InputMixin()
+
+    FocusMixin()
 
   ]
 
@@ -60,18 +62,6 @@ Input = React.createClass {
   onLabelClick: ->
 
     @focus()
-
-  ##
-
-  focus: ->
-
-    @dom().focus()
-
-  ##
-
-  blur: ->
-
-    @dom().blur()
 
   ##
 

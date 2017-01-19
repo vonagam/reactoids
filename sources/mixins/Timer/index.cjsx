@@ -26,38 +26,44 @@ getTimerFuns = ( constructor, destructor, member )->=
 
 ##
 
-
 INTERVAL = getTimerFuns setInterval, clearInterval, 'intervals'
+
 TIMEOUT = getTimerFuns setTimeout, clearTimeout, 'timeouts'
 
 
-mixin =
+TimerMixin = Mixin.create {
 
-  Mixin.createPlain
+  name: 'TimerMixin'
+
+  mixin: _.once ->=
 
     getInitialMembers: ->=
 
-      intervals: {}
-      timeouts: {}
+      'intervals': {}
+
+      'timeouts': {}
 
     ##
-
-    setInterval: INTERVAL.set
-    clearInterval: INTERVAL.clear
-
-    setTimeout: TIMEOUT.set
-    clearTimeout: TIMEOUT.clear
 
     componentWillUnmount: ->
 
       _.each @intervals, clearInterval
+
       _.each @timeouts, clearTimeout
 
     ##
 
+    setInterval: INTERVAL.set
+
+    clearInterval: INTERVAL.clear
+
+    setTimeout: TIMEOUT.set
+
+    clearTimeout: TIMEOUT.clear
+
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = TimerMixin

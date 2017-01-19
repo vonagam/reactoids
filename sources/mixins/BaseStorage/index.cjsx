@@ -1,82 +1,93 @@
-mixin = Mixin.createArged
+# mixins
 
-  args:
+BaseKeyMixin = requireSource 'mixins/BaseKey'
+
+
+BaseStorageMixin = Mixin.create {
+
+  name: 'BaseStorageMixin'
+
+  args: {
 
     'name': React.PropTypes.string
 
-    'get': React.PropTypes.func # ( that )->= value
+    'get': React.PropTypes.func # ( that, props, state )->= value
 
-    'set': React.PropTypes.func # ( that, value )->
+    'set': React.PropTypes.func # ( that, value, callback )->
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'name': 'store'
 
-  ##
+  }
+
+  mixins: [
+
+    BaseKeyMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
-    stateKey = _.camelCase ARGS.name
-    storeName = _.pascalCase ARGS.name
+    state = _.camelCase ARGS.name
 
-    getStore = "get#{ storeName }"
-    setStore = "set#{ storeName }"
-    syncStore = "sync#{ storeName }"
+    method = _.pascalCase ARGS.name
 
+
+    BaseKeyArgs = {
+
+      name: ARGS.name
+
+      get: ARGS.get
+
+      set: ( that, value, callback )->
+
+        ARGS.set that, value, ->
+
+          that[ "sync#{ method }" ] callback
+
+        ##
+
+      ##
+
+    }
+
+
+    mixins: [
+
+      BaseKeyMixin BaseKeyArgs
+
+    ]
 
     getInitialState: ->=
 
-      "#{ stateKey }": @[ getStore ]()
+      "#{ state }": ARGS.get that
 
     ##
 
-    "#{ getStore }": ->=
+    "get#{ method }": ->=
 
-      ARGS.get this
-
-    ##
-
-    "#{ getStore }Key": ( key )->=
-
-      @[ getStore ]()[ key ]
+      @[ "get#{ method }Key" ] undefined
 
     ##
 
-    "#{ syncStore }": ->
+    "set#{ method }": ( value, callback )->
 
-      @setState "#{ stateKey }": @[ getStore ]()
-
-    ##
-
-    "#{ setStore }": ( value )->
-
-      return if _.isEqual @[ getStore ](), value
-
-      ARGS.set this, value
-
-      @[ syncStore ]()
+      @[ "set#{ method }Key" ] undefined, value, callback
 
     ##
 
-    "#{ setStore }Key": ( key, value )->
+    "sync#{ method }": ( callback )->
 
-      currValue = @[ getStore ]()
-
-      return if _.isEqual currValue[ key ], value
-
-      nextValue = _.clone currValue
-
-      nextValue[ key ] = value
-
-      @[ setStore ] nextValue
+      @setState "#{ state }": @[ "get#{ method }" ](), callback
 
     ##
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = BaseStorageMixin

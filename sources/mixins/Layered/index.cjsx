@@ -1,6 +1,6 @@
-mixin = Mixin.createArged {
+LayeredMixin = Mixin.create {
 
-  args: {}
+  name: 'LayeredMixin'
 
   mixin: ->=
 
@@ -143,7 +143,7 @@ mixin = Mixin.createArged {
 
     getInitialMembers: ->=
 
-      _layers: {}
+      '_layers': {}
 
     ##
 
@@ -206,4 +206,4 @@ mixin = Mixin.createArged {
 }
 
 
-module.exports = mixin
+module.exports = LayeredMixin

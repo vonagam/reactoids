@@ -15,17 +15,17 @@ PureRenderMixin = requireSource 'mixins/PureRender'
 Button = requireSource 'components/general/Button'
 
 
-File = React.createClass
+File = React.createClass {
 
   mixins: [
 
-    PureRenderMixin
+    PureRenderMixin()
 
-    DomMixin
+    DomMixin()
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'file': React.PropTypes.any
 
@@ -37,7 +37,7 @@ File = React.createClass
 
     'onRemove': React.PropTypes.func
 
-  ##
+  }
 
   onDataUrlLoad: ( reader )->
 
@@ -104,22 +104,22 @@ File = React.createClass
 
       }
 
-      <Button className={ classed 'remove' } onClick={ props.onRemove } text={ stringed 'remove' } />
+      <Button className={ classed 'remove' } onClick={ props.onRemove } children={ stringed 'remove' } />
 
     </div>
 
   ##
 
-##
+}
 
 
-Filer = React.createClass
+Filer = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-readonly': ''
         '-multiple': ''
@@ -138,27 +138,25 @@ Filer = React.createClass
             '-select': ''
             '-clear': ''
 
-      ##
+      }
 
-    ##
+    }
 
-    StringedMixin
+    StringedMixin strings: [ 'select', 'clear', 'remove', 'drop' ]
 
-      strings: [ 'select', 'clear', 'remove', 'drop' ]
+    InputMixin()
 
-    ##
-
-    InputMixin
+    FocusMixin findFocusables: ( that )->= that.dom 'input'
 
   ]
 
-  propTypes:
+  propTypes: {
 
     'multiple': React.PropTypes.bool
 
     'preview': React.PropTypes.bool
 
-  ##
+  }
 
   getDefaultProps: ->=
 
@@ -170,7 +168,17 @@ Filer = React.createClass
 
   getInitialState: ->=
 
-    dragging: false
+    'dragging': false
+
+  ##
+
+  componentWillReceiveProps: ( nextProps )->
+
+    if @props.value != undefined && nextProps.value == undefined
+
+      @dom( 'input' ).value = ''
+
+    ##
 
   ##
 
@@ -182,7 +190,7 @@ Filer = React.createClass
 
     if @props.multiple
 
-      currentValue = @getValue()
+      currentValue = @getValue() || []
 
       value = currentValue.concat files
 
@@ -233,16 +241,6 @@ Filer = React.createClass
   onClearClick: ->
 
     @setValue undefined
-
-  ##
-
-  componentWillReceiveProps: ( nextProps )->
-
-    if @props.value != undefined && nextProps.value == undefined
-
-      @dom( 'input' ).value = ''
-
-    ##
 
   ##
 
@@ -354,7 +352,7 @@ Filer = React.createClass
 
           onClick={ @onSelectClick }
 
-          text={ stringed 'select', value: value, multiple: props.multiple }
+          children={ stringed 'select', value: value, multiple: props.multiple }
 
         />
 
@@ -364,7 +362,7 @@ Filer = React.createClass
 
           onClick={ @onClearClick if value }
 
-          text={ stringed 'crear' }
+          children={ stringed 'crear' }
 
         />
 
@@ -388,7 +386,7 @@ Filer = React.createClass
 
   ##
 
-##
+}
 
 
 module.exports = Filer

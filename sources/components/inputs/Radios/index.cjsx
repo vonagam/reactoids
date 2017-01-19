@@ -1,3 +1,7 @@
+# dependencies
+
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
 # mixins
 
 SingleOptionInputMixin = requireSource 'mixins/SingleOptionInput'
@@ -22,7 +26,9 @@ Radios = React.createClass {
 
     }
 
-    SingleOptionInputMixin
+    SingleOptionInputMixin()
+
+    FocusMixin findFocusables: ( that )->= $( that.dom() ).find( 'input' ).get()
 
   ]
 

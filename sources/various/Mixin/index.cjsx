@@ -1,6 +1,23 @@
 ReactPropTypesSecret = require 'react/lib/ReactPropTypesSecret'
 
 
+collectMixins = ( result, mixins )->
+
+  _.each mixins, ( mixin )->
+
+    return unless mixin
+
+    return if _.includes result, mixin
+
+    collectMixins result, mixin.mixins
+
+    result.push mixin
+
+  ##
+
+##
+
+
 handleWillMounts = ( input )->
 
   willMounts = []
@@ -47,32 +64,58 @@ handleWillMounts = ( input )->
 
 ##
 
+addOptions = ( mixin, options )->
 
-Mixin =
+  _.assign mixin, options
 
-  createPlain: ( input )->=
+##
 
-    result = _.clone input
+addPick = ( mixin )->
 
-    handleWillMounts result
+  mixins = [ mixin ]
 
-    result
+  collectMixins mixins, mixin.mixins
+
+  keys = _.uniq _.flatMap mixins, ( mixin )->= _.keys mixin.args
+
+
+  mixin.pick = ( ARGS )->=
+
+    _.pick ARGS, keys
 
   ##
 
-  createArged: ( input )->=
+##
 
-    result = ( ARGS )->=
 
-      ARGS = _.defaults {}, ARGS, input.defaults
+Mixin = {
+
+  create: ( options )->=
+
+    options = _.defaults {}, options, {
+
+      name: 'SomeUnknownMixin'
+
+      args: {}
+
+      defaults: {}
+
+      mixins: []
+
+    }
+
+
+    mixin = ( ARGS )->=
+
+      ARGS = _.defaults {}, ARGS, options.defaults
 
       if process.env.NODE_ENV != 'production'
 
-        _.each input.args, ( check, key )->
+        _.each options.args, ( check, key )->
 
-          check = check.isRequired unless _.has input.defaults, key
+          check = check.isRequired unless _.has options.defaults, key
 
-          error = check ARGS, key, 'arged Mixin constructor', 'reactoids_mixin', null, ReactPropTypesSecret
+          error = check ARGS, key, options.name, 'reactoids_mixin', null, ReactPropTypesSecret
 
           throw error if error
 
@@ -80,27 +123,21 @@ Mixin =
 
       ##
 
-      Mixin.createPlain input.mixin ARGS
+      result = options.mixin ARGS
+
+      handleWillMounts result
+
+      result
 
     ##
 
-    _.assign result, input
 
-    result.picked = _.keys input.args
+    addOptions mixin, options
 
-    _.each input.mixins, ( mixin )->
+    addPick mixin
 
-      result.picked = _.union result.picked, mixin.picked if _.isFunction mixin
 
-    ##
-
-    result.pick = ( ARGS )->=
-
-      _.pick ARGS, result.picked
-
-    ##
-
-    result
+    mixin
 
   ##
 
@@ -108,21 +145,7 @@ Mixin =
 
     outputMixins = []
 
-    addMixins = ( mixins )->
-
-      _.each mixins, ( mixin )->
-
-        return if _.includes outputMixins, mixin
-
-        addMixins mixin.mixins
-
-        outputMixins.push mixin
-
-      ##
-
-    ##
-
-    addMixins inputMixins
+    collectMixins outputMixins, inputMixins
 
     outputMixins = _.map outputMixins, ( mixin )->= _.omit mixin, 'mixins'
 
@@ -130,7 +153,7 @@ Mixin =
 
   ##
 
-##
+}
 
 
 module.exports = Mixin

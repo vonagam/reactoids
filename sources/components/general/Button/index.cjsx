@@ -19,7 +19,7 @@ Button = React.createClass {
 
     }
 
-    AjaxMixin
+    AjaxMixin()
 
   ]
 
@@ -27,11 +27,9 @@ Button = React.createClass {
 
     'href': React.PropTypes.string
 
-    'text': React.PropTypes.node
+    'ajax': React.PropTypes.funced React.PropTypes.object # ()->=
 
     'onClick': React.PropTypes.func
-
-    'ajax': React.PropTypes.funced React.PropTypes.object # ()->=
 
   }
 
@@ -39,15 +37,13 @@ Button = React.createClass {
 
     ajax = _.funced @props.ajax
 
-    return if _.isEmpty ajax
-
     @sendAjax 'one', ajax
 
   ##
 
   render: ->=
 
-    { props, state, classed } = this
+    { props, state, classed, callback } = this
 
     enabled = _.isString( props.href ) || props.onClick || ! _.isEmpty _.funced props.ajax
 
@@ -58,11 +54,9 @@ Button = React.createClass {
 
       className={ classed '.', "-#{ if enabled then 'enabled' else 'disabled' }", '-waiting': state.ajaxes.one }
 
-      href={ if _.isString props.href then props.href else undefined }
+      href={ props.href }
 
-      onClick={ @callback 'onClick, props.onClick' }
-
-      children={ props.text || props.children }
+      onClick={ callback 'onClick, props.onClick' }
 
     />
 

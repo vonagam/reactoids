@@ -46,7 +46,7 @@ runVariations = ( name, values, options, block )->
 
       try
 
-        block.call null, variation
+        block.call {}, variation
 
       catch error
 

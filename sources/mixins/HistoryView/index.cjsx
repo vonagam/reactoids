@@ -1,17 +1,17 @@
 # dependencies
 
-windowHistory = requireWindow 'history' # https://developer.mozilla.org/en-US/docs/Web/API/History
+History = requireWindow 'history' # https://developer.mozilla.org/en-US/docs/Web/API/History
 
-windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+Location = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
-addWindowEventListener = requireWindow 'addEventListener' # https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+addEventListener = requireWindow 'addEventListener' # https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
 # mixins
 
 BaseViewMixin = requireSource 'mixins/BaseView'
 
 
-History =
+history = {
 
   state: undefined
 
@@ -25,7 +25,7 @@ History =
 
   startListen: ->
 
-    addWindowEventListener 'popstate', _.bindKey History, 'onStatePop'
+    addEventListener 'popstate', _.bindKey history, 'onStatePop'
 
   ##
 
@@ -55,7 +55,7 @@ History =
 
   changeState: ( position, component, ARGS, options = {} )->=
 
-    currentState = _.defaults {}, windowHistory.state, index: 0, datas: {}
+    currentState = _.defaults {}, History.state, index: 0, datas: {}
 
     if position == 'replace'
 
@@ -79,7 +79,7 @@ History =
 
     @state = state
 
-    windowHistory[ "#{ position }State" ] state, options.title, options.url
+    History[ "#{ position }State" ] state, options.title, options.url
 
   ##
 
@@ -95,7 +95,7 @@ History =
 
     instance = @instances[ id ]
 
-    return windowLocation.reload() if instance == undefined
+    return Location.reload() if instance == undefined
 
     if Math.abs( eventState.index - historyState.index ) == 1
 
@@ -109,7 +109,7 @@ History =
 
       else
 
-        windowLocation.reload()
+        Location.reload()
 
       ##
 
@@ -119,12 +119,14 @@ History =
 
   ##
 
-##
+}
 
 
-mixin = Mixin.createArged
+HistoryViewMixin = Mixin.create {
 
-  args:
+  name: 'HistoryViewMixin'
+
+  args: {
 
     'getHistoryId': React.PropTypes.funced React.PropTypes.string # ( that )->=
 
@@ -132,48 +134,66 @@ mixin = Mixin.createArged
 
     'handleHistoryData': React.PropTypes.func # ( that, data, callback )->
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'getHistoryId': 'default'
 
-  ##
+  }
 
-  mixins: [ BaseViewMixin ]
+  mixins: [
+
+    BaseViewMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
-    mixins: [ BaseViewMixin BaseViewMixin.pick ARGS ]
+    mixins: [
 
-    changeHistoryState: ( position, options )->
+      BaseViewMixin BaseViewMixin.pick ARGS
 
-      History.changeState position, this, ARGS, options
-
-    ##
+    ]
 
     componentWillMount: ->
 
-      History.addComponent this, ARGS
+      history.addComponent this, ARGS
 
     ##
 
     componentWillUnmount: ->
 
-      History.removeComponent this, ARGS
+      history.removeComponent this, ARGS
+
+    ##
+
+    changeHistoryState: ( position, options )->
+
+      history.changeState position, this, ARGS, options
 
     ##
 
   ##
 
+}
+
+
+unless History
+
+  HistoryViewMixin = Mixin.create {
+
+    name: 'HistoryViewMixin'
+
+    mixin: _.once ->=
+
+      changeHistoryState: _.noop
+
+    ##
+
+  }
+
 ##
 
 
-unless windowHistory
-
-  mixin = Mixin.createArged mixin: ->= { changeHistoryState: _.noop }
-
-##
-
-
-module.exports = mixin
+module.exports = HistoryViewMixin

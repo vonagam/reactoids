@@ -3,7 +3,9 @@
 argsToString = requireSource 'various/classes'
 
 
-mixin = Mixin.createArged {
+ClassedMixin = Mixin.create {
+
+  name: 'ClassedMixin'
 
   args: {
 
@@ -116,7 +118,7 @@ mixin = Mixin.createArged {
 
     setContextClasses = ( that, context )->=
 
-      classesContextInput = _.funced context.getClassNames, ID, that.constructor, KEYS, that
+      classesContextInput = _.funced context.getClassNames, that.constructor, KEYS, ID
 
       return false if _.isEqual that._classed.classesContextInput, classesContextInput
 
@@ -155,13 +157,13 @@ mixin = Mixin.createArged {
 
     contextTypes: {
 
-      'getClassNames': React.PropTypes.func # ( id, constructor, keys, that )->=
+      'getClassNames': React.PropTypes.func # ( constructor, keys, id )->=
 
     }
 
     getInitialMembers: ->=
 
-      _classed: {
+      '_classed': {
 
         cache: {}
         classes: {}
@@ -215,4 +217,4 @@ mixin = Mixin.createArged {
 }
 
 
-module.exports = mixin
+module.exports = ClassedMixin

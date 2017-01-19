@@ -5,7 +5,7 @@ describe.skip 'FindDOM', ->
 
   it 'works', ->
 
-    FindDOMed = createMixinClass FindDOM,
+    FindDOMed = createMixinClass FindDOM(),
 
       render: ->=
 

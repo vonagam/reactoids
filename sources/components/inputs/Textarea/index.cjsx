@@ -13,7 +13,9 @@ Textarea = React.createClass {
 
     }
 
-    InputMixin
+    InputMixin()
+
+    FocusMixin()
 
   ]
 
@@ -38,18 +40,6 @@ Textarea = React.createClass {
   onLabelClick: ->
 
     @focus()
-
-  ##
-
-  focus: ->
-
-    @dom().focus()
-
-  ##
-
-  blur: ->
-
-    @dom().blur()
 
   ##
 

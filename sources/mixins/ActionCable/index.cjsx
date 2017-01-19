@@ -5,23 +5,25 @@ ActionCable = requireDependency 'actioncable' # rails/rails/tree/master/actionca
 # TODO use something like crosstab to use only 1 connection between multiply tabs
 
 
-mixin = Mixin.createArged
+ActionCableMixin = Mixin.create {
 
-  args:
+  name: 'ActionCableMixin'
 
-    'url': React.PropTypes.string
+  args: {
 
-    'timeout': React.PropTypes.number
+    'url': React.PropTypes.funced React.PropTypes.string # ( that )->= action cable endpoint
 
-  ##
+    'timeout': React.PropTypes.funced React.PropTypes.number # ( that )->= timeout for closing a connection
 
-  defaults:
+  }
+
+  defaults: {
 
     'url': '/cable'
 
     'timeout': 1000
 
-  ##
+  }
 
   mixin: ( ARGS )->=
 
@@ -31,48 +33,48 @@ mixin = Mixin.createArged
 
     timeoutId = undefined
 
-    openConnection = ->
+    openConnection = ( that )->
 
       count += 1
 
-      if ! consumer
+      return unless count == 1
 
-        consumer = ActionCable.createConsumer ARGS.url
+      consumer ||= ActionCable.createConsumer _.funced ARGS.url, that
 
-      else if count == 1 && consumer.connection.isState 'closed'
-
-        consumer.connection.open()
-
-      ##
+      consumer.connection.open() if consumer.connection.isState 'closed'
 
     ##
 
-    closeConnection = ->
+    closeConnection = ( that )->
 
       count -= 1
 
-      if count == 0
+      return unless count == 0
 
-        clearTimeout timeoutId
+      clearTimeout timeoutId
 
-        timeoutId = setTimeout ->
+      timeoutId = setTimeout ->
 
-          if count == 0 && ! consumer.connection.isState 'closed'
+        consumer.connection.close() unless consumer.connection.isState 'closed'
 
-            consumer.connection.close()
-
-          ##
-
-        , ARGS.timeout
-
-      ##
+      , _.funced ARGS.timeout, that
 
     ##
 
 
     getInitialMembers: ->=
 
-      _cables: {}
+      '_cables': {}
+
+    ##
+
+    componentWillUnmount: ->
+
+      _.each @_cables, _.bind ( cable, name )->
+
+        @disconnectCable name
+
+      , this
 
     ##
 
@@ -94,9 +96,9 @@ mixin = Mixin.createArged
 
       ##
 
-      throw new Error "ActionCableMixin: cable with name '#{ name }' is already connected" if @_cables[ name ]
+      throw new Error "ActionCableMixin: cable with name '#{ name }' is already connected" if @hasCable name
 
-      openConnection()
+      openConnection this
 
       @_cables[ name ] = consumer.subscriptions.create channel, mixin
 
@@ -104,13 +106,19 @@ mixin = Mixin.createArged
 
     disconnectCable: ( name )->
 
-      throw new Error "ActionCableMixin: cable with name '#{ name }' is already disconnected" unless @_cables[ name ]
+      throw new Error "ActionCableMixin: cable with name '#{ name }' is already disconnected" unless @hasCable name
 
       @_cables[ name ].unsubscribe()
 
       delete @_cables[ name ]
 
-      closeConnection()
+      closeConnection this
+
+    ##
+
+    hasCable: ( name )->=
+
+      Boolean @_cables[ name ]
 
     ##
 
@@ -126,19 +134,9 @@ mixin = Mixin.createArged
 
     ##
 
-    componentWillUnmount: ->
-
-      _.each @_cables, _.bind ( cable, name )->
-
-        @disconnectCable name
-
-      , this
-
-    ##
-
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = ActionCableMixin

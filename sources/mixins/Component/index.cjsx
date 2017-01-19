@@ -2,28 +2,64 @@
 
 PureRenderMixin = requireSource 'mixins/PureRender'
 
-OmitPropsMixin = requireSource 'mixins/OmitProps'
+StateKeyMixin = requireSource 'mixins/StateKey'
 
-ClassedMixin = requireSource 'mixins/Classed'
+OmitPropsMixin = requireSource 'mixins/OmitProps'
 
 DomMixin = requireSource 'mixins/Dom'
 
-CacheMixin = requireSource 'mixins/Cache'
+ClassedMixin = requireSource 'mixins/Classed'
 
 CallbackMixin = requireSource 'mixins/Callback'
 
+CacheMixin = requireSource 'mixins/Cache'
 
-mixin = Mixin.createArged
 
-  mixins: [ PureRenderMixin, OmitPropsMixin, ClassedMixin, DomMixin, CacheMixin, CallbackMixin ]
+ComponentMixin = Mixin.create {
+
+  name: 'ComponentMixin'
+
+  mixins: [
+
+    PureRenderMixin
+
+    StateKeyMixin
+
+    OmitPropsMixin
+
+    DomMixin
+
+    ClassedMixin
+
+    CallbackMixin
+
+    CacheMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
-    mixins: [ PureRenderMixin, OmitPropsMixin(), ClassedMixin( ClassedMixin.pick( ARGS ) ), DomMixin, CacheMixin, CallbackMixin ]
+    mixins: [
+
+      PureRenderMixin()
+
+      StateKeyMixin()
+
+      OmitPropsMixin()
+
+      DomMixin()
+
+      ClassedMixin ClassedMixin.pick ARGS
+
+      CallbackMixin()
+
+      CacheMixin()
+
+    ]
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = ComponentMixin

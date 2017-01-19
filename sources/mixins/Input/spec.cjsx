@@ -2,7 +2,7 @@ describe.skip 'Input', ->
 
   Input = requireSubject()
 
-  Inputed = createMixinClass Input
+  Inputed = createMixinClass Input()
 
 
   input = undefined

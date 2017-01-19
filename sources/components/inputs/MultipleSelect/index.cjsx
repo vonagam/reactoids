@@ -20,7 +20,9 @@ MultipleSelect = React.createClass {
 
     }
 
-    MultipleOptionsInputMixin
+    MultipleOptionsInputMixin()
+
+    FocusMixin()
 
   ]
 
@@ -46,18 +48,6 @@ MultipleSelect = React.createClass {
   onLabelClick: ->
 
     @focus()
-
-  ##
-
-  focus: ->
-
-    @dom().focus()
-
-  ##
-
-  blur: ->
-
-    @dom().blur()
 
   ##
 

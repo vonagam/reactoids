@@ -49,6 +49,8 @@ global.itVariations = require './variations/runVariations'
 
 global.createMixinClass = require './react/createMixinClass'
 
+global.whenPromised = require './promise/whenPromised'
+
 
 # globals
 

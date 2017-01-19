@@ -1,10 +1,10 @@
-mixin = Mixin.createArged {
+ClassedContextMixin = Mixin.create {
+
+  name: 'ClassedContextMixin'
 
   args: {
 
-    'getClassNames': React.PropTypes.func # ( constructor, keys )->= OR ( id, constructor, keys, that )->=
-
-    'definingType': React.PropTypes.oneOf [ 'standart', 'custom' ]
+    'getClassNames': React.PropTypes.func # ( that, constructor, keys )->=
 
     'contextHandling': React.PropTypes.oneOf [ 'ignore', 'combine', 'overlap' ]
 
@@ -12,45 +12,45 @@ mixin = Mixin.createArged {
 
   defaults: {
 
-    'definingType': 'standart'
-
     'contextHandling': 'ignore'
 
   }
 
   mixin: ( ARGS )->=
 
-    getClassNames = switch ARGS.definingType
+    getClassNames = _.memoize(
 
-      when 'standart' then _.memoize ( id, constructor, keys, that )->= ARGS.getClassNames constructor, keys
+      ( that, constructor, keys, id )->= ARGS.getClassNames that, constructor, keys
 
-      when 'custom' then ARGS.getClassNames
+      ( that, constructor, keys, id )->= id
 
-    ##
+    )
 
 
     contextTypes = switch ARGS.contextHandling
 
       when 'ignore' then undefined
 
-      else { getClassNames: React.PropTypes.func }
+      else { 'getClassNames': React.PropTypes.func }
 
     ##
 
 
     getChildContext = switch ARGS.contextHandling
 
-      when 'ignore' then _.once ->= getClassNames: getClassNames
+      when 'ignore' then _.once ->=
+
+        getClassNames: _.partial getClassNames, this
 
       else ->=
 
         getContextClassNames = @context.getClassNames
 
-        getClassNames: ( id, constructor, keys, that )->=
+        getClassNames: ( constructor, keys, id )->=
 
-          contextClassNames = _.funced getContextClassNames, id, constructor, keys, that
+          contextClassNames = _.funced getContextClassNames, constructor, keys, id
 
-          ourClassNames = getClassNames id, constructor, keys, that
+          ourClassNames = getClassNames this, constructor, keys, id
 
           switch ARGS.contextHandling
 
@@ -71,7 +71,7 @@ mixin = Mixin.createArged {
 
     childContextTypes: {
 
-      getClassNames: React.PropTypes.func # ( id, constructor, keys, that )->=
+      'getClassNames': React.PropTypes.func # ( id, constructor, keys, that )->=
 
     }
 
@@ -82,4 +82,4 @@ mixin = Mixin.createArged {
 }
 
 
-module.exports = mixin
+module.exports = ClassedContextMixin

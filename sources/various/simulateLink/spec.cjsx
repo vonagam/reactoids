@@ -2,12 +2,12 @@ describe 'simulateLink', ->
 
   $ = requireDependency 'jquery'
 
-  windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+  Location = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
   simulateLink = requireSubject()
 
 
-  hrefBefore = windowLocation.href
+  hrefBefore = Location.href
 
 
   variants = {
@@ -30,7 +30,7 @@ describe 'simulateLink', ->
 
     afterEach: ->
 
-      windowLocation.href = hrefBefore
+      Location.href = hrefBefore
 
     ##
 
@@ -67,7 +67,7 @@ describe 'simulateLink', ->
 
     expect( $link.parent() ).onlyIf( variation.prevent ).to.have.lengthOf 0
 
-    # TODO expect( windowLocation.href ).to.equal if variation.prevent then hrefBefore else href
+    # TODO expect( Location.href ).to.equal if variation.prevent then hrefBefore else href
 
     $link.remove()
 

@@ -2,7 +2,7 @@
 
 $ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
 
-window = requireWindow 'window' # https://developer.mozilla.org/en-US/docs/Web/API/Window
+Window = requireWindow 'window' # https://developer.mozilla.org/en-US/docs/Web/API/Window
 
 # mixins
 
@@ -11,7 +11,7 @@ TimerMixin = requireSource 'mixins/Timer'
 
 isShownInContainer = ( $container, nodeTop, nodeBottom )->=
 
-  if $container[ 0 ] == window || $container[ 0 ].offsetHeight != $container[ 0 ].scrollHeight
+  if $container[ 0 ] == Window || $container[ 0 ].offsetHeight != $container[ 0 ].scrollHeight
 
     containerScroll = $container.scrollTop()
 
@@ -29,7 +29,7 @@ isShownInContainer = ( $container, nodeTop, nodeBottom )->=
 
   ##
 
-  return true if $container[ 0 ] == window || $container[ 0 ] == document.body
+  return true if $container[ 0 ] == Window || $container[ 0 ] == document.body
 
   return isShownInContainer $container.parent(), nodeTop, nodeBottom
 
@@ -43,7 +43,7 @@ isShown = ( that )->=
 
   nodeBottom = nodeTop + $node[ 0 ].offsetHeight
 
-  return false unless isShownInContainer $( window ), nodeTop, nodeBottom
+  return false unless isShownInContainer $( Window ), nodeTop, nodeBottom
 
   return isShownInContainer $node.parent(), nodeTop, nodeBottom
 
@@ -89,7 +89,7 @@ Scrollen = React.createClass {
 
     ComponentMixin()
 
-    TimerMixin
+    TimerMixin()
 
   ]
 
@@ -101,9 +101,9 @@ Scrollen = React.createClass {
 
   getInitialMembers: ->=
 
-    visible: false
+    'visible': false
 
-    shown: false
+    'shown': false
 
   ##
 

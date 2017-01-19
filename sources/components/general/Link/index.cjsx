@@ -1,6 +1,6 @@
 # dependencies
 
-windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+Location = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
 
 # mixins
 
@@ -74,9 +74,9 @@ Link = React.createClass {
 
       urlData = getUrlData href
 
-      @shouldWatchUrl = urlData.host == windowLocation.host
+      @shouldWatchUrl = urlData.host == Location.host
 
-      current = _.isString( href ) && _.funced props.isCurrent, urlData, windowLocation
+      current = _.isString( href ) && _.funced props.isCurrent, urlData, Location
 
     else
 

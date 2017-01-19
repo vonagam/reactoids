@@ -1,3 +1,7 @@
+# dependencies
+
+$ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
+
 # mixins
 
 MultipleOptionsInputMixin = requireSource 'mixins/MultipleOptionsInput'
@@ -22,7 +26,9 @@ Checkboxes = React.createClass {
 
     }
 
-    MultipleOptionsInputMixin
+    MultipleOptionsInputMixin()
+
+    FocusMixin findFocusables: ( that )->= $( that.dom() ).find( 'input' ).get()
 
   ]
 

@@ -1,4 +1,6 @@
-mixin = Mixin.createArged {
+UnisonMixin = Mixin.create {
+
+  name: 'UnisonMixin'
 
   args: {
 
@@ -8,9 +10,9 @@ mixin = Mixin.createArged {
 
     'duration': React.PropTypes.number
 
-    'shouldUnison': React.PropTypes.funced React.PropTypes.bool # ( that )->=
+    'shouldUnison': React.PropTypes.funced React.PropTypes.bool # ( that )->= bool
 
-    'shouldSkip': React.PropTypes.funced React.PropTypes.bool # ()->=
+    'shouldSkip': React.PropTypes.funced React.PropTypes.bool # ()->= bool
 
   }
 
@@ -122,16 +124,6 @@ mixin = Mixin.createArged {
 
     ##
 
-    "#{ method }": ( bool )->
-
-      return if @[ member ] == Boolean bool
-
-      @[ member ] = Boolean bool
-
-      Unison.toggleElement this, bool
-
-    ##
-
     componentDidMount: ->
 
       @[ method ] _.funced ARGS.shouldUnison, this
@@ -150,9 +142,19 @@ mixin = Mixin.createArged {
 
     ##
 
+    "#{ method }": ( bool )->
+
+      return if @[ member ] == Boolean bool
+
+      @[ member ] = Boolean bool
+
+      Unison.toggleElement this, bool
+
+    ##
+
   ##
 
 }
 
 
-module.exports = mixin
+module.exports = UnisonMixin

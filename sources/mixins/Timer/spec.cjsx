@@ -5,7 +5,7 @@ describe.skip 'Timer', ->
 
   it 'works', ( done )->
 
-    Timered = createMixinClass Timer
+    Timered = createMixinClass Timer()
 
 
     count = 0

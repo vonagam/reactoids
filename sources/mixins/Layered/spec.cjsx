@@ -21,12 +21,12 @@ describe.skip 'Layered', ->
 
     renderFunc2 = sinon.spy ->= <div data-id='my'>{ @state.bsa }</div>
 
-    Layereded = createMixinClass Layered,
+    Layereded = createMixinClass Layered(),
 
       getInitialState: ->=
 
-        asd: 1
-        bsa: 2
+        'asd': 1
+        'bsa': 2
 
       ##
 

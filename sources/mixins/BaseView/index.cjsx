@@ -2,20 +2,26 @@
 
 $ = requireDependency 'jquery' # jquery/jquery, http://jquery.com
 
-windowLocation = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+Location = requireWindow 'location' # https://developer.mozilla.org/en-US/docs/Web/API/Location
+
+# mixins
+
+EventListenerMixin = requireSource 'mixins/EventListener'
 
 
-mixin = Mixin.createArged
+BaseViewMixin = Mixin.create {
 
-  args:
+  name: 'BaseViewMixin'
+
+  args: {
 
     'shouldHandleLink': React.PropTypes.func # ( that, link )->= bool
 
     'handleLink': React.PropTypes.func # ( that, link )->= true if handled
 
-  ##
+  }
 
-  defaults:
+  defaults: {
 
     'shouldHandleLink': ( that, link )->=
 
@@ -23,35 +29,57 @@ mixin = Mixin.createArged
 
       return false if link.target && link.target != '_self'
 
-      return false if link.host != windowLocation.host
+      return false if link.host != Location.host
 
       return true
 
     ##
 
-  ##
+  }
+
+  mixins: [
+
+    EventListenerMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
+    mixins: [
+
+      EventListenerMixin()
+
+    ]
+
     componentDidMount: ->
 
-      $( ReactDOM.findDOMNode this ).on 'click', 'a[href]', _.bind ( event )->
+      @addEventListener 'BaseViewMixin', {
 
-        link = event.currentTarget
+        target: ReactDOM.findDOMNode this
 
-        return unless ARGS.shouldHandleLink this, link
+        event: 'click'
 
-        handled = ARGS.handleLink this, link
+        selector: 'a[href]'
 
-        event.preventDefault() if handled
+        callback: _.bind ( event )->
 
-      , this
+          link = event.currentTarget
+
+          return unless ARGS.shouldHandleLink this, link
+
+          handled = ARGS.handleLink this, link
+
+          event.preventDefault() if handled
+
+        , this
+
+      }
 
     ##
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = BaseViewMixin

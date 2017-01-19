@@ -1,21 +1,22 @@
-mixin = Mixin.createArged {
+OmitPropsMixin = Mixin.create {
 
-  args: {}
+  name: 'OmitPropsMixin'
 
-  mixin: ->=
-
-    KEYS = undefined
-
-
-    initConstants: ->
-
-      KEYS ||= _.keys @constructor.propTypes
-
-    ##
+  mixin: _.once ->=
 
     omitProps: ->=
 
-      _.omit @props, KEYS
+      keys = _.keys @constructor.propTypes
+
+
+      @omitProps = _.bind ->=
+
+        _.omit @props, keys
+
+      , this
+
+
+      @omitProps()
 
     ##
 
@@ -24,4 +25,4 @@ mixin = Mixin.createArged {
 }
 
 
-module.exports = mixin
+module.exports = OmitPropsMixin

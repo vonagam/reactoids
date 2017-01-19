@@ -3,42 +3,44 @@
 RenderSlotsMixin = requireSource 'mixins/RenderSlots'
 
 
-Field = React.createClass
+Field = React.createClass {
 
   mixins: Mixin.resolve [
 
-    ComponentMixin
+    ComponentMixin {
 
-      classes:
+      classes: {
 
         '-readonly': ''
         '-focused': ''
         '-filled': ''
-        'wrapper':
-          'input': ''
-        'message': ''
+        'input': ''
+
+      }
+
+    }
+
+    InputMixin()
+
+    FocusPassMixin {
+
+      findFocusables: ( that )->=
+
+        inputs = [ that.refs.input ]
+
+        _.filter inputs, ( input )->= input.isFocusable?()
 
       ##
 
-    ##
+    }
 
-    InputMixin
-
-    RenderSlotsMixin
-
-      names: [ 'before', 'after', 'insideBefore', 'insideAfter' ]
-
-    ##
+    RenderSlotsMixin names: [ 'content' ]
 
   ]
 
-  propTypes:
+  propTypes: {
 
-    'type': React.PropTypes.func.isRequired
-
-    'props': React.PropTypes.object
-
-    'messages': React.PropTypes.object
+    'children': React.PropTypes.element.isRequired
 
     'onFocus': React.PropTypes.func
 
@@ -46,34 +48,36 @@ Field = React.createClass
 
     'onSubmit': React.PropTypes.func
 
-  ##
+  }
 
   getDefaultProps: ->=
 
-    renderMessages = ( that, slotProps, userProps )->= slotProps.messages
+    'renderContent': ( that, slotProps, userProps )->=
+
+      { input } = slotProps
 
 
-    'props': {}
+      input
 
-    'renderBefore': renderMessages
-
-    'renderAfter': renderMessages
-
-    'renderInsideBefore': renderMessages
-
-    'renderInsideAfter': renderMessages
+    ##
 
   ##
 
   getInitialState: ->=
 
-    focus: false
+    'focus': false
 
   ##
 
-  onLabelClick: ->
+  onFocus: ->
 
-    _.funced @refs.input.onLabelClick
+    @setState focus: true
+
+  ##
+
+  onBlur: ->
+
+    @setState focus: false
 
   ##
 
@@ -81,55 +85,39 @@ Field = React.createClass
 
     { props, state, classed } = this
 
-    Input = props.type
-
-    inputProps = props.props
-
     value = @getValue()
 
-    messages = {}
 
-    _.each props.messages, _.bind ( message, name )->
+    inputProps = props.children.props
 
-      message = _.funced message, value
+    input = React.cloneElement props.children, {
 
-      if _.isPlainObject message
+      ref: 'input'
 
-        content = message.content
-        messageProps = message.props || {}
-        position = message.position || 'after'
+      key: 'input'
 
-      else
+      className: @mergeClassNames classed( 'input', '-readonly': props.readOnly ), inputProps.className
 
-        content = message
-        messageProps = {}
-        position = 'after'
+      value: value
 
-      ##
+      readOnly: props.readOnly
 
-      return unless content
+      inputDelay: -1
 
-      messages[ position ] ||= []
+      onChange: @setValue
 
-      messages[ position ].push(
+      onTempChange: @setTempValue
 
-        <div
+      onFocus: @callback 'onFocus, props.onFocus, props.children.props.onFocus'
 
-          key={ name }
+      onBlur: @callback 'onBlur, props.onBlur, props.children.props.onBlur'
 
-          {... messageProps }
+      onSubmit: @callback 'props.onSubmit, props.children.props.onSubmit'
 
-          className={ @mergeClassNames classed( 'message', "message.-#{ name }" ), messageProps.className }
+    }
 
-          onClick={ if name == 'label' then _.queue @onLabelClick, messageProps.onClick else messageProps.onClick }
 
-          children={ content }
-
-        />
-
-      )
-
-    , this
+    content = @renderContent { input }
 
 
     <div
@@ -138,67 +126,13 @@ Field = React.createClass
 
       className={ classed '.', '-focused': state.focus, '-filled': value != undefined && value != '' }
 
-    >
+      children={ content }
 
-      {
-
-        @renderBefore messages: messages[ 'before' ]
-
-      }
-
-      <div className={ classed 'wrapper' }>
-
-        {
-
-          @renderInsideBefore messages: messages[ 'insideBefore' ]
-
-        }
-
-        <Input
-
-          ref='input'
-
-          {... inputProps }
-
-          className={ @mergeClassNames classed( 'input', '-readonly': props.readOnly ), inputProps.className }
-
-          value={ value }
-
-          readOnly={ props.readOnly }
-
-          inputDelay={ -1 }
-
-          onChange={ @setValue }
-
-          onTempChange={ @setTempValue }
-
-          onFocus={ @_queue @_bindary( @setState, @, focused: true ), props.onFocus }
-
-          onBlur={ @_queue @_bindary( @setState, @, focused: false ), props.onBlur }
-
-          onSubmit={ props.onSubmit }
-
-        />
-
-        {
-
-          @renderInsideAfter messages: messages[ 'insideAfter' ]
-
-        }
-
-      </div>
-
-      {
-
-        @renderAfter messages: messages[ 'after' ]
-
-      }
-
-    </div>
+    />
 
   ##
 
-##
+}
 
 
 module.exports = Field

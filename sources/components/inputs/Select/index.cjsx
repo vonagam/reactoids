@@ -21,7 +21,9 @@ Select = React.createClass {
 
     }
 
-    SingleOptionInputMixin
+    SingleOptionInputMixin()
+
+    FocusMixin()
 
   ]
 
@@ -44,18 +46,6 @@ Select = React.createClass {
   onLabelClick: ->
 
     @focus()
-
-  ##
-
-  focus: ->
-
-    @dom().focus()
-
-  ##
-
-  blur: ->
-
-    @dom().blur()
 
   ##
 

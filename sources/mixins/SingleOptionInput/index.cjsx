@@ -1,49 +1,72 @@
 # mixins
 
-BaseOptionsInput = requireSource 'mixins/BaseOptionsInput'
+BaseOptionsInputMixin = requireSource 'mixins/BaseOptionsInput'
 
 
-mixin = BaseOptionsInput {
+SingleOptionInputMixin = Mixin.create {
 
-  isOptionSelected: ( option, selectedValue )->=
+  name: 'SingleOptionInputMixin'
 
-    option.value == selectedValue
+  mixins: [
 
-  ##
+    BaseOptionsInputMixin
 
-  checkOptionsConflict: ( that, props, state )->
+  ]
 
-    selectedValue = that.getValue props, state
+  mixin: _.once ->=
 
-    options = that.getOptions props, state
+    BaseOptionsInputArgs = {
 
-    optionsValues = _.map options, 'value'
+      isOptionSelected: ( option, selectedValue )->=
 
-    allowedValue = if _.includes optionsValues, selectedValue then selectedValue else undefined
-
-
-    if allowedValue == undefined
-
-      if props.allowBlank == false && options.length > 0
-
-        that.setValue options[ 0 ].value
-
-        return
+        option.value == selectedValue
 
       ##
 
-    ##
+      checkOptionsConflict: ( that, props, state )->
+
+        selectedValue = that.getValue props, state
+
+        options = that.getOptions props, state
+
+        optionsValues = _.map options, 'value'
+
+        allowedValue = if _.includes optionsValues, selectedValue then selectedValue else undefined
 
 
-    if allowedValue != selectedValue
+        if allowedValue == undefined
 
-      that.setValue allowedValue
+          if props.allowBlank == false && options.length > 0
 
-    ##
+            that.setValue options[ 0 ].value
+
+            return
+
+          ##
+
+        ##
+
+
+        if allowedValue != selectedValue
+
+          that.setValue allowedValue
+
+        ##
+
+      ##
+
+    }
+
+
+    mixins: [
+
+      BaseOptionsInputMixin BaseOptionsInputArgs
+
+    ]
 
   ##
 
 }
 
 
-module.exports = mixin
+module.exports = SingleOptionInputMixin

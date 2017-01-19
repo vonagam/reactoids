@@ -1,6 +1,8 @@
-mixin =
+CallbackMixin = Mixin.create {
 
-  Mixin.createPlain
+  name: 'CallbackMixin'
+
+  mixin: _.once ->=
 
     callback: ( keys )->=
 
@@ -30,7 +32,7 @@ mixin =
 
   ##
 
-##
+}
 
 
-module.exports = mixin
+module.exports = CallbackMixin

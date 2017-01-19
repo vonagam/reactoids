@@ -9,31 +9,47 @@ ProgressEvent = requireWindow 'ProgressEvent' # https://developer.mozilla.org/en
 EventListenerMixin = requireSource 'mixins/EventListener'
 
 
-mixin = Mixin.createArged
+AjaxProgressesMixin = Mixin.create {
 
-  args:
+  name: 'AjaxProgressesMixin'
 
-    'filterRequest': React.PropTypes.func # ( that, xhr, options )->=
+  args: {
 
-    'onRequestChange': React.PropTypes.func # ( that, request )->
+    'filterRequest': React.PropTypes.func # ( that, xhr, options )->= bool
 
-    'onRequestRemove': React.PropTypes.func # ( that, request )->
+    'onRequestStart': React.PropTypes.func # ( that, request )->
 
-  ##
+    'onRequestUpdate': React.PropTypes.func # ( that, request )->
 
-  defaults:
+    'onRequestFinish': React.PropTypes.func # ( that, request )->
+
+  }
+
+  defaults: {
 
     'filterRequest': _.constant true
 
-    'onRequestRemove': _.noop
+    'onRequestStart': _.noop
 
-  ##
+    'onRequestUpdate': _.noop
 
-  mixins: [ EventListenerMixin ]
+    'onRequestFinish': _.noop
+
+  }
+
+  mixins: [
+
+    EventListenerMixin
+
+  ]
 
   mixin: ( ARGS )->=
 
-    mixins: [ EventListenerMixin ]
+    mixins: [
+
+      EventListenerMixin()
+
+    ]
 
     componentDidMount: ->
 
@@ -51,6 +67,7 @@ mixin = Mixin.createArged
 
           xhr = originalXHR.apply this, arguments
 
+
           request = {
 
             id: _.uniqueId()
@@ -67,13 +84,17 @@ mixin = Mixin.createArged
 
             startedAt: new Date
 
-            remove: ->
-
-              ARGS.onRequestRemove that, request
+            updatedAt: new Date
 
           }
 
-          setRequest = ( attrs )->
+          startRequest = ->
+
+            ARGS.onRequestStart that, request
+
+          ##
+
+          updateRequest = ( attrs )->
 
             _.assign request, attrs
 
@@ -81,13 +102,20 @@ mixin = Mixin.createArged
 
             request.updatedAt = new Date
 
-            ARGS.onRequestChange that, request
+            ARGS.onRequestUpdate that, request
 
           ##
 
+          finishRequest = ->
+
+            ARGS.onRequestFinish that, request
+
+          ##
+
+
           listenerKeys = []
 
-          _.each { down: xhr, up: xhr.upload }, ( xhr, key )->
+          _.each { download: xhr, upload: xhr.upload }, ( xhr, direction )->
 
             _.each [ 'progress', 'load', 'abort', 'error' ], ( status )->
 
@@ -99,7 +127,7 @@ mixin = Mixin.createArged
 
                     progress = if event.lengthComputable then event.loaded / event.total else undefined
 
-                    setRequest status: status, progress: progress
+                    updateRequest status: status, progress: progress
 
                 else
 
@@ -107,7 +135,9 @@ mixin = Mixin.createArged
 
                     _.each listenerKeys, ( listenerKey )-> that.removeEventListener listenerKey
 
-                    setRequest status: status, progress: 1, finishedAt: new Date
+                    updateRequest status: status, progress: 1, finishedAt: new Date
+
+                    finishRequest()
 
                   ##
 
@@ -116,7 +146,7 @@ mixin = Mixin.createArged
               ##
 
 
-              listenerKey = "AjaxProgresses:#{ request.id }:#{ key }:#{ status }"
+              listenerKey = "AjaxProgressesMixin:#{ request.id }:#{ direction }:#{ status }"
 
               listenerKeys.push listenerKey
 
@@ -127,7 +157,9 @@ mixin = Mixin.createArged
 
           ##
 
-          setRequest()
+          startRequest()
+
+          updateRequest()
 
           xhr
 
@@ -139,14 +171,24 @@ mixin = Mixin.createArged
 
   ##
 
-##
+}
 
 
 unless _.get( XMLHttpRequest, 'prototype.addEventListener' ) && ProgressEvent
 
-  mixin = Mixin.createArged mixin: ->= {}
+  AjaxProgressesMixin = Mixin.create {
+
+    name: 'AjaxProgressesMixin'
+
+    mixin: _.once ->=
+
+      {}
+
+    ##
+
+  }
 
 ##
 
 
-module.exports = mixin
+module.exports = AjaxProgressesMixin

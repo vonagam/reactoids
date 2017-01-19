@@ -1,12 +1,14 @@
-mixin = Mixin.createArged {
+ScriptInjectorMixin = Mixin.create {
+
+  name: 'ScriptInjectorMixin'
 
   args: {
 
-    'scripts': React.PropTypes.array
+    'scripts': React.PropTypes.funced React.PropTypes.array # ( that )->=
 
     'check': React.PropTypes.func # ( that )->= truthy if already injected
 
-    'decorateScript': React.PropTypes.func # ( script )->
+    'decorateScript': React.PropTypes.func # ( that, script )->
 
     'callback': React.PropTypes.func # ( that )->
 
@@ -29,9 +31,12 @@ mixin = Mixin.createArged {
       return _.funced ARGS.callback, this if _.funced ARGS.check, this
 
 
+      scripts = _.funced ARGS.scripts, this
+
+
       head = document.querySelector 'head'
 
-      count = ARGS.scripts.length
+      count = scripts.length
 
       onLoad = _.bind ->
 
@@ -42,7 +47,7 @@ mixin = Mixin.createArged {
       , this
 
 
-      _.each ARGS.scripts, ( scriptSrc )->
+      _.each scripts, _.bind ( scriptSrc )->
 
         return onLoad() if document.querySelector "script[src=\"#{ scriptSrc }\"]"
 
@@ -54,12 +59,12 @@ mixin = Mixin.createArged {
         script.onload = onLoad
 
 
-        ARGS.decorateScript script
+        ARGS.decorateScript this, script
 
 
         head.appendChild script
 
-      ##
+      , this
 
     ##
 
@@ -68,4 +73,4 @@ mixin = Mixin.createArged {
 }
 
 
-module.exports = mixin
+module.exports = ScriptInjectorMixin
