@@ -1,0 +1,28 @@
+{
+  "name": "@reactoids/d3",
+  "version": "0.0.0",
+  "private": true,
+  "repository": "vonagam/reactoids",
+  "author": "Dmitry Maganov <vonagam@gmail.com>",
+  "license": "MIT",
+  "sideEffects": false,
+  "scripts": {
+    "all:clean": "reactoids_task all:clean",
+    "all:build": "reactoids_task all:build",
+    "lib:clean": "reactoids_task lib:clean",
+    "lib:build": "reactoids_task lib:build",
+    "lib:test": "reactoids_task lib:test",
+    "lib:watch": "reactoids_task lib:watch",
+    "lib:debug": "reactoids_task lib:debug",
+    "lib:story": "reactoids_task lib:story",
+    "dist:clean": "reactoids_task dist:clean",
+    "dist:build": "reactoids_task dist:build"
+  },
+  "dependencies": {
+    "d3": "^5.0.0",
+    "lodash": "^4.17.4",
+    "prop-types": "^15.6.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0"
+  }
+}

@@ -1,0 +1,9 @@
+{
+
+  "presets": [
+
+    "./.babelrc.js"
+
+  ]
+
+}

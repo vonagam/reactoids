@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+scripts_dirname = `node --eval "console.log( path.dirname( require.resolve( '@reactoids/scripts/package.json' ) ) )"`.strip
+
+reactoids_dirname = `node --eval "console.log( path.dirname( require.resolve( '@reactoids/reactoids/package.json' ) ) )"`.strip
+
+package_dirname = `node --eval "console.log( path.dirname( require.resolve( './package.json' ) ) )"`.strip
+
+
+bin_dirname = File.join scripts_dirname, 'node_modules', '.bin'
+
+gulpfile_path = File.join scripts_dirname, 'gulp', 'gulpfile.js'
+
+stories_dirname = File.join scripts_dirname, 'stories'
+
+
+env = {
+
+  'REACTOIDS_SCRIPTS' => scripts_dirname,
+
+  'REACTOIDS_REACTOIDS' => reactoids_dirname,
+
+  'REACTOIDS_PACKAGE' => package_dirname,
+
+}
+
+
+task = ARGV.first
+
+
+case task
+
+  when 'lib:debug'
+
+    exec env, "#{ bin_dirname }/mocha --inspect --inspect-brk --ui=bdd-lazy-var/rspec --require=babel-core/register --require=@reactoids/scripts/tests/setup ./sources/**/test.js"
+
+  when 'lib:story'
+
+    exec env, "start-storybook -p 8888 -c #{ stories_dirname }"
+
+  else
+
+    exec env, "#{ bin_dirname }/gulp --gulpfile #{ gulpfile_path } --cwd #{ package_dirname } #{ task }"
+
+  ##
+
+end

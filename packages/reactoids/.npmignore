@@ -134,6 +134,8 @@ typings/
 package-lock.json
 
 /notes
-/scripts/notes
-/packages/*/notes
-/packages/*/builds
+
+/builds/lib
+/sources
+/stories
+/tests
