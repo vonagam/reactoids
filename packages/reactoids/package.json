@@ -16,7 +16,8 @@
     "lib:debug": "reactoids_task lib:debug",
     "lib:story": "reactoids_task lib:story",
     "dist:clean": "reactoids_task dist:clean",
-    "dist:build": "reactoids_task dist:build"
+    "dist:build": "reactoids_task dist:build",
+    "dist:story": "reactoids_task dist:story"
   },
   "dependencies": {
     "fbjs": "^0.8.16",

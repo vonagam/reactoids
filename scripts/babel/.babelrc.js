@@ -3,19 +3,26 @@
 const _ = require( 'lodash' );
 
 
+const BABEL_ENV_OPTIONS = {
+
+  test: { modules: 'commonjs', targets: { node: 'current' } },
+
+  story: { modules: false, targets: { browsers: 'last 2 versions' }, useBuiltIns: true },
+
+  library: { modules: false },
+
+  pages: { modules: false, targets: { browsers: 'last 2 versions' } },
+
+};
+
+
 module.exports = {
 
   babelrc: false,
 
   presets: [
 
-    // [ 'babel-preset-env', { modules: 'commonjs', targets: { browsers: '> 1%', uglify: false }, useBuiltIns: true } ],
-
-    // [ 'babel-preset-env', { modules: 'commonjs', targets: { browsers: 'last 2 versions', uglify: false }, useBuiltIns: true } ],
-
-    // [ 'babel-preset-env', { modules: 'commonjs', targets: { node: 'current' } } ],
-
-    [ 'babel-preset-env', { modules: false, targets: { node: 'current' }, useBuiltIns: true } ],
+    [ 'babel-preset-env', BABEL_ENV_OPTIONS[ process.env.REACTOIDS_BABEL_ENV ] ],
 
     [ 'babel-preset-react' ],
 

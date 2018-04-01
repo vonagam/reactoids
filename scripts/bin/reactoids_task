@@ -1,10 +1,19 @@
 #!/usr/bin/env ruby
 
-scripts_dirname = `node --eval "console.log( path.dirname( require.resolve( '@reactoids/scripts/package.json' ) ) )"`.strip
+package_dirname = Dir.pwd
 
-reactoids_dirname = `node --eval "console.log( path.dirname( require.resolve( '@reactoids/reactoids/package.json' ) ) )"`.strip
+reactoids_dirname = File.expand_path '../reactoids', package_dirname
 
-package_dirname = `node --eval "console.log( path.dirname( require.resolve( './package.json' ) ) )"`.strip
+scripts_dirname = File.expand_path '../../scripts', package_dirname
+
+gh_pages_dirname = File.expand_path '../../gh-pages', package_dirname
+
+
+if ! File.exist?( "#{ package_dirname }/package.json" ) || ! File.exist?( "#{ scripts_dirname }/package.json" )
+
+  abort 'Incorrect working directory'
+
+end
 
 
 bin_dirname = File.join scripts_dirname, 'node_modules', '.bin'
@@ -12,6 +21,38 @@ bin_dirname = File.join scripts_dirname, 'node_modules', '.bin'
 gulpfile_path = File.join scripts_dirname, 'gulp', 'gulpfile.js'
 
 stories_dirname = File.join scripts_dirname, 'stories'
+
+gh_page_dirname = File.join gh_pages_dirname, File.basename( package_dirname )
+
+
+task = ARGV.first
+
+
+babel_env = case task
+
+  when 'lib:test', 'lib:watch', 'lib:debug'
+
+    'test'
+
+  when 'lib:story'
+
+    'story'
+
+  when 'lib:build', 'dist:build'
+
+    'library'
+
+  when 'dist:story'
+
+    'pages'
+
+  else
+
+    nil
+
+  ##
+
+end
 
 
 env = {
@@ -22,10 +63,9 @@ env = {
 
   'REACTOIDS_PACKAGE' => package_dirname,
 
+  'REACTOIDS_BABEL_ENV' => babel_env,
+
 }
-
-
-task = ARGV.first
 
 
 case task
@@ -37,6 +77,10 @@ case task
   when 'lib:story'
 
     exec env, "start-storybook -p 8888 -c #{ stories_dirname }"
+
+  when 'dist:story'
+
+    exec env, "rm -rf #{ gh_page_dirname } && build-storybook -c #{ stories_dirname } -o #{ gh_page_dirname }"
 
   else
 
