@@ -23,7 +23,7 @@ const methods = _.map(
 
 );
 
-const prefix = process.env.REACTOIDS_REACTOIDS === process.env.REACTOIDS_PACKAGE ? '..' : '@reactoids/reactoids';
+const prefix = process.env.REACTOIDS_REACTOIDS === process.env.REACTOIDS_PACKAGE ? '~' : '@reactoids/reactoids';
 
 const autos = _.map( methods, ( { folder, method } ) => ( {
 

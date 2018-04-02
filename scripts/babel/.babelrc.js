@@ -42,8 +42,6 @@ module.exports = {
 
     [ 'babel-plugin-transform-optional-chaining' ],
 
-    [ 'babel-plugin-module-resolver', { alias: { '~': './sources' } } ],
-
     [ require( './plugins/babel-plugin-default-assigment' ) ],
 
     [ require( './plugins/babel-plugin-development-assert' ) ],
@@ -81,6 +79,12 @@ module.exports = {
       ] ) ),
 
     } ],
+
+    [ require( './plugins/babel-plugin-delayed-lodash' ) ],
+
+    [ require( './plugins/babel-plugin-transform-delayed-resolve-wildcard-import' ) ],
+
+    [ 'babel-plugin-module-resolver', { alias: { '~': './sources' } } ],
 
   ],
 

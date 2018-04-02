@@ -11,7 +11,7 @@ module.exports = _.compact( _.map( glob.sync( './sources/*/' ), ( path ) => {
 
   let directory = _.last( _.split( _.trim( path, Path.sep ), Path.sep ) );
 
-  let relativePath = `../${ directory }`;
+  let relativePath = `~/${ directory }`;
 
   let match;
 

@@ -19,18 +19,6 @@ module.exports = function build( src, options = {} ) {
 
     $.babel( require( '../../babel/.babelrc.js' ) ),
 
-    $.babel( {
-
-      plugins: [
-
-        [ 'babel-plugin-lodash' ],
-
-        [ 'babel-plugin-transform-resolve-wildcard-import' ],
-
-      ],
-
-    } ),
-
     options.sourcemaps && $.sourcemaps.write(),
 
     gulp.dest( options.dest ),

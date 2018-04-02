@@ -24,7 +24,9 @@ module.exports = function( { types: t } ) {
 
           let [ objectName, propertyName ] = name.split( '.' );
 
-          this.lookup[ objectName ] = true;
+          this.lookup[ objectName ] = this.lookup[ objectName ] || [];
+
+          this.lookup[ objectName ].push( auto );
 
           auto.matches = function( path ) {
 
@@ -56,7 +58,9 @@ module.exports = function( { types: t } ) {
 
         } else {
 
-          this.lookup[ name ] = true;
+          this.lookup[ name ] = this.lookup[ name ] || [];
+
+          this.lookup[ name ].push( auto );
 
           auto.matches = function( path ) {
 
@@ -108,7 +112,7 @@ module.exports = function( { types: t } ) {
         }
 
 
-        auto.importDeclaration = function( identifier, file ) {
+        auto.importDeclaration = function( identifier ) {
 
           let importSpecifier = auto.importSpecifier( identifier );
 
@@ -126,35 +130,54 @@ module.exports = function( { types: t } ) {
   };
 
 
+  const traverser = {
+
+    Identifier( path ) {
+
+      let autos = STATIC.lookup[ path.node.name ];
+
+      if ( ! autos ) return;
+
+      let auto = _.find( autos, ( auto ) => auto.matches( path ) );
+
+      if ( ! auto ) return;
+
+      path = auto.replace( path );
+
+      if ( path.scope.hasBinding( path.node.name ) ) return;
+
+      if ( path.parentPath.isMemberExpression( { property: path.node } ) ) return;
+
+      if ( path.parentPath.isObjectProperty( { key: path.node, shorthand: false } ) ) return;
+
+      let program = path.findParent( ( path ) => path.isProgram() );
+
+      let importDeclaration = auto.importDeclaration( path.node );
+
+      let paths = program.unshiftContainer( 'body', importDeclaration );
+
+      program.scope.registerDeclaration( paths[ 0 ] );
+
+      path.scope.getBinding( path.node.name ).path.scope.crawl();
+
+    },
+
+  };
+
+
   return {
 
     visitor: {
 
-      Identifier( path, state ) {
+      Program: {
 
-        STATIC.init( state.opts.autos );
+        exit( path, state ) {
 
-        if ( ! STATIC.lookup[ path.node.name ] ) return;
+          STATIC.init( state.opts.autos );
 
-        let auto = _.find( STATIC.autos, ( auto ) => auto.matches( path ) );
+          path.traverse( traverser );
 
-        if ( ! auto ) return;
-
-        path = auto.replace( path );
-
-        if ( path.scope.hasBinding( path.node.name ) ) return;
-
-        if ( path.parentPath.isMemberExpression( { property: path.node } ) ) return;
-
-        if ( path.parentPath.isObjectProperty( { key: path.node, shorthand: false } ) ) return;
-
-        let program = path.findParent( ( path ) => path.isProgram() );
-
-        let importDeclaration = auto.importDeclaration( path.node, state.file );
-
-        let paths = program.unshiftContainer( 'body', importDeclaration );
-
-        program.scope.registerBinding( 'module', paths[ 0 ].get( 'specifiers.0' ) );
+        },
 
       },
 
