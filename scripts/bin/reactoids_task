@@ -9,6 +9,8 @@ scripts_dirname = File.expand_path '../../scripts', package_dirname
 gh_pages_dirname = File.expand_path '../../gh-pages', package_dirname
 
 
+exit if package_dirname == scripts_dirname
+
 if ! File.exist?( "#{ package_dirname }/package.json" ) || ! File.exist?( "#{ scripts_dirname }/package.json" )
 
   abort 'Incorrect working directory'
@@ -27,10 +29,14 @@ gh_page_dirname = File.join gh_pages_dirname, File.basename( package_dirname )
 
 task = ARGV.first
 
+debug = task.match? /:debug\b/
+
+task = task.gsub /:debug\b/, ''
+
 
 babel_env = case task
 
-  when 'lib:test', 'lib:watch', 'lib:debug'
+  when 'lib:test', 'lib:watch'
 
     'test'
 
@@ -68,23 +74,26 @@ env = {
 }
 
 
-case task
+bin_prefix = "#{ debug ? 'node --inspect --inspect-brk ' : '' }#{ bin_dirname }"
 
-  when 'lib:debug'
+
+case
+
+  when task == 'lib:test' && debug
 
     exec env, "#{ bin_dirname }/mocha --inspect --inspect-brk --ui=bdd-lazy-var/rspec --require=babel-core/register --require=@reactoids/scripts/tests/setup ./sources/**/test.js"
 
-  when 'lib:story'
+  when task == 'lib:story'
 
-    exec env, "start-storybook -p 8888 -c #{ stories_dirname }"
+    exec env, "#{ bin_prefix }/start-storybook -p 8888 -c #{ stories_dirname }"
 
-  when 'dist:story'
+  when  task == 'dist:story'
 
-    exec env, "rm -rf #{ gh_page_dirname } && build-storybook -c #{ stories_dirname } -o #{ gh_page_dirname }"
+    exec env, "rm -rf #{ gh_page_dirname } && #{ bin_prefix }/build-storybook -c #{ stories_dirname } -o #{ gh_page_dirname }"
 
   else
 
-    exec env, "#{ bin_dirname }/gulp --gulpfile #{ gulpfile_path } --cwd #{ package_dirname } #{ task }"
+    exec env, "#{ bin_prefix }/gulp --gulpfile #{ gulpfile_path } --cwd #{ package_dirname } #{ task }"
 
   ##
 
