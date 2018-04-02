@@ -8,9 +8,9 @@ Toggles on and off component reacting to some change in props or state.
 
 ## Args
 
-[`arg.name: string`](#argname)  
-[`arg.toggle: ( that, bool: boolean ) => void`](#argtoggle)  
-[`arg.checks: { [ hook: string ]: FuncedThat0< boolean > }`](#argchecks)  
+[`arg.name`](#argname)  
+[`arg.toggle`](#argtoggle)  
+[`arg.checks`](#argchecks)  
 
 
 ### arg.name
@@ -48,7 +48,7 @@ Object with keys named for component lifecycle hook and value of funced boolean,
 
 ## Methods
 
-[`method.is{Name}Toggled: () => boolean`](#methodisnametoggled)  
+[`method.is{Name}Toggled`](#methodisnametoggled)  
 
 
 ### method.is{Name}Toggled

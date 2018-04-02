@@ -10,7 +10,7 @@ Provides easy way to deeply customize css classes used by component.
 
 ## Args
 
-[`arg.classes: {}`](#argclasses)  
+[`arg.classes`](#argclasses)  
 
 
 ### arg.classes
@@ -24,8 +24,8 @@ Schema for available class keys and their modifiers.
 
 ## Props
 
-[`prop.className: FuncedThat< OneOrArray< string | {} > >`](#propclassName)  
-[`prop.classNameContexted: boolean`](#propclassnamecontexted)  
+[`prop.className`](#propclassName)  
+[`prop.classNameContexted`](#propclassnamecontexted)  
 
 
 ### prop.className
@@ -46,7 +46,7 @@ Determines should component use classes passed from [`context.getClassNames`](#c
 
 ## Context
 
-[`context.getClassNames: ( id: string, constructor: mixed, keys: Array< string >, that: mixed ) => OneOrArray< string | {} >`](#contextgetclassnames)  
+[`context.getClassNames`](#contextgetclassnames)  
 
 
 ### context.getClassNames
@@ -61,13 +61,13 @@ Returns classes for component to use.
 | `constructor` | `mixed`                     | component class                                        |
 | `keys`        | `Array< string >`           | flat array of all classes paths of component class     |
 | `that`        | `mixed`                     | component instance                                     |
-| `=>`          | `OneOrArray< string | {} >` | classes to use                                         |
+| `=>`          | `OneOrArray< string / {} >` | classes to use                                         |
 
 
 ## Methods
 
-[`method.mergeClassNames: ( ...classNames: Array< OneOrArray< string | {} > > ) => OneOrArray< string | {} >`](#methodmergeclassnames)  
-[`method.classed: ( path: string, modifiers: { [ string ]: boolean | string | number } ) => OneOrArray< string | {} >`](#methodclassed)  
+[`method.mergeClassNames`](#methodmergeclassnames)  
+[`method.classed`](#methodclassed)  
 
 
 ### method.mergeClassNames
@@ -78,8 +78,8 @@ Merges classes.
 
 | Argument        | Type                                 | Default | Description      |
 | --------------- | ------------------------------------ | ------- | ---------------- |
-| `...classNames` | `Array< OneOrArray< string | {} > >` | `-`     | classes to merge |
-| `=>`            | `OneOrArray< string | {} >`          |         | classes to use   |
+| `...classNames` | `Array< OneOrArray< string / {} > >` | `-`     | classes to merge |
+| `=>`            | `OneOrArray< string / {} >`          |         | classes to use   |
 
 
 ### method.classed
@@ -91,5 +91,5 @@ Given path and its modifiers returns classes to use. Possible paths and modifier
 | Argument    | Type                                        | Default | Description                        |
 | ----------- | ------------------------------------------- | ------- | ---------------------------------- |
 | `path`      | `string`                                    | **`!`** | path for which classes to retrieve |
-| `modifiers` | `{ [ string ]: boolean | string | number }` | `{}`    | relevant modifiers to that path    |
-| `=>`        | `OneOrArray< string | {} >`                 |         | classes to use                     |
+| `modifiers` | `{ [ string ]: boolean / string / number }` | `{}`    | relevant modifiers to that path    |
+| `=>`        | `OneOrArray< string / {} >`                 |         | classes to use                     |

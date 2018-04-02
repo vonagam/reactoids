@@ -6,7 +6,7 @@ Returns [`Location`](https://developer.mozilla.org/en-US/docs/Web/API/Location) 
 
 | Argument | Type          | Default | Description             |
 | -------- | ------------- | ------- | ----------------------- |
-| `url`\*  | `string | {}` | `-`     | url for location object |
+| `url`\*  | `string / {}` | `-`     | url for location object |
 | `=>`     | `{}`          |         | location like object    |
 
 \*: url resolved with `a.href = url` for string input and `a[ key ] = value` for object input.

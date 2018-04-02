@@ -9,13 +9,13 @@ Keeps references to mounted components and periodically performs specified opera
 
 ## Args
 
-[`arg.name: string`](#argname)  
-[`arg.update: ( that ) => void`](#argupdate)  
-[`arg.interval: number`](#arginterval)  
-[`arg.shouldSkip: () => boolean`](#argshouldskip)  
+[`arg.name`](#argname)  
+[`arg.update`](#argupdate)  
+[`arg.interval`](#arginterval)  
+[`arg.shouldSkip`](#argshouldskip)  
 
 [`ToggleMixin`](../mixin.meta.Toggle/README.md#args):  
-[`arg.checks: { [ hook: string ]: FuncedThat< boolean > }`](#argchecks)  
+[`arg.checks`](#argchecks)  
 
 
 ### arg.name
@@ -71,4 +71,4 @@ Object with keys named for component lifecycle hook and value of funced boolean,
 ## Methods
 
 [`ToggleMixin`](../mixin.meta.Toggle/README.md#methods) with `{Name}Unison` as `Name`:  
-[`method.is{Name}UnisonToggled: () => boolean`](../mixin.meta.Toggle/README.md#methodisnametoggled)  
+[`method.is{Name}UnisonToggled`](../mixin.meta.Toggle/README.md#methodisnametoggled)  

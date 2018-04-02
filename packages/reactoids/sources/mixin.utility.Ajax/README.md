@@ -8,7 +8,7 @@ Sends jquery [ajaxes](https://api.jquery.com/jQuery.ajax/). All pending ajaxes w
 
 ## State
 
-[`state.ajaxes: { [ name: string ]: true }`](#stateajaxes)  
+[`state.ajaxes`](#stateajaxes)  
 
 
 ### state.ajaxes
@@ -20,9 +20,9 @@ Object where keys are names of waiting ajaxes.
 
 ## Methods
 
-[`method.sendAjax: ( name: string, options: {} ) => void`](#methodsendajax)  
-[`method.isWaitingAjax: ( name?: string ) => boolean`](#methodiswaitingajax)  
-[`method.abortAjax: ( name: string ) => void`](#methodabortajax)  
+[`method.sendAjax`](#methodsendajax)  
+[`method.isWaitingAjax`](#methodiswaitingajax)  
+[`method.abortAjax`](#methodabortajax)  
 
 
 ### method.sendAjax

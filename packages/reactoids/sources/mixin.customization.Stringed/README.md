@@ -10,7 +10,7 @@ Provides way to localize component.
 
 ## Args
 
-[`arg.strings: Array< string >`](#argstrings)  
+[`arg.strings`](#argstrings)  
 
 
 ### arg.strings
@@ -24,7 +24,7 @@ Array of keys used for strings retrieval.
 
 ## Props
 
-[`prop.strings: FuncedThat0< OneOrArray< { [ string ]: Funced2< mixed, that, string > } > >`](#propstrings)  
+[`prop.strings`](#propstrings)  
 
 
 ### prop.strings
@@ -36,7 +36,7 @@ Sets strings for component to use. Have more priority than ones from [context.ge
 
 ## Context
 
-[`context.getStrings: ( id: string, constructor: mixed, keys: Array< string >, that ) => ...`](#contextgetstrings)  
+[`context.getStrings`](#contextgetstrings)  
 
 
 ### context.getStrings
@@ -63,7 +63,7 @@ Returns strings for component to use.
 
 ## Methods
 
-[`method.stringed: ( key: string, params?: mixed ) => ?string`](#methodstringed)  
+[`method.stringed`](#methodstringed)  
 
 
 ### method.stringed

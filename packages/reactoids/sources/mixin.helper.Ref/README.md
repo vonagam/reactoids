@@ -7,7 +7,7 @@ Provides helpers for getting and setting [`refs`](https://reactjs.org/docs/refs-
 
 ## Methods
 
-[`method.refSetter: ( key: string, options?: mixed ) => ( ?HTMLElement ) => void`](#methodrefsetter)  
+[`method.refSetter`](#methodrefsetter)  
 
 
 ### method.refSetter
@@ -28,7 +28,7 @@ Returns callback for usage in react's ref attribute. Consequent calls for same k
 | Argument           | Type                                               | Default | Description                                                                                                                                  |
 | ------------------ | -------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `key`              | `string`                                           | **`!`** | key to associate with ref                                                                                                                    |
-| `options`\*        | `string | ( ?HTMLElement ) => void | boolean | {}` | `{}`    | options for setter                                                                                                                           |
+| `options`\*        | `string / ( ?HTMLElement ) => void / boolean / {}` | `{}`    | options for setter                                                                                                                           |
 | `options.prop`     | `string`                                           | `-`     | prop name which contains callback [passed from above](https://reactjs.org/docs/refs-and-the-dom.html#exposing-dom-refs-to-parent-components) |
 | `options.callback` | `( ?HTMLElement ) => void`                         | `-`     | additional function to call                                                                                                                  |
 | `options.constant` | `boolean`                                          | `false` | if true, ref changes will cause error throw                                                                                                  |

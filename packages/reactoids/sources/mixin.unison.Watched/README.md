@@ -9,14 +9,14 @@ Periodically checks component for change in some value and executes callback on 
 
 ## Args
 
-[`arg.name: string`](#argname)  
-[`arg.getValue: ( that ) => mixed`](#arggetvalue)  
-[`arg.onChange: ( that, currValue: mixed, prevValue: mixed ) => void`](#argonchange)  
+[`arg.name`](#argname)  
+[`arg.getValue`](#arggetvalue)  
+[`arg.onChange`](#argonchange)  
 
 [`UnisonMixin`](../mixin.unison.Unison/README.md#args):  
-[`arg.interval: number`](#arginterval)  
-[`arg.shouldSkip: () => boolean`](#argshouldskip)  
-[`arg.checks: { [ hook: string ]: FuncedThat< boolean > }`](#argchecks)  
+[`arg.interval`](#arginterval)  
+[`arg.shouldSkip`](#argshouldskip)  
+[`arg.checks`](#argchecks)  
 
 
 ### arg.name
@@ -88,4 +88,4 @@ Object with keys named for component lifecycle hook and value of funced boolean,
 ## Methods
 
 [`UnisonMixin`](../mixin.unison.Unison/README.md#methods) with `{Name}Watching` as `Name`:  
-[`method.is{Name}WatchingUnisonToggled: () => boolean`](../mixin.meta.Toggle/README.md#methodisnametoggled)  
+[`method.is{Name}WatchingUnisonToggled`](../mixin.meta.Toggle/README.md#methodisnametoggled)  

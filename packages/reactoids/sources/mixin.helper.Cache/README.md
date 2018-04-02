@@ -7,8 +7,8 @@ Provides cache which may depend on props or state and will be invalidated if som
 
 ## Methods
 
-[`method.cache: ( key: string, options: {} ) => mixed`](#methodcache)  
-[`method.clearCache: ( key?: string ) => void`](#methodclearcache)  
+[`method.cache`](#methodcache)  
+[`method.clearCache`](#methodclearcache)  
 
 
 ### method.cache

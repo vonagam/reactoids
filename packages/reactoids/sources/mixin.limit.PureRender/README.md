@@ -8,8 +8,8 @@ Prevents component from updating if props and state have not changed.
 
 ## Args
 
-[`arg.purifiedPaths: Array< string >`](#argpurifiedpaths)  
-[`arg.dirtiedPaths: Array< string >`](#argdirtiedpaths)  
+[`arg.purifiedPaths`](#argpurifiedpaths)  
+[`arg.dirtiedPaths`](#argdirtiedpaths)  
 
 
 ### arg.purifiedPaths

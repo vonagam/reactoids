@@ -7,7 +7,7 @@ Asserts that specified props must stay the same during life of component instanc
 
 ## Args
 
-[`arg.keys: Array< string >`](#argkeys)  
+[`arg.keys`](#argkeys)  
 
 
 ### arg.keys

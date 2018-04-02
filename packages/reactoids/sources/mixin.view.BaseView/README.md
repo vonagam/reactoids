@@ -9,10 +9,10 @@ Provides capturing and handling link clicks and form submits inside component.
 
 ## Args
 
-[`arg.filterLink: ( that, link: HTMLAnchorElement ) => boolean`](#argfilterlink)  
-[`arg.handleLink: ( that, link: HTMLAnchorElement ) => boolean`](#arghandlelink)  
-[`arg.filterForm: ( that, link: HTMLFormElement ) => boolean`](#argfilterform)  
-[`arg.handleForm: ( that, link: HTMLFormElement ) => boolean`](#arghandleform)  
+[`arg.filterLink`](#argfilterlink)  
+[`arg.handleLink`](#arghandlelink)  
+[`arg.filterForm`](#argfilterform)  
+[`arg.handleForm`](#arghandleform)  
 
 
 ### arg.filterLink
@@ -83,7 +83,7 @@ Handles submited form passed through [`arg.filterForm`](#argfilterform). If retu
 ## Methods
 
 [`EventListenerMixin`](../mixin.utility.EventListener/README.md#methods):  
-[`method.addEventListener: ( key: string, data: {}, bool: boolean ) => void`](../mixin.utility.EventListener/README.md#methodaddeventlistener)  
-[`method.getEventListenerState: ( key: string ) => ?bool`](../mixin.meta.BaseListener/README.md#methodgetnamelistenerstate)  
-[`method.toggleEventListener: ( key: string, bool: boolean ) => void`](../mixin.meta.BaseListener/README.md#methodtogglenamelistener)  
-[`method.removeEventListener: ( key: string ) => void`](../mixin.meta.BaseListener/README.md#methodremovenamelistener)  
+[`method.addEventListener`](../mixin.utility.EventListener/README.md#methodaddeventlistener)  
+[`method.getEventListenerState`](../mixin.meta.BaseListener/README.md#methodgetnamelistenerstate)  
+[`method.toggleEventListener`](../mixin.meta.BaseListener/README.md#methodtogglenamelistener)  
+[`method.removeEventListener`](../mixin.meta.BaseListener/README.md#methodremovenamelistener)  

@@ -8,7 +8,7 @@ Defined render using render prop pattern.
 
 ## Args
 
-[`arg.getRenderArg: ( that ) => mixed`](#arggetrenderarg)  
+[`arg.getRenderArg`](#arggetrenderarg)  
 
 
 ### arg.getRenderArg
@@ -22,7 +22,7 @@ Gets argument for render prop function.
 
 ## Props
 
-[`prop.children: FuncedThat1< mixed, React.Node >`](#propchildren)  
+[`prop.children`](#propchildren)  
 
 
 ### prop.children

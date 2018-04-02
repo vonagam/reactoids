@@ -9,8 +9,8 @@ Adds custom headers to outcoming jquery [ajax](https://api.jquery.com/jQuery.aja
 
 ## Args
 
-[`arg.headers: FuncedThat0< { [ string ]: FuncedThat1< {}, string > } >`](#argheaders)  
-[`arg.filterRequest: ( that, options: {} ) => boolean`](#argfilterrequest)  
+[`arg.headers`](#argheaders)  
+[`arg.filterRequest`](#argfilterrequest)  
 
 
 ### arg.headers
@@ -53,7 +53,7 @@ Receives jquery ajax call options and returns whenever headers should be added f
 ## Methods
 
 [`EventListenerMixin`](../mixin.utility.EventListener/README.md#methods):  
-[`method.addEventListener: ( key: string, data: {}, bool: boolean ) => void`](../mixin.utility.EventListener/README.md#methodaddeventlistener)  
-[`method.getEventListenerState: ( key: string ) => ?bool`](../mixin.meta.BaseListener/README.md#methodgetnamelistenerstate)  
-[`method.toggleEventListener: ( key: string, bool: boolean ) => void`](../mixin.meta.BaseListener/README.md#methodtogglenamelistener)  
-[`method.removeEventListener: ( key: string ) => void`](../mixin.meta.BaseListener/README.md#methodremovenamelistener)  
+[`method.addEventListener`](../mixin.utility.EventListener/README.md#methodaddeventlistener)  
+[`method.getEventListenerState`](../mixin.meta.BaseListener/README.md#methodgetnamelistenerstate)  
+[`method.toggleEventListener`](../mixin.meta.BaseListener/README.md#methodtogglenamelistener)  
+[`method.removeEventListener`](../mixin.meta.BaseListener/README.md#methodremovenamelistener)  

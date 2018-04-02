@@ -8,10 +8,10 @@ Provides base for subscription helpers. Unsubscribes component on unmount.
 
 ## Args
 
-[`arg.name: string`](#argname)  
-[`arg.plural: boolean`](#argplural)  
-[`arg.toggleListener: ( that, data: mixed, bool: boolean, key?: string ) => void`](#argtogglelistener)  
-[`arg.initListener: boolean`](#arginitlistener)  
+[`arg.name`](#argname)  
+[`arg.plural`](#argplural)  
+[`arg.toggleListener`](#argtogglelistener)  
+[`arg.initListener`](#arginitlistener)  
 
 
 ### arg.name
@@ -73,10 +73,10 @@ Function which handles normalization of listener data.
 
 Methods signatures shown for plural version. If [`arg.plural`](#argplural) is false, then `key` argument is absent from arguments spec.
 
-[`method.add{Name}Listener: ( key: ?string, data: mixed, bool: boolean ) => void`](#methodaddnamelistener)  
-[`method.get{Name}ListenerState: ( key: string ) => ?bool`](#methodgetnamelistenerstate)  
-[`method.toggle{Name}Listener: ( key: string, bool: boolean ) => void`](#methodtogglenamelistener)  
-[`method.remove{Name}Listener: ( key: string ) => void`](#methodremovenamelistener)  
+[`method.add{Name}Listener`](#methodaddnamelistener)  
+[`method.get{Name}ListenerState`](#methodgetnamelistenerstate)  
+[`method.toggle{Name}Listener`](#methodtogglenamelistener)  
+[`method.remove{Name}Listener`](#methodremovenamelistener)  
 
 
 ### method.add{Name}Listener

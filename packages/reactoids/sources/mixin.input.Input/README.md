@@ -11,10 +11,10 @@ Interface for custom inputs.
 
 ## Args
 
-[`arg.valueType: Function`](#argvaluetype)  
-[`arg.defaultValue: mixed`](#argdefaultvalue)  
-[`arg.validateValue: ( that, value: mixed ) => ?string`](#argvalidatevalue)  
-[`arg.inputDelay: number`](#arginputdelay)  
+[`arg.valueType`](#argvaluetype)  
+[`arg.defaultValue`](#argdefaultvalue)  
+[`arg.validateValue`](#argvalidatevalue)  
+[`arg.inputDelay`](#arginputdelay)  
 
 
 ### arg.valueType
@@ -69,14 +69,14 @@ Negative delay means that temp value will not automatically transfered to real v
 
 ## Props
 
-[`prop.value: mixed`](#propvalue)
-[`prop.defaultValue: mixed`](#propdefaultvalue)
-[`prop.onChange: ( value: mixed ) => void`](#proponchange)  
-[`prop.onTempChange: ( tempValue: mixed ) => void`](#propontempchange)  
-[`prop.inputDelay: number`](#propinputdelay)  
-[`prop.readOnly: boolean`](#propreadonly)  
-[`prop.disabled: boolean`](#propdisabled)  
-[`prop.validate: ( that, value: mixed ) => ?string`](#propvalidate)  
+[`prop.value`](#propvalue)
+[`prop.defaultValue`](#propdefaultvalue)
+[`prop.onChange`](#proponchange)  
+[`prop.onTempChange`](#propontempchange)  
+[`prop.inputDelay`](#propinputdelay)  
+[`prop.readOnly`](#propreadonly)  
+[`prop.disabled`](#propdisabled)  
+[`prop.validate`](#propvalidate)  
 
 
 ### prop.value
@@ -149,12 +149,12 @@ Additional custom validation, called after [`arg.validateValue`](#argvalidateval
 
 ## State
 
-[`state.valueTemp: mixed`](#statevaluetemp)  
-[`state.valueReal: mixed`](#statevaluereal)  
-[`state.valueError: string`](#statevalueerror)  
+[`state.valueTemp`](#statevaluetemp)  
+[`state.valueReal`](#statevaluereal)  
+[`state.valueError`](#statevalueerror)  
 
 [`FocusMixin`](../mixin.interface.Focus/README.md#state):  
-[`state.focused: boolean`](../mixin.interface.Focus/README.md#statefocused)  
+[`state.focused`](../mixin.interface.Focus/README.md#statefocused)  
 
 
 ### state.valueTemp
@@ -180,34 +180,34 @@ Error message get from [`arg.validateValue`](#argvalidatevalue) and [`prop.valid
 
 ## Methods
 
-[`method.getValue: ( props?: {}, state?: {} ) => mixed`](#methodgetvalue)  
-[`method.setValue: ( value: mixed, callback?: () => void ) => void`](#methodsetvalue)  
-[`method.setTempValue: ( value: mixed, callback?: () => void ) => void`](#methodsettempvalue)  
-[`method.getValueError: () => ?string`](#methodgetvalueerror)  
+[`method.getValue`](#methodgetvalue)  
+[`method.setValue`](#methodsetvalue)  
+[`method.setTempValue`](#methodsettempvalue)  
+[`method.getValueError`](#methodgetvalueerror)  
 
 [`BaseKeyMixin`](../mixin.meta.BaseKey/README.md#methods) with `Value` as `Name`:  
-[`method.getValueKey: ( key?: string, defaultValue?: mixed ) => mixed`](../mixin.meta.BaseKey/README.md#methodgetnamekey)  
-[`method.getValueKeys: ( keys?: Array< string >, defaultValue?: mixed ) => { [ string ]: mixed }`](../mixin.meta.BaseKey/README.md#methodgetnamekeys)  
-[`method.updateValueKey: ( key?: string, updater: ( value: mixed ) => mixed, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodupdatenamekey)  
-[`method.updateValueKeys: ( updaters?: { [ string ]: ( value: mixed) => mixed }, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodupdatenamekeys)  
-[`method.setValueKey: ( key?: string, value?: mixed, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodsetnamekey)  
-[`method.setValueKeys: ( values?: { [ string ]: mixed }, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodsetnamekeys)  
-[`method.toggleValueKey: ( key?: string, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodtogglenamekey)  
-[`method.toggleValueKeys: ( keys?: Array< string >, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodtogglenamekeys)  
-[`method.increaseValueKey: ( key?: string, delta: number, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodincreasenamekey)  
-[`method.increaseValueKeys: ( deltas?: { [ string ]: number }, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodincreasenamekeys)  
-[`method.defaultValueKey: ( key?: string, defaultValue?: mixed, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methoddefaultnamekey)  
-[`method.defaultValueKeys: ( defaultValues?: { [ string ]: mixed }, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methoddefaultnamekeys)  
-[`method.unsetValueKey: ( key?: string, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodunsetnamekey)  
-[`method.unsetValueKeys: ( keys?: Array< string >, callback?: () => void ) => void`](../mixin.meta.BaseKey/README.md#methodunsetnamekeys)  
+[`method.getValueKey`](../mixin.meta.BaseKey/README.md#methodgetnamekey)  
+[`method.getValueKeys`](../mixin.meta.BaseKey/README.md#methodgetnamekeys)  
+[`method.updateValueKey`](../mixin.meta.BaseKey/README.md#methodupdatenamekey)  
+[`method.updateValueKeys`](../mixin.meta.BaseKey/README.md#methodupdatenamekeys)  
+[`method.setValueKey`](../mixin.meta.BaseKey/README.md#methodsetnamekey)  
+[`method.setValueKeys`](../mixin.meta.BaseKey/README.md#methodsetnamekeys)  
+[`method.toggleValueKey`](../mixin.meta.BaseKey/README.md#methodtogglenamekey)  
+[`method.toggleValueKeys`](../mixin.meta.BaseKey/README.md#methodtogglenamekeys)  
+[`method.increaseValueKey`](../mixin.meta.BaseKey/README.md#methodincreasenamekey)  
+[`method.increaseValueKeys`](../mixin.meta.BaseKey/README.md#methodincreasenamekeys)  
+[`method.defaultValueKey`](../mixin.meta.BaseKey/README.md#methoddefaultnamekey)  
+[`method.defaultValueKeys`](../mixin.meta.BaseKey/README.md#methoddefaultnamekeys)  
+[`method.unsetValueKey`](../mixin.meta.BaseKey/README.md#methodunsetnamekey)  
+[`method.unsetValueKeys`](../mixin.meta.BaseKey/README.md#methodunsetnamekeys)  
 
 [`FocusMixin`](../mixin.interface.Focus/README.md#methods):  
-[`method.onFocusGain: () => void`](../mixin.interface.Focus/README.md#methodonfocusgain)  
-[`method.onFocusLoss: () => void`](../mixin.interface.Focus/README.md#methodonfocusloss)  
-[`method.isFocusable: () => boolean`](../mixin.interface.Focus/README.md#methodisfocusable)  
-[`method.isFocused: () => boolean`](../mixin.interface.Focus/README.md#methodisfocused)  
-[`method.focus: () => void`](../mixin.interface.Focus/README.md#methodfocus)  
-[`method.blur: () => void`](../mixin.interface.Focus/README.md#methodblur)  
+[`method.onFocusGain`](../mixin.interface.Focus/README.md#methodonfocusgain)  
+[`method.onFocusLoss`](../mixin.interface.Focus/README.md#methodonfocusloss)  
+[`method.isFocusable`](../mixin.interface.Focus/README.md#methodisfocusable)  
+[`method.isFocused`](../mixin.interface.Focus/README.md#methodisfocused)  
+[`method.focus`](../mixin.interface.Focus/README.md#methodfocus)  
+[`method.blur`](../mixin.interface.Focus/README.md#methodblur)  
 
 
 ### method.getValue

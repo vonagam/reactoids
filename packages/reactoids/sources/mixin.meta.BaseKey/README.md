@@ -8,9 +8,9 @@ Provides helper functions to work with deep objects.
 
 ## Args
 
-[`arg.name: string`](#argname)  
-[`arg.get: ( that, props: {}, state: {} ) => mixed`](#argget)  
-[`arg.set: ( that, value: mixed, callback: () => void ) => void`](#argset)  
+[`arg.name`](#argname)  
+[`arg.get`](#argget)  
+[`arg.set`](#argset)  
 
 
 ### arg.name
@@ -56,20 +56,20 @@ Sets value for component.
 
 ## Methods
 
-[`method.get{Name}Key: ( key?: string, defaultValue?: mixed ) => mixed`](#methodgetnamekey)  
-[`method.get{Name}Keys: ( keys?: Array< string >, defaultValue?: mixed ) => { [ string ]: mixed }`](#methodgetnamekeys)  
-[`method.update{Name}Key: ( key?: string, updater: ( value: mixed ) => mixed, callback?: () => void ) => void`](#methodupdatenamekey)  
-[`method.update{Name}Keys: ( updaters?: { [ string ]: ( value: mixed) => mixed }, callback?: () => void ) => void`](#methodupdatenamekeys)  
-[`method.set{Name}Key: ( key?: string, value?: mixed, callback?: () => void ) => void`](#methodsetnamekey)  
-[`method.set{Name}Keys: ( values?: { [ string ]: mixed }, callback?: () => void ) => void`](#methodsetnamekeys)  
-[`method.toggle{Name}Key: ( key?: string, callback?: () => void ) => void`](#methodtogglenamekey)  
-[`method.toggle{Name}Keys: ( keys?: Array< string >, callback?: () => void ) => void`](#methodtogglenamekeys)  
-[`method.increase{Name}Key: ( key?: string, delta: number, callback?: () => void ) => void`](#methodincreasenamekey)  
-[`method.increase{Name}Keys: ( deltas?: { [ string ]: number }, callback?: () => void ) => void`](#methodincreasenamekeys)  
-[`method.default{Name}Key: ( key?: string, defaultValue?: mixed, callback?: () => void ) => void`](#methoddefaultnamekey)  
-[`method.default{Name}Keys: ( defaultValues?: { [ string ]: mixed }, callback?: () => void ) => void`](#methoddefaultnamekeys)  
-[`method.unset{Name}Key: ( key?: string, callback?: () => void ) => void`](#methodunsetnamekey)  
-[`method.unset{Name}Keys: ( keys?: Array< string >, callback?: () => void ) => void`](#methodunsetnamekeys)  
+[`method.get{Name}Key`](#methodgetnamekey)  
+[`method.get{Name}Keys`](#methodgetnamekeys)  
+[`method.update{Name}Key`](#methodupdatenamekey)  
+[`method.update{Name}Keys`](#methodupdatenamekeys)  
+[`method.set{Name}Key`](#methodsetnamekey)  
+[`method.set{Name}Keys`](#methodsetnamekeys)  
+[`method.toggle{Name}Key`](#methodtogglenamekey)  
+[`method.toggle{Name}Keys`](#methodtogglenamekeys)  
+[`method.increase{Name}Key`](#methodincreasenamekey)  
+[`method.increase{Name}Keys`](#methodincreasenamekeys)  
+[`method.default{Name}Key`](#methoddefaultnamekey)  
+[`method.default{Name}Keys`](#methoddefaultnamekeys)  
+[`method.unset{Name}Key`](#methodunsetnamekey)  
+[`method.unset{Name}Keys`](#methodunsetnamekeys)  
 
 
 ### method.get{Name}Key

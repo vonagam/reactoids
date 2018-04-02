@@ -2,10 +2,10 @@
 
 Object with four static functions used to work with reactoids mixins.  
 
-[`create: ( spec: {} ) => ( args: {} ) => {}`](#create)  
-[`mix: ( Component: mixed ) => mixed`](#mix)  
-[`resolve: ( mixins: Array< {} > ) => Array< {} >`](#resolve)  
-[`createClass: ( spec: {} ) => mixed`](#createclass)  
+[`creat`](#create)  
+[`mix`](#mix)  
+[`resolve`](#resolve)  
+[`createClass`](#createclass)  
 
 
 ## create

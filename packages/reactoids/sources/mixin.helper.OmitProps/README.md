@@ -8,7 +8,7 @@ Provides easy way to filter out component's props before passing down.
 
 ## Props
 
-[`prop.omitProps: Array< string >`](#propomitprops)  
+[`prop.omitProps`](#propomitprops)  
 
 
 ### prop.omitProps
@@ -22,7 +22,7 @@ Additional props unknown to component, which it should not pass down.
 
 ## Method
 
-[`method.omitProps: () => {}`](#methodomitprops)  
+[`method.omitProps`](#methodomitprops)  
 
 
 ### method.omitProps

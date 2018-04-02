@@ -8,7 +8,7 @@ Provides interface to work with focus.
 
 ## State
 
-[`state.focused: boolean`](#statefocused)  
+[`state.focused`](#statefocused)  
 
 
 ### state.focused
@@ -20,12 +20,12 @@ Indicates that component contains current focused element.
 
 ## Methods
 
-[`method.onFocusGain: () => void`](#methodonfocusgain)  
-[`method.onFocusLoss: () => void`](#methodonfocusloss)  
-[`method.isFocusable: () => boolean`](#methodisfocusable)  
-[`method.isFocused: () => boolean`](#methodisfocused)  
-[`method.focus: () => void`](#methodfocus)  
-[`method.blur: () => void`](#methodblur)  
+[`method.onFocusGain`](#methodonfocusgain)  
+[`method.onFocusLoss`](#methodonfocusloss)  
+[`method.isFocusable`](#methodisfocusable)  
+[`method.isFocused`](#methodisfocused)  
+[`method.focus`](#methodfocus)  
+[`method.blur`](#methodblur)  
 
 
 ### method.onFocusGain

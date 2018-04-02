@@ -9,7 +9,7 @@ Provides way to customize rendering of parts of component.
 
 ## Args
 
-[`arg.slots: { [ name: string ]: FuncedThat2< {}, {}, React.Node > }`](#argslots)  
+[`arg.slots`](#argslots)  
 
 
 ### arg.slots
@@ -23,8 +23,8 @@ Keys are slot names. Values are default render function.
 
 ## Props
 
-[`prop.{slot}: FuncedThat< {} >`](#propslot)  
-[`prop.render{Slot}: FuncedThat2< {}, {}, React.Node >`](#proprenderslot)  
+[`prop.{slot}`](#propslot)  
+[`prop.render{Slot}`](#proprenderslot)  
 
 
 ### prop.{slot}
@@ -54,7 +54,7 @@ Renderer for part of component.
 
 ## Methods
 
-[`method.render{Slot}: ( slotArgs: {} ) => React.Node`](#methodrenderslot)  
+[`method.render{Slot}`](#methodrenderslot)  
 
 
 ### method.render{Slot}

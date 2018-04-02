@@ -7,10 +7,10 @@ Injects scripts into document head, optionally calls callback after added script
 
 ## Args
 
-[`arg.scripts: FuncedThat0< Array< string > >`](#argscripts)  
-[`arg.filterScript: ( that, script: string ) => boolean`](#argfilterscript)  
-[`arg.decorateScript: ( that, script: HTMLScriptElement ) => void`](#argdecoratescript)  
-[`arg.callback: ( that ) => void`](#argcallback)  
+[`arg.scripts`](#argscripts)  
+[`arg.filterScript`](#argfilterscript)  
+[`arg.decorateScript`](#argdecoratescript)  
+[`arg.callback`](#argcallback)  
 
 
 ### arg.scripts

@@ -14,10 +14,10 @@ Subscribes to html events. All subscribtions will be automatically revoked on um
 ## Methods
 
 [`BaseListenerMixin`](../mixin.meta.BaseListener/README.md#methods) with `Event` as `Name`:  
-[`method.addEventListener: ( key: string, data: {}, bool: boolean ) => void`](#methodaddeventlistener)  
-[`method.getEventListenerState: ( key: string ) => ?bool`](../mixin.meta.BaseListener/README.md#methodgetnamelistenerstate)  
-[`method.toggleEventListener: ( key: string, bool: boolean ) => void`](../mixin.meta.BaseListener/README.md#methodtogglenamelistener)  
-[`method.removeEventListener: ( key: string ) => void`](../mixin.meta.BaseListener/README.md#methodremovenamelistener)  
+[`method.addEventListener`](#methodaddeventlistener)  
+[`method.getEventListenerState`](../mixin.meta.BaseListener/README.md#methodgetnamelistenerstate)  
+[`method.toggleEventListener`](../mixin.meta.BaseListener/README.md#methodtogglenamelistener)  
+[`method.removeEventListener`](../mixin.meta.BaseListener/README.md#methodremovenamelistener)  
 
 
 ### method.addEventListener

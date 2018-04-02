@@ -7,7 +7,7 @@ Provides simple way to create callback functions to pass down with caching. Help
 
 ## Methods
 
-[`method.callback: ( keys: OneOrArray< string > ) => ( ...args: Array< mixed > ) => void`](#methodcallback)  
+[`method.callback`](#methodcallback)  
 
 
 ### method.callback

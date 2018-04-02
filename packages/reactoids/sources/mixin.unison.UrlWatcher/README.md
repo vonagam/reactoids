@@ -9,13 +9,13 @@ Watches [`window.location`](https://developer.mozilla.org/en-US/docs/Web/API/Win
 
 ## Args
 
-[`arg.name: string`](#argname)  
+[`arg.name`](#argname)  
 
 [`UnisonMixin`](../mixin.unison.Unison/README.md#args):  
-[`arg.update: ( that ) => void`](#argupdate)  
-[`arg.interval: number`](#arginterval)  
-[`arg.shouldSkip: () => boolean`](#argshouldskip)  
-[`arg.checks: { [ hook: string ]: FuncedThat< boolean > }`](#argchecks)  
+[`arg.update`](#argupdate)  
+[`arg.interval`](#arginterval)  
+[`arg.shouldSkip`](#argshouldskip)  
+[`arg.checks`](#argchecks)  
 
 
 ### arg.name
@@ -77,4 +77,4 @@ Object with keys named for component lifecycle hook and value of funced boolean,
 ## Methods
 
 [`UnisonMixin`](../mixin.unison.Unison/README.md#methods) with `{Name}UrlWatch` as `Name`:  
-[`method.is{Name}UrlWatchUnisonToggled: () => boolean`](../mixin.meta.Toggle/README.md#methodisnametoggled)  
+[`method.is{Name}UrlWatchUnisonToggled`](../mixin.meta.Toggle/README.md#methodisnametoggled)  
