@@ -156,7 +156,7 @@ export default Mixin = {
     } );
 
 
-    let mixin = _.overArgs( options.mixin, function( ARGS ) {
+    let mixin = function( ARGS ) {
 
       ARGS = _.defaults( {}, ARGS, mixin.defaultArgs );
 
@@ -174,9 +174,9 @@ export default Mixin = {
 
       } );
 
-      return ARGS;
+      return options.mixin( ARGS );
 
-    } );
+    };
 
     Object.defineProperty( mixin, 'name', { value: options.name } );
 
