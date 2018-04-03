@@ -7,11 +7,11 @@ const Path = require( 'path' );
 const glob = require( 'glob' );
 
 
-module.exports = _.compact( _.map( glob.sync( './sources/*/' ), ( path ) => {
+module.exports = _.compact( _.map( glob.sync( './sources/**/*/' ), ( path ) => {
 
-  let directory = _.last( _.split( _.trim( path, Path.sep ), Path.sep ) );
+  let directory = Path.basename( path );
 
-  let relativePath = `~/${ directory }`;
+  let relativePath = path.replace( './sources', '~' );
 
   let match;
 
