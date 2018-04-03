@@ -29,6 +29,8 @@ gh_page_dirname = File.join gh_pages_dirname, File.basename( package_dirname )
 
 task = ARGV.first
 
+dist = task.match? /\Adist:/
+
 debug = task.match? /:debug\b/
 
 task = task.gsub /:debug\b/, ''
@@ -63,13 +65,15 @@ end
 
 env = {
 
-  'REACTOIDS_SCRIPTS' => scripts_dirname,
+  'REACTOIDS_PACKAGE' => package_dirname,
 
   'REACTOIDS_REACTOIDS' => reactoids_dirname,
 
-  'REACTOIDS_PACKAGE' => package_dirname,
+  'REACTOIDS_SCRIPTS' => scripts_dirname,
 
   'REACTOIDS_BABEL_ENV' => babel_env,
+
+  'REACTOIDS_DIST' => dist ? 'true' : '',
 
 }
 

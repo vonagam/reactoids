@@ -1,4 +1,4 @@
-import ReactoidsMixin from '@reactoids/reactoids/builds/lib/sources/various.Mixin';
+import ReactoidsMixin from '@reactoids/reactoids/sources/various.Mixin';
 
 
 global.defReactMixin = function( Mixin, ARGS = () => ( {} ), additionals = {} ) {

@@ -80,6 +80,8 @@ module.exports = {
 
     } ],
 
+    [ require( './plugins/babel-plugin-reactoids-import' ) ],
+
     [ require( './plugins/babel-plugin-delayed-lodash' ) ],
 
     [ require( './plugins/babel-plugin-transform-delayed-resolve-wildcard-import' ) ],
