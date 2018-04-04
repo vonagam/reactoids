@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'core:graphics:component.Shape', module );
-
-
 stories.add( 'Example', function() {
 
   let shape = new PIXI.Polygon( [

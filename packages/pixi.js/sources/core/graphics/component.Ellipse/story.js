@@ -1,5 +1,3 @@
-const stories = StoriesOf( 'core:graphics:component.Ellipse', module );
-
 stories.addDecorator( Knobs.withKnobs );
 
 

@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'core:text:component.Text', module );
-
-
 stories.add( 'Example', function() {
 
   return (

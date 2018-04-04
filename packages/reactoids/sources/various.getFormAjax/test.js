@@ -1,88 +1,84 @@
-describe( 'various.getFormAjax', () => {
-
-  defFunc( 'getFormAjax', ( html ) => getFormAjax( $( html )[ 0 ] ) );
+defFunc( 'getFormAjax', ( html ) => getFormAjax( $( html )[ 0 ] ) );
 
 
-  its( 'does work ${ key }', [
+its( 'does work ${ key }', [
 
-    {
+  {
 
-      form: '<form action="https://reactjs.org/0"><input name="check" value="0" /></form>',
+    form: '<form action="https://reactjs.org/0"><input name="check" value="0" /></form>',
 
-      output: () => ( {
+    output: () => ( {
 
-        url: 'https://reactjs.org/0',
+      url: 'https://reactjs.org/0',
 
-        method: 'get',
+      method: 'get',
 
-        contentType: 'application/x-www-form-urlencoded',
+      contentType: 'application/x-www-form-urlencoded',
 
-        data: [ { name: 'check', value: '0' } ],
+      data: [ { name: 'check', value: '0' } ],
 
-      } ),
+    } ),
 
-    },
+  },
 
-    {
+  {
 
-      form: '<form action="https://reactjs.org/1" method="post" enctype="application/x-www-form-urlencoded"><input name="check[][]" value="1" /></form>',
+    form: '<form action="https://reactjs.org/1" method="post" enctype="application/x-www-form-urlencoded"><input name="check[][]" value="1" /></form>',
 
-      output: () => ( {
+    output: () => ( {
 
-        url: 'https://reactjs.org/1',
+      url: 'https://reactjs.org/1',
 
-        method: 'post',
+      method: 'post',
 
-        contentType: 'application/x-www-form-urlencoded',
+      contentType: 'application/x-www-form-urlencoded',
 
-        data: [ { name: 'check[][]', value: '1' } ],
+      data: [ { name: 'check[][]', value: '1' } ],
 
-      } ),
+    } ),
 
-    },
+  },
 
-    {
+  {
 
-      form: '<form action="https://reactjs.org/2" method="post" enctype="multipart/form-data"><input name="_method" value="delete" /><input name="check[][]" value="1" /></form>',
+    form: '<form action="https://reactjs.org/2" method="post" enctype="multipart/form-data"><input name="_method" value="delete" /><input name="check[][]" value="1" /></form>',
 
-      output: () => ( {
+    output: () => ( {
 
-        url: 'https://reactjs.org/2',
+      url: 'https://reactjs.org/2',
 
-        method: 'delete',
+      method: 'delete',
 
-        contentType: false,
+      contentType: false,
 
-        processData: false,
+      processData: false,
 
-        data: smatch.instanceOf( window.FormData ),
+      data: smatch.instanceOf( window.FormData ),
 
-      } ),
+    } ),
 
-    },
+  },
 
-    {
+  {
 
-      form: '<form action="https://reactjs.org/3" method="get" data-enctype="application/json"><input name="check[][]" data-value-type="number" value="1" /></form>',
+    form: '<form action="https://reactjs.org/3" method="get" data-enctype="application/json"><input name="check[][]" data-value-type="number" value="1" /></form>',
 
-      output: () => ( {
+    output: () => ( {
 
-        url: 'https://reactjs.org/3',
+      url: 'https://reactjs.org/3',
 
-        method: 'get',
+      method: 'get',
 
-        contentType: 'application/json',
+      contentType: 'application/json',
 
-        data: { check: [ [ 1 ] ] },
+      data: { check: [ [ 1 ] ] },
 
-      } ),
+    } ),
 
-    },
+  },
 
-  ], ( { form, output } ) =>
+], ( { form, output } ) =>
 
-    expect( $getFormAjax( form ) ).to.smatch( output() )
+  expect( $getFormAjax( form ) ).to.smatch( output() )
 
-  );
-
-} );
+);

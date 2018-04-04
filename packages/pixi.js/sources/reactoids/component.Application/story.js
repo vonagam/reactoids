@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'reactoids:component.Application', module );
-
-
 stories.add( 'Example', function() {
 
   class App extends React.Component {

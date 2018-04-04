@@ -1,9 +1,6 @@
 import Symbol from './index';
 
 
-const stories = StoriesOf( 'shape:component.Symbol', module );
-
-
 stories.add( 'Example', function() {
 
   return (

@@ -3,173 +3,169 @@ import proxyquire from 'proxyquire';
 proxyquire.noCallThru();
 
 
-describe( 'mixin.unison.UrlWatcher', () => {
+const UnisonMixinSpy = defMixinSpy( UnisonMixin );
 
-  const UnisonMixinSpy = defMixinSpy( UnisonMixin );
+const UrlWatcherMixin = proxyquire( './index', { '../mixin.unison.Unison': UnisonMixinSpy } ).default;
 
-  const UrlWatcherMixin = proxyquire( './index', { '../mixin.unison.Unison': UnisonMixinSpy } ).default;
+defReactMixin( UrlWatcherMixin, () => ( { shouldSkip: $shouldSkip } ) );
 
-  defReactMixin( UrlWatcherMixin, () => ( { shouldSkip: $shouldSkip } ) );
-
-  defSinon( 'shouldSkip', spy() );
+defSinon( 'shouldSkip', spy() );
 
 
-  describe( '.argTypes', () => {
+describe( '.argTypes', () => {
 
-    it( 'does have right keys', () =>
+  it( 'does have right keys', () =>
 
-      expect( $Mixin.argTypes ).to.have.all.keys( 'name', 'shouldSkip', 'update', 'interval', 'checks' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'name', 'shouldSkip', 'update', 'interval', 'checks' )
+
+  );
+
+  it( 'does have right defaulted keys', () =>
+
+    expect( $Mixin.defaultArgs ).to.have.all.keys( 'name', 'shouldSkip', 'update', 'interval', 'checks' )
+
+  );
+
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+    [ {}, true ],
+
+    [ { name: 'check', shouldSkip: _.noop, update: _.noop, interval: 1, checks: {} }, true ],
+
+  ], ( [ args, truthy ] ) =>
+
+    expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+
+  );
+
+} );
+
+describe( '.constructor', () => {
+
+  contexts( 'with valid arguments = ${ doStringify( value ) }', [
+
+    {},
+
+    { name: 'check', shouldSkip: _.noop, update: _.noop, interval: 1, checks: {} },
+
+  ], ( ARGS ) => {
+
+    def( 'ARGS', ARGS );
+
+
+    it( 'can be created', () =>
+
+      expect( () => $createMixin() ).not.to.throw()
 
     );
 
-    it( 'does have right defaulted keys', () =>
+    it( 'does return different instances', () =>
 
-      expect( $Mixin.defaultArgs ).to.have.all.keys( 'name', 'shouldSkip', 'update', 'interval', 'checks' )
+      expect( $createMixin() ).not.to.equal( $createMixin() )
 
     );
 
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+    it( 'can be mixed', () =>
 
-      [ {}, true ],
+      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-      [ { name: 'check', shouldSkip: _.noop, update: _.noop, interval: 1, checks: {} }, true ],
+    );
 
-    ], ( [ args, truthy ] ) =>
+    it( 'cannot be mixed with itself with same name', () =>
 
-      expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
+
+    );
+
+    it( 'can be mixed with itself with different name', () =>
+
+      expect( () => $checkMixing( $createMixin(), $createMixin( { name: 'different' } ) ) ).not.to.throw()
+
+    );
+
+    it( 'does return object with right properties', () =>
+
+      expect( $createMixin() ).to.have.all.keys( 'mixins' )
 
     );
 
   } );
 
-  describe( '.constructor', () => {
+} );
 
-    contexts( 'with valid arguments = ${ doStringify( value ) }', [
+describe( '#mixins', () => {
 
-      {},
+  describe( 'UnisonMixin', () => {
 
-      { name: 'check', shouldSkip: _.noop, update: _.noop, interval: 1, checks: {} },
+    describe( 'name:', () => {
 
-    ], ( ARGS ) => {
+      contexts( 'with wathcing name "${ value.input }"', [
 
-      def( 'ARGS', ARGS );
+        { input: 'check', output: 'checkUrlWatch' },
+
+        { input: 'doable', output: 'doableUrlWatch' },
+
+      ], ( { input, output } ) => {
+
+        def( 'ARGS', () => _.assign( $ARGS, { name: input } ) );
 
 
-      it( 'can be created', () =>
+        it( `does passes "${ output }"`, () =>
 
-        expect( () => $createMixin() ).not.to.throw()
+          expect( $UnisonMixinArgs ).to.include( { name: output } )
 
-      );
+        );
 
-      it( 'does return different instances', () =>
-
-        expect( $createMixin() ).not.to.equal( $createMixin() )
-
-      );
-
-      it( 'can be mixed', () =>
-
-        expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
-
-      );
-
-      it( 'cannot be mixed with itself with same name', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
-
-      );
-
-      it( 'can be mixed with itself with different name', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin( { name: 'different' } ) ) ).not.to.throw()
-
-      );
-
-      it( 'does return object with right properties', () =>
-
-        expect( $createMixin() ).to.have.all.keys( 'mixins' )
-
-      );
+      } );
 
     } );
 
-  } );
+    describe( 'shouldSkip:', () => {
 
-  describe( '#mixins', () => {
+      defLocation( 'https://a.com/' );
 
-    describe( 'UnisonMixin', () => {
-
-      describe( 'name:', () => {
-
-        contexts( 'with wathcing name "${ value.input }"', [
-
-          { input: 'check', output: 'checkUrlWatch' },
-
-          { input: 'doable', output: 'doableUrlWatch' },
-
-        ], ( { input, output } ) => {
-
-          def( 'ARGS', () => _.assign( $ARGS, { name: input } ) );
+      defSinon( 'shouldSkip', () => stub().returns( 'yep' ) );
 
 
-          it( `does passes "${ output }"`, () =>
+      it( 'does return true if href has not changed', () => {
 
-            expect( $UnisonMixinArgs ).to.include( { name: output } )
+        expect( $UnisonMixinArgs.shouldSkip() ).to.be.true;
 
-          );
-
-        } );
+        expect( $shouldSkip ).not.to.be.called;
 
       } );
 
-      describe( 'shouldSkip:', () => {
+      it( 'does return arg shouldSkip result if href has changed', () => {
 
-        defLocation( 'https://a.com/' );
+        $UnisonMixinArgs;
 
-        defSinon( 'shouldSkip', () => stub().returns( 'yep' ) );
+        $setLocation( 'https://b.com/' );
 
+        expect( $shouldSkip ).not.to.be.called;
 
-        it( 'does return true if href has not changed', () => {
+        let should = $UnisonMixinArgs.shouldSkip();
 
-          expect( $UnisonMixinArgs.shouldSkip() ).to.be.true;
+        expect( should ).to.be.eq( $shouldSkip.lastCall.returnValue );
 
-          expect( $shouldSkip ).not.to.be.called;
+        expect( $shouldSkip ).to.be.calledOnce.and.be.calledWithExactly( 'https://b.com/', 'https://a.com/' );
 
-        } );
+        expect( $UnisonMixinArgs.shouldSkip() ).to.be.true;
 
-        it( 'does return arg shouldSkip result if href has changed', () => {
-
-          $UnisonMixinArgs;
-
-          $setLocation( 'https://b.com/' );
-
-          expect( $shouldSkip ).not.to.be.called;
-
-          let should = $UnisonMixinArgs.shouldSkip();
-
-          expect( should ).to.be.eq( $shouldSkip.lastCall.returnValue );
-
-          expect( $shouldSkip ).to.be.calledOnce.and.be.calledWithExactly( 'https://b.com/', 'https://a.com/' );
-
-          expect( $UnisonMixinArgs.shouldSkip() ).to.be.true;
-
-          expect( $shouldSkip ).to.be.calledOnce;
-
-        } );
+        expect( $shouldSkip ).to.be.calledOnce;
 
       } );
 
-      describe( 'update:, interval:, checks:', () => {
+    } );
 
-        it( 'does pass without changes', () => {
+    describe( 'update:, interval:, checks:', () => {
 
-          let args = { update: function() {}, interval: 99, checks: {} };
+      it( 'does pass without changes', () => {
 
-          _.assign( $ARGS, args );
+        let args = { update: function() {}, interval: 99, checks: {} };
 
-          expect( $UnisonMixinArgs ).to.include( args );
+        _.assign( $ARGS, args );
 
-        } );
+        expect( $UnisonMixinArgs ).to.include( args );
 
       } );
 

@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'core:graphics:component.Graphics', module );
-
-
 stories.add( 'Example', function() {
 
   return (

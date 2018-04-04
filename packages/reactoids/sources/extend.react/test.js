@@ -1,21 +1,45 @@
-describe( 'extend.react', () => {
+describe( 'PropTypes', () => {
 
-  describe( 'PropTypes', () => {
+  defFunc( 'assertProp', ( type, value, truthy ) =>
 
-    defFunc( 'assertProp', ( type, value, truthy ) =>
+    expect( () => assertPropTypes( { key: type }, { key: value } ) ).onlyIf( ! truthy ).to.throw()
 
-      expect( () => assertPropTypes( { key: type }, { key: value } ) ).onlyIf( ! truthy ).to.throw()
+  );
+
+
+  describe( 'collection', () => {
+
+    its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+      [ {}, true ],
+
+      [ [], true ],
+
+      [ 1, false ],
+
+      [ 'string', false ],
+
+    ], ( [ value, truthy ] ) =>
+
+      $assertProp( PropTypes.collection, value, truthy )
 
     );
 
+  } );
 
-    describe( 'collection', () => {
+  describe( 'collectionOf', () => {
+
+    context( '(string)', () => {
 
       its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
 
-        [ {}, true ],
+        [ { key: 'string' }, true ],
 
-        [ [], true ],
+        [ [ 'string' ], true ],
+
+        [ { key: 1 }, false ],
+
+        [ [ 1 ], false ],
 
         [ 1, false ],
 
@@ -23,153 +47,125 @@ describe( 'extend.react', () => {
 
       ], ( [ value, truthy ] ) =>
 
-        $assertProp( PropTypes.collection, value, truthy )
+        $assertProp( PropTypes.collectionOf( PropTypes.string ), value, truthy )
 
       );
 
     } );
 
-    describe( 'collectionOf', () => {
+    context( '(number)', () => {
 
-      context( '(string)', () => {
+      its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
 
-        its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+        [ { key: 'string' }, false ],
 
-          [ { key: 'string' }, true ],
+        [ [ 'string' ], false ],
 
-          [ [ 'string' ], true ],
+        [ { key: 1 }, true ],
 
-          [ { key: 1 }, false ],
+        [ [ 1 ], true ],
 
-          [ [ 1 ], false ],
+        [ 1, false ],
 
-          [ 1, false ],
+        [ 'string', false ],
 
-          [ 'string', false ],
+      ], ( [ value, truthy ] ) =>
 
-        ], ( [ value, truthy ] ) =>
+        $assertProp( PropTypes.collectionOf( PropTypes.number ), value, truthy )
 
-          $assertProp( PropTypes.collectionOf( PropTypes.string ), value, truthy )
-
-        );
-
-      } );
-
-      context( '(number)', () => {
-
-        its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
-
-          [ { key: 'string' }, false ],
-
-          [ [ 'string' ], false ],
-
-          [ { key: 1 }, true ],
-
-          [ [ 1 ], true ],
-
-          [ 1, false ],
-
-          [ 'string', false ],
-
-        ], ( [ value, truthy ] ) =>
-
-          $assertProp( PropTypes.collectionOf( PropTypes.number ), value, truthy )
-
-        );
-
-      } );
+      );
 
     } );
 
-    describe( 'funced', () => {
+  } );
 
-      context( '(string)', () => {
+  describe( 'funced', () => {
 
-        its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+    context( '(string)', () => {
 
-          [ _.noop, true ],
+      its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
 
-          [ 'string', true ],
+        [ _.noop, true ],
 
-          [ 1, false ],
+        [ 'string', true ],
 
-          [ {}, false ],
+        [ 1, false ],
 
-        ], ( [ value, truthy ] ) =>
+        [ {}, false ],
 
-          $assertProp( PropTypes.funced( PropTypes.string ), value, truthy )
+      ], ( [ value, truthy ] ) =>
 
-        );
+        $assertProp( PropTypes.funced( PropTypes.string ), value, truthy )
 
-      } );
-
-      context( '([string, number])', () => {
-
-        its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
-
-          [ _.noop, true ],
-
-          [ 'string', true ],
-
-          [ 1, true ],
-
-          [ {}, false ],
-
-        ], ( [ value, truthy ] ) =>
-
-          $assertProp( PropTypes.funced( PropTypes.string, PropTypes.number ), value, truthy )
-
-        );
-
-      } );
+      );
 
     } );
 
-    describe( 'oneOrArrayOf', () => {
+    context( '([string, number])', () => {
 
-      context( '(string)', () => {
+      its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
 
-        its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+        [ _.noop, true ],
 
-          [ 'string', true ],
+        [ 'string', true ],
 
-          [ [ 'string', 'next' ], true ],
+        [ 1, true ],
 
-          [ _.noop, false ],
+        [ {}, false ],
 
-          [ 1, false ],
+      ], ( [ value, truthy ] ) =>
 
-          [ {}, false ],
+        $assertProp( PropTypes.funced( PropTypes.string, PropTypes.number ), value, truthy )
 
-        ], ( [ value, truthy ] ) =>
+      );
 
-          $assertProp( PropTypes.oneOrArrayOf( PropTypes.string ), value, truthy )
+    } );
 
-        );
+  } );
 
-      } );
+  describe( 'oneOrArrayOf', () => {
 
-      context( '([string, number])', () => {
+    context( '(string)', () => {
 
-        its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+      its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
 
-          [ 'string', true ],
+        [ 'string', true ],
 
-          [ [ 'string', 'next' ], true ],
+        [ [ 'string', 'next' ], true ],
 
-          [ _.noop, false ],
+        [ _.noop, false ],
 
-          [ 1, true ],
+        [ 1, false ],
 
-          [ {}, false ],
+        [ {}, false ],
 
-        ], ( [ value, truthy ] ) =>
+      ], ( [ value, truthy ] ) =>
 
-          $assertProp( PropTypes.oneOrArrayOf( PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ) ), value, truthy )
+        $assertProp( PropTypes.oneOrArrayOf( PropTypes.string ), value, truthy )
 
-        );
+      );
 
-      } );
+    } );
+
+    context( '([string, number])', () => {
+
+      its( ( { value } ) => titleIf( `does pass ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+        [ 'string', true ],
+
+        [ [ 'string', 'next' ], true ],
+
+        [ _.noop, false ],
+
+        [ 1, true ],
+
+        [ {}, false ],
+
+      ], ( [ value, truthy ] ) =>
+
+        $assertProp( PropTypes.oneOrArrayOf( PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ) ), value, truthy )
+
+      );
 
     } );
 

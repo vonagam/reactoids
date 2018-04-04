@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'shape:component.RadialArea', module );
-
-
 stories.add( 'Example', function() {
 
   return (

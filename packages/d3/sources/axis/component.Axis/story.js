@@ -1,5 +1,3 @@
-const stories = StoriesOf( 'axis:component.Axis', module );
-
 stories.addDecorator( Knobs.withKnobs );
 
 

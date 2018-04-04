@@ -1,5 +1,3 @@
-const stories = StoriesOf( 'shape:component.Arc', module );
-
 stories.addDecorator( Knobs.withKnobs );
 
 

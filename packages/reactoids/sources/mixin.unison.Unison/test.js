@@ -3,283 +3,279 @@ import proxyquire from 'proxyquire';
 proxyquire.noCallThru();
 
 
-describe( 'mixin.unison.Unison', () => {
+const ToggleMixinSpy = defMixinSpy( ToggleMixin );
 
-  const ToggleMixinSpy = defMixinSpy( ToggleMixin );
+const UnisonMixin = proxyquire( './index', { '../mixin.meta.Toggle': ToggleMixinSpy } ).default;
 
-  const UnisonMixin = proxyquire( './index', { '../mixin.meta.Toggle': ToggleMixinSpy } ).default;
+defReactMixin( UnisonMixin, () => ( { update: $update, shouldSkip: $shouldSkip, interval: 1, checks: {} } ) );
 
-  defReactMixin( UnisonMixin, () => ( { update: $update, shouldSkip: $shouldSkip, interval: 1, checks: {} } ) );
+defSinon( 'update', () => stub() );
 
-  defSinon( 'update', () => stub() );
+defSinon( 'shouldSkip', () => stub().returns( false ) );
 
-  defSinon( 'shouldSkip', () => stub().returns( false ) );
+defSinon( 'window', () => ( {
 
-  defSinon( 'window', () => ( {
+  setInterval: stub( window, 'setInterval' ),
 
-    setInterval: stub( window, 'setInterval' ),
+  clearInterval: stub( window, 'clearInterval' ),
 
-    clearInterval: stub( window, 'clearInterval' ),
-
-  } ) );
+} ) );
 
 
-  describe( '.argTypes', () => {
+describe( '.argTypes', () => {
 
-    it( 'does have right keys', () =>
+  it( 'does have right keys', () =>
 
-      expect( $Mixin.argTypes ).to.have.all.keys( 'name', 'update', 'shouldSkip', 'interval', 'checks' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'name', 'update', 'shouldSkip', 'interval', 'checks' )
+
+  );
+
+  it( 'does have right defaulted keys', () =>
+
+    expect( $Mixin.defaultArgs ).to.have.all.keys( 'name', 'shouldSkip', 'checks' )
+
+  );
+
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+    [ {}, false ],
+
+    [ { update: _.noop }, false ],
+
+    [ { update: _.noop, interval: 1 }, true ],
+
+    [ { update: 1, interval: 1 }, false ],
+
+    [ { update: _.noop, interval: '1' }, false ],
+
+    [ { update: _.noop, interval: 1, shouldSkip: _.noop }, true ],
+
+    [ { update: _.noop, interval: 1, name: 'check' }, true ],
+
+    [ { update: _.noop, interval: 1, checks: {} }, true ],
+
+  ], ( [ args, truthy ] ) =>
+
+    expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+
+  );
+
+} );
+
+describe( '.constructor', () => {
+
+  contexts( 'with valid arguments = ${ doStringify( value ) }', [
+
+    { update: _.noop, interval: 1 },
+
+    { update: _.noop, interval: 2, name: 'check', checks: {}, shouldSkip: _.noop },
+
+  ], ( ARGS ) => {
+
+    def( 'ARGS', ARGS );
+
+
+    it( 'can be created', () =>
+
+      expect( () => $createMixin() ).not.to.throw()
 
     );
 
-    it( 'does have right defaulted keys', () =>
+    it( 'does return different instances', () =>
 
-      expect( $Mixin.defaultArgs ).to.have.all.keys( 'name', 'shouldSkip', 'checks' )
+      expect( $createMixin() ).not.to.equal( $createMixin() )
 
     );
 
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+    it( 'can be mixed', () =>
 
-      [ {}, false ],
+      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-      [ { update: _.noop }, false ],
+    );
 
-      [ { update: _.noop, interval: 1 }, true ],
+    it( 'cannot be mixed with itself with same name', () =>
 
-      [ { update: 1, interval: 1 }, false ],
+      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
 
-      [ { update: _.noop, interval: '1' }, false ],
+    );
 
-      [ { update: _.noop, interval: 1, shouldSkip: _.noop }, true ],
+    it( 'can be mixed with itself with different name', () =>
 
-      [ { update: _.noop, interval: 1, name: 'check' }, true ],
+      expect( () => $checkMixing( $createMixin(), $createMixin( { name: 'different' } ) ) ).not.to.throw()
 
-      [ { update: _.noop, interval: 1, checks: {} }, true ],
+    );
 
-    ], ( [ args, truthy ] ) =>
+    it( 'does return object with right properties', () =>
 
-      expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+      expect( $createMixin() ).to.have.all.keys( 'mixins' )
 
     );
 
   } );
 
-  describe( '.constructor', () => {
+} );
 
-    contexts( 'with valid arguments = ${ doStringify( value ) }', [
+describe( 'mixins', () => {
 
-      { update: _.noop, interval: 1 },
+  describe( 'ToggleMixin', () => {
 
-      { update: _.noop, interval: 2, name: 'check', checks: {}, shouldSkip: _.noop },
+    describe( 'name:', () => {
 
-    ], ( ARGS ) => {
+      contexts( 'with unison name "${ value.input }"', [
 
-      def( 'ARGS', ARGS );
+        { input: 'check', output: 'checkUnison' },
+
+        { input: 'doable', output: 'doableUnison' },
+
+      ], ( { input, output } ) => {
+
+        def( 'ARGS', () => _.assign( $ARGS, { name: input } ) );
 
 
-      it( 'can be created', () =>
+        it( `does passes "${ output }"`, () =>
 
-        expect( () => $createMixin() ).not.to.throw()
+          expect( $ToggleMixinArgs ).to.include( { name: output } )
 
-      );
+        );
 
-      it( 'does return different instances', () =>
-
-        expect( $createMixin() ).not.to.equal( $createMixin() )
-
-      );
-
-      it( 'can be mixed', () =>
-
-        expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
-
-      );
-
-      it( 'cannot be mixed with itself with same name', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
-
-      );
-
-      it( 'can be mixed with itself with different name', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin( { name: 'different' } ) ) ).not.to.throw()
-
-      );
-
-      it( 'does return object with right properties', () =>
-
-        expect( $createMixin() ).to.have.all.keys( 'mixins' )
-
-      );
+      } );
 
     } );
 
-  } );
+    describe( 'checks:', () => {
 
-  describe( 'mixins', () => {
+      it( 'does pass without changes', () => {
 
-    describe( 'ToggleMixin', () => {
+        let checks = { componentWillUpdate: _.constant( false ) };
 
-      describe( 'name:', () => {
+        $ARGS.checks = checks;
 
-        contexts( 'with unison name "${ value.input }"', [
-
-          { input: 'check', output: 'checkUnison' },
-
-          { input: 'doable', output: 'doableUnison' },
-
-        ], ( { input, output } ) => {
-
-          def( 'ARGS', () => _.assign( $ARGS, { name: input } ) );
-
-
-          it( `does passes "${ output }"`, () =>
-
-            expect( $ToggleMixinArgs ).to.include( { name: output } )
-
-          );
-
-        } );
+        expect( $ToggleMixinArgs ).to.include( { checks } );
 
       } );
 
-      describe( 'checks:', () => {
+    } );
 
-        it( 'does pass without changes', () => {
+    describe( 'toggle:', () => {
 
-          let checks = { componentWillUpdate: _.constant( false ) };
+      defFunc( 'toggle', ( instance, bool ) => $ToggleMixinArgs.toggle( instance, bool ) );
 
-          $ARGS.checks = checks;
 
-          expect( $ToggleMixinArgs ).to.include( { checks } );
+      it( 'does call setInterval on first toggle on', () => {
 
-        } );
+        expect( () => $toggle( {}, true ) ).to.alter( () => $window.setInterval.callCount, { by: 1 } );
+
+        expect( $window.setInterval ).to.have.been.calledWith( sinon.match.func, $ARGS.interval );
 
       } );
 
-      describe( 'toggle:', () => {
+      it( 'does not call setInterval on second toggle on', () => {
 
-        defFunc( 'toggle', ( instance, bool ) => $ToggleMixinArgs.toggle( instance, bool ) );
+        $toggle( 1, true );
+
+        expect( () => $toggle( 2, true ) ).to.alter( () => $window.setInterval.callCount, { by: 1 } );
+
+      } );
+
+      it( 'does call clearInterval on turning off all turned on instances', () => {
+
+        $toggle( 1, true );
+
+        $toggle( 2, true );
+
+        expect( () => $toggle( 1, false ) ).not.to.alter( () => $window.clearInterval.callCount, { from: 0 } );
+
+        expect( () => $toggle( 2, false ) ).to.alter( () => $window.clearInterval.callCount, { from: 0, to: 1 } );
+
+        expect( $window.clearInterval ).to.have.been.calledWith( $window.setInterval.lastCall.returnValue );
+
+      } );
+
+      it( 'does call setInterval after first toggle on since full turning off', () => {
+
+        $toggle( 1, true );
+
+        $toggle( 1, false );
+
+        expect( () => $toggle( 1, true ) ).to.alter( () => $window.setInterval.callCount, { from: 1, to: 2 } );
+
+      } );
 
 
-        it( 'does call setInterval on first toggle on', () => {
+      describe( 'intervaled function', () => {
 
-          expect( () => $toggle( {}, true ) ).to.alter( () => $window.setInterval.callCount, { by: 1 } );
+        def( 'instance', {} );
 
-          expect( $window.setInterval ).to.have.been.calledWith( sinon.match.func, $ARGS.interval );
+        beforeEach( 'turn on', () => $toggle( $instance, true ) );
+
+        def( 'interval', () => $window.setInterval.firstCall.args[ 0 ] );
+
+
+        it( 'does calls arg update with instance as argument', () => {
+
+          expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 1 } );
+
+          expect( $update ).to.have.been.calledWith( $instance );
 
         } );
 
-        it( 'does not call setInterval on second toggle on', () => {
-
-          $toggle( 1, true );
-
-          expect( () => $toggle( 2, true ) ).to.alter( () => $window.setInterval.callCount, { by: 1 } );
-
-        } );
-
-        it( 'does call clearInterval on turning off all turned on instances', () => {
-
-          $toggle( 1, true );
+        it( 'does calls arg update for all instances', () => {
 
           $toggle( 2, true );
 
-          expect( () => $toggle( 1, false ) ).not.to.alter( () => $window.clearInterval.callCount, { from: 0 } );
+          expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 2 } );
 
-          expect( () => $toggle( 2, false ) ).to.alter( () => $window.clearInterval.callCount, { from: 0, to: 1 } );
+          expect( $update ).to.have.been.calledWith( $instance );
 
-          expect( $window.clearInterval ).to.have.been.calledWith( $window.setInterval.lastCall.returnValue );
-
-        } );
-
-        it( 'does call setInterval after first toggle on since full turning off', () => {
-
-          $toggle( 1, true );
-
-          $toggle( 1, false );
-
-          expect( () => $toggle( 1, true ) ).to.alter( () => $window.setInterval.callCount, { from: 1, to: 2 } );
+          expect( $update ).to.have.been.calledWith( 2 );
 
         } );
 
+        it( 'does not calls arg update if arg shouldSkip returns true', () => {
 
-        describe( 'intervaled function', () => {
+          $shouldSkip.returns( true );
 
-          def( 'instance', {} );
+          expect( () => $interval() ).not.to.alter( () => $update.callCount, { from: 0 } );
 
-          beforeEach( 'turn on', () => $toggle( $instance, true ) );
+        } );
 
-          def( 'interval', () => $window.setInterval.firstCall.args[ 0 ] );
+        it( 'does allow to toggling off instances while updating', () => {
 
+          $toggle( 2, true );
 
-          it( 'does calls arg update with instance as argument', () => {
+          $toggle( 3, true );
 
-            expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 1 } );
+          $update.onFirstCall().callsFake( () => $toggle( 2, false ) );
 
-            expect( $update ).to.have.been.calledWith( $instance );
+          expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 2 } );
 
-          } );
+          expect( $update ).to.have.been.calledWith( $instance );
 
-          it( 'does calls arg update for all instances', () => {
+          expect( $update ).to.have.been.calledWith( 3 );
 
-            $toggle( 2, true );
+          expect( $window.clearInterval ).not.to.have.been.called;
 
-            expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 2 } );
+        } );
 
-            expect( $update ).to.have.been.calledWith( $instance );
+        it( 'does allow to toggling off all instances while updating', () => {
 
-            expect( $update ).to.have.been.calledWith( 2 );
+          $toggle( 2, true );
 
-          } );
+          $toggle( 3, true );
 
-          it( 'does not calls arg update if arg shouldSkip returns true', () => {
+          $update.onFirstCall().callsFake( () => {
 
-            $shouldSkip.returns( true );
+            $toggle( $instance, false );
 
-            expect( () => $interval() ).not.to.alter( () => $update.callCount, { from: 0 } );
+            $toggle( 2, false );
 
-          } );
-
-          it( 'does allow to toggling off instances while updating', () => {
-
-            $toggle( 2, true );
-
-            $toggle( 3, true );
-
-            $update.onFirstCall().callsFake( () => $toggle( 2, false ) );
-
-            expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 2 } );
-
-            expect( $update ).to.have.been.calledWith( $instance );
-
-            expect( $update ).to.have.been.calledWith( 3 );
-
-            expect( $window.clearInterval ).not.to.have.been.called;
+            $toggle( 3, false );
 
           } );
 
-          it( 'does allow to toggling off all instances while updating', () => {
+          expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 1 } );
 
-            $toggle( 2, true );
-
-            $toggle( 3, true );
-
-            $update.onFirstCall().callsFake( () => {
-
-              $toggle( $instance, false );
-
-              $toggle( 2, false );
-
-              $toggle( 3, false );
-
-            } );
-
-            expect( () => $interval() ).to.alter( () => $update.callCount, { from: 0, to: 1 } );
-
-            expect( $window.clearInterval ).to.have.been.calledOnce;
-
-          } );
+          expect( $window.clearInterval ).to.have.been.calledOnce;
 
         } );
 

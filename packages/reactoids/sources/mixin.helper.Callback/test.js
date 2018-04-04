@@ -1,147 +1,143 @@
-describe( 'mixin.helper.Callback', () => {
-
-  defReactMixin( CallbackMixin );
+defReactMixin( CallbackMixin );
 
 
-  describe( '.constructor', () => {
+describe( '.constructor', () => {
 
-    it( 'can be created without arguments', () =>
+  it( 'can be created without arguments', () =>
 
-      expect( () => $createMixin() ).not.to.throw()
+    expect( () => $createMixin() ).not.to.throw()
 
-    );
+  );
 
-    it( 'does return same instance', () =>
+  it( 'does return same instance', () =>
 
-      expect( $createMixin() ).to.equal( $createMixin() )
+    expect( $createMixin() ).to.equal( $createMixin() )
 
-    );
+  );
 
-    it( 'can be mixed', () =>
+  it( 'can be mixed', () =>
 
-      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
+    expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-    );
+  );
 
-    it( 'can be mixed with itself', () =>
+  it( 'can be mixed with itself', () =>
 
-      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).not.to.throw()
+    expect( () => $checkMixing( $createMixin(), $createMixin() ) ).not.to.throw()
 
-    );
+  );
 
-    it( 'does return object with right properties', () =>
+  it( 'does return object with right properties', () =>
 
-      expect( $createMixin() ).to.have.all.keys( 'callback' )
+    expect( $createMixin() ).to.have.all.keys( 'callback' )
 
-    );
+  );
+
+} );
+
+describe( '#callback', () => {
+
+  defFunc( 'callback', ( ...args ) => $component.callback( ...args ) );
+
+  defFunc( 'call', ( ...args ) => $callback( ...args )( ...$args ) );
+
+  def( 'args', [ 'random', 33 ] );
+
+  defSinon( 'callbacks', {
+
+    'props.hello': spy(),
+
+    'state.world': spy(),
+
+    '!': spy(),
 
   } );
 
-  describe( '#callback', () => {
+  const checks = [
 
-    defFunc( 'callback', ( ...args ) => $component.callback( ...args ) );
+    { keys: '', array: [] },
 
-    defFunc( 'call', ( ...args ) => $callback( ...args )( ...$args ) );
+    { keys: 'props.hello', array: [ 'props.hello' ] },
 
-    def( 'args', [ 'random', 33 ] );
+    { keys: 'asd, state.world', array: [ 'asd', 'state.world' ] },
 
-    defSinon( 'callbacks', {
+    { keys: [] },
 
-      'props.hello': spy(),
+    { keys: [ '!', 'props.unknown' ] },
 
-      'state.world': spy(),
+    { keys: [ 'state.world', 'props.hello' ] },
 
-      '!': spy(),
-
-    } );
-
-    const checks = [
-
-      { keys: '', array: [] },
-
-      { keys: 'props.hello', array: [ 'props.hello' ] },
-
-      { keys: 'asd, state.world', array: [ 'asd', 'state.world' ] },
-
-      { keys: [] },
-
-      { keys: [ '!', 'props.unknown' ] },
-
-      { keys: [ 'state.world', 'props.hello' ] },
-
-    ];
+  ];
 
 
-    its( 'does throw on invalid argument ${ doStringify( value ) }', [ undefined, null, false, true, 5 ], ( keys ) =>
+  its( 'does throw on invalid argument ${ doStringify( value ) }', [ undefined, null, false, true, 5 ], ( keys ) =>
 
-      expect( () => $callback( keys ) ).to.throw()
+    expect( () => $callback( keys ) ).to.throw()
 
-    );
+  );
 
-    its( 'does return same function for same argument ${ doStringify( value.keys ) }', checks, ( { keys } ) =>
+  its( 'does return same function for same argument ${ doStringify( value.keys ) }', checks, ( { keys } ) =>
 
-      expect( $callback( keys ) ).to.be.a( 'function' ).that.is.equal( $callback( keys ) )
+    expect( $callback( keys ) ).to.be.a( 'function' ).that.is.equal( $callback( keys ) )
 
-    );
+  );
 
-    context( 'without set values', () => {
+  context( 'without set values', () => {
 
-      its( 'does not call any callback ${ doStringify( value.keys ) }', checks, ( { keys } ) => {
+    its( 'does not call any callback ${ doStringify( value.keys ) }', checks, ( { keys } ) => {
 
-        $call( keys );
+      $call( keys );
 
-        expect( $callbacks[ 'props.hello' ] ).not.to.be.called;
+      expect( $callbacks[ 'props.hello' ] ).not.to.be.called;
 
-        expect( $callbacks[ 'state.world' ] ).not.to.be.called;
+      expect( $callbacks[ 'state.world' ] ).not.to.be.called;
 
-        expect( $callbacks[ '!' ] ).not.to.be.called;
-
-      } );
+      expect( $callbacks[ '!' ] ).not.to.be.called;
 
     } );
 
-    context( 'with set values', () => {
+  } );
 
-      beforeEach( 'set values', () => {
+  context( 'with set values', () => {
 
-        $mount.setProps( { hello: $callbacks[ 'props.hello' ] } );
+    beforeEach( 'set values', () => {
 
-        $mount.setState( { world: $callbacks[ 'state.world' ] } );
+      $mount.setProps( { hello: $callbacks[ 'props.hello' ] } );
 
-        $component[ '!' ] = $callbacks[ '!' ];
+      $mount.setState( { world: $callbacks[ 'state.world' ] } );
 
-      } );
+      $component[ '!' ] = $callbacks[ '!' ];
+
+    } );
 
 
-      its( 'does call relevant callbacks ${ doStringify( value.keys ) }', checks, ( { keys, array } ) => {
+    its( 'does call relevant callbacks ${ doStringify( value.keys ) }', checks, ( { keys, array } ) => {
 
-        $call( keys );
+      $call( keys );
 
-        _.each( $callbacks, ( callback, key ) => {
+      _.each( $callbacks, ( callback, key ) => {
 
-          let called = _.includes( array || keys, key );
+        let called = _.includes( array || keys, key );
 
-          expect( callback ).to.have.callCount( called ? 1 : 0 );
+        expect( callback ).to.have.callCount( called ? 1 : 0 );
 
-          if ( called ) {
+        if ( called ) {
 
-            expect( callback ).to.be.calledOn( $component );
+          expect( callback ).to.be.calledOn( $component );
 
-            expect( callback ).to.be.calledWithExactly( $args[ 0 ], $args[ 1 ] );
+          expect( callback ).to.be.calledWithExactly( $args[ 0 ], $args[ 1 ] );
 
-          }
-
-        } );
-
-      } );
-
-      it( 'does preserve order of callbacks', () => {
-
-        $call( 'state.world, props.hello' );
-
-        expect( $callbacks[ 'state.world' ] ).to.be.calledImmediatelyBefore( $callbacks[ 'props.hello' ] );
+        }
 
       } );
+
+    } );
+
+    it( 'does preserve order of callbacks', () => {
+
+      $call( 'state.world, props.hello' );
+
+      expect( $callbacks[ 'state.world' ] ).to.be.calledImmediatelyBefore( $callbacks[ 'props.hello' ] );
 
     } );
 

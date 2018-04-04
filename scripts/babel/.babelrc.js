@@ -30,6 +30,8 @@ module.exports = {
 
   plugins: [
 
+    [ require( './plugins/babel-plugin-auto-wrap' ) ],
+
     [ 'babel-plugin-transform-strict-mode' ],
 
     [ 'babel-plugin-transform-object-rest-spread', { useBuiltIns: true } ],

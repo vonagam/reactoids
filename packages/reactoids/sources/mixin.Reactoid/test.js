@@ -3,272 +3,268 @@ import proxyquire from 'proxyquire';
 proxyquire.noCallThru();
 
 
-describe( 'mixin.Reactoid', () => {
+const PureRenderMixinSpy = _.assign( spy( PureRenderMixin ), PureRenderMixin );
 
-  const PureRenderMixinSpy = _.assign( spy( PureRenderMixin ), PureRenderMixin );
+const ClassedMixinSpy = _.assign( spy( ClassedMixin ), ClassedMixin );
 
-  const ClassedMixinSpy = _.assign( spy( ClassedMixin ), ClassedMixin );
+const StringedMixinSpy = _.assign( spy( StringedMixin ), StringedMixin );
 
-  const StringedMixinSpy = _.assign( spy( StringedMixin ), StringedMixin );
+const RenderSlotsMixinSpy = _.assign( spy( RenderSlotsMixin ), RenderSlotsMixin );
 
-  const RenderSlotsMixinSpy = _.assign( spy( RenderSlotsMixin ), RenderSlotsMixin );
+const StateKeyMixinSpy = _.assign( spy( StateKeyMixin ), StateKeyMixin );
 
-  const StateKeyMixinSpy = _.assign( spy( StateKeyMixin ), StateKeyMixin );
+const OmitPropsMixinSpy = _.assign( spy( OmitPropsMixin ), OmitPropsMixin );
 
-  const OmitPropsMixinSpy = _.assign( spy( OmitPropsMixin ), OmitPropsMixin );
+const RefMixinSpy = _.assign( spy( RefMixin ), RefMixin );
 
-  const RefMixinSpy = _.assign( spy( RefMixin ), RefMixin );
+const DomMixinSpy = _.assign( spy( DomMixin ), DomMixin );
 
-  const DomMixinSpy = _.assign( spy( DomMixin ), DomMixin );
+const CallbackMixinSpy = _.assign( spy( CallbackMixin ), CallbackMixin );
 
-  const CallbackMixinSpy = _.assign( spy( CallbackMixin ), CallbackMixin );
-
-  const CacheMixinSpy = _.assign( spy( CacheMixin ), CacheMixin );
+const CacheMixinSpy = _.assign( spy( CacheMixin ), CacheMixin );
 
 
-  const mixins = {
+const mixins = {
 
-    '../mixin.limit.PureRender': PureRenderMixinSpy,
+  '../mixin.limit.PureRender': PureRenderMixinSpy,
 
-    '../mixin.customization.Classed': ClassedMixinSpy,
+  '../mixin.customization.Classed': ClassedMixinSpy,
 
-    '../mixin.customization.Stringed': StringedMixinSpy,
+  '../mixin.customization.Stringed': StringedMixinSpy,
 
-    '../mixin.customization.RenderSlots': RenderSlotsMixinSpy,
+  '../mixin.customization.RenderSlots': RenderSlotsMixinSpy,
 
-    '../mixin.helper.StateKey': StateKeyMixinSpy,
+  '../mixin.helper.StateKey': StateKeyMixinSpy,
 
-    '../mixin.helper.OmitProps': OmitPropsMixinSpy,
+  '../mixin.helper.OmitProps': OmitPropsMixinSpy,
 
-    '../mixin.helper.Ref': RefMixinSpy,
+  '../mixin.helper.Ref': RefMixinSpy,
 
-    '../mixin.helper.Dom': DomMixinSpy,
+  '../mixin.helper.Dom': DomMixinSpy,
 
-    '../mixin.helper.Callback': CallbackMixinSpy,
+  '../mixin.helper.Callback': CallbackMixinSpy,
 
-    '../mixin.helper.Cache': CacheMixinSpy,
+  '../mixin.helper.Cache': CacheMixinSpy,
 
-  };
+};
 
-  const ReactoidMixin = proxyquire( './index', mixins ).default;
+const ReactoidMixin = proxyquire( './index', mixins ).default;
 
-  defReactMixin( ReactoidMixin );
+defReactMixin( ReactoidMixin );
 
-  defSinon( 'mixins', mixins );
+defSinon( 'mixins', mixins );
 
 
-  describe( '.argTypes', () => {
+describe( '.argTypes', () => {
 
-    it( 'does have right keys', () =>
+  it( 'does have right keys', () =>
 
-      expect( $Mixin.argTypes ).to.have.all.keys( 'pure', 'classes', 'strings', 'slots', 'purifiedPaths', 'dirtiedPaths' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'pure', 'classes', 'strings', 'slots', 'purifiedPaths', 'dirtiedPaths' )
+
+  );
+
+  it( 'does have right defaulted keys', () =>
+
+    expect( $Mixin.defaultArgs ).to.have.all.keys( 'pure', 'classes', 'strings', 'slots', 'purifiedPaths', 'dirtiedPaths' )
+
+  );
+
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+    [ {}, true ],
+
+    [ { pure: false, classes: false, strings: false, slots: false }, true ],
+
+    [ { pure: true, classes: {}, strings: [], slots: {}, purifiedPaths: [], dirtiedPaths: [] }, true ],
+
+  ], ( [ args, truthy ] ) =>
+
+    expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+
+  );
+
+} );
+
+describe( '.constructor', () => {
+
+  contexts( 'with valid arguments = ${ doStringify( value ) }', [
+
+    {},
+
+    { pure: false, classes: false, strings: false, slots: false, },
+
+    { pure: true, classes: {}, strings: [], slots: {}, purifiedPaths: [], dirtiedPaths: [] },
+
+  ], ( ARGS ) => {
+
+    def( 'ARGS', ARGS );
+
+
+    it( 'can be created without arguments', () =>
+
+      expect( () => $createMixin() ).not.to.throw()
 
     );
 
-    it( 'does have right defaulted keys', () =>
+    it( 'does return different instances', () =>
 
-      expect( $Mixin.defaultArgs ).to.have.all.keys( 'pure', 'classes', 'strings', 'slots', 'purifiedPaths', 'dirtiedPaths' )
+      expect( $createMixin() ).not.to.equal( $createMixin() )
 
     );
 
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+    it( 'can be mixed', () =>
 
-      [ {}, true ],
+      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-      [ { pure: false, classes: false, strings: false, slots: false }, true ],
+    );
 
-      [ { pure: true, classes: {}, strings: [], slots: {}, purifiedPaths: [], dirtiedPaths: [] }, true ],
+    itIf( 'can be mixed with itself', ARGS.pure === false && ARGS.classes === false && ! ARGS.strings && ! ARGS.slots, ( truthy ) =>
 
-    ], ( [ args, truthy ] ) =>
+      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).onlyIf( ! truthy ).to.throw()
 
-      expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+    );
+
+    it( 'does return object with right properties', () =>
+
+      expect( $createMixin() ).to.have.all.keys( 'mixins' )
 
     );
 
   } );
 
-  describe( '.constructor', () => {
+} );
 
-    contexts( 'with valid arguments = ${ doStringify( value ) }', [
+describe( '#mixins', () => {
 
-      {},
+  describe( 'PureRenderMixin', () => {
 
-      { pure: false, classes: false, strings: false, slots: false, },
+    contexts( 'with pure = ${ doStringify( value ) }', [ true, false ], ( pure ) => {
 
-      { pure: true, classes: {}, strings: [], slots: {}, purifiedPaths: [], dirtiedPaths: [] },
-
-    ], ( ARGS ) => {
-
-      def( 'ARGS', ARGS );
+      def( 'ARGS', () => _.assign( $ARGS, { pure, purifiedPaths: [ '1' ], dirtiedPaths: [ '2' ] } ) );
 
 
-      it( 'can be created without arguments', () =>
+      itIf( 'does get included', pure, ( truthy ) => {
 
-        expect( () => $createMixin() ).not.to.throw()
+        let mixins = $mixin.mixins;
 
-      );
+        expect( PureRenderMixinSpy ).to.have.callCount( +truthy );
 
-      it( 'does return different instances', () =>
+        if ( truthy ) {
 
-        expect( $createMixin() ).not.to.equal( $createMixin() )
+          expect( PureRenderMixinSpy ).to.be.calledWithMatch( { purifiedPaths: [ '1' ], dirtiedPaths: [ '2' ] } );
 
-      );
+          expect( $mixin.mixins ).to.include( PureRenderMixinSpy.lastCall.returnValue );
 
-      it( 'can be mixed', () =>
+        }
 
-        expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
-
-      );
-
-      itIf( 'can be mixed with itself', ARGS.pure === false && ARGS.classes === false && ! ARGS.strings && ! ARGS.slots, ( truthy ) =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin() ) ).onlyIf( ! truthy ).to.throw()
-
-      );
-
-      it( 'does return object with right properties', () =>
-
-        expect( $createMixin() ).to.have.all.keys( 'mixins' )
-
-      );
+      } );
 
     } );
 
   } );
 
-  describe( '#mixins', () => {
+  describe( 'ClassedMixin', () => {
 
-    describe( 'PureRenderMixin', () => {
+    contexts( 'with classes = ${ doStringify( value ) }', [ undefined, false, {} ], ( classes ) => {
 
-      contexts( 'with pure = ${ doStringify( value ) }', [ true, false ], ( pure ) => {
-
-        def( 'ARGS', () => _.assign( $ARGS, { pure, purifiedPaths: [ '1' ], dirtiedPaths: [ '2' ] } ) );
+      def( 'ARGS', () => _.assign( $ARGS, { classes } ) );
 
 
-        itIf( 'does get included', pure, ( truthy ) => {
+      itIf( 'does get included', classes !== false, ( truthy ) => {
 
-          let mixins = $mixin.mixins;
+        let mixins = $mixin.mixins;
 
-          expect( PureRenderMixinSpy ).to.have.callCount( +truthy );
+        expect( ClassedMixinSpy ).to.have.callCount( +truthy );
 
-          if ( truthy ) {
+        if ( truthy ) {
 
-            expect( PureRenderMixinSpy ).to.be.calledWithMatch( { purifiedPaths: [ '1' ], dirtiedPaths: [ '2' ] } );
+          expect( ClassedMixinSpy ).to.be.calledWithMatch( { classes: classes === undefined ? {} : classes } );
 
-            expect( $mixin.mixins ).to.include( PureRenderMixinSpy.lastCall.returnValue );
+          expect( $mixin.mixins ).to.include( ClassedMixinSpy.lastCall.returnValue );
 
-          }
-
-        } );
+        }
 
       } );
 
     } );
 
-    describe( 'ClassedMixin', () => {
+  } );
 
-      contexts( 'with classes = ${ doStringify( value ) }', [ undefined, false, {} ], ( classes ) => {
+  describe( 'StringedMixin', () => {
 
-        def( 'ARGS', () => _.assign( $ARGS, { classes } ) );
+    contexts( 'with strings = ${ doStringify( value ) }', [ undefined, false, [] ], ( strings ) => {
 
-
-        itIf( 'does get included', classes !== false, ( truthy ) => {
-
-          let mixins = $mixin.mixins;
-
-          expect( ClassedMixinSpy ).to.have.callCount( +truthy );
-
-          if ( truthy ) {
-
-            expect( ClassedMixinSpy ).to.be.calledWithMatch( { classes: classes === undefined ? {} : classes } );
-
-            expect( $mixin.mixins ).to.include( ClassedMixinSpy.lastCall.returnValue );
-
-          }
-
-        } );
-
-      } );
-
-    } );
-
-    describe( 'StringedMixin', () => {
-
-      contexts( 'with strings = ${ doStringify( value ) }', [ undefined, false, [] ], ( strings ) => {
-
-        def( 'ARGS', () => _.assign( $ARGS, { strings } ) );
+      def( 'ARGS', () => _.assign( $ARGS, { strings } ) );
 
 
-        itIf( 'does get included', Boolean( strings ), ( truthy ) => {
+      itIf( 'does get included', Boolean( strings ), ( truthy ) => {
 
-          let mixins = $mixin.mixins;
+        let mixins = $mixin.mixins;
 
-          expect( StringedMixinSpy ).to.have.callCount( +truthy );
+        expect( StringedMixinSpy ).to.have.callCount( +truthy );
 
-          if ( truthy ) {
+        if ( truthy ) {
 
-            expect( StringedMixinSpy ).to.be.calledWithMatch( { strings } );
+          expect( StringedMixinSpy ).to.be.calledWithMatch( { strings } );
 
-            expect( $mixin.mixins ).to.include( StringedMixinSpy.lastCall.returnValue );
+          expect( $mixin.mixins ).to.include( StringedMixinSpy.lastCall.returnValue );
 
-          }
-
-        } );
+        }
 
       } );
 
     } );
 
-    describe( 'RenderSlotsMixin', () => {
+  } );
 
-      contexts( 'with slots = ${ doStringify( value ) }', [ undefined, false, {} ], ( slots ) => {
+  describe( 'RenderSlotsMixin', () => {
 
-        def( 'ARGS', () => _.assign( $ARGS, { slots } ) );
+    contexts( 'with slots = ${ doStringify( value ) }', [ undefined, false, {} ], ( slots ) => {
+
+      def( 'ARGS', () => _.assign( $ARGS, { slots } ) );
 
 
-        itIf( 'does get included', Boolean( slots ), ( truthy ) => {
+      itIf( 'does get included', Boolean( slots ), ( truthy ) => {
 
-          let mixins = $mixin.mixins;
+        let mixins = $mixin.mixins;
 
-          expect( RenderSlotsMixinSpy ).to.have.callCount( +truthy );
+        expect( RenderSlotsMixinSpy ).to.have.callCount( +truthy );
 
-          if ( truthy ) {
+        if ( truthy ) {
 
-            expect( RenderSlotsMixinSpy ).to.be.calledWithMatch( { slots } );
+          expect( RenderSlotsMixinSpy ).to.be.calledWithMatch( { slots } );
 
-            expect( $mixin.mixins ).to.include( RenderSlotsMixinSpy.lastCall.returnValue );
+          expect( $mixin.mixins ).to.include( RenderSlotsMixinSpy.lastCall.returnValue );
 
-          }
-
-        } );
+        }
 
       } );
 
     } );
 
-    describe( 'StateKeyMixin, OmitPropsMixin, RefMixin, DomMixin, CallbackMixin, CacheMixin', () => {
+  } );
 
-      it( 'does get included', () =>
+  describe( 'StateKeyMixin, OmitPropsMixin, RefMixin, DomMixin, CallbackMixin, CacheMixin', () => {
 
-        expect( $mixin.mixins ).to.include.members( [
+    it( 'does get included', () =>
 
-          StateKeyMixinSpy.lastCall.returnValue,
+      expect( $mixin.mixins ).to.include.members( [
 
-          OmitPropsMixinSpy.lastCall.returnValue,
+        StateKeyMixinSpy.lastCall.returnValue,
 
-          RefMixinSpy.lastCall.returnValue,
+        OmitPropsMixinSpy.lastCall.returnValue,
 
-          DomMixinSpy.lastCall.returnValue,
+        RefMixinSpy.lastCall.returnValue,
 
-          CallbackMixinSpy.lastCall.returnValue,
+        DomMixinSpy.lastCall.returnValue,
 
-          CacheMixinSpy.lastCall.returnValue,
+        CallbackMixinSpy.lastCall.returnValue,
 
-        ] )
+        CacheMixinSpy.lastCall.returnValue,
 
-      );
+      ] )
 
-    } );
+    );
 
   } );
 

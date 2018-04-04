@@ -1,5 +1,3 @@
-const stories = StoriesOf( 'core:graphics:component.Circle', module );
-
 stories.addDecorator( Knobs.withKnobs );
 
 

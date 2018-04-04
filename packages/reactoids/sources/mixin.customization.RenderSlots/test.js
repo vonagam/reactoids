@@ -1,195 +1,191 @@
-describe( 'mixin.customization.RenderSlots', () => {
-
-  defReactMixin( RenderSlotsMixin, () => ( { slots: { slot: null } } ) );
+defReactMixin( RenderSlotsMixin, () => ( { slots: { slot: null } } ) );
 
 
-  describe( '.argTypes', () => {
+describe( '.argTypes', () => {
 
-    it( 'does have right keys', () =>
+  it( 'does have right keys', () =>
 
-      expect( $Mixin.argTypes ).to.have.all.keys( 'slots' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'slots' )
+
+  );
+
+  it( 'does have right defaulted keys', () =>
+
+    expect( $Mixin.defaultArgs ).to.be.empty
+
+  );
+
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+    [ {}, false ],
+
+    [ { slots: {} }, true ],
+
+    [ { slots: { b: _.noop } }, true ],
+
+    [ { slots: { a: null } }, true ],
+
+    [ { slots: { c: {} } }, false ],
+
+  ], ( [ args, truthy ] ) =>
+
+    expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+
+  );
+
+} );
+
+describe( '.constructor', () => {
+
+  contexts( 'with arguments = ${ doStringify( value ) }', [
+
+    { slots: { slot: null } },
+
+    { slots: { slotA: null, slotB: _.noop } },
+
+  ], ( ARGS ) => {
+
+    def( 'ARGS', ARGS );
+
+
+    it( 'can be created', () =>
+
+      expect( () => $createMixin() ).not.to.throw()
 
     );
 
-    it( 'does have right defaulted keys', () =>
+    it( 'does return different instances', () =>
 
-      expect( $Mixin.defaultArgs ).to.be.empty
-
-    );
-
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
-
-      [ {}, false ],
-
-      [ { slots: {} }, true ],
-
-      [ { slots: { b: _.noop } }, true ],
-
-      [ { slots: { a: null } }, true ],
-
-      [ { slots: { c: {} } }, false ],
-
-    ], ( [ args, truthy ] ) =>
-
-      expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+      expect( $createMixin() ).not.to.equal( $createMixin() )
 
     );
 
-  } );
+    it( 'can be mixed', () =>
 
-  describe( '.constructor', () => {
+      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-    contexts( 'with arguments = ${ doStringify( value ) }', [
+    );
 
-      { slots: { slot: null } },
+    it( 'cannot be mixed with itself with same slots', () =>
 
-      { slots: { slotA: null, slotB: _.noop } },
+      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
 
-    ], ( ARGS ) => {
+    );
 
-      def( 'ARGS', ARGS );
+    it( 'can be mixed with itself with different slots', () =>
 
+      expect( () => $checkMixing( $createMixin(), $createMixin( { slots: { different: null } } ) ) ).not.to.throw()
 
-      it( 'can be created', () =>
+    );
 
-        expect( () => $createMixin() ).not.to.throw()
+    it( 'does return object with right properties', () => {
 
-      );
+      let properties = [ 'propTypes', 'defaultProps' ];
 
-      it( 'does return different instances', () =>
+      _.each( $ARGS.slots, ( options, name ) => {
 
-        expect( $createMixin() ).not.to.equal( $createMixin() )
-
-      );
-
-      it( 'can be mixed', () =>
-
-        expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
-
-      );
-
-      it( 'cannot be mixed with itself with same slots', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
-
-      );
-
-      it( 'can be mixed with itself with different slots', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin( { slots: { different: null } } ) ) ).not.to.throw()
-
-      );
-
-      it( 'does return object with right properties', () => {
-
-        let properties = [ 'propTypes', 'defaultProps' ];
-
-        _.each( $ARGS.slots, ( options, name ) => {
-
-          properties.push( `render${ _.pascalCase( name ) }` );
-
-        } );
-
-        expect( $createMixin() ).to.have.all.keys( properties );
+        properties.push( `render${ _.pascalCase( name ) }` );
 
       } );
+
+      expect( $createMixin() ).to.have.all.keys( properties );
 
     } );
 
   } );
 
-  describe( '#propTypes', () => {
+} );
 
-    it( 'does have right keys', () =>
+describe( '#propTypes', () => {
 
-      expect( $mixin.propTypes ).to.have.all.keys( 'slot', 'renderSlot' )
+  it( 'does have right keys', () =>
 
-    );
+    expect( $mixin.propTypes ).to.have.all.keys( 'slot', 'renderSlot' )
 
-    it( 'does have right defaulted keys', () =>
+  );
 
-      expect( $mixin.defaultProps ).to.deep.include( { slot: {}, renderSlot: null } )
+  it( 'does have right defaulted keys', () =>
 
-    );
+    expect( $mixin.defaultProps ).to.deep.include( { slot: {}, renderSlot: null } )
 
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+  );
 
-      [ {}, true ],
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
 
-      [ { slot: {} }, true ],
+    [ {}, true ],
 
-      [ { slot: true }, false ],
+    [ { slot: {} }, true ],
 
-      [ { slot: 15 }, false ],
+    [ { slot: true }, false ],
 
-      [ { renderSlot: _.noop }, true ],
+    [ { slot: 15 }, false ],
 
-      [ { renderSlot: <div /> }, true ],
+    [ { renderSlot: _.noop }, true ],
 
-      [ { renderSlot: null }, true ],
+    [ { renderSlot: <div /> }, true ],
 
-      [ { renderSlot: true }, false ],
+    [ { renderSlot: null }, true ],
 
-    ], ( [ props, truthy ] ) =>
+    [ { renderSlot: true }, false ],
 
-      expect( props ).onlyIf( truthy ).to.matchTypes( $mixin.propTypes )
+  ], ( [ props, truthy ] ) =>
 
-    );
+    expect( props ).onlyIf( truthy ).to.matchTypes( $mixin.propTypes )
 
-  } );
+  );
 
-  describe( '#renderSlot', () => {
+} );
 
-    defFunc( 'renderSlot', () => $component.renderSlot( $slotArgs ) );
+describe( '#renderSlot', () => {
 
-    def( 'slotArgs', {} );
+  defFunc( 'renderSlot', () => $component.renderSlot( $slotArgs ) );
 
-    def( 'props', () => ( { slot: $propsProp, renderSlot: $renderProp } ) );
+  def( 'slotArgs', {} );
 
-
-    contexts( 'with props prop as ${ key }', { function: stub().returns( {} ), object: {} }, ( propsProp ) => {
-
-      defSinon( 'propsProp', propsProp );
+  def( 'props', () => ( { slot: $propsProp, renderSlot: $renderProp } ) );
 
 
-      contexts( 'with render prop as ${ key }', { function: stub().returns( <div /> ), undefined: undefined, null: null, element: <div /> }, ( renderProp ) => {
+  contexts( 'with props prop as ${ key }', { function: stub().returns( {} ), object: {} }, ( propsProp ) => {
 
-        defSinon( 'renderProp', renderProp );
+    defSinon( 'propsProp', propsProp );
 
 
-        it( 'does return funced render prop with null as default prop', () =>
+    contexts( 'with render prop as ${ key }', { function: stub().returns( <div /> ), undefined: undefined, null: null, element: <div /> }, ( renderProp ) => {
 
-          expect( $renderSlot() ).to.equal( _.isFunction( $renderProp ) ? $renderProp.lastCall.returnValue : ( $renderProp || null ) )
+      defSinon( 'renderProp', renderProp );
 
-        );
 
-        if ( _.isFunction( propsProp ) ) {
+      it( 'does return funced render prop with null as default prop', () =>
 
-          it( 'does call props prop with component', () => {
+        expect( $renderSlot() ).to.equal( _.isFunction( $renderProp ) ? $renderProp.lastCall.returnValue : ( $renderProp || null ) )
 
-            expect( () => $renderSlot() ).to.alter( () => $propsProp.callCount, { from: 0, to: 1 } );
+      );
 
-            expect( $propsProp ).to.be.calledWithExactly( $component );
+      if ( _.isFunction( propsProp ) ) {
 
-          } );
+        it( 'does call props prop with component', () => {
 
-        }
+          expect( () => $renderSlot() ).to.alter( () => $propsProp.callCount, { from: 0, to: 1 } );
 
-        if ( _.isFunction( renderProp ) ) {
+          expect( $propsProp ).to.be.calledWithExactly( $component );
 
-          it( 'does call render prop with component, slot args and slot props', () => {
+        } );
 
-            expect( () => $renderSlot() ).to.alter( () => $renderProp.callCount, { from: 0, to: 1 } );
+      }
 
-            let slotProps = _.isFunction( $propsProp ) ? $propsProp.lastCall.returnValue : $propsProp;
+      if ( _.isFunction( renderProp ) ) {
 
-            expect( $renderProp ).to.be.calledWithExactly( $component, $slotArgs, slotProps );
+        it( 'does call render prop with component, slot args and slot props', () => {
 
-          } );
+          expect( () => $renderSlot() ).to.alter( () => $renderProp.callCount, { from: 0, to: 1 } );
 
-        }
+          let slotProps = _.isFunction( $propsProp ) ? $propsProp.lastCall.returnValue : $propsProp;
 
-      } );
+          expect( $renderProp ).to.be.calledWithExactly( $component, $slotArgs, slotProps );
+
+        } );
+
+      }
 
     } );
 

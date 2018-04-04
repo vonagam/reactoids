@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'core:sprites:component.Sprite', module );
-
-
 stories.add( 'Example', function() {
 
   return (

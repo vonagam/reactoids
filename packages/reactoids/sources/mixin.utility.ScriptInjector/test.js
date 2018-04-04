@@ -1,245 +1,241 @@
-describe( 'mixin.utility.ScriptInjector', () => {
+defReactMixin( ScriptInjectorMixin );
 
-  defReactMixin( ScriptInjectorMixin );
+defSinon( 'document', () => ( {
 
-  defSinon( 'document', () => ( {
+  querySelector: stub( document, 'querySelector' ),
 
-    querySelector: stub( document, 'querySelector' ),
+  createElement: stub( document, 'createElement' ).callsFake( () => ( {} ) ),
 
-    createElement: stub( document, 'createElement' ).callsFake( () => ( {} ) ),
+  appendScript: stub( document.head, 'appendChild' ),
 
-    appendScript: stub( document.head, 'appendChild' ),
-
-  } ) );
+} ) );
 
 
-  describe( '.argTypes', () => {
+describe( '.argTypes', () => {
 
-    it( 'does have right keys', () =>
+  it( 'does have right keys', () =>
 
-      expect( $Mixin.argTypes ).to.have.all.keys( 'scripts', 'filterScript', 'decorateScript', 'callback' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'scripts', 'filterScript', 'decorateScript', 'callback' )
+
+  );
+
+  it( 'does have right defaulted keys', () =>
+
+    expect( $Mixin.defaultArgs ).to.have.all.keys( 'filterScript', 'decorateScript', 'callback' )
+
+  );
+
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+    [ {}, false ],
+
+    [ { scripts: [ 'a' ] }, true ],
+
+    [ { scripts: [ 1 ] }, false ],
+
+    [ { scripts: _.constant( [ 'a', 'b' ] ), filterScript: _.noop, decorateScript: _.noop, callback: _.noop }, true ],
+
+  ], ( [ args, truthy ] ) =>
+
+    expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+
+  );
+
+} );
+
+describe( '.constructor', () => {
+
+  contexts( 'with valid arguments = ${ doStringify( value ) }', [
+
+    { scripts: [ 'a' ] },
+
+    { scripts: _.constant( [ 'a', 'b' ] ), filterScript: _.noop, decorateScript: _.noop, callback: _.noop },
+
+  ], ( ARGS ) => {
+
+    def( 'ARGS', ARGS );
+
+
+    it( 'can be created', () =>
+
+      expect( () => $createMixin() ).not.to.throw()
 
     );
 
-    it( 'does have right defaulted keys', () =>
+    it( 'does return different instances', () =>
 
-      expect( $Mixin.defaultArgs ).to.have.all.keys( 'filterScript', 'decorateScript', 'callback' )
+      expect( $createMixin() ).not.to.equal( $createMixin() )
 
     );
 
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+    it( 'can be mixed', () =>
 
-      [ {}, false ],
+      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-      [ { scripts: [ 'a' ] }, true ],
+    );
 
-      [ { scripts: [ 1 ] }, false ],
+    it( 'can be mixed with itself', () =>
 
-      [ { scripts: _.constant( [ 'a', 'b' ] ), filterScript: _.noop, decorateScript: _.noop, callback: _.noop }, true ],
+      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).not.to.throw()
 
-    ], ( [ args, truthy ] ) =>
+    );
 
-      expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+    it( 'does return object with right properties', () =>
+
+      expect( $createMixin() ).to.have.all.keys( 'componentDidMount' )
 
     );
 
   } );
 
-  describe( '.constructor', () => {
+} );
 
-    contexts( 'with valid arguments = ${ doStringify( value ) }', [
+describe( '#componentDidMount', () => {
 
-      { scripts: [ 'a' ] },
+  defFunc( 'componentDidMount', ( instance ) => $mixin.componentDidMount.call( instance ) );
 
-      { scripts: _.constant( [ 'a', 'b' ] ), filterScript: _.noop, decorateScript: _.noop, callback: _.noop },
+  contexts( 'with ${ doStringify( value ) }', getVariations( {
 
-    ], ( ARGS ) => {
+    scripts: [ [ 'a', 'b' ], stub().returns( [ 'a', 'b' ] ) ],
 
-      def( 'ARGS', ARGS );
+    filterScript: [ false, true, stub().returns( false ), stub().returns( true ) ],
+
+    decorateScript: [ undefined, spy() ],
+
+    callback: [ undefined, spy() ],
+
+  } ), ( variation ) => {
+
+    def( 'ARGS', _.isBoolean( variation.filterScript ) ? _.omit( variation, 'filterScript' ) : variation );
+
+    defSinon( 'resets', variation );
+
+    if ( _.isBoolean( variation.filterScript ) ) {
+
+      beforeEach( 'set querySelector', () => $document.querySelector.returns( variation.filterScript ) );
+
+    }
 
 
-      it( 'can be created', () =>
+    it( 'does work', () => {
 
-        expect( () => $createMixin() ).not.to.throw()
+      let instance = {};
 
-      );
+      $componentDidMount( instance );
 
-      it( 'does return different instances', () =>
 
-        expect( $createMixin() ).not.to.equal( $createMixin() )
+      let scripts;
 
-      );
+      if ( _.isFunction( variation.scripts ) ) {
 
-      it( 'can be mixed', () =>
+        expect( variation.scripts ).to.be.calledOnce.and.be.calledWithExactly( instance );
 
-        expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
+        scripts = variation.scripts.lastCall.returnValue;
 
-      );
+      } else {
 
-      it( 'can be mixed with itself', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin() ) ).not.to.throw()
-
-      );
-
-      it( 'does return object with right properties', () =>
-
-        expect( $createMixin() ).to.have.all.keys( 'componentDidMount' )
-
-      );
-
-    } );
-
-  } );
-
-  describe( '#componentDidMount', () => {
-
-    defFunc( 'componentDidMount', ( instance ) => $mixin.componentDidMount.call( instance ) );
-
-    contexts( 'with ${ doStringify( value ) }', getVariations( {
-
-      scripts: [ [ 'a', 'b' ], stub().returns( [ 'a', 'b' ] ) ],
-
-      filterScript: [ false, true, stub().returns( false ), stub().returns( true ) ],
-
-      decorateScript: [ undefined, spy() ],
-
-      callback: [ undefined, spy() ],
-
-    } ), ( variation ) => {
-
-      def( 'ARGS', _.isBoolean( variation.filterScript ) ? _.omit( variation, 'filterScript' ) : variation );
-
-      defSinon( 'resets', variation );
-
-      if ( _.isBoolean( variation.filterScript ) ) {
-
-        beforeEach( 'set querySelector', () => $document.querySelector.returns( variation.filterScript ) );
+        scripts = variation.scripts;
 
       }
 
 
-      it( 'does work', () => {
+      let filtered;
 
-        let instance = {};
+      if ( _.isBoolean( variation.filterScript ) ) {
 
-        $componentDidMount( instance );
+        expect( $document.querySelector ).to.have.callCount( scripts.length );
 
+        _.each( scripts, ( script ) => {
 
-        let scripts;
+          expect( $document.querySelector ).to.be.calledWithExactly( `script[ src=\"${ script }\" ]` );
 
-        if ( _.isFunction( variation.scripts ) ) {
+        } );
 
-          expect( variation.scripts ).to.be.calledOnce.and.be.calledWithExactly( instance );
+        filtered = $document.querySelector.lastCall.returnValue ? [] : scripts;
 
-          scripts = variation.scripts.lastCall.returnValue;
+      } else {
 
-        } else {
+        expect( $document.querySelector ).not.to.be.called;
 
-          scripts = variation.scripts;
+        expect( variation.filterScript ).to.have.callCount( scripts.length );
 
-        }
+        _.each( scripts, ( script ) => {
 
+          expect( variation.filterScript ).to.be.calledWithExactly( instance, script );
 
-        let filtered;
+        } );
 
-        if ( _.isBoolean( variation.filterScript ) ) {
+        filtered = variation.filterScript.lastCall.returnValue ? scripts : [];
 
-          expect( $document.querySelector ).to.have.callCount( scripts.length );
-
-          _.each( scripts, ( script ) => {
-
-            expect( $document.querySelector ).to.be.calledWithExactly( `script[ src=\"${ script }\" ]` );
-
-          } );
-
-          filtered = $document.querySelector.lastCall.returnValue ? [] : scripts;
-
-        } else {
-
-          expect( $document.querySelector ).not.to.be.called;
-
-          expect( variation.filterScript ).to.have.callCount( scripts.length );
-
-          _.each( scripts, ( script ) => {
-
-            expect( variation.filterScript ).to.be.calledWithExactly( instance, script );
-
-          } );
-
-          filtered = variation.filterScript.lastCall.returnValue ? scripts : [];
-
-        }
+      }
 
 
-        expect( $document.createElement ).to.have.callCount( filtered.length );
+      expect( $document.createElement ).to.have.callCount( filtered.length );
 
-        if ( filtered.length > 0 ) {
+      if ( filtered.length > 0 ) {
 
-          expect( $document.createElement ).to.be.always.calledWithExactly( 'script' );
+        expect( $document.createElement ).to.be.always.calledWithExactly( 'script' );
 
-        }
+      }
 
-        let nodes = _.times( filtered.length, ( index ) => $document.createElement.getCall( index ).returnValue );
+      let nodes = _.times( filtered.length, ( index ) => $document.createElement.getCall( index ).returnValue );
+
+      _.each( nodes, ( node ) => {
+
+        expect( node ).to.have.property( 'src' ).that.is.a( 'string' );
+
+        expect( node ).to.have.property( 'onload' ).that.is.a( 'function' );
+
+      } );
+
+
+      if ( variation.decorateScript ) {
+
+        expect( variation.decorateScript ).to.have.callCount( nodes.length );
 
         _.each( nodes, ( node ) => {
 
-          expect( node ).to.have.property( 'src' ).that.is.a( 'string' );
-
-          expect( node ).to.have.property( 'onload' ).that.is.a( 'function' );
+          expect( variation.decorateScript ).to.be.calledWithExactly( instance, node );
 
         } );
 
-
-        if ( variation.decorateScript ) {
-
-          expect( variation.decorateScript ).to.have.callCount( nodes.length );
-
-          _.each( nodes, ( node ) => {
-
-            expect( variation.decorateScript ).to.be.calledWithExactly( instance, node );
-
-          } );
-
-        }
+      }
 
 
-        expect( $document.appendScript ).to.have.callCount( filtered.length );
+      expect( $document.appendScript ).to.have.callCount( filtered.length );
 
-        _.each( nodes, ( node, index ) => {
+      _.each( nodes, ( node, index ) => {
 
-          expect( $document.appendScript ).to.be.calledWithExactly( node );
+        expect( $document.appendScript ).to.be.calledWithExactly( node );
 
-        } );
+      } );
 
 
-        if ( variation.callback ) {
+      if ( variation.callback ) {
 
-          if ( nodes.length === 0 ) {
+        if ( nodes.length === 0 ) {
 
-            expect( variation.callback ).to.be.calledOnce.and.be.calledWithExactly( instance );
-
-          } else {
-
-            expect( variation.callback ).not.to.be.called;
-
-            _.each( nodes, ( node, index ) => {
-
-              expect( () => node.onload() ).onlyIf( index === nodes.length - 1 ).to.alter( () => variation.callback.callCount );
-
-            } );
-
-            expect( variation.callback ).to.be.calledOnce.and.be.calledWithExactly( instance );
-
-          }
+          expect( variation.callback ).to.be.calledOnce.and.be.calledWithExactly( instance );
 
         } else {
 
-          expect( () => _.each( nodes, ( node ) => node.onload() ) ).not.to.throw();
+          expect( variation.callback ).not.to.be.called;
+
+          _.each( nodes, ( node, index ) => {
+
+            expect( () => node.onload() ).onlyIf( index === nodes.length - 1 ).to.alter( () => variation.callback.callCount );
+
+          } );
+
+          expect( variation.callback ).to.be.calledOnce.and.be.calledWithExactly( instance );
 
         }
 
-      } );
+      } else {
+
+        expect( () => _.each( nodes, ( node ) => node.onload() ) ).not.to.throw();
+
+      }
 
     } );
 

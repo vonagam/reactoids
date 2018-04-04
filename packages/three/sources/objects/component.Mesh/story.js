@@ -1,5 +1,3 @@
-const stories = StoriesOf( 'objects:component.Mesh', module );
-
 stories.addDecorator( Knobs.withKnobs );
 
 

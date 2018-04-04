@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'extras:component.TilingSprite', module );
-
-
 stories.add( 'Example', function() {
 
   return (

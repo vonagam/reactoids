@@ -1,92 +1,88 @@
-describe( 'various.simulateLink', () => {
+defSinon( 'assignHref', stub( window.location, 'assign' ) );
 
-  defSinon( 'assignHref', stub( window.location, 'assign' ) );
-
-  defLocation( 'https://foo.bar/baz?qux' );
+defLocation( 'https://foo.bar/baz?qux' );
 
 
-  contexts( 'with href = ${ doStringify( value.href ) }', [
+contexts( 'with href = ${ doStringify( value.href ) }', [
 
-    { href: 'https://a.b/', location: 'https://a.b/' },
+  { href: 'https://a.b/', location: 'https://a.b/' },
 
-    { href: '/x', location: '/x' },
+  { href: '/x', location: '/x' },
 
-    { href: undefined, location: '' },
+  { href: undefined, location: '' },
 
-  ], ( { href, location } ) => {
+], ( { href, location } ) => {
 
-    contexts( 'with container = ${ key }', {
+  contexts( 'with container = ${ key }', {
 
-      'undefined': undefined,
+    'undefined': undefined,
 
-      '$( <div> )': $( '<div>' ),
+    '$( <div> )': $( '<div>' ),
 
-    }, ( containter ) => {
+  }, ( containter ) => {
+
+    contexts( {
+
+      'with decorateLink': spy(),
+
+      'without decorateLink': undefined,
+
+    }, ( decorateLink ) => {
+
+      defSinon( 'decorateLink', decorateLink );
 
       contexts( {
 
-        'with decorateLink': spy(),
+        'with prevention': true,
 
-        'without decorateLink': undefined,
+        'without prevention': false,
 
-      }, ( decorateLink ) => {
+      }, ( prevent ) => {
 
-        defSinon( 'decorateLink', decorateLink );
+        it( 'does work', () => {
 
-        contexts( {
+          let $link, $containter;
 
-          'with prevention': true,
+          let onClick = sinon.spy( ( event ) => {
 
-          'without prevention': false,
+            $link = $( event.target );
 
-        }, ( prevent ) => {
+            $containter = $link.parent();
 
-          it( 'does work', () => {
+            if ( prevent ) {
 
-            let $link, $containter;
-
-            let onClick = sinon.spy( ( event ) => {
-
-              $link = $( event.target );
-
-              $containter = $link.parent();
-
-              if ( prevent ) {
-
-                event.preventDefault();
-
-              }
-
-            } );
-
-
-            let containter2 = containter || $( 'body' );
-
-
-            containter2.on( 'click', onClick );
-
-            simulateLink( href, containter, decorateLink );
-
-            containter2.off( 'click', onClick );
-
-
-            expect( onClick ).to.be.calledOnce;
-
-            expect( $link.is( 'a' ) ).to.be.true;
-
-            expect( $containter.is( containter2 ) ).to.be.true;
-
-            if ( decorateLink ) {
-
-              expect( decorateLink ).to.be.calledOnce.and.be.calledWithMatch( $link );
+              event.preventDefault();
 
             }
 
-            expect( $link.parent() ).to.have.lengthOf( 0 );
-
-            expect( $assignHref ).to.have.callCount( 1 - prevent ).and.onlyIf( ! prevent ).to.be.calledWithExactly( location );
-
           } );
+
+
+          let containter2 = containter || $( 'body' );
+
+
+          containter2.on( 'click', onClick );
+
+          simulateLink( href, containter, decorateLink );
+
+          containter2.off( 'click', onClick );
+
+
+          expect( onClick ).to.be.calledOnce;
+
+          expect( $link.is( 'a' ) ).to.be.true;
+
+          expect( $containter.is( containter2 ) ).to.be.true;
+
+          if ( decorateLink ) {
+
+            expect( decorateLink ).to.be.calledOnce.and.be.calledWithMatch( $link );
+
+          }
+
+          expect( $link.parent() ).to.have.lengthOf( 0 );
+
+          expect( $assignHref ).to.have.callCount( 1 - prevent ).and.onlyIf( ! prevent ).to.be.calledWithExactly( location );
 
         } );
 

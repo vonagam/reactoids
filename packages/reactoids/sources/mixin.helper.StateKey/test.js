@@ -3,94 +3,90 @@ import proxyquire from 'proxyquire';
 proxyquire.noCallThru();
 
 
-describe( 'mixin.helper.StateKey', () => {
+const BaseKeyMixinSpy = defMixinSpy( BaseKeyMixin, true );
 
-  const BaseKeyMixinSpy = defMixinSpy( BaseKeyMixin, true );
+const StateKeyMixin = proxyquire( './index', { '../mixin.meta.BaseKey': BaseKeyMixinSpy } ).default;
 
-  const StateKeyMixin = proxyquire( './index', { '../mixin.meta.BaseKey': BaseKeyMixinSpy } ).default;
-
-  defReactMixin( StateKeyMixin );
+defReactMixin( StateKeyMixin );
 
 
-  describe( '.constructor', () => {
+describe( '.constructor', () => {
 
-    it( 'can be created without arguments', () =>
+  it( 'can be created without arguments', () =>
 
-      expect( () => $createMixin() ).not.to.throw()
+    expect( () => $createMixin() ).not.to.throw()
 
-    );
+  );
 
-    it( 'does return same instance', () =>
+  it( 'does return same instance', () =>
 
-      expect( $createMixin() ).to.equal( $createMixin() )
+    expect( $createMixin() ).to.equal( $createMixin() )
 
-    );
+  );
 
-    it( 'can be mixed', () =>
+  it( 'can be mixed', () =>
 
-      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
+    expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-    );
+  );
 
-    it( 'can be mixed with itself', () =>
+  it( 'can be mixed with itself', () =>
 
-      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).not.to.throw()
+    expect( () => $checkMixing( $createMixin(), $createMixin() ) ).not.to.throw()
 
-    );
+  );
 
-    it( 'does return object with right properties', () =>
+  it( 'does return object with right properties', () =>
 
-      expect( $createMixin() ).to.have.all.keys( 'mixins' )
+    expect( $createMixin() ).to.have.all.keys( 'mixins' )
 
-    );
+  );
 
-  } );
+} );
 
-  describe( '#mixins', () => {
+describe( '#mixins', () => {
 
-    describe( 'BaseKeyMixin', () => {
+  describe( 'BaseKeyMixin', () => {
 
-      describe( 'name:', () => {
+    describe( 'name:', () => {
 
-        it( 'is "state"', () =>
+      it( 'is "state"', () =>
 
-          expect( $BaseKeyMixinArgs ).to.include( { name: 'state' } )
+        expect( $BaseKeyMixinArgs ).to.include( { name: 'state' } )
 
-        );
+      );
 
-      } );
+    } );
 
-      describe( 'get:', () => {
+    describe( 'get:', () => {
 
-        it( 'does return state', () => {
+      it( 'does return state', () => {
 
-          let instance = {};
+        let instance = {};
 
-          let props = {};
+        let props = {};
 
-          let state = {};
+        let state = {};
 
-          expect( $BaseKeyMixinArgs.get( instance, props, state ) ).to.equal( state );
-
-        } );
+        expect( $BaseKeyMixinArgs.get( instance, props, state ) ).to.equal( state );
 
       } );
 
-      describe( 'set:', () => {
+    } );
 
-        it( 'does set state', () => {
+    describe( 'set:', () => {
 
-          let instance = { setState: spy() };
+      it( 'does set state', () => {
 
-          let value = {};
+        let instance = { setState: spy() };
 
-          let callback = _.noop;
+        let value = {};
 
-          $BaseKeyMixinArgs.set( instance, value, callback );
+        let callback = _.noop;
 
-          expect( instance.setState ).to.be.calledOnce.and.be.calledWithExactly( value, callback );
+        $BaseKeyMixinArgs.set( instance, value, callback );
 
-        } );
+        expect( instance.setState ).to.be.calledOnce.and.be.calledWithExactly( value, callback );
 
       } );
 

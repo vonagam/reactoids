@@ -1,202 +1,198 @@
-describe( 'mixin.limit.PureRender', () => {
-
-  defReactMixin( PureRenderMixin );
+defReactMixin( PureRenderMixin );
 
 
-  describe( '.argTypes', () => {
+describe( '.argTypes', () => {
 
-    it( 'does have right keys', () =>
+  it( 'does have right keys', () =>
 
-      expect( $Mixin.argTypes ).to.have.all.keys( 'purifiedPaths', 'dirtiedPaths' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'purifiedPaths', 'dirtiedPaths' )
+
+  );
+
+  it( 'does have right defaulted keys', () =>
+
+    expect( $Mixin.defaultArgs ).to.have.all.keys( 'purifiedPaths', 'dirtiedPaths' )
+
+  );
+
+  its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+
+    [ {}, true ],
+
+    [ { purifiedPaths: [], dirtiedPaths: [] }, true ],
+
+    [ { purifiedPaths: [ 'pure' ], dirtiedPaths: [ 'dirty' ] }, true ],
+
+    [ { purifiedPaths: 'pure' }, false ],
+
+  ], ( [ args, truthy ] ) =>
+
+    expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+
+  );
+
+} );
+
+describe( '.constructor', () => {
+
+  contexts( 'with arguments = ${ doStringify( value ) }', [
+
+    {},
+
+    { purifiedPaths: [ 'pure' ], dirtiedPaths: [ 'dirty' ] },
+
+  ], ( ARGS ) => {
+
+    def( 'ARGS', ARGS );
+
+
+    it( 'can be created without arguments', () =>
+
+      expect( () => $createMixin() ).not.to.throw()
 
     );
 
-    it( 'does have right defaulted keys', () =>
+    it( 'does return different instances', () =>
 
-      expect( $Mixin.defaultArgs ).to.have.all.keys( 'purifiedPaths', 'dirtiedPaths' )
+      expect( $createMixin() ).not.to.equal( $createMixin() )
 
     );
 
-    its( ( { value } ) => titleIf( `does approve = ${ doStringify( value[ 0 ] ) }`, value[ 1 ] ), [
+    it( 'can be mixed', () =>
 
-      [ {}, true ],
+      expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
 
-      [ { purifiedPaths: [], dirtiedPaths: [] }, true ],
+    );
 
-      [ { purifiedPaths: [ 'pure' ], dirtiedPaths: [ 'dirty' ] }, true ],
+    it( 'cannot be mixed with itself', () =>
 
-      [ { purifiedPaths: 'pure' }, false ],
+      expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
 
-    ], ( [ args, truthy ] ) =>
+    );
 
-      expect( args ).onlyIf( truthy ).to.matchTypes( $Mixin.argTypes )
+    it( 'does return object with right properties', () =>
+
+      expect( $createMixin() ).to.have.all.keys( 'shouldComponentUpdate', '_bind', '_partial', '_ary', '_queue' )
 
     );
 
   } );
 
-  describe( '.constructor', () => {
+} );
 
-    contexts( 'with arguments = ${ doStringify( value ) }', [
+describe( '#shouldComponentUpdate', () => {
 
-      {},
+  defSinon( 'shouldComponentUpdate', () => spy( $component, 'shouldComponentUpdate' ) );
 
-      { purifiedPaths: [ 'pure' ], dirtiedPaths: [ 'dirty' ] },
+  def( 'props', {
 
-    ], ( ARGS ) => {
+    value: 1,
 
-      def( 'ARGS', ARGS );
-
-
-      it( 'can be created without arguments', () =>
-
-        expect( () => $createMixin() ).not.to.throw()
-
-      );
-
-      it( 'does return different instances', () =>
-
-        expect( $createMixin() ).not.to.equal( $createMixin() )
-
-      );
-
-      it( 'can be mixed', () =>
-
-        expect( () => $checkMixing( $createMixin() ) ).not.to.throw()
-
-      );
-
-      it( 'cannot be mixed with itself', () =>
-
-        expect( () => $checkMixing( $createMixin(), $createMixin() ) ).to.throw()
-
-      );
-
-      it( 'does return object with right properties', () =>
-
-        expect( $createMixin() ).to.have.all.keys( 'shouldComponentUpdate', '_bind', '_partial', '_ary', '_queue' )
-
-      );
-
-    } );
+    func: _.noop,
 
   } );
 
-  describe( '#shouldComponentUpdate', () => {
 
-    defSinon( 'shouldComponentUpdate', () => spy( $component, 'shouldComponentUpdate' ) );
+  contexts( 'with props update = ${ doStringify( value.props ) }', [
 
-    def( 'props', {
+    { props: {}, should: false },
 
-      value: 1,
+    { props: { value: 1 }, should: false },
 
-      func: _.noop,
+    { props: { func: _.noop }, should: false },
 
-    } );
+    { props: { value: 2 }, should: true },
 
+    { props: { func: () => {} }, should: true },
 
-    contexts( 'with props update = ${ doStringify( value.props ) }', [
+    { props: { value: 2, func: () => {} }, should: true },
 
-      { props: {}, should: false },
+  ], ( { props, should } ) => {
 
-      { props: { value: 1 }, should: false },
-
-      { props: { func: _.noop }, should: false },
-
-      { props: { value: 2 }, should: true },
-
-      { props: { func: () => {} }, should: true },
-
-      { props: { value: 2, func: () => {} }, should: true },
-
-    ], ( { props, should } ) => {
-
-      beforeEach( ( done ) => $mount.setProps( props, done ) );
+    beforeEach( ( done ) => $mount.setProps( props, done ) );
 
 
-      itIf( 'should update', should, () =>
+    itIf( 'should update', should, () =>
 
-        expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
+      expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
 
-      );
+    );
 
-    } );
+  } );
 
-    contexts( 'with ${ key } bind', { standart: () => _.bind, mixed: () => $component._bind }, ( getBind, type ) => {
+  contexts( 'with ${ key } bind', { standart: () => _.bind, mixed: () => $component._bind }, ( getBind, type ) => {
 
-      let should = type == 'standart';
+    let should = type == 'standart';
 
-      beforeEach( ( done ) => $mount.setState( { hello: ( getBind() )( _.noop, {} ) }, done ) );
+    beforeEach( ( done ) => $mount.setState( { hello: ( getBind() )( _.noop, {} ) }, done ) );
 
-      beforeEach( () => $shouldComponentUpdate.reset() );
+    beforeEach( () => $shouldComponentUpdate.reset() );
 
-      beforeEach( ( done ) => $mount.setState( { hello: ( getBind() )( _.noop, {} ) }, done ) );
-
-
-      itIf( 'should update', should, () =>
-
-        expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
-
-      );
-
-    } );
-
-    contexts( 'with ${ key } partial', { standart: () => _.partial, mixed: () => $component._partial }, ( getPartial, type ) => {
-
-      let should = type == 'standart';
-
-      beforeEach( ( done ) => $mount.setState( { hello: ( getPartial() )( _.noop, {} ) }, done ) );
-
-      beforeEach( () => $shouldComponentUpdate.reset() );
-
-      beforeEach( ( done ) => $mount.setState( { hello: ( getPartial() )( _.noop, {} ) }, done ) );
+    beforeEach( ( done ) => $mount.setState( { hello: ( getBind() )( _.noop, {} ) }, done ) );
 
 
-      itIf( 'should update', should, () =>
+    itIf( 'should update', should, () =>
 
-        expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
+      expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
 
-      );
+    );
 
-    } );
+  } );
 
-    contexts( 'with ${ key } ary', { standart: () => _.ary, mixed: () => $component._ary }, ( getAry, type ) => {
+  contexts( 'with ${ key } partial', { standart: () => _.partial, mixed: () => $component._partial }, ( getPartial, type ) => {
 
-      let should = type == 'standart';
+    let should = type == 'standart';
 
-      beforeEach( ( done ) => $mount.setState( { hello: ( getAry() )( _.noop, 1 ) }, done ) );
+    beforeEach( ( done ) => $mount.setState( { hello: ( getPartial() )( _.noop, {} ) }, done ) );
 
-      beforeEach( () => $shouldComponentUpdate.reset() );
+    beforeEach( () => $shouldComponentUpdate.reset() );
 
-      beforeEach( ( done ) => $mount.setState( { hello: ( getAry() )( _.noop, 1 ) }, done ) );
-
-
-      itIf( 'should update', should, () =>
-
-        expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
-
-      );
-
-    } );
-
-    contexts( 'with ${ key } queue', { standart: () => _.queue, mixed: () => $component._queue }, ( getQueue, type ) => {
-
-      let should = type == 'standart';
-
-      beforeEach( ( done ) => $mount.setState( { hello: ( getQueue() )( _.noop, _.noop ) }, done ) );
-
-      beforeEach( () => $shouldComponentUpdate.reset() );
-
-      beforeEach( ( done ) => $mount.setState( { hello: ( getQueue() )( _.noop, _.noop ) }, done ) );
+    beforeEach( ( done ) => $mount.setState( { hello: ( getPartial() )( _.noop, {} ) }, done ) );
 
 
-      itIf( 'should update', should, () =>
+    itIf( 'should update', should, () =>
 
-        expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
+      expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
 
-      );
+    );
 
-    } );
+  } );
+
+  contexts( 'with ${ key } ary', { standart: () => _.ary, mixed: () => $component._ary }, ( getAry, type ) => {
+
+    let should = type == 'standart';
+
+    beforeEach( ( done ) => $mount.setState( { hello: ( getAry() )( _.noop, 1 ) }, done ) );
+
+    beforeEach( () => $shouldComponentUpdate.reset() );
+
+    beforeEach( ( done ) => $mount.setState( { hello: ( getAry() )( _.noop, 1 ) }, done ) );
+
+
+    itIf( 'should update', should, () =>
+
+      expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
+
+    );
+
+  } );
+
+  contexts( 'with ${ key } queue', { standart: () => _.queue, mixed: () => $component._queue }, ( getQueue, type ) => {
+
+    let should = type == 'standart';
+
+    beforeEach( ( done ) => $mount.setState( { hello: ( getQueue() )( _.noop, _.noop ) }, done ) );
+
+    beforeEach( () => $shouldComponentUpdate.reset() );
+
+    beforeEach( ( done ) => $mount.setState( { hello: ( getQueue() )( _.noop, _.noop ) }, done ) );
+
+
+    itIf( 'should update', should, () =>
+
+      expect( $shouldComponentUpdate ).to.be.calledOnce.and.have.returned( should )
+
+    );
 
   } );
 

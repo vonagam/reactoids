@@ -1,6 +1,3 @@
-const stories = StoriesOf( 'core:graphics:component.Polygon', module );
-
-
 stories.add( 'Example', function() {
 
   return (

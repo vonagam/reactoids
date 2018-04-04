@@ -1,5 +1,3 @@
-const stories = StoriesOf( 'core:graphics:component.Rectangle', module );
-
 stories.addDecorator( Knobs.withKnobs );
 
 
