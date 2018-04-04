@@ -145,11 +145,11 @@ const addReadmeStory = function( stories, Readme ) {
 
         if ( ! href ) return;
 
-        let check = href.match( /^\.\.\/(.+)\/README\.md(#.+)?$/ );
+        let check = href.match( /^(?:\.\.\/)+(.+)\/README\.md(#.+)?$/ );
 
         if ( ! check ) return;
 
-        let hrefKind = check[ 1 ];
+        let hrefKind = check[ 1 ].replace( /\//g, ':' );
 
         let hrefStory = 'Reference';
 
