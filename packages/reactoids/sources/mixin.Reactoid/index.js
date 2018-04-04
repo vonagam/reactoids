@@ -1,6 +1,6 @@
-export default ComponentMixin = Mixin.create( {
+export default ReactoidMixin = Mixin.create( {
 
-  name: 'ComponentMixin',
+  name: 'ReactoidMixin',
 
   argTypes: {
 

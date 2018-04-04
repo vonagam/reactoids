@@ -3,7 +3,7 @@ import proxyquire from 'proxyquire';
 proxyquire.noCallThru();
 
 
-describe( 'mixin.Component', () => {
+describe( 'mixin.Reactoid', () => {
 
   const PureRenderMixinSpy = _.assign( spy( PureRenderMixin ), PureRenderMixin );
 
@@ -50,9 +50,9 @@ describe( 'mixin.Component', () => {
 
   };
 
-  const ComponentMixin = proxyquire( './index', mixins ).default;
+  const ReactoidMixin = proxyquire( './index', mixins ).default;
 
-  defReactMixin( ComponentMixin );
+  defReactMixin( ReactoidMixin );
 
   defSinon( 'mixins', mixins );
 

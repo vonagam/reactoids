@@ -1,4 +1,4 @@
-# ComponentMixin
+# ReactoidMixin
 
 Adds standart set of mixins.
 
