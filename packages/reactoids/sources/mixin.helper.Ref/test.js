@@ -47,32 +47,32 @@ describe( 'mixin.helper.Ref', () => {
 
   } );
 
-  describe( '#refSetter', () => {
+  describe( '#ref', () => {
 
-    defFunc( 'refSetter', ( ...args ) => $component.refSetter( ...args ) );
+    defFunc( 'ref', ( ...args ) => $component.ref( ...args ) );
 
 
     it( 'does return function', () =>
 
-      expect( $refSetter( 'a' ) ).to.be.a( 'function' )
+      expect( $ref( 'a' ) ).to.be.a( 'function' )
 
     );
 
     it( 'does return same function for same key', () =>
 
-      expect( $refSetter( 'a' ) ).to.equal( $refSetter( 'a' ) )
+      expect( $ref( 'a' ) ).to.equal( $ref( 'a' ) )
 
     );
 
     it( 'does return same function for same key even if a second argument is different', () =>
 
-      expect( $refSetter( 'a', _.noop ) ).to.equal( $refSetter( 'a', 'b' ) )
+      expect( $ref( 'a', _.noop ) ).to.equal( $ref( 'a', 'b' ) )
 
     );
 
     it( 'does return different functions for different keys', () =>
 
-      expect( $refSetter( 'a' ) ).not.to.equal( $refSetter( 'b' ) )
+      expect( $ref( 'a' ) ).not.to.equal( $ref( 'b' ) )
 
     );
 
@@ -105,13 +105,13 @@ describe( 'mixin.helper.Ref', () => {
 
         it( 'does set ref', () => {
 
-          expect( () => $refSetter( ...args )( $node ) ).to.alter( () => $component.refs[ args[ 0 ] ] === $node, { from: false, to: true } );
+          expect( () => $ref( ...args )( $node ) ).to.alter( () => $component.refs[ args[ 0 ] ] === $node, { from: false, to: true } );
 
         } );
 
         itIf( 'does call prop callback', prop, ( truthy ) => {
 
-          expect( () => $refSetter( ...args )( $node ) ).to.alter( () => $props.spy.callCount, { from: 0, to: +truthy } );
+          expect( () => $ref( ...args )( $node ) ).to.alter( () => $props.spy.callCount, { from: 0, to: +truthy } );
 
           expect( $props.spy ).onlyIf( truthy ).to.be.calledWithExactly( $node, $component );
 
@@ -119,7 +119,7 @@ describe( 'mixin.helper.Ref', () => {
 
         itIf( 'does call custom callback', callback, ( truthy ) => {
 
-          expect( () => $refSetter( ...args )( $node ) ).to.alter( () => $callback.callCount, { from: 0, to: +truthy } );
+          expect( () => $ref( ...args )( $node ) ).to.alter( () => $callback.callCount, { from: 0, to: +truthy } );
 
           expect( $callback ).onlyIf( truthy ).to.be.calledWithExactly( $node ).and.onlyIf( truthy ).be.calledOn( $component );
 
@@ -127,25 +127,25 @@ describe( 'mixin.helper.Ref', () => {
 
         it( 'does not throw on multiply invocations with same node', () => {
 
-          $refSetter( ...args )( $node );
+          $ref( ...args )( $node );
 
-          expect( () => $refSetter( ...args )( $node ) ).not.to.throw();
+          expect( () => $ref( ...args )( $node ) ).not.to.throw();
 
         } );
 
         it( 'does not throw on unmount', () => {
 
-          $refSetter( ...args )( $node );
+          $ref( ...args )( $node );
 
-          expect( () => $refSetter( ...args )( null ) ).not.to.throw();
+          expect( () => $ref( ...args )( null ) ).not.to.throw();
 
         } );
 
         itIf( 'does throw on node change', constant, ( truthy ) => {
 
-          $refSetter( ...args )( $node );
+          $ref( ...args )( $node );
 
-          expect( () => $refSetter( ...args )( {} ) ).onlyIf( truthy ).to.throw();
+          expect( () => $ref( ...args )( {} ) ).onlyIf( truthy ).to.throw();
 
         } );
 

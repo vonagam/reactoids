@@ -15,7 +15,7 @@ export default RefMixin = Mixin.create( {
 
       },
 
-      refSetter( key, options ) {
+      ref( key, options ) {
 
         if ( ! this._RefMixin[ key ] ) {
 
