@@ -1,0 +1,96 @@
+@Mixin.mix
+
+export default class CustomInputSoul extends React.Component {
+
+  static displayName = 'CustomInputSoul';
+
+  static mixins = [
+
+    ReactoidMixin(),
+
+  ];
+
+  static propTypes = {
+
+    input: PropTypes.any.isRequired,
+
+    name: PropTypes.string,
+
+    value: PropTypes.any,
+
+    error: PropTypes.string,
+
+    disabled: PropTypes.bool,
+
+    jsonType: PropTypes.oneOf( [ 'auto', 'string', 'number', 'boolean', 'null', 'array', 'object', 'skip' ] ),
+
+  };
+
+  static defaultProps = {
+
+    value: '',
+
+    jsonType: 'string',
+
+  };
+
+  componentDidMount() {
+
+    if ( this.props.error ) {
+
+      this.refs.dom.setCustomValidity( message );
+
+    }
+
+  }
+
+  componentDidUpdate( prevProps ) {
+
+    if ( this.props.error !== prevProps.error ) {
+
+      this.refs.dom.setCustomValidity( message );
+
+    }
+
+  }
+
+  onFocus() {
+
+    this.props.input.focus();
+
+  }
+
+  render() {
+
+    let { props } = this;
+
+
+    return (
+
+      <textarea
+
+        ref={ this.ref( 'dom' ) }
+
+        className={ this.classed( '' ) }
+
+        name={ props.name }
+
+        value={ props.value }
+
+        disabled={ props.disabled || ! _.isString( props.name ) }
+
+        data-value-type={ props.jsonType }
+
+        aria-hidden='true'
+
+        tabIndex='-1'
+
+        onFocus={ this.callback( 'onFocus' ) }
+
+      />
+
+    );
+
+  }
+
+}

@@ -63,8 +63,8 @@ Negative delay means that temp value will not automatically transfered to real v
 
 ## Mixins
 
-[`BaseKeyMixin`](../mixin.meta.BaseKey/README.md)  
-[`FocusMixin`](../mixin.interface.Focus/README.md)  
+[`BaseKeyMixin`](../../mixin.meta.BaseKey/README.md)  
+[`FocusMixin`](../../mixin.interface.Focus/README.md)  
 
 
 ## Props
@@ -153,8 +153,8 @@ Additional custom validation, called after [`arg.validateValue`](#argvalidateval
 [`state.valueReal`](#statevaluereal)  
 [`state.valueError`](#statevalueerror)  
 
-[`FocusMixin`](../mixin.interface.Focus/README.md#state):  
-[`state.focused`](../mixin.interface.Focus/README.md#statefocused)  
+[`FocusMixin`](../../mixin.interface.Focus/README.md#state):  
+[`state.focused`](../../mixin.interface.Focus/README.md#statefocused)  
 
 
 ### state.valueTemp
@@ -185,29 +185,29 @@ Error message get from [`arg.validateValue`](#argvalidatevalue) and [`prop.valid
 [`method.setTempValue`](#methodsettempvalue)  
 [`method.getValueError`](#methodgetvalueerror)  
 
-[`BaseKeyMixin`](../mixin.meta.BaseKey/README.md#methods) with `Value` as `Name`:  
-[`method.getValueKey`](../mixin.meta.BaseKey/README.md#methodgetnamekey)  
-[`method.getValueKeys`](../mixin.meta.BaseKey/README.md#methodgetnamekeys)  
-[`method.updateValueKey`](../mixin.meta.BaseKey/README.md#methodupdatenamekey)  
-[`method.updateValueKeys`](../mixin.meta.BaseKey/README.md#methodupdatenamekeys)  
-[`method.setValueKey`](../mixin.meta.BaseKey/README.md#methodsetnamekey)  
-[`method.setValueKeys`](../mixin.meta.BaseKey/README.md#methodsetnamekeys)  
-[`method.toggleValueKey`](../mixin.meta.BaseKey/README.md#methodtogglenamekey)  
-[`method.toggleValueKeys`](../mixin.meta.BaseKey/README.md#methodtogglenamekeys)  
-[`method.increaseValueKey`](../mixin.meta.BaseKey/README.md#methodincreasenamekey)  
-[`method.increaseValueKeys`](../mixin.meta.BaseKey/README.md#methodincreasenamekeys)  
-[`method.defaultValueKey`](../mixin.meta.BaseKey/README.md#methoddefaultnamekey)  
-[`method.defaultValueKeys`](../mixin.meta.BaseKey/README.md#methoddefaultnamekeys)  
-[`method.unsetValueKey`](../mixin.meta.BaseKey/README.md#methodunsetnamekey)  
-[`method.unsetValueKeys`](../mixin.meta.BaseKey/README.md#methodunsetnamekeys)  
+[`BaseKeyMixin`](../../mixin.meta.BaseKey/README.md#methods) with `Value` as `Name`:  
+[`method.getValueKey`](../../mixin.meta.BaseKey/README.md#methodgetnamekey)  
+[`method.getValueKeys`](../../mixin.meta.BaseKey/README.md#methodgetnamekeys)  
+[`method.updateValueKey`](../../mixin.meta.BaseKey/README.md#methodupdatenamekey)  
+[`method.updateValueKeys`](../../mixin.meta.BaseKey/README.md#methodupdatenamekeys)  
+[`method.setValueKey`](../../mixin.meta.BaseKey/README.md#methodsetnamekey)  
+[`method.setValueKeys`](../../mixin.meta.BaseKey/README.md#methodsetnamekeys)  
+[`method.toggleValueKey`](../../mixin.meta.BaseKey/README.md#methodtogglenamekey)  
+[`method.toggleValueKeys`](../../mixin.meta.BaseKey/README.md#methodtogglenamekeys)  
+[`method.increaseValueKey`](../../mixin.meta.BaseKey/README.md#methodincreasenamekey)  
+[`method.increaseValueKeys`](../../mixin.meta.BaseKey/README.md#methodincreasenamekeys)  
+[`method.defaultValueKey`](../../mixin.meta.BaseKey/README.md#methoddefaultnamekey)  
+[`method.defaultValueKeys`](../../mixin.meta.BaseKey/README.md#methoddefaultnamekeys)  
+[`method.unsetValueKey`](../../mixin.meta.BaseKey/README.md#methodunsetnamekey)  
+[`method.unsetValueKeys`](../../mixin.meta.BaseKey/README.md#methodunsetnamekeys)  
 
-[`FocusMixin`](../mixin.interface.Focus/README.md#methods):  
-[`method.onFocusGain`](../mixin.interface.Focus/README.md#methodonfocusgain)  
-[`method.onFocusLoss`](../mixin.interface.Focus/README.md#methodonfocusloss)  
-[`method.isFocusable`](../mixin.interface.Focus/README.md#methodisfocusable)  
-[`method.isFocused`](../mixin.interface.Focus/README.md#methodisfocused)  
-[`method.focus`](../mixin.interface.Focus/README.md#methodfocus)  
-[`method.blur`](../mixin.interface.Focus/README.md#methodblur)  
+[`FocusMixin`](../../mixin.interface.Focus/README.md#methods):  
+[`method.onFocusGain`](../../mixin.interface.Focus/README.md#methodonfocusgain)  
+[`method.onFocusLoss`](../../mixin.interface.Focus/README.md#methodonfocusloss)  
+[`method.isFocusable`](../../mixin.interface.Focus/README.md#methodisfocusable)  
+[`method.isFocused`](../../mixin.interface.Focus/README.md#methodisfocused)  
+[`method.focus`](../../mixin.interface.Focus/README.md#methodfocus)  
+[`method.blur`](../../mixin.interface.Focus/README.md#methodblur)  
 
 
 ### method.getValue

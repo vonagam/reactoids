@@ -8,9 +8,11 @@ export default InputMixin = Mixin.create( {
 
     defaultValue: PropTypes.any,
 
+    inputDelay: PropTypes.number,
+
     validateValue: PropTypes.func, // ( that: mixed, value: mixed ) => ?string
 
-    inputDelay: PropTypes.number,
+    setCustomValidity: PropTypes.func, // ( that: mixed, message: string ) => void
 
   },
 
@@ -20,9 +22,11 @@ export default InputMixin = Mixin.create( {
 
     defaultValue: undefined,
 
+    inputDelay: 100,
+
     validateValue: _.noop,
 
-    inputDelay: 100,
+    setCustomValidity: _.noop,
 
   },
 
@@ -130,6 +134,16 @@ export default InputMixin = Mixin.create( {
 
       },
 
+      componentDidMount() {
+
+        if ( this.state.valueError ) {
+
+          ARGS.setCustomValidity( this, this.state.valueError );
+
+        }
+
+      },
+
       componentWillReceiveProps( nextProps ) {
 
         if ( ! _.isEqual( this.props.value, nextProps.value ) ) {
@@ -155,6 +169,16 @@ export default InputMixin = Mixin.create( {
             this.setState( { valueError } );
 
           }
+
+        }
+
+      },
+
+      componentDidUpdate( prevProps, prevState ) {
+
+        if ( this.state.valueError !== prevState.valueError ) {
+
+          ARGS.setCustomValidity( this, this.state.valueError );
 
         }
 

@@ -22,13 +22,13 @@ describe( '.argTypes', () => {
 
   it( 'does have right keys', () =>
 
-    expect( $Mixin.argTypes ).to.have.all.keys( 'valueType', 'defaultValue', 'validateValue', 'inputDelay' )
+    expect( $Mixin.argTypes ).to.have.all.keys( 'valueType', 'defaultValue', 'inputDelay', 'validateValue', 'setCustomValidity' )
 
   );
 
   it( 'does have right defaulted keys', () =>
 
-    expect( $Mixin.defaultArgs ).to.have.all.keys( 'valueType', 'defaultValue', 'validateValue', 'inputDelay' )
+    expect( $Mixin.defaultArgs ).to.have.all.keys( 'valueType', 'defaultValue', 'inputDelay', 'validateValue', 'setCustomValidity' )
 
   );
 
@@ -101,7 +101,11 @@ describe( '.constructor', () => {
 
         'getInitialMembers',
 
+        'componentDidMount',
+
         'componentWillReceiveProps',
+
+        'componentDidUpdate',
 
         'componentWillUnmount',
 
@@ -282,6 +286,12 @@ describe( '#getInitialMembers', () => {
 
 } );
 
+describe( '#componentDidMount', () => {
+
+  it.skip( 'does need tests' );
+
+} );
+
 describe( '#componentWillReceiveProps', () => {
 
   contexts( 'with prev props = ${ doStringify( value[ 0 ] ) } and next props = ${ doStringify( value[ 1 ] ) }', [
@@ -320,6 +330,12 @@ describe( '#componentWillReceiveProps', () => {
     } );
 
   } );
+
+} );
+
+describe( '#componentDidUpdate', () => {
+
+  it.skip( 'does need tests' );
 
 } );
 
