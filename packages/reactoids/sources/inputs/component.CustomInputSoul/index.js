@@ -87,6 +87,8 @@ export default class CustomInputSoul extends React.Component {
 
         value={ props.value }
 
+        readOnly='true'
+
         disabled={ props.disabled || ! _.isString( props.name ) }
 
         data-value-type={ props.jsonType }
