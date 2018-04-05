@@ -1,5 +1,5 @@
-// https://w3c.github.io/aria/#radiogroup
-// https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton
+// https://w3c.github.io/aria/#listbox
+// https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
 
 
 const FOCUS_KEYS = {
@@ -18,12 +18,24 @@ const FOCUS_KEYS = {
 
 };
 
+const NAME_SUFFIXES = {
+
+  '': ( that, option, index ) => '',
+
+  '[]': ( that, option, index ) => `[]`,
+
+  '[0]': ( that, option, index ) => `[${ index }]`,
+
+  '[key]': ( that, option, index ) => `[${ option.key }]`,
+
+};
+
 
 @Mixin.mix
 
-export default class AriaRadioGroup extends React.Component {
+export default class AriaListboxMulti extends React.Component {
 
-  static displayName = 'AriaRadioGroup';
+  static displayName = 'AriaListboxMulti';
 
   static mixins = [
 
@@ -51,6 +63,8 @@ export default class AriaRadioGroup extends React.Component {
 
           '-focused': '',
 
+          'soul': '',
+
         },
 
       },
@@ -59,11 +73,11 @@ export default class AriaRadioGroup extends React.Component {
 
     } ),
 
-    SingleOptionInputMixin( {
+    MultipleOptionsInputMixin( {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value === undefined ) return that.stringed( 'error.required' );
+        if ( that.props.required && value.length === 0 ) return that.stringed( 'error.required' );
 
       },
 
@@ -73,7 +87,7 @@ export default class AriaRadioGroup extends React.Component {
 
   static propTypes = {
 
-    selectFocus: PropTypes.bool,
+    nameSuffix: PropTypes.oneOfType( [ PropTypes.oneOf( _.keys( NAME_SUFFIXES ) ), PropTypes.func ] ), // ( that: mixed, option: {}, index: number ) => string
 
     name: PropTypes.string,
 
@@ -87,7 +101,7 @@ export default class AriaRadioGroup extends React.Component {
 
   static defaultProps = {
 
-    selectFocus: false,
+    nameSuffix: '[]',
 
     tabIndex: '0',
 
@@ -97,7 +111,7 @@ export default class AriaRadioGroup extends React.Component {
 
   getInitialState() {
 
-    return { focusedKey: undefined };
+    return { focusedKeys: [] };
 
   }
 
@@ -111,9 +125,9 @@ export default class AriaRadioGroup extends React.Component {
 
       }
 
-      if ( this.state.focusedKey !== undefined ) {
+      if ( this.state.focusedKeys.length > 0 ) {
 
-        this.setState( { focusedKey: undefined } );
+        this.setState( { focusedKeys: [] } );
 
       }
 
@@ -125,7 +139,7 @@ export default class AriaRadioGroup extends React.Component {
 
     if ( this.props.disabled ) return;
 
-    this.toggleOption( option );
+    this.toggleOptions( [ option ] );
 
     event.currentTarget.focus();
 
@@ -141,7 +155,7 @@ export default class AriaRadioGroup extends React.Component {
 
       event.preventDefault();
 
-      this.toggleOption( option );
+      this.toggleOptions( [ option ] );
 
     }
 
@@ -161,9 +175,7 @@ export default class AriaRadioGroup extends React.Component {
 
     if ( event.currentTarget !== event.target ) return;
 
-    this.setState( { focusedKey: option.key } );
-
-    if ( this.props.selectFocus ) this.toggleOption( option, true );
+    this.setState( { focusedKeys: [ option.key ] } );
 
   }
 
@@ -171,7 +183,7 @@ export default class AriaRadioGroup extends React.Component {
 
     if ( event.currentTarget !== event.target ) return;
 
-    this.setState( { focusedKey: undefined } );
+    this.setState( { focusedKeys: [] } );
 
   }
 
@@ -194,6 +206,12 @@ export default class AriaRadioGroup extends React.Component {
       case 'blur': this.onOptionBlur( option, index, options, event ); break;
 
     }
+
+  }
+
+  onOptionSoulFocus( event ) {
+
+    event.currentTarget.parentNode.focus();
 
   }
 
@@ -228,11 +246,20 @@ export default class AriaRadioGroup extends React.Component {
     let required = props.required;
 
 
-    let focusedIndex = state.focusedKey === undefined ? -1 : _.findIndex( options, { key: state.focusedKey } );
+    let focusedIndex = state.focusedKeys.length === 0 ? -1 : _.findIndex( options, { key: state.focusedKeys[ 0 ] } );
 
-    let selectedIndex = value === undefined ? -1 : _.findIndex( options, { selected: true } );
+    let selectedIndex = value.length === 0 ? -1 : _.findIndex( options, { selected: true } );
 
     let tabbableIndex = disabled ? -1 : ( focusedIndex > -1 ? focusedIndex : ( selectedIndex > -1 ? selectedIndex : 0 ) );
+
+
+    let valueIndex = 0;
+
+    let nameSuffix = _.isFunction( props.nameSuffix ) ? props.nameSuffix : NAME_SUFFIXES[ props.nameSuffix ];
+
+    let optionName = ( that, option, index ) => `${ props.name }${ nameSuffix( that, option, index ) }`;
+
+    if ( props.name === undefined ) optionName = _.noop;
 
 
     return (
@@ -243,9 +270,11 @@ export default class AriaRadioGroup extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: value !== undefined, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value: value.length > 0, error, focused, readonly, disabled, required } ) }
 
-        role='radiogroup'
+        role='listbox'
+
+        aria-multiselectable='true'
 
         aria-readonly={ readonly }
 
@@ -271,9 +300,9 @@ export default class AriaRadioGroup extends React.Component {
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
 
-              role='radio'
+              role='option'
 
-              aria-checked={ option.selected }
+              aria-selected={ option.selected }
 
               aria-disabled={ disabled }
 
@@ -289,33 +318,65 @@ export default class AriaRadioGroup extends React.Component {
 
               onBlur={ this.callback( 'onOptionEvent' ) }
 
-              children={ option.label }
+            >
 
-            />
+              { option.label }
+
+              {
+
+                ( option.selected ) ?
+
+                  <CustomInputSoul
+
+                    className={ this.classed( 'option.soul' ) }
+
+                    name={ optionName( this, option, valueIndex++ ) }
+
+                    value={ option.value }
+
+                    disabled={ disabled }
+
+                    onFocus={ this.callback( 'onOptionSoulFocus' ) }
+
+                    jsonType={ props.jsonType }
+
+                  />
+
+                : null
+
+              }
+
+            </div>
 
           )
 
         }
 
-        <CustomInputSoul
+        {
 
-          ref={ this.ref( 'soul' ) }
+          ( error ) ?
 
-          className={ this.classed( 'soul' ) }
+            <CustomInputSoul
 
-          name={ props.name }
+              ref={ this.ref( 'soul' ) }
 
-          value={ value }
+              className={ this.classed( 'soul' ) }
 
-          error={ error }
+              name={ props.name }
 
-          disabled={ disabled }
+              error={ error }
 
-          onFocus={ this }
+              disabled={ disabled }
 
-          jsonType={ props.jsonType }
+              onFocus={ this }
 
-        />
+              jsonType='skip'
+
+            />
+
+          : null
+
+        }
 
       </div>
 

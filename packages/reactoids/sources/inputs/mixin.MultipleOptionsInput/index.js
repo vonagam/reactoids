@@ -65,6 +65,40 @@ export default MultipleOptionsInputMixin = Mixin.create( {
 
       ],
 
+      toggleOptions( options, bool ) {
+
+        if ( bool === undefined ) {
+
+          bool = ! _.every( options, 'selected' );
+
+        } else {
+
+          if ( bool === true && _.every( options, 'seleted' ) ) return;
+
+          if ( bool === false && _.none( options, 'seleted' ) ) return;
+
+        }
+
+        let operation = bool ? _.union : _.difference;
+
+        let optionsValues = _.map( options, 'value' );
+
+        let prevValue = this.getValue();
+
+        let nextValue = operation( prevValue, optionsValues );
+
+        if ( nextValue.length === 0 && prevValue.length > 0 && this.props.allowBlank === false ) {
+
+          nextValue = [ _.find( optionsValues, ( value ) => _.includes( prevValue, value ) ) ];
+
+        }
+
+        if ( nextValue.length === prevValue.length ) return;
+
+        this.setValue( nextValue );
+
+      },
+
     };
 
   },

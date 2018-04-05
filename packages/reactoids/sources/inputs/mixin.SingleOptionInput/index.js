@@ -57,6 +57,30 @@ export default SingleOptionInputMixin = Mixin.create( {
 
       ],
 
+      toggleOption( option, bool ) {
+
+        if ( bool === undefined ) {
+
+          bool = ! option.selected;
+
+        } else {
+
+          if ( bool === option.selected ) return;
+
+        }
+
+        let nextValue = bool ? option.value : undefined;
+
+        if ( nextValue === undefined && this.props.allowBlank === false ) {
+
+          return;
+
+        }
+
+        this.setValue( nextValue );
+
+      },
+
     };
 
   },

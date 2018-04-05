@@ -1,5 +1,5 @@
-// https://w3c.github.io/aria/#radiogroup
-// https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton
+// https://w3c.github.io/aria/#listbox
+// https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
 
 
 const FOCUS_KEYS = {
@@ -21,9 +21,9 @@ const FOCUS_KEYS = {
 
 @Mixin.mix
 
-export default class AriaRadioGroup extends React.Component {
+export default class AriaListbox extends React.Component {
 
-  static displayName = 'AriaRadioGroup';
+  static displayName = 'AriaListbox';
 
   static mixins = [
 
@@ -245,7 +245,7 @@ export default class AriaRadioGroup extends React.Component {
 
         className={ this.classed( '', { value: value !== undefined, error, focused, readonly, disabled, required } ) }
 
-        role='radiogroup'
+        role='listbox'
 
         aria-readonly={ readonly }
 
@@ -271,9 +271,9 @@ export default class AriaRadioGroup extends React.Component {
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
 
-              role='radio'
+              role='option'
 
-              aria-checked={ option.selected }
+              aria-selected={ option.selected }
 
               aria-disabled={ disabled }
 
