@@ -68,7 +68,7 @@ export default class AriaCheckbox extends React.Component {
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 
-    options: PropTypes.array,
+    mapping: PropTypes.array,
 
     jsonType: PropTypes.string,
 
@@ -78,7 +78,7 @@ export default class AriaCheckbox extends React.Component {
 
     tabIndex: '0',
 
-    options: [ 'false', 'true', 'false' ],
+    mapping: [ 'false', 'true', 'false' ],
 
     jsonType: 'boolean',
 
@@ -171,7 +171,7 @@ export default class AriaCheckbox extends React.Component {
 
           name={ props.name }
 
-          value={ props.options[ INDEXES[ value ] ] }
+          value={ props.mapping[ INDEXES[ value ] ] }
 
           error={ error }
 
