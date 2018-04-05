@@ -27,7 +27,7 @@ export default ClassedMixin = Mixin.create( {
 
     const toPath = function( keys ) {
 
-      return keys.join( '.' ); // TODO: tests changed "." to ""
+      return keys.join( '.' );
 
     };
 
@@ -39,7 +39,11 @@ export default ClassedMixin = Mixin.create( {
 
       _.times( keys.length, ( i ) => {
 
-        PATHS_LOOKUP[ toPath( keys.slice( i ) ) ] = path
+        let shortcut = toPath( keys.slice( i ) );
+
+        if ( PATHS_LOOKUP[ shortcut ] && PATHS_LOOKUP[ shortcut ].split( '.' ).length < path.split( '.' ).length ) return;
+
+        PATHS_LOOKUP[ shortcut ] = path;
 
       } );
 
