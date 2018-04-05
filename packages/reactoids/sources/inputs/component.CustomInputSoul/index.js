@@ -12,8 +12,6 @@ export default class CustomInputSoul extends React.Component {
 
   static propTypes = {
 
-    input: PropTypes.any.isRequired,
-
     name: PropTypes.string,
 
     value: PropTypes.any,
@@ -21,6 +19,8 @@ export default class CustomInputSoul extends React.Component {
     error: PropTypes.string,
 
     disabled: PropTypes.bool,
+
+    onFocus: PropTypes.any.isRequired,
 
     jsonType: PropTypes.oneOf( [ 'auto', 'string', 'number', 'boolean', 'null', 'array', 'object', 'skip' ] ),
 
@@ -54,9 +54,19 @@ export default class CustomInputSoul extends React.Component {
 
   }
 
-  onFocus() {
+  onFocus( event ) {
 
-    this.props.input.focus();
+    let onFocus = this.props.onFocus;
+
+    if ( _.isFunction( onFocus ) ) {
+
+      onFocus( event );
+
+    } else {
+
+      onFocus.focus();
+
+    }
 
   }
 

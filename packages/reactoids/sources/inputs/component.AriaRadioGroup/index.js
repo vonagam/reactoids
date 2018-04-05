@@ -253,7 +253,6 @@ export default class AriaRadioGroup extends React.Component {
 
           className={ this.classed( 'soul' ) }
 
-          input={ this }
 
           name={ props.name }
 
@@ -262,6 +261,8 @@ export default class AriaRadioGroup extends React.Component {
           error={ error }
 
           disabled={ disabled }
+
+          onFocus={ this }
 
           jsonType={ props.jsonType }
 

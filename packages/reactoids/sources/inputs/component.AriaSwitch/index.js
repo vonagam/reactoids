@@ -165,8 +165,6 @@ export default class AriaSwitch extends React.Component {
 
           className={ this.classed( 'soul' ) }
 
-          input={ this }
-
           name={ props.name }
 
           value={ props.mapping[ INDEXES[ value ] ] }
@@ -174,6 +172,8 @@ export default class AriaSwitch extends React.Component {
           error={ error }
 
           disabled={ disabled }
+
+          onFocus={ this }
 
           jsonType={ props.jsonType }
 
