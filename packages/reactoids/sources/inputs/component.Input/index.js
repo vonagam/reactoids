@@ -110,9 +110,9 @@ export default class Input extends React.Component {
 
     let readonly = props.readOnly;
 
-    let required = props.required;
-
     let disabled = props.disabled;
+
+    let required = props.required;
 
 
     return (
@@ -131,9 +131,9 @@ export default class Input extends React.Component {
 
         readOnly={ readonly }
 
-        required={ required }
-
         disabled={ disabled }
+
+        required={ required }
 
         data-value-type={ props.jsonType }
 

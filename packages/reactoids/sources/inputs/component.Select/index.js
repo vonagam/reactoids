@@ -1,8 +1,8 @@
 @Mixin.mix
 
-export default class Textarea extends React.Component {
+export default class Select extends React.Component {
 
-  static displayName = 'Textarea';
+  static displayName = 'Select';
 
   static mixins = [
 
@@ -22,13 +22,21 @@ export default class Textarea extends React.Component {
 
         '-required': '',
 
+        option: {
+
+          '-blank': '',
+
+          '-selected': '',
+
+        },
+
       },
 
       strings: [ 'error.required' ],
 
     } ),
 
-    InputMixin( {
+    SingleOptionInputMixin( {
 
       valueType: PropTypes.string,
 
@@ -36,7 +44,7 @@ export default class Textarea extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value !== '' ) return that.stringed( 'error.required' );
+        if ( that.props.required && value === undefined ) return that.stringed( 'error.required' );
 
       },
 
@@ -50,18 +58,6 @@ export default class Textarea extends React.Component {
 
   ];
 
-  onChange( event ) {
-
-    this.setTempValue( event.target.value );
-
-  }
-
-  onBlur( event ) {
-
-    this.setValue( event.target.value );
-
-  }
-
   static propTypes = {
 
     required: PropTypes.bool,
@@ -72,21 +68,29 @@ export default class Textarea extends React.Component {
 
   static defaultProps = {
 
-    jsonType: 'string',
+    jsonType: 'auto',
 
   };
 
+  onChange( event ) {
+
+    this.setValue( event.target.value );
+
+  }
+
   render() {
 
-    let { props } = this;
+    let { props, state } = this;
 
-    let value = this.getValue().toString();
+    let value = this.getValue();
+
+    let options = this.getOptions();
 
     let error = this.getValueError();
 
     let focused = this.isFocused();
 
-    let filled = value !== '';
+    let filled = ! ( this.props.allowBlank && value === '' );
 
     let readonly = props.readOnly;
 
@@ -97,7 +101,7 @@ export default class Textarea extends React.Component {
 
     return (
 
-      <textarea
+      <select
 
         ref={ this.ref( 'dom' ) }
 
@@ -117,11 +121,43 @@ export default class Textarea extends React.Component {
 
         onChange={ this.callback( 'onChange' ) }
 
-        onFocus={ this.callback( 'onFocusGain, props.onBlur' ) }
+        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
 
-        onBlur={ this.callback( 'onBlur, onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
 
-      />
+      >
+
+        {
+
+          ( props.allowBlank ) ?
+
+            <option className={ this.classed( 'option', { blank: true, selected: ! filled } ) } value='' />
+
+          : null
+
+        }
+
+        {
+
+          _.map( options, ( option, index ) =>
+
+            <option
+
+              key={ option.key }
+
+              className={ this.classed( 'option', { selected: option.selected } ) }
+
+              value={ option.value }
+
+              children={ option.label }
+
+            />
+
+          )
+
+        }
+
+      </select>
 
     );
 
