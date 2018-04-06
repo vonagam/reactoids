@@ -64,14 +64,17 @@ export default InputMixin = Mixin.create( {
       let value = that.getValue( props, state );
 
 
+      let argsError = ARGS.validateValue( that, value );
+
+      if ( argsError ) return argsError;
+
+
       let propError = _.funced( props.validate, that, value );
 
       if ( propError ) return propError;
 
 
-      let argsError = ARGS.validateValue( that, value );
-
-      if ( argsError ) return argsError;
+      return '';
 
     };
 
