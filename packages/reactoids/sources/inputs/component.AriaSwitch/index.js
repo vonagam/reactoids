@@ -1,15 +1,6 @@
 // https://w3c.github.io/aria/#switch
 
 
-const INDEXES = {
-
-  false: 0,
-
-  true: 1,
-
-};
-
-
 @Mixin.mix
 
 export default class AriaSwitch extends React.Component {
@@ -22,7 +13,7 @@ export default class AriaSwitch extends React.Component {
 
       classes: {
 
-        '-value=': [ 'false', 'true' ],
+        '-value': '',
 
         '-error': '',
 
@@ -44,13 +35,13 @@ export default class AriaSwitch extends React.Component {
 
     InputMixin( {
 
-      valueType: PropTypes.oneOf( [ false, true, 'false', 'true' ] ),
+      valueType: PropTypes.bool,
 
       defaultValue: false,
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value.toString() !== 'true' ) return that.stringed( 'error.required' );
+        if ( that.props.required && value !== true ) return that.stringed( 'error.required' );
 
       },
 
@@ -60,13 +51,13 @@ export default class AriaSwitch extends React.Component {
 
   static propTypes = {
 
+    mapping: PropTypes.array,
+
     name: PropTypes.string,
 
     required: PropTypes.bool,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
-
-    mapping: PropTypes.array,
 
     jsonType: PropTypes.string,
 
@@ -74,9 +65,9 @@ export default class AriaSwitch extends React.Component {
 
   static defaultProps = {
 
-    tabIndex: '0',
-
     mapping: [ 'false', 'true' ],
+
+    tabIndex: '0',
 
     jsonType: 'boolean',
 
@@ -84,7 +75,7 @@ export default class AriaSwitch extends React.Component {
 
   toggle() {
 
-    this.setValue( this.getValue().toString() !== 'true' );
+    this.setValue( ! this.getValue() );
 
   }
 
@@ -114,7 +105,7 @@ export default class AriaSwitch extends React.Component {
 
     let { props } = this;
 
-    let value = this.getValue().toString();
+    let value = this.getValue();
 
     let error = this.getValueError();
 
@@ -139,7 +130,7 @@ export default class AriaSwitch extends React.Component {
 
         role='switch'
 
-        aria-checked={ value }
+        aria-checked={ value.toString() }
 
         aria-readonly={ readonly }
 
@@ -167,15 +158,16 @@ export default class AriaSwitch extends React.Component {
 
           name={ props.name }
 
-          value={ props.mapping[ INDEXES[ value ] ] }
+          value={ props.mapping[ +value ] }
 
           error={ error }
 
           disabled={ disabled }
 
+          jsonType={ props.jsonType }
+
           onFocus={ this }
 
-          jsonType={ props.jsonType }
 
         />
 

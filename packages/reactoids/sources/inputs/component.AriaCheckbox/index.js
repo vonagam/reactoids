@@ -2,17 +2,6 @@
 // https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/#checkbox
 
 
-const INDEXES = {
-
-  false: 0,
-
-  true: 1,
-
-  mixed: 2,
-
-};
-
-
 @Mixin.mix
 
 export default class AriaCheckbox extends React.Component {
@@ -25,7 +14,9 @@ export default class AriaCheckbox extends React.Component {
 
       classes: {
 
-        '-value=': [ 'false', 'true', 'mixed' ],
+        '-value': '',
+
+        '-indeterminate': '',
 
         '-error': '',
 
@@ -47,13 +38,13 @@ export default class AriaCheckbox extends React.Component {
 
     InputMixin( {
 
-      valueType: PropTypes.oneOf( [ false, true, 'false', 'true', 'mixed' ] ),
+      valueType: PropTypes.bool,
 
       defaultValue: false,
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value.toString() !== 'true' ) return that.stringed( 'error.required' );
+        if ( that.props.required && value !== true ) return that.stringed( 'error.required' );
 
       },
 
@@ -63,13 +54,15 @@ export default class AriaCheckbox extends React.Component {
 
   static propTypes = {
 
+    indeterminate: PropTypes.bool,
+
+    mapping: PropTypes.array,
+
     name: PropTypes.string,
 
     required: PropTypes.bool,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
-
-    mapping: PropTypes.array,
 
     jsonType: PropTypes.string,
 
@@ -77,9 +70,9 @@ export default class AriaCheckbox extends React.Component {
 
   static defaultProps = {
 
-    tabIndex: '0',
+    mapping: [ 'false', 'true' ],
 
-    mapping: [ 'false', 'true', 'false' ],
+    tabIndex: '0',
 
     jsonType: 'boolean',
 
@@ -87,7 +80,7 @@ export default class AriaCheckbox extends React.Component {
 
   toggle() {
 
-    this.setValue( this.getValue().toString() !== 'true' );
+    this.setValue( ! this.getValue() );
 
   }
 
@@ -117,11 +110,13 @@ export default class AriaCheckbox extends React.Component {
 
     let { props } = this;
 
-    let value = this.getValue().toString();
+    let value = this.getValue();
 
     let error = this.getValueError();
 
     let focused = this.isFocused();
+
+    let indeterminate = props.indeterminate;
 
     let readonly = props.readOnly;
 
@@ -138,19 +133,19 @@ export default class AriaCheckbox extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value, indeterminate, error, focused, readonly, disabled, required } ) }
 
         role='checkbox'
 
-        aria-checked={ value }
+        aria-checked={ indeterminate ? 'mixed' : value.toString() }
 
         aria-readonly={ readonly }
 
         aria-disabled={ disabled }
 
-        aria-invalid={ Boolean( error ) }
-
         aria-required={ required }
+
+        aria-invalid={ Boolean( error ) }
 
         tabIndex={ disabled ? '-1' : props.tabIndex }
 
@@ -170,15 +165,16 @@ export default class AriaCheckbox extends React.Component {
 
           name={ props.name }
 
-          value={ props.mapping[ INDEXES[ value ] ] }
+          value={ props.mapping[ +value ] }
 
           error={ error }
 
           disabled={ disabled }
 
+          jsonType={ props.jsonType }
+
           onFocus={ this }
 
-          jsonType={ props.jsonType }
 
         />
 
