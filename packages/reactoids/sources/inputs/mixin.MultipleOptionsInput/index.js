@@ -4,7 +4,7 @@ export default MultipleOptionsInputMixin = Mixin.create( {
 
   mixins: [
 
-    { Mixin: BaseOptionsInputMixin, omit: [ 'isOptionSelected', 'checkOptionsConflict' ] },
+    { Mixin: BaseOptionsInputMixin, omit: [ 'isOptionSelected', 'applyValueRestrictions' ] },
 
   ],
 
@@ -26,7 +26,7 @@ export default MultipleOptionsInputMixin = Mixin.create( {
 
       },
 
-      checkOptionsConflict( that, props, state ) {
+      applyValueRestrictions( that, props, state ) {
 
         let selectedValues = that.getValue( props, state );
 

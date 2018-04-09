@@ -14,6 +14,8 @@ export default InputMixin = Mixin.create( {
 
     setCustomValidity: PropTypes.func, // ( that: mixed, message: string ) => void
 
+    applyValueRestrictions: PropTypes.func, // ( that: mixed, props: object, state: object ) => void
+
   },
 
   defaultArgs: {
@@ -27,6 +29,8 @@ export default InputMixin = Mixin.create( {
     validateValue: _.noop,
 
     setCustomValidity: _.noop,
+
+    applyValueRestrictions: _.noop,
 
   },
 
@@ -137,6 +141,12 @@ export default InputMixin = Mixin.create( {
 
       },
 
+      componentWillMount() {
+
+        ARGS.applyValueRestrictions( this, this.props, this.state );
+
+      },
+
       componentDidMount() {
 
         if ( this.state.valueError ) {
@@ -184,6 +194,8 @@ export default InputMixin = Mixin.create( {
           ARGS.setCustomValidity( this, this.state.valueError );
 
         }
+
+        ARGS.applyValueRestrictions( this, this.props, this.state );
 
       },
 

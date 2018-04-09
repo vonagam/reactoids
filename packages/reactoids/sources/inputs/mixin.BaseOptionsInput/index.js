@@ -6,8 +6,6 @@ export default BaseOptionsInputMixin = Mixin.create( {
 
     isOptionSelected: PropTypes.func, // ( that: mixed, option: mixed, value: mixed ) => boolean
 
-    checkOptionsConflict: PropTypes.func, // ( that: mixed, props: object, state: object ) => void
-
   },
 
   mixins: [
@@ -58,24 +56,6 @@ export default BaseOptionsInputMixin = Mixin.create( {
       defaultProps: {
 
         allowBlank: true,
-
-      },
-
-      componentWillMount() {
-
-        ARGS.checkOptionsConflict( this, this.props, this.state );
-
-      },
-
-      componentWillReceiveProps( nextProps ) {
-
-        ARGS.checkOptionsConflict( this, nextProps, this.state );
-
-      },
-
-      componentDidUpdate() {
-
-        ARGS.checkOptionsConflict( this, this.props, this.state );
 
       },
 
