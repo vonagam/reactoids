@@ -113,6 +113,8 @@ export default class Textarea extends React.Component {
 
         required={ required }
 
+        aria-invalid={ Boolean( error ) }
+
         data-value-type={ props.jsonType }
 
         onChange={ this.callback( 'onChange' ) }
