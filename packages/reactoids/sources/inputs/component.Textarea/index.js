@@ -40,7 +40,7 @@ export default class Textarea extends React.Component {
 
       },
 
-      setCustomValidity( that, message ) {
+      onValidation( that, message ) {
 
         that.refs.dom.setCustomValidity( message );
 

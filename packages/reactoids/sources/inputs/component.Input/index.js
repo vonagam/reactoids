@@ -38,7 +38,7 @@ export default class Input extends React.Component {
 
       },
 
-      setCustomValidity( that, message ) {
+      onValidation( that, message ) {
 
         that.refs.dom.setCustomValidity( message );
 

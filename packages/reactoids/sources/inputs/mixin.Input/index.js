@@ -12,7 +12,7 @@ export default InputMixin = Mixin.create( {
 
     validateValue: PropTypes.func, // ( that: mixed, value: mixed ) => ?string
 
-    setCustomValidity: PropTypes.func, // ( that: mixed, message: string ) => void
+    onValidation: PropTypes.func, // ( that: mixed, message: string ) => void
 
     applyValueRestrictions: PropTypes.func, // ( that: mixed, props: object, state: object ) => void
 
@@ -28,7 +28,7 @@ export default InputMixin = Mixin.create( {
 
     validateValue: _.noop,
 
-    setCustomValidity: _.noop,
+    onValidation: _.noop,
 
     applyValueRestrictions: _.noop,
 
@@ -99,10 +99,6 @@ export default InputMixin = Mixin.create( {
 
         defaultValue: ARGS.valueType,
 
-        onChange: PropTypes.func, // ( value: mixed ) => void
-
-        onTempChange: PropTypes.func, // ( value: mixed ) => void
-
         inputDelay: PropTypes.number,
 
         readOnly: PropTypes.bool,
@@ -110,6 +106,12 @@ export default InputMixin = Mixin.create( {
         disabled: PropTypes.bool,
 
         validate: PropTypes.funced( PropTypes.string ), // ( that: mixed, value: mixed ) => ?string
+
+        onChange: PropTypes.func, // ( value: mixed ) => void
+
+        onTempChange: PropTypes.func, // ( value: mixed ) => void
+
+        onValidation: PropTypes.func, // ( message: string ) => void
 
       },
 
@@ -151,7 +153,9 @@ export default InputMixin = Mixin.create( {
 
         if ( this.state.valueError ) {
 
-          ARGS.setCustomValidity( this, this.state.valueError );
+          ARGS.onValidation( this, this.state.valueError );
+
+          if ( this.props.onValidation ) this.props.onValidation( this.state.valueError );
 
         }
 
@@ -191,7 +195,9 @@ export default InputMixin = Mixin.create( {
 
         if ( this.state.valueError !== prevState.valueError ) {
 
-          ARGS.setCustomValidity( this, this.state.valueError );
+          ARGS.onValidation( this, this.state.valueError );
+
+          if ( this.props.onValidation ) this.props.onValidation( this.state.valueError );
 
         }
 
@@ -229,7 +235,7 @@ export default InputMixin = Mixin.create( {
 
           valueReal: value,
 
-          valueError: this.props.value !== undefined ? this.state.valueError : validate( this, this.props, { valueReal: value } ),
+          valueError: this.props.value === undefined ? validate( this, this.props, { valueReal: value } ) : this.state.valueError,
 
         }, callback );
 

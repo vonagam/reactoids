@@ -48,7 +48,7 @@ export default class Select extends React.Component {
 
       },
 
-      setCustomValidity( that, message ) {
+      onValidation( that, message ) {
 
         that.refs.dom.setCustomValidity( message );
 
