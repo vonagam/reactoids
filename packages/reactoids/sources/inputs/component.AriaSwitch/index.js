@@ -61,6 +61,8 @@ export default class AriaSwitch extends React.Component {
 
     jsonType: PropTypes.string,
 
+    onInvalid: PropTypes.func,
+
   };
 
   static defaultProps = {
@@ -168,6 +170,7 @@ export default class AriaSwitch extends React.Component {
 
           onFocus={ this }
 
+          onInvalid={ props.onInvalid }
 
         />
 

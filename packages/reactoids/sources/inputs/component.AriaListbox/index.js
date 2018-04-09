@@ -83,6 +83,8 @@ export default class AriaListbox extends React.Component {
 
     jsonType: PropTypes.string,
 
+    onInvalid: PropTypes.func,
+
   };
 
   static defaultProps = {
@@ -314,6 +316,7 @@ export default class AriaListbox extends React.Component {
           onFocus={ this }
 
           jsonType={ props.jsonType }
+          onInvalid={ props.onInvalid }
 
         />
 

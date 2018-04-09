@@ -66,6 +66,8 @@ export default class AriaCheckbox extends React.Component {
 
     jsonType: PropTypes.string,
 
+    onInvalid: PropTypes.func,
+
   };
 
   static defaultProps = {
@@ -175,6 +177,7 @@ export default class AriaCheckbox extends React.Component {
 
           onFocus={ this }
 
+          onInvalid={ props.onInvalid }
 
         />
 
