@@ -20,9 +20,9 @@ export default class CustomInputSoul extends React.Component {
 
     disabled: PropTypes.bool,
 
-    onFocus: PropTypes.any.isRequired,
-
     jsonType: PropTypes.oneOf( [ 'auto', 'string', 'number', 'boolean', 'null', 'array', 'object', 'skip' ] ),
+
+    onFocus: PropTypes.any.isRequired,
 
   };
 
@@ -80,6 +80,8 @@ export default class CustomInputSoul extends React.Component {
       <textarea
 
         ref={ this.ref( 'dom' ) }
+
+        { ...this.omitProps() }
 
         className={ this.classed( '' ) }
 
