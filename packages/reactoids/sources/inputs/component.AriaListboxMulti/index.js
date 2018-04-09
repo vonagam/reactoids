@@ -221,11 +221,19 @@ export default class AriaListboxMulti extends React.Component {
 
     if ( event.currentTarget !== event.target ) return;
 
-    let tabbableOption = _.find( this.refs.dom.childNodes, ( node ) => node.hasAttribute( 'tabIndex' ) );
+    let tabbableOptions;
 
-    if ( tabbableOption === this.refs.soul ) return;
+    tabbableOptions = _.filter( this.refs.dom.childNodes, ( node ) => node.hasAttribute( 'tabIndex' ) );
 
-    tabbableOption.focus();
+    tabbableOptions = _.sortBy( tabbableOptions, ( node ) => -1 * parseInt( node.getAttribute( 'tabIndex' ) ) );
+
+    let tabbableOption = tabbableOptions[ 0 ];
+
+    if ( tabbableOption && tabbableOption !== this.refs.soul ) {
+
+      tabbableOption.focus();
+
+    }
 
   }
 
@@ -282,9 +290,9 @@ export default class AriaListboxMulti extends React.Component {
 
         aria-disabled={ disabled }
 
-        aria-invalid={ Boolean( error ) }
-
         aria-required={ required }
+
+        aria-invalid={ Boolean( error ) }
 
         onFocus={ this.callback( 'onFocusGain, onFocus, props.onFocus' ) }
 
@@ -370,9 +378,10 @@ export default class AriaListboxMulti extends React.Component {
 
               disabled={ disabled }
 
+              jsonType='skip'
+
               onFocus={ this }
 
-              jsonType='skip'
               onInvalid={ props.onInvalid }
 
             />
