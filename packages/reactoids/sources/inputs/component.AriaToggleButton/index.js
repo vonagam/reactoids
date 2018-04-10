@@ -131,6 +131,11 @@ export default class AriaToggleButton extends React.Component {
     let required = props.required;
 
 
+    let formValue = props.mapping[ +value ];
+
+    let formName = formValue === undefined ? undefined : props.name;
+
+
     return (
 
       <div
@@ -169,9 +174,9 @@ export default class AriaToggleButton extends React.Component {
 
           className={ this.classed( 'soul' ) }
 
-          name={ props.name }
+          name={ formName }
 
-          value={ props.mapping[ +value ] }
+          value={ formValue }
 
           error={ error }
 
