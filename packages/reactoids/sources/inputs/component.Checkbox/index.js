@@ -60,7 +60,9 @@ export default class Checkbox extends React.Component {
 
     indeterminate: PropTypes.bool,
 
-    mapping: PropTypes.string,
+    mapping: PropTypes.array,
+
+    name: PropTypes.string,
 
     required: PropTypes.bool,
 
@@ -70,7 +72,7 @@ export default class Checkbox extends React.Component {
 
   static defaultProps = {
 
-    mapping: 'true',
+    mapping: [ 'false', 'true' ],
 
     jsonType: 'boolean',
 
@@ -121,39 +123,72 @@ export default class Checkbox extends React.Component {
     let required = props.required;
 
 
+    let names = [];
+
+    if ( value === true ) {
+
+      names[ 1 ] = props.name;
+
+    } else if ( props.mapping[ 0 ] !== undefined ) {
+
+      names[ 0 ] = props.name;
+
+    }
+
+
     return (
 
-      <input
+      <React.Fragment>
 
-        ref={ this.ref( 'dom' ) }
+        <input
 
-        { ...this.omitProps() }
+          type='hidden'
 
-        className={ this.classed( '', { value, indeterminate, error, focused, readonly, disabled, required } ) }
+          name={ names[ 0 ] }
 
-        type='checkbox'
+          value={ props.mapping[ 0 ] }
 
-        value={ props.mapping }
+          disabled={ disabled }
 
-        checked={ value }
+          data-value-type={ props.jsonType }
 
-        readOnly={ readonly }
+        />
 
-        disabled={ disabled }
+        <input
 
-        required={ required }
+          ref={ this.ref( 'dom' ) }
 
-        aria-invalid={ Boolean( error ) }
+          { ...this.omitProps() }
 
-        data-value-type={ props.jsonType }
+          className={ this.classed( '', { value, indeterminate, error, focused, readonly, disabled, required } ) }
 
-        onChange={ this.callback( 'onChange' ) }
+          name={ names[ 1 ] }
 
-        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+          type='checkbox'
 
-        onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+          value={ props.mapping[ 1 ] }
 
-      />
+          checked={ value }
+
+          readOnly={ readonly }
+
+          disabled={ disabled }
+
+          required={ required }
+
+          aria-invalid={ Boolean( error ) }
+
+          data-value-type={ props.jsonType }
+
+          onChange={ this.callback( 'onChange' ) }
+
+          onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+
+          onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+
+        />
+
+      </React.Fragment>
 
     );
 
