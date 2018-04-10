@@ -32,9 +32,11 @@ export default class Input extends React.Component {
 
     InputMixin( {
 
+      defaultValue: '',
+
       validateValue( that, value ) {
 
-        if ( that.props.required && ! value ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
 
       },
 
@@ -100,13 +102,13 @@ export default class Input extends React.Component {
 
     let value = this.getValue();
 
+    let filled = ! this.isDefaultValue( value );
+
     let error = this.getValueError();
 
     let focused = this.isFocused();
 
     let type = props.type;
-
-    let filled = value !== undefined && value !== '';
 
     let readonly = props.readOnly;
 
@@ -127,7 +129,7 @@ export default class Input extends React.Component {
 
         type={ type }
 
-        value={ value === undefined ? '' : value }
+        value={ value }
 
         readOnly={ readonly }
 

@@ -40,7 +40,7 @@ export default class Checkbox extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value !== true ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
 
       },
 

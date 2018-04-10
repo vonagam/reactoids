@@ -36,7 +36,7 @@ export default class Textarea extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value !== '' ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
 
       },
 
@@ -82,11 +82,11 @@ export default class Textarea extends React.Component {
 
     let value = this.getValue().toString();
 
+    let filled = ! this.isDefaultValue( value );
+
     let error = this.getValueError();
 
     let focused = this.isFocused();
-
-    let filled = value !== '';
 
     let readonly = props.readOnly;
 

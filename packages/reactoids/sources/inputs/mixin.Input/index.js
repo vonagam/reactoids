@@ -293,6 +293,12 @@ export default InputMixin = Mixin.create( {
 
       },
 
+      isDefaultValue( value ) {
+
+        return ! _.isEqual( value, ARGS.defaultValue );
+
+      },
+
     };
 
   },

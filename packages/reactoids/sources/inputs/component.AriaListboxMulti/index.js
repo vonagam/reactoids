@@ -79,7 +79,7 @@ export default class AriaListboxMulti extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && value.length === 0 ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
 
       },
 
