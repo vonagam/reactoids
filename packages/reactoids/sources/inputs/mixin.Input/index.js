@@ -10,6 +10,8 @@ export default InputMixin = Mixin.create( {
 
     inputDelay: PropTypes.number,
 
+    validationProps: PropTypes.array,
+
     validateValue: PropTypes.func, // ( that: mixed, value: mixed ) => ?string
 
     onValidation: PropTypes.func, // ( that: mixed, message: string ) => void
@@ -25,6 +27,8 @@ export default InputMixin = Mixin.create( {
     defaultValue: undefined,
 
     inputDelay: 100,
+
+    validationProps: undefined,
 
     validateValue: _.noop,
 
@@ -177,7 +181,7 @@ export default InputMixin = Mixin.create( {
 
           } );
 
-        } else if ( this.props.validate !== nextProps.validate ) {
+        } else if ( this.props.validate !== nextProps.validate || ! _.isEqualPick( this.props, nextProps, ARGS.validationProps ) ) {
 
           let valueError = validate( this, nextProps, { valueReal: this.state.valueReal } );
 

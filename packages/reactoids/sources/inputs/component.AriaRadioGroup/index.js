@@ -63,6 +63,8 @@ export default class AriaRadioGroup extends React.Component {
 
     SingleOptionInputMixin( {
 
+      validationProps: [ 'required' ],
+
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );

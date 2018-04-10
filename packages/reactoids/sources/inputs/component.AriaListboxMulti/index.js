@@ -77,6 +77,8 @@ export default class AriaListboxMulti extends React.Component {
 
     MultipleOptionsInputMixin( {
 
+      validationProps: [ 'required' ],
+
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );

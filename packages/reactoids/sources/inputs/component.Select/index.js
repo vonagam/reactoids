@@ -42,6 +42,8 @@ export default class Select extends React.Component {
 
       defaultValue: '',
 
+      validationProps: [ 'required' ],
+
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );

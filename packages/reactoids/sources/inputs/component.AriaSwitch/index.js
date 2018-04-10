@@ -41,6 +41,8 @@ export default class AriaSwitch extends React.Component {
 
       defaultValue: false,
 
+      validationProps: [ 'required' ],
+
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
