@@ -31,6 +31,8 @@ export default class AriaSwitch extends React.Component {
 
       strings: [ 'error.required' ],
 
+      Components: { CustomInputSoul },
+
     } ),
 
     InputMixin( {
@@ -154,7 +156,7 @@ export default class AriaSwitch extends React.Component {
 
       >
 
-        <CustomInputSoul
+        <props.Components.CustomInputSoul
 
           className={ this.classed( 'soul' ) }
 

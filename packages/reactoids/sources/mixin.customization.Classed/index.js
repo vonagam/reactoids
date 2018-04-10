@@ -16,12 +16,7 @@ export default ClassedMixin = Mixin.create( {
 
   mixin( ARGS ) {
 
-    const ID = _.uniqueId();
-
-
-    const PATHS = [];
-
-    const PATHS_LOOKUP = {};
+    const PATHS = {};
 
     let NODES = {};
 
@@ -35,15 +30,13 @@ export default ClassedMixin = Mixin.create( {
 
       let path = toPath( keys );
 
-      PATHS.push( path );
-
       _.times( keys.length, ( i ) => {
 
         let shortcut = toPath( keys.slice( i ) );
 
-        if ( PATHS_LOOKUP[ shortcut ] && PATHS_LOOKUP[ shortcut ].split( '.' ).length < path.split( '.' ).length ) return;
+        if ( PATHS[ shortcut ] && PATHS[ shortcut ].split( '.' ).length < path.split( '.' ).length ) return;
 
-        PATHS_LOOKUP[ shortcut ] = path;
+        PATHS[ shortcut ] = path;
 
       } );
 
@@ -146,7 +139,7 @@ export default ClassedMixin = Mixin.create( {
 
     const mapClassesKeys = function( classes ) {
 
-      return _.mapKeys( classes, ( value, key ) => PATHS_LOOKUP[ key ] || key );
+      return _.mapKeys( classes, ( value, key ) => PATHS[ key ] || key );
 
     };
 
@@ -173,61 +166,21 @@ export default ClassedMixin = Mixin.create( {
     };
 
 
-    const setPropsClasses = function( that, props ) {
+    const updateClasses = function( that, props ) {
 
       let classed = that._ClassedMixin;
 
-      let propsClassName = props.className;
+      let className = _.funced( props.className, that );
 
-      propsClassName = _.funced( propsClassName, that );
+      if ( _.isEqual( classed.className, className ) ) return;
 
-      if ( _.isEqual( classed.propsClassName, propsClassName ) ) return false;
+      classed.className = className;
 
-      classed.propsClassName = propsClassName;
+      let classes = classNameToClasses( className ) || {};
 
-      let propsClasses = classNameToClasses( propsClassName );
+      if ( _.isEqual( classed.classes, classes ) ) return;
 
-      if ( _.isEqual( classed.propsClasses, propsClasses ) ) return false;
-
-      classed.propsClasses = propsClasses;
-
-      return true;
-
-    };
-
-    const setContextClasses = function( that, context, props ) {
-
-      let classed = that._ClassedMixin;
-
-      let contextClassName = props.classNameContexted && _.funced( context.getClassNames, ID, that.constructor, PATHS, that );
-
-      contextClassName = _.funced( contextClassName, that );
-
-      if ( _.isEqual( classed.contextClassName, contextClassName ) ) return false;
-
-      classed.contextClassName = contextClassName;
-
-      let contextClasses = classNameToClasses( contextClassName );
-
-      if ( _.isEqual( classed.contextClasses, contextClasses ) ) return false;
-
-      classed.contextClasses = contextClasses;
-
-      return true;
-
-    };
-
-    const setClasses = function( that, props, context ) {
-
-      let classed = that._ClassedMixin;
-
-      let propsHaveChanged = setPropsClasses( that, props );
-
-      let contextHaveChanged = setContextClasses( that, context, props );
-
-      if ( ! propsHaveChanged && ! contextHaveChanged ) return;
-
-      classed.classes = mergeClasseses( classed.contextClasses, classed.propsClasses );
+      classed.classes = classes;
 
       classed.cache = {};
 
@@ -240,20 +193,6 @@ export default ClassedMixin = Mixin.create( {
 
         className: PropTypes.funced( PropTypes.object, PropTypes.string, PropTypes.array ), // ( that: mixed ) => object | string | Array< object | string >
 
-        classNameContexted: PropTypes.bool,
-
-      },
-
-      defaultProps: {
-
-        classNameContexted: true,
-
-      },
-
-      contextTypes: {
-
-        getClassNames: PropTypes.func, // ( id: string, constructor: mixed, keys: Array< string >, instance: mixed ) => object | string | array
-
       },
 
       getInitialMembers() {
@@ -262,17 +201,11 @@ export default ClassedMixin = Mixin.create( {
 
           _ClassedMixin: {
 
-            cache: {},
+            className: undefined,
 
             classes: {},
 
-            propsClasses: {},
-
-            propsClassName: undefined,
-
-            contextClasses: {},
-
-            contextClassName: undefined,
+            cache: {},
 
           },
 
@@ -282,13 +215,13 @@ export default ClassedMixin = Mixin.create( {
 
       componentWillMount() {
 
-        setClasses( this, this.props, this.context );
+        updateClasses( this, this.props );
 
       },
 
-      componentWillUpdate( nextProps, nextState, nextContext ) {
+      componentWillUpdate( nextProps ) {
 
-        setClasses( this, nextProps, nextContext );
+        updateClasses( this, nextProps );
 
       },
 
@@ -312,7 +245,7 @@ export default ClassedMixin = Mixin.create( {
 
         if ( _.hasOwn( cache, cacheKey ) ) return cache[ cacheKey ];
 
-        path = PATHS_LOOKUP[ path ] || path;
+        path = PATHS[ path ] || path;
 
         let result = (
 

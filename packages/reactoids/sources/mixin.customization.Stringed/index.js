@@ -10,14 +10,9 @@ export default StringedMixin = Mixin.create( {
 
   mixin( ARGS ) {
 
-    const ID = _.uniqueId();
+    const propToStrings = function( input ) {
 
-    const KEYS = ARGS.strings;
-
-
-    const inputToStrings = function( input ) {
-
-      if ( ! _.isObject( input ) ) return undefined;
+      if ( ! _.isObject( input ) ) return {};
 
       if ( _.isArray( input ) ) return _.assign.apply( undefined, _.concat( {}, input ) );
 
@@ -26,61 +21,17 @@ export default StringedMixin = Mixin.create( {
     };
 
 
-    const setPropsStrings = function( that, props ) {
+    const updateStrings = function( that, props ) {
 
       let stringed = that._StringedMixin;
 
-      let propsStringsInput = props.strings;
+      let stringsProp = _.funced( props.strings, that );
 
-      propsStringsInput = _.funced( props.strings, that );
+      if ( _.isEqual( stringed.stringsProp, stringsProp ) ) return;
 
-      if ( _.isEqual( stringed.propsStringsInput, propsStringsInput ) ) return false;
+      stringed.stringsProp = stringsProp;
 
-      stringed.propsStringsInput = propsStringsInput;
-
-      let propsStrings = inputToStrings( propsStringsInput );
-
-      if ( _.isEqual( stringed.propsStrings, propsStrings ) ) return false;
-
-      stringed.propsStrings = propsStrings;
-
-      return true;
-
-    };
-
-    const setContextStrings = function( that, context ) {
-
-      let stringed = that._StringedMixin;
-
-      let contextStringsInput = _.funced( context.getStrings, ID, that.constructor, KEYS, that );
-
-      contextStringsInput = _.funced( contextStringsInput, that );
-
-      if ( _.isEqual( stringed.contextStringsInput, contextStringsInput ) ) return false;
-
-      stringed.contextStringsInput = contextStringsInput;
-
-      let contextStrings = inputToStrings( contextStringsInput );
-
-      if ( _.isEqual( stringed.contextStrings, contextStrings ) ) return false;
-
-      stringed.contextStrings = contextStrings;
-
-      return true;
-
-    };
-
-    const setStrings = function( that, props, context ) {
-
-      let stringed = that._StringedMixin;
-
-      let changedProps = setPropsStrings( that, props );
-
-      let changedContext = setContextStrings( that, context );
-
-      if ( ! changedProps && ! changedContext ) return;
-
-      stringed.strings = _.assign( {}, stringed.contextStrings, stringed.propsStrings );
+      stringed.strings = propToStrings( stringsProp );
 
     };
 
@@ -93,27 +44,15 @@ export default StringedMixin = Mixin.create( {
 
       },
 
-      contextTypes: {
-
-        getStrings: PropTypes.func, // ( id: string, constructor: mixed, keys: Array< string >, instance: mixed ) => object | array
-
-      },
-
       getInitialMembers() {
 
         return {
 
           _StringedMixin: {
 
+            stringsProp: undefined,
+
             strings: {},
-
-            propsStrings: {},
-
-            propsStringsInput: undefined,
-
-            contextStrings: {},
-
-            contextStringsInput: undefined,
 
           },
 
@@ -123,13 +62,13 @@ export default StringedMixin = Mixin.create( {
 
       componentWillMount() {
 
-        setStrings( this, this.props, this.context );
+        updateStrings( this, this.props );
 
       },
 
-      componentWillUpdate( nextProps, nextState, nextContext ) {
+      componentWillUpdate( nextProps ) {
 
-        setStrings( this, nextProps, nextContext );
+        updateStrings( this, nextProps );
 
       },
 

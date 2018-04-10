@@ -12,6 +12,8 @@ export default ReactoidMixin = Mixin.create( {
 
     slots: PropTypes.oneOfType( [ PropTypes.oneOf( [ false ] ), PropTypes.object ] ),
 
+    Components: PropTypes.oneOfType( [ PropTypes.oneOf( [ false ] ), PropTypes.object ] ),
+
   },
 
   defaultArgs: {
@@ -24,6 +26,8 @@ export default ReactoidMixin = Mixin.create( {
 
     slots: false,
 
+    Components: false,
+
   },
 
   mixins: [
@@ -35,6 +39,8 @@ export default ReactoidMixin = Mixin.create( {
     StringedMixin,
 
     RenderSlotsMixin,
+
+    ComponentsMixin,
 
     StateKeyMixin,
 
@@ -63,6 +69,8 @@ export default ReactoidMixin = Mixin.create( {
         ARGS.strings && StringedMixin( StringedMixin.pick( ARGS ) ),
 
         ARGS.slots && RenderSlotsMixin( RenderSlotsMixin.pick( ARGS ) ),
+
+        ARGS.Components && ComponentsMixin( ComponentsMixin.pick( ARGS ) ),
 
         StateKeyMixin(),
 

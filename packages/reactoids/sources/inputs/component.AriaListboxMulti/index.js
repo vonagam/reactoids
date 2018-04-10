@@ -71,6 +71,8 @@ export default class AriaListboxMulti extends React.Component {
 
       strings: [ 'error.required' ],
 
+      Components: { CustomInputSoul },
+
     } ),
 
     MultipleOptionsInputMixin( {
@@ -336,7 +338,7 @@ export default class AriaListboxMulti extends React.Component {
 
                 ( option.selected ) ?
 
-                  <CustomInputSoul
+                  <props.Components.CustomInputSoul
 
                     className={ this.classed( 'option.soul' ) }
 
@@ -366,7 +368,7 @@ export default class AriaListboxMulti extends React.Component {
 
           ( error ) ?
 
-            <CustomInputSoul
+            <props.Components.CustomInputSoul
 
               ref={ this.ref( 'soul' ) }
 

@@ -5,7 +5,6 @@ Adds standart set of mixins.
 [Args](#args)  
 [Mixins](#mixins)  
 [Props](#props)  
-[Context](#context)  
 [Methods](#methods)  
 
 
@@ -75,7 +74,6 @@ If false - [`RenderSlotsMixin`](../mixin.customization.RenderSlots/README.md) wi
 
 [`ClassedMixin`](../mixin.customization.Classed/README.md#props) if [`arg.classes`](#argclasses):  
 [`prop.className`](../mixin.customization.Classed/README.md#propclassName)  
-[`prop.classNameContexted`](../mixin.customization.Classed/README.md#propclassnamecontexted)  
 
 [`StringedMixin`](../mixin.customization.Stringed/README.md#props) if [`arg.strings`](#argstrings):  
 [`prop.strings`](../mixin.customization.Stringed/README.md#propstrings)  
@@ -86,15 +84,6 @@ If false - [`RenderSlotsMixin`](../mixin.customization.RenderSlots/README.md) wi
 
 [`OmitPropsMixin`](../mixin.helper.OmitProps/README.md#props):  
 [`prop.omitProps`](../mixin.helper.OmitProps/README.md#propomitprops)  
-
-
-## Context
-
-[`ClassedMixin`](../mixin.customization.Classed/README.md#context) if [`arg.classes`](#argclasses):  
-[`context.getClassNames`](../mixin.customization.Classed/README.md#contextgetclassnames)  
-
-[`StringedMixin`](../mixin.customization.Stringed/README.md#context) if [`arg.strings`](#argstrings):  
-[`context.getStrings`](../mixin.customization.Stringed/README.md#contextgetstrings)  
 
 
 ## Methods

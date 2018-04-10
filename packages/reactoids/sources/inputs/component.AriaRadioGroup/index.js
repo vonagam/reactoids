@@ -57,6 +57,8 @@ export default class AriaRadioGroup extends React.Component {
 
       strings: [ 'error.required' ],
 
+      Components: { CustomInputSoul },
+
     } ),
 
     SingleOptionInputMixin( {
@@ -307,7 +309,7 @@ export default class AriaRadioGroup extends React.Component {
 
         }
 
-        <CustomInputSoul
+        <props.Components.CustomInputSoul
 
           ref={ this.ref( 'soul' ) }
 
