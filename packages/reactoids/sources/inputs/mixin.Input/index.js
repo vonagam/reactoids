@@ -229,7 +229,7 @@ export default InputMixin = Mixin.create( {
 
       setValue( value, callback ) {
 
-        if ( this.props.readOnly || this.props.disabled ) return;
+        if ( this.props.readOnly || this.props.disabled ) return callback();
 
 
         window.clearTimeout( this._InputMixin );
@@ -261,7 +261,7 @@ export default InputMixin = Mixin.create( {
 
       setTempValue( value, callback ) {
 
-        if ( this.props.readOnly || this.props.disabled ) return;
+        if ( this.props.readOnly || this.props.disabled ) return callback();
 
         if ( this.props.inputDelay === 0 ) return this.setValue( value, callback );
 
