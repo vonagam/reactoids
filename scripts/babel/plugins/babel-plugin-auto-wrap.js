@@ -41,11 +41,29 @@ module.exports = function( { types: t } ) {
 
           let [ imports, code ] = _.partition( path.node.body, ( node ) => t.isImportDeclaration( node ) );
 
+
+          let callee;
+
+          let comments = path.parent.comments;
+
+          let comment = _.find( comments, ( comment ) => /^\s*(only|skip)\s*$/.test( comment.value ) );
+
+          if ( comment ) {
+
+            callee = t.MemberExpression( t.Identifier( 'describe' ), t.Identifier( _.trim( comment.value ) ) );
+
+          } else {
+
+            callee = t.Identifier( 'describe' );
+
+          }
+
+
           path.node.body = [
 
             ...imports,
 
-            t.ExpressionStatement( t.CallExpression( t.Identifier( 'describe' ), [
+            t.ExpressionStatement( t.CallExpression( callee, [
 
               t.StringLiteral( dirname.replace( /\//g, ':' ) ),
 
