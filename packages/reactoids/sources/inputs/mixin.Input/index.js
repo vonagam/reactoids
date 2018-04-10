@@ -67,9 +67,9 @@ export default InputMixin = Mixin.create( {
     };
 
 
-    const validate = function( that, props, state ) {
+    const validate = function( that, props, valueReal ) {
 
-      let value = that.getValue( props, state );
+      let value = that.getValue( props, { valueReal } );
 
 
       let argsError = ARGS.validateValue( that, value );
@@ -135,7 +135,7 @@ export default InputMixin = Mixin.create( {
 
           valueReal: undefined,
 
-          valueError: validate( this, this.props, {} ),
+          valueError: validate( this, this.props, undefined ),
 
         };
 
@@ -177,19 +177,13 @@ export default InputMixin = Mixin.create( {
 
             valueReal: undefined,
 
-            valueError: validate( this, nextProps, {} ),
+            valueError: validate( this, nextProps, undefined ),
 
           } );
 
         } else if ( this.props.validate !== nextProps.validate || ! _.isEqualPick( this.props, nextProps, ARGS.validationProps ) ) {
 
-          let valueError = validate( this, nextProps, { valueReal: this.state.valueReal } );
-
-          if ( valueError !== this.state.valueError ) {
-
-            this.setState( { valueError } );
-
-          }
+          this.validate( nextProps );
 
         }
 
@@ -239,7 +233,7 @@ export default InputMixin = Mixin.create( {
 
           valueReal: value,
 
-          valueError: this.props.value === undefined ? validate( this, this.props, { valueReal: value } ) : this.state.valueError,
+          valueError: this.props.value === undefined ? validate( this, this.props, value ) : this.state.valueError,
 
         }, callback );
 
@@ -288,6 +282,18 @@ export default InputMixin = Mixin.create( {
 
 
         if ( this.props.onTempChange ) this.props.onTempChange( value );
+
+      },
+
+      validate( props = this.props, valueReal = this.state.valueReal ) {
+
+        let valueError = validate( this, props, valueReal );
+
+        if ( valueError !== this.state.valueError ) {
+
+          this.setState( { valueError } );
+
+        }
 
       },
 
