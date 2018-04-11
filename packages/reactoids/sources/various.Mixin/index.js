@@ -51,6 +51,38 @@ const MIXERS = [
 
     keys: [
 
+      'getDerivedStateFromProps',
+
+    ],
+
+    mix( Component, key, value ) {
+
+      if ( Component[ key ] ) values = values.concat( Component[ key ] );
+
+      Component[ key ] = function() {
+
+        let changes = null;
+
+        _.each( values, ( value ) => {
+
+          let valueChanges = value.apply( Component, arguments );
+
+          if ( valueChanges ) changes = _.assign( changes, valueChanges );
+
+        } );
+
+        return changes;
+
+      };
+
+    },
+
+  },
+
+  {
+
+    keys: [
+
       'propTypes',
 
       'defaultProps',
