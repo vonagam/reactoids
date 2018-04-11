@@ -6,6 +6,8 @@ export default ReactoidMixin = Mixin.create( {
 
     pure: PropTypes.bool,
 
+    binds: PropTypes.oneOfType( [ PropTypes.oneOf( [ false ] ), PropTypes.arrayOf( PropTypes.string ) ] ),
+
     classes: PropTypes.oneOfType( [ PropTypes.oneOf( [ false ] ), PropTypes.object ] ),
 
     strings: PropTypes.oneOfType( [ PropTypes.oneOf( [ false ] ), PropTypes.arrayOf( PropTypes.string ) ] ),
@@ -20,6 +22,8 @@ export default ReactoidMixin = Mixin.create( {
 
     pure: true,
 
+    binds: false,
+
     classes: {},
 
     strings: false,
@@ -33,6 +37,8 @@ export default ReactoidMixin = Mixin.create( {
   mixins: [
 
     PureRenderMixin,
+
+    BindMixin,
 
     ClassedMixin,
 
@@ -63,6 +69,8 @@ export default ReactoidMixin = Mixin.create( {
       mixins: _.compact( [
 
         ARGS.pure && PureRenderMixin( PureRenderMixin.pick( ARGS ) ),
+
+        ARGS.binds && BindMixin( BindMixin.pick( ARGS ) ),
 
         ARGS.classes && ClassedMixin( ClassedMixin.pick( ARGS ) ),
 
