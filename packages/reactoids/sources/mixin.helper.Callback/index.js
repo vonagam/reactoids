@@ -25,7 +25,9 @@ export default CallbackMixin = Mixin.create( {
 
               _.each( keys, ( key ) => {
 
-                _.get( that, key, _.noop ).apply( that, arguments );
+                let callback = _.get( that, key );
+
+                if ( callback ) callback.apply( that, arguments );
 
               } );
 
