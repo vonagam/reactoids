@@ -63,8 +63,6 @@ export default class AriaListbox extends React.Component {
 
     SingleOptionInputMixin( {
 
-      validationProps: [ 'required' ],
-
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
@@ -80,8 +78,6 @@ export default class AriaListbox extends React.Component {
     selectFocus: PropTypes.bool,
 
     name: PropTypes.string,
-
-    required: PropTypes.bool,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 

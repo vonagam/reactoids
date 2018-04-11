@@ -41,8 +41,6 @@ export default class AriaSwitch extends React.Component {
 
       defaultValue: false,
 
-      validationProps: [ 'required' ],
-
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
@@ -58,8 +56,6 @@ export default class AriaSwitch extends React.Component {
     mapping: PropTypes.array,
 
     name: PropTypes.string,
-
-    required: PropTypes.bool,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 

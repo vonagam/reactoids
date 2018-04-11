@@ -34,8 +34,6 @@ export default class Input extends React.Component {
 
       defaultValue: '',
 
-      validationProps: [ 'required' ],
-
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
@@ -55,8 +53,6 @@ export default class Input extends React.Component {
   static propTypes = {
 
     type: PropTypes.string,
-
-    required: PropTypes.bool,
 
     jsonType: PropTypes.string,
 

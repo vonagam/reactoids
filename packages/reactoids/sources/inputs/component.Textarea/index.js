@@ -34,8 +34,6 @@ export default class Textarea extends React.Component {
 
       defaultValue: '',
 
-      validationProps: [ 'required' ],
-
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
@@ -65,8 +63,6 @@ export default class Textarea extends React.Component {
   }
 
   static propTypes = {
-
-    required: PropTypes.bool,
 
     jsonType: PropTypes.string,
 

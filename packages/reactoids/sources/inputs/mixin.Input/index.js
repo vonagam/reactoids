@@ -67,6 +67,8 @@ export default InputMixin = Mixin.create( {
     };
 
 
+    const VALIDATION_PROPS = _.union( [ 'validate', 'required' ], ARGS.validationProps );
+
     const validate = function( that, props, valueReal ) {
 
       let value = that.getValue( props, { valueReal } );
@@ -108,6 +110,8 @@ export default InputMixin = Mixin.create( {
         readOnly: PropTypes.bool,
 
         disabled: PropTypes.bool,
+
+        required: PropTypes.bool,
 
         validate: PropTypes.funced( PropTypes.string ), // ( that: mixed, value: mixed ) => ?string
 
@@ -181,7 +185,7 @@ export default InputMixin = Mixin.create( {
 
           } );
 
-        } else if ( this.props.validate !== nextProps.validate || ! _.isEqualPick( this.props, nextProps, ARGS.validationProps ) ) {
+        } else if ( ! _.isEqualPick( this.props, nextProps, VALIDATION_PROPS ) ) {
 
           this.validate( nextProps );
 

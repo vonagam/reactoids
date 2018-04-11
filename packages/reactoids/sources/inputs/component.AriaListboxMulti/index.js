@@ -77,8 +77,6 @@ export default class AriaListboxMulti extends React.Component {
 
     MultipleOptionsInputMixin( {
 
-      validationProps: [ 'required' ],
-
       validateValue( that, value ) {
 
         if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
@@ -94,8 +92,6 @@ export default class AriaListboxMulti extends React.Component {
     nameSuffix: PropTypes.oneOfType( [ PropTypes.oneOf( _.keys( NAME_SUFFIXES ) ), PropTypes.func ] ), // ( that: mixed, option: {}, index: number ) => string
 
     name: PropTypes.string,
-
-    required: PropTypes.bool,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 
