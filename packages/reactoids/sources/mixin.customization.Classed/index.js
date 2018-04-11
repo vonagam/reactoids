@@ -114,7 +114,7 @@ export default ClassedMixin = Mixin.create( {
 
         _.each( options, ( option ) => {
 
-          classNames.push( classes[ `${ prefix }-${ option }=${ modifiers[ option ] ? modifiers[ option ] : '' }` ] );
+          classNames.push( classes[ `${ prefix }-${ option }=${ modifiers[ option ] || '' }` ] );
 
         } );
 
