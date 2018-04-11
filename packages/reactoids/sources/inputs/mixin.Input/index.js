@@ -69,6 +69,17 @@ export default InputMixin = Mixin.create( {
 
     const VALIDATION_PROPS = _.union( [ 'validate', 'required' ], ARGS.validationProps );
 
+
+    const getInitialValue = function ( props ) {
+
+      if ( props.value !== undefined ) return props.value;
+
+      if ( props.defaultValue !== undefined ) return props.defaultValue;
+
+      return ARGS.defaultValue;
+
+    };
+
     const validate = function( that, props, valueReal ) {
 
       let value = that.getValue( props, { valueReal } );
@@ -137,9 +148,9 @@ export default InputMixin = Mixin.create( {
 
           valueTemp: undefined,
 
-          valueReal: undefined,
+          valueReal: getInitialValue( this.props ),
 
-          valueError: validate( this, this.props, undefined ),
+          valueError: '',
 
         };
 
@@ -152,6 +163,8 @@ export default InputMixin = Mixin.create( {
       },
 
       componentWillMount() {
+
+        this.validate();
 
         ARGS.applyValueRestrictions( this, this.props, this.state );
 
@@ -171,7 +184,7 @@ export default InputMixin = Mixin.create( {
 
       componentWillReceiveProps( nextProps ) {
 
-        if ( ! _.isEqual( this.props.value, nextProps.value ) ) {
+        if ( ! _.isEqual( this.props.value, nextProps.value ) && nextProps.value !== undefined ) {
 
           window.clearTimeout( this._InputMixin );
 
@@ -179,9 +192,9 @@ export default InputMixin = Mixin.create( {
 
             valueTemp: undefined,
 
-            valueReal: undefined,
+            valueReal: nextProps.value,
 
-            valueError: validate( this, nextProps, undefined ),
+            valueError: validate( this, nextProps, nextProps.value ),
 
           } );
 
@@ -219,9 +232,7 @@ export default InputMixin = Mixin.create( {
 
         if ( props.value !== undefined ) return props.value;
 
-        if ( state.valueReal !== undefined ) return state.valueReal;
-
-        return props.defaultValue;
+        return state.valueReal;
 
       },
 
@@ -233,22 +244,25 @@ export default InputMixin = Mixin.create( {
         window.clearTimeout( this._InputMixin );
 
 
-        this.setState( {
+        if ( this.props.value === undefined ) {
 
-          valueReal: value,
+          this.setState( {
 
-          valueError: this.props.value === undefined ? validate( this, this.props, value ) : this.state.valueError,
+            valueTemp: undefined,
 
-        }, callback );
+            valueReal: value,
 
+            valueError: validate( this, this.props, value ),
 
-        if ( this.state.valueTemp !== undefined ) {
+          }, callback );
 
-          this._InputMixin = window.setTimeout( () => {
+        } else if ( this.state.valueTemp !== undefined ) {
 
-            this.setState( { valueTemp: undefined } );
+          this.setState( {
 
-          }, 0 );
+            valueTemp: undefined,
+
+          }, callback );
 
         }
 
@@ -309,7 +323,7 @@ export default InputMixin = Mixin.create( {
 
       isDefaultValue( value ) {
 
-        return ! _.isEqual( value, ARGS.defaultValue );
+        return _.isEqual( value, ARGS.defaultValue );
 
       },
 
