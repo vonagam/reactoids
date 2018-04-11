@@ -113,6 +113,8 @@ export default class AriaSwitch extends React.Component {
 
     let value = this.getValue();
 
+    let filled = ! this.isDefaultValue( value );
+
     let error = this.getValueError();
 
     let focused = this.isFocused();
@@ -137,7 +139,7 @@ export default class AriaSwitch extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value: filled, error, focused, readonly, disabled, required } ) }
 
         role='switch'
 

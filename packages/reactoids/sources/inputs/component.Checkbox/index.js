@@ -110,6 +110,8 @@ export default class Checkbox extends React.Component {
 
     let value = this.getValue();
 
+    let filled = ! this.isDefaultValue( value );
+
     let error = this.getValueError();
 
     let focused = this.isFocused();
@@ -160,7 +162,7 @@ export default class Checkbox extends React.Component {
 
           { ...this.omitProps() }
 
-          className={ this.classed( '', { value, indeterminate, error, focused, readonly, disabled, required } ) }
+          className={ this.classed( '', { value: filled, indeterminate, error, focused, readonly, disabled, required } ) }
 
           name={ names[ 1 ] }
 

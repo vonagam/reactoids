@@ -247,6 +247,8 @@ export default class AriaListboxMulti extends React.Component {
 
     let value = this.getValue();
 
+    let filled = ! this.isDefaultValue( value );
+
     let options = this.getOptions();
 
     let error = this.getValueError();
@@ -284,7 +286,7 @@ export default class AriaListboxMulti extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: value.length > 0, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value: filled, error, focused, readonly, disabled, required } ) }
 
         role='listbox'
 

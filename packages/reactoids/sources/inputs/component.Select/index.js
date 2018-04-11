@@ -86,7 +86,7 @@ export default class Select extends React.Component {
 
     let value = this.getValue();
 
-    let filled = ! ( this.props.allowBlank && this.isDefaultValue( value ) );
+    let filled = !this.isDefaultValue( value );
 
     let options = this.getOptions();
 

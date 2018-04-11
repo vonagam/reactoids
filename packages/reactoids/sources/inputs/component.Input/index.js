@@ -70,8 +70,6 @@ export default class Input extends React.Component {
 
     jsonType: 'auto',
 
-    onEnter: _.noop,
-
   };
 
   onChange( event ) {
@@ -92,7 +90,7 @@ export default class Input extends React.Component {
 
       event.target.blur();
 
-      this.props.onEnter( enter );
+      if ( this.props.onEnter ) this.props.onEnter( enter );
 
     }
 
