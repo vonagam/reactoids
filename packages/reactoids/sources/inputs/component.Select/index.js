@@ -60,12 +60,15 @@ export default class Select extends React.Component {
 
   static propTypes = {
 
+    placeholder: PropTypes.string,
 
     jsonType: PropTypes.string,
 
   };
 
   static defaultProps = {
+
+    placeholder: '',
 
     jsonType: 'auto',
 
@@ -132,7 +135,7 @@ export default class Select extends React.Component {
 
           ( props.allowBlank ) ?
 
-            <option className={ this.classed( 'option', { blank: true, selected: ! filled } ) } value='' />
+            <option className={ this.classed( 'option', { blank: true, selected: ! filled } ) } value={ props.placeholder } />
 
           : null
 
