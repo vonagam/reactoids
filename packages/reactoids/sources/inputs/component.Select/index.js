@@ -119,7 +119,7 @@ export default class Select extends React.Component {
 
         required={ required }
 
-        aria-invalid={ Boolean( error ) }
+        aria-invalid={ Boolean( error ) || undefined }
 
         data-value-type={ props.jsonType }
 

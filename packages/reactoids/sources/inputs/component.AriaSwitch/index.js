@@ -145,9 +145,9 @@ export default class AriaSwitch extends React.Component {
 
         aria-disabled={ disabled }
 
-        aria-invalid={ Boolean( error ) }
-
         aria-required={ required }
+
+        aria-invalid={ Boolean( error ) || undefined }
 
         tabIndex={ disabled ? '-1' : props.tabIndex }
 

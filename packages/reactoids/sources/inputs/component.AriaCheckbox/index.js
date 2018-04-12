@@ -154,7 +154,7 @@ export default class AriaCheckbox extends React.Component {
 
         aria-required={ required }
 
-        aria-invalid={ Boolean( error ) }
+        aria-invalid={ Boolean( error ) || undefined }
 
         tabIndex={ disabled ? '-1' : props.tabIndex }
 

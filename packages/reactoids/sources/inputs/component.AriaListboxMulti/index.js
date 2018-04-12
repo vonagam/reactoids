@@ -294,7 +294,7 @@ export default class AriaListboxMulti extends React.Component {
 
         aria-required={ required }
 
-        aria-invalid={ Boolean( error ) }
+        aria-invalid={ Boolean( error ) || undefined }
 
         onFocus={ this.callback( 'onFocusGain, onFocus, props.onFocus' ) }
 
