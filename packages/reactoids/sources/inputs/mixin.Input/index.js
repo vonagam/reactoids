@@ -18,6 +18,8 @@ export default InputMixin = Mixin.create( {
 
     applyValueRestrictions: PropTypes.func, // ( that: mixed, props: object, state: object ) => void
 
+    onLabelClick: PropTypes.func, // ( that: mixed ) => void
+
   },
 
   defaultArgs: {
@@ -35,6 +37,20 @@ export default InputMixin = Mixin.create( {
     onValidation: _.noop,
 
     applyValueRestrictions: _.noop,
+
+    onLabelClick( that ) {
+
+      let tabbables = that.findTabbables();
+
+      let tabbable = tabbables[ 0 ];
+
+      if ( ! tabbable ) return;
+
+      tabbable.focus();
+
+      tabbable.click();
+
+    },
 
   },
 
@@ -324,6 +340,12 @@ export default InputMixin = Mixin.create( {
       isDefaultValue( value ) {
 
         return _.isEqual( value, ARGS.defaultValue );
+
+      },
+
+      onLabelClick() {
+
+        ARGS.onLabelClick( this );
 
       },
 
