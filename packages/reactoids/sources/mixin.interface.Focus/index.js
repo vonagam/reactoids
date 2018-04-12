@@ -5,7 +5,19 @@ export default FocusMixin = Mixin.create( {
 
   name: 'FocusMixin',
 
-  mixin: _.once( () => {
+  argTypes: {
+
+    findDOMNode: PropTypes.func // ( that: mixed ) => ?HTMLElement
+
+  },
+
+  defaultArgs: {
+
+    findDOMNode: ( that ) => ReactDOM.findDOMNode( that ),
+
+  },
+
+  mixin( ARGS ) {
 
     return {
 
@@ -37,13 +49,21 @@ export default FocusMixin = Mixin.create( {
 
       },
 
-      isFocusable() {
+      findTabbables() {
 
-        let dom = ReactDOM.findDOMNode( this );
+        let dom = ARGS.findDOMNode( this );
 
-        if ( ! dom ) return false;
+        if ( ! dom ) return [];
 
         let tabbables = findTabbables( dom, { includeContainer: true } );
+
+        return tabbables;
+
+      },
+
+      isFocusable() {
+
+        let tabbables = this.findTabbables();
 
         return tabbables.length > 0;
 
@@ -59,11 +79,7 @@ export default FocusMixin = Mixin.create( {
 
         if ( this._FocusMixin ) return;
 
-        let dom = ReactDOM.findDOMNode( this );
-
-        if ( ! dom ) return;
-
-        let tabbables = findTabbables( dom, { includeContainer: true } );
+        let tabbables = this.findTabbables();
 
         if ( tabbables.length === 0 ) return;
 
@@ -75,7 +91,7 @@ export default FocusMixin = Mixin.create( {
 
         if ( ! this._FocusMixin ) return;
 
-        let dom = ReactDOM.findDOMNode( this );
+        let dom = ARGS.findDOMNode( this );
 
         if ( ! dom ) return;
 
@@ -89,6 +105,6 @@ export default FocusMixin = Mixin.create( {
 
     };
 
-  } ),
+  },
 
 } );

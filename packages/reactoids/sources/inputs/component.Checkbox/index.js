@@ -50,6 +50,12 @@ export default class Checkbox extends React.Component {
 
       },
 
+      findDOMNode( that ) {
+
+        return that.refs.dom;
+
+      },
+
     } ),
 
   ];

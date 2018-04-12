@@ -106,7 +106,7 @@ export default InputMixin = Mixin.create( {
 
         BaseKeyMixin( BaseKeyArgs ),
 
-        FocusMixin(),
+        FocusMixin( FocusMixin.pick( ARGS ) ),
 
       ],
 
