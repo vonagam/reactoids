@@ -142,15 +142,34 @@ export default class Field extends React.Component {
 
   componentWillReceiveProps( nextProps ) {
 
-    let nextValue = nextProps.children.props.value;
+    let prevInput = this.props.children.type;
 
-    if ( nextValue === undefined ) return;
+    let prevInputProps = this.props.children.props;
 
-    let prevValue = this.props.children.props.value;
+    let nextInput = nextProps.children.type;
 
-    if ( _.isEqual( nextValue, prevValue ) ) return;
+    let nextInputProps = nextProps.children.props;
 
-    this.setValue( { value: nextValue } );
+
+    if ( nextInput === prevInput ) {
+
+      let nextValue = nextInputProps.value;
+
+      if ( nextValue === undefined ) return;
+
+      let prevValue = prevInputProps.value;
+
+      if ( _.isEqual( nextValue, prevValue ) ) return;
+
+      this.setValue( { value: nextValue } );
+
+    } else {
+
+      let nextValue = getInitialValue( nextInput, nextInputProps );
+
+      this.setValue( { value: nextValue, error: '' } );
+
+    }
 
   }
 
