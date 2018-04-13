@@ -18,6 +18,8 @@ export default class CustomInputSoul extends React.Component {
 
     error: PropTypes.string,
 
+    errorOnly: PropTypes.bool,
+
     disabled: PropTypes.bool,
 
     jsonType: PropTypes.oneOf( [ 'auto', 'string', 'number', 'boolean', 'null', 'array', 'object', 'skip' ] ),
@@ -30,6 +32,8 @@ export default class CustomInputSoul extends React.Component {
 
     value: '',
 
+    errorOnly: false,
+
     jsonType: 'string',
 
   };
@@ -38,7 +42,7 @@ export default class CustomInputSoul extends React.Component {
 
     if ( this.props.error ) {
 
-      this.refs.dom.setCustomValidity( message );
+      this.refs.dom.setCustomValidity( this.props.error );
 
     }
 
@@ -46,9 +50,9 @@ export default class CustomInputSoul extends React.Component {
 
   componentDidUpdate( prevProps ) {
 
-    if ( this.props.error !== prevProps.error ) {
+    if ( this.props.error !== prevProps.error && this.refs.dom ) {
 
-      this.refs.dom.setCustomValidity( message );
+      this.refs.dom.setCustomValidity( this.props.error );
 
     }
 
@@ -75,6 +79,13 @@ export default class CustomInputSoul extends React.Component {
     let { props } = this;
 
 
+    if ( props.name === undefined ) return null;
+
+    if ( props.disabled ) return null;
+
+    if ( props.errorOnly && ! props.error ) return null;
+
+
     return (
 
       <textarea
@@ -91,13 +102,11 @@ export default class CustomInputSoul extends React.Component {
 
         readOnly='true'
 
-        disabled={ props.disabled || ! _.isString( props.name ) }
-
-        data-value-type={ props.jsonType }
+        tabIndex='-1'
 
         aria-hidden='true'
 
-        tabIndex='-1'
+        data-value-type={ props.jsonType }
 
         onFocus={ this.callback( 'onFocus' ) }
 
