@@ -51,6 +51,8 @@ export default class Link extends React.Component {
 
     target: PropTypes.funced( PropTypes.string ), // ( linkLocation: object, windowLocation: object ) => string
 
+    rel: PropTypes.funced( PropTypes.string ), // ( linkLocation: object, windowLocation: object ) => string
+
     current: PropTypes.funced( PropTypes.bool ), // ( linkLocation: object, windowLocation: object ) => boolean
 
     disabled: PropTypes.bool,
@@ -89,6 +91,8 @@ export default class Link extends React.Component {
 
     let target = undefined;
 
+    let rel = undefined;
+
     let current = false;
 
     this.shouldWatchUrl = false;
@@ -101,6 +105,8 @@ export default class Link extends React.Component {
       href = props.href;
 
       target = _.funced( props.target, linkLocation, window.location );
+
+      rel = addNoopenerRel( _.funced( props.rel, linkLocation, window.location ) );
 
       current = _.funced( props.current, linkLocation, window.location );
 
@@ -121,7 +127,7 @@ export default class Link extends React.Component {
 
         target={ target }
 
-        rel={ addNoopenerRel( props.rel ) }
+        rel={ rel }
 
         aria-current={ current ? ( props[ 'aria-current' ] || 'page' ) : undefined }
 
