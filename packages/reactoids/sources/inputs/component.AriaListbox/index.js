@@ -43,8 +43,6 @@ export default class AriaListbox extends React.Component {
 
         '-required': '',
 
-        'soul': '',
-
         option: {
 
           '-selected': '',
@@ -52,6 +50,8 @@ export default class AriaListbox extends React.Component {
           '-focused': '',
 
         },
+
+        soul: '',
 
       },
 
@@ -221,6 +221,8 @@ export default class AriaListbox extends React.Component {
 
   render() {
 
+    let { CustomInputSoul } = this.props.Components;
+
     let { props, state } = this;
 
     let value = this.getValue();
@@ -309,7 +311,7 @@ export default class AriaListbox extends React.Component {
 
         }
 
-        <props.Components.CustomInputSoul
+        <CustomInputSoul
 
           ref={ this.ref( 'soul' ) }
 

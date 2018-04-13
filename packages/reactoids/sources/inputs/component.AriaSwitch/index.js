@@ -25,7 +25,7 @@ export default class AriaSwitch extends React.Component {
 
         '-required': '',
 
-        'soul': '',
+        soul: '',
 
       },
 
@@ -105,6 +105,8 @@ export default class AriaSwitch extends React.Component {
 
   render() {
 
+    let { CustomInputSoul } = this.props.Components;
+
     let { props } = this;
 
     let value = this.getValue();
@@ -161,7 +163,7 @@ export default class AriaSwitch extends React.Component {
 
       >
 
-        <props.Components.CustomInputSoul
+        <CustomInputSoul
 
           className={ this.classed( 'soul' ) }
 

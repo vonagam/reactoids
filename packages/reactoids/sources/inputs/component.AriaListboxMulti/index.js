@@ -55,17 +55,17 @@ export default class AriaListboxMulti extends React.Component {
 
         '-required': '',
 
-        'soul': '',
-
         option: {
 
           '-selected': '',
 
           '-focused': '',
 
-          'soul': '',
+          soul: '',
 
         },
+
+        soul: '',
 
       },
 
@@ -239,6 +239,8 @@ export default class AriaListboxMulti extends React.Component {
 
   render() {
 
+    let { CustomInputSoul } = this.props.Components;
+
     let { props, state } = this;
 
     let value = this.getValue();
@@ -338,7 +340,7 @@ export default class AriaListboxMulti extends React.Component {
 
                 ( option.selected ) ?
 
-                  <props.Components.CustomInputSoul
+                  <CustomInputSoul
 
                     className={ this.classed( 'option.soul' ) }
 

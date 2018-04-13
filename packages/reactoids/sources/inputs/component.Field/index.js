@@ -69,21 +69,21 @@ export default class Field extends React.Component {
 
         '-required': '',
 
-        'wrapper': '',
+        wrapper: '',
 
-        'input': '',
+        input: '',
 
-        'label': '',
+        label: '',
 
-        'error': '',
+        error: '',
 
-        'status': '',
+        status: '',
 
-        'description': '',
+        description: '',
 
-        'details': '',
+        details: '',
 
-        'soul': '',
+        soul: '',
 
       },
 

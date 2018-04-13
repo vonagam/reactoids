@@ -24,8 +24,6 @@ export default class Checkbox extends React.Component {
 
         '-required': '',
 
-        'soul': '',
-
       },
 
       strings: [ 'error.required' ],

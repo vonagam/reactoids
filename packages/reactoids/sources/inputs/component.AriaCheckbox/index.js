@@ -28,7 +28,7 @@ export default class AriaCheckbox extends React.Component {
 
         '-required': '',
 
-        'soul': '',
+        soul: '',
 
       },
 
@@ -110,6 +110,8 @@ export default class AriaCheckbox extends React.Component {
 
   render() {
 
+    let { CustomInputSoul } = this.props.Components;
+
     let { props } = this;
 
     let value = this.getValue();
@@ -168,7 +170,7 @@ export default class AriaCheckbox extends React.Component {
 
       >
 
-        <props.Components.CustomInputSoul
+        <CustomInputSoul
 
           className={ this.classed( 'soul' ) }
 
