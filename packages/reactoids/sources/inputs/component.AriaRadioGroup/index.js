@@ -199,26 +199,6 @@ export default class AriaRadioGroup extends React.Component {
 
   }
 
-  onFocus( event ) {
-
-    if ( event.currentTarget !== event.target ) return;
-
-    let tabbableOptions;
-
-    tabbableOptions = _.filter( this.refs.dom.childNodes, ( node ) => node.hasAttribute( 'tabIndex' ) );
-
-    tabbableOptions = _.sortBy( tabbableOptions, ( node ) => -1 * parseInt( node.getAttribute( 'tabIndex' ) ) );
-
-    let tabbableOption = tabbableOptions[ 0 ];
-
-    if ( tabbableOption && tabbableOption !== this.refs.soul ) {
-
-      tabbableOption.focus();
-
-    }
-
-  }
-
   render() {
 
     let { CustomInputSoul } = this.props.Components;
@@ -269,7 +249,7 @@ export default class AriaRadioGroup extends React.Component {
 
         aria-invalid={ Boolean( error ) || undefined }
 
-        onFocus={ this.callback( 'onFocusGain, onFocus, props.onFocus' ) }
+        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
 
         onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
 
@@ -312,8 +292,6 @@ export default class AriaRadioGroup extends React.Component {
         }
 
         <CustomInputSoul
-
-          ref={ this.ref( 'soul' ) }
 
           className={ this.classed( 'soul' ) }
 

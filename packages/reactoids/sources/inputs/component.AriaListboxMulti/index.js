@@ -217,26 +217,6 @@ export default class AriaListboxMulti extends React.Component {
 
   }
 
-  onFocus( event ) {
-
-    if ( event.currentTarget !== event.target ) return;
-
-    let tabbableOptions;
-
-    tabbableOptions = _.filter( this.refs.dom.childNodes, ( node ) => node.hasAttribute( 'tabIndex' ) );
-
-    tabbableOptions = _.sortBy( tabbableOptions, ( node ) => -1 * parseInt( node.getAttribute( 'tabIndex' ) ) );
-
-    let tabbableOption = tabbableOptions[ 0 ];
-
-    if ( tabbableOption && tabbableOption !== this.refs.soul ) {
-
-      tabbableOption.focus();
-
-    }
-
-  }
-
   render() {
 
     let { CustomInputSoul } = this.props.Components;
@@ -298,7 +278,7 @@ export default class AriaListboxMulti extends React.Component {
 
         aria-invalid={ Boolean( error ) || undefined }
 
-        onFocus={ this.callback( 'onFocusGain, onFocus, props.onFocus' ) }
+        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
 
         onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
 
@@ -366,33 +346,25 @@ export default class AriaListboxMulti extends React.Component {
 
         }
 
-        {
+        <CustomInputSoul
 
-          ( error ) ?
+          className={ this.classed( 'soul' ) }
 
-            <props.Components.CustomInputSoul
+          name={ props.name }
 
-              ref={ this.ref( 'soul' ) }
+          error={ error }
 
-              className={ this.classed( 'soul' ) }
+          errorOnly={ true }
 
-              name={ props.name }
+          disabled={ disabled }
 
-              error={ error }
+          jsonType='skip'
 
-              disabled={ disabled }
+          onFocus={ this }
 
-              jsonType='skip'
+          onInvalid={ props.onInvalid }
 
-              onFocus={ this }
-
-              onInvalid={ props.onInvalid }
-
-            />
-
-          : null
-
-        }
+        />
 
       </div>
 
