@@ -94,13 +94,11 @@ export default InputMixin = Mixin.create( {
     const VALIDATION_PROPS = _.union( [ 'validate', 'required' ], ARGS.validationProps );
 
 
-    const getInitialValue = function ( props ) {
+    const getInitialValue = function( props ) {
 
       if ( props.value !== undefined ) return props.value;
 
-      if ( props.defaultValue !== undefined ) return props.defaultValue;
-
-      return ARGS.defaultValue;
+      return props.defaultValue;
 
     };
 

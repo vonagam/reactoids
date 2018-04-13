@@ -20,13 +20,11 @@ const FOCUS_KEYS = {
 
 const NAME_SUFFIXES = {
 
-  '': ( that, option, index ) => '',
+  '': ( that, index ) => '',
 
-  '[]': ( that, option, index ) => `[]`,
+  '[]': ( that, index ) => `[]`,
 
-  '[0]': ( that, option, index ) => `[${ index }]`,
-
-  '[key]': ( that, option, index ) => `[${ option.key }]`,
+  '[0]': ( that, index ) => `[${ index }]`,
 
 };
 
@@ -239,11 +237,15 @@ export default class AriaListboxMulti extends React.Component {
 
     let valueIndex = 0;
 
+    let optionName = _.noop;
+
+    if ( props.name !== undefined ) {
+
     let nameSuffix = _.isFunction( props.nameSuffix ) ? props.nameSuffix : NAME_SUFFIXES[ props.nameSuffix ];
 
-    let optionName = ( that, option, index ) => `${ props.name }${ nameSuffix( that, option, index ) }`;
+      optionName = ( index ) => `${ props.name }${ nameSuffix( this, index ) }`;
 
-    if ( props.name === undefined ) optionName = _.noop;
+    }
 
 
     return (
@@ -314,7 +316,7 @@ export default class AriaListboxMulti extends React.Component {
 
                     className={ this.classed( 'option.soul' ) }
 
-                    name={ optionName( this, option, valueIndex++ ) }
+                    name={ optionName( valueIndex++ ) }
 
                     value={ option.value }
 

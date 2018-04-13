@@ -259,31 +259,23 @@ export default class Field extends React.Component {
 
         </div>
 
-        {
+        <CustomInputSoul
 
-          ( fieldProps.name ) ?
+          className={ this.classed( 'soul' ) }
 
-            <CustomInputSoul
+          name={ fieldProps.name }
 
-              className={ this.classed( 'soul' ) }
+          value={ fieldProps.stringify( value ) }
 
-              name={ fieldProps.name }
+          error={ error }
 
-              value={ fieldProps.stringify( value ) }
+          disabled={ disabled }
 
-              error={ error }
+          jsonType={ fieldProps.jsonType }
 
-              disabled={ disabled }
+          onFocus={ this }
 
-              jsonType={ fieldProps.jsonType }
-
-              onFocus={ this }
-
-            />
-
-          : null
-
-        }
+        />
 
         <div id={ this.id( 'error' ) } className={ this.classed( 'error' ) } children={ error } />
 
