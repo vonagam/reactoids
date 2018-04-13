@@ -18,6 +18,8 @@ export default InputMixin = Mixin.create( {
 
     applyValueRestrictions: PropTypes.func, // ( that: mixed, props: object, state: object ) => void
 
+    onDisable: PropTypes.func, // ( that: mixed ) => void
+
     onLabelClick: PropTypes.func, // ( that: mixed ) => void
 
   },
@@ -37,6 +39,12 @@ export default InputMixin = Mixin.create( {
     onValidation: _.noop,
 
     applyValueRestrictions: _.noop,
+
+    onDisable( that ) {
+
+      that.blur();
+
+    },
 
     onLabelClick( that ) {
 
@@ -229,6 +237,12 @@ export default InputMixin = Mixin.create( {
           ARGS.onValidation( this, this.state.valueError );
 
           if ( this.props.onValidation ) this.props.onValidation( this.state.valueError );
+
+        }
+
+        if ( this.props.disabled && ! prevProps.disabled ) {
+
+          ARGS.onDisable( this );
 
         }
 

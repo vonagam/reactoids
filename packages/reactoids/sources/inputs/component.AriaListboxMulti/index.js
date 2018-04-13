@@ -83,6 +83,16 @@ export default class AriaListboxMulti extends React.Component {
 
       },
 
+      onDisable( that ) {
+
+        if ( _.includes( this.refs.dom.childNodes, document.activeElement ) ) {
+
+          document.activeElement.blur();
+
+        }
+
+      },
+
     } ),
 
   ];
@@ -114,26 +124,6 @@ export default class AriaListboxMulti extends React.Component {
   getInitialState() {
 
     return { focusedKeys: [] };
-
-  }
-
-  componentWillReceiveProps( nextProps ) {
-
-    if ( nextProps.disabled && ! this.props.disabled ) {
-
-      if ( _.includes( this.refs.dom.childNodes, document.activeElement ) ) {
-
-        document.activeElement.blur();
-
-      }
-
-      if ( this.state.focusedKeys.length > 0 ) {
-
-        this.setState( { focusedKeys: [] } );
-
-      }
-
-    }
 
   }
 

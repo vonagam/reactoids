@@ -69,6 +69,16 @@ export default class AriaListbox extends React.Component {
 
       },
 
+      onDisable( that ) {
+
+        if ( _.includes( this.refs.dom.childNodes, document.activeElement ) ) {
+
+          document.activeElement.blur();
+
+        }
+
+      },
+
     } ),
 
   ];
@@ -100,26 +110,6 @@ export default class AriaListbox extends React.Component {
   getInitialState() {
 
     return { focusedKey: undefined };
-
-  }
-
-  componentWillReceiveProps( nextProps ) {
-
-    if ( nextProps.disabled && ! this.props.disabled ) {
-
-      if ( _.includes( this.refs.dom.childNodes, document.activeElement ) ) {
-
-        document.activeElement.blur();
-
-      }
-
-      if ( this.state.focusedKey !== undefined ) {
-
-        this.setState( { focusedKey: undefined } );
-
-      }
-
-    }
 
   }
 
