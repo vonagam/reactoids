@@ -51,6 +51,32 @@ const MIXERS = [
 
     keys: [
 
+      'shouldComponentUpdate',
+
+    ],
+
+    mix( Component, key, values ) {
+
+      if ( Component.prototype[ key ] ) values = values.concat( Component.prototype[ key ] );
+
+      Component.prototype[ key ] = values.length === 1 ? values[ 0 ] : function() {
+
+        return _.some( values, ( value ) => {
+
+          return value.apply( this, arguments );
+
+        } );
+
+      };
+
+    },
+
+  },
+
+  {
+
+    keys: [
+
       'getDerivedStateFromProps',
 
     ],
