@@ -28,7 +28,7 @@ export default class Button extends React.Component {
 
   static propTypes = {
 
-    onClick: PropTypes.func,
+    Tag: PropTypes.string,
 
     href: PropTypes.string,
 
@@ -42,9 +42,13 @@ export default class Button extends React.Component {
 
     type: PropTypes.string,
 
+    onClick: PropTypes.func,
+
   };
 
   static defaultProps = {
+
+    Tag: 'button',
 
     type: 'button',
 
@@ -74,6 +78,8 @@ export default class Button extends React.Component {
     let hasAjax = ! _.isEmpty( _.funced( props.ajax ) );
 
 
+    let Tag = props.Tag;
+
     let link = props.link || hasHref;
 
     let disabled = _.defaultTo( props.disabled, ! ( hasClick || hasHref || hasAjax ) );
@@ -81,9 +87,9 @@ export default class Button extends React.Component {
     let loading = _.defaultTo( props.loading, state.ajaxes.click );
 
 
-    return (
+    if ( link ) {
 
-      ( link ) ?
+      return (
 
         <Link
 
@@ -101,21 +107,47 @@ export default class Button extends React.Component {
 
         />
 
-      :
+      );
 
-        <button
+    }
+
+
+    if ( Tag !== 'button' ) {
+
+      return (
+
+        <Tag
 
           { ...this.omitProps() }
 
           className={ this.classed( '', { link, disabled, loading } ) }
 
-          type={ props.type }
-
-          disabled={ disabled || loading || undefined }
+          aria-disabled={ disabled || loading || undefined }
 
           onClick={ this.callback( 'onClick, props.onClick' ) }
 
         />
+
+      );
+
+    }
+
+
+    return (
+
+      <button
+
+        { ...this.omitProps() }
+
+        className={ this.classed( '', { link, disabled, loading } ) }
+
+        type={ props.type }
+
+        disabled={ disabled || loading || undefined }
+
+        onClick={ this.callback( 'onClick, props.onClick' ) }
+
+      />
 
     );
 
