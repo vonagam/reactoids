@@ -182,11 +182,11 @@ export default class ArrayInput extends React.Component {
 
       valueType: PropTypes.array,
 
-      defaultValue: [],
+      emptyValue: [],
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
 
       },
 
@@ -272,7 +272,7 @@ export default class ArrayInput extends React.Component {
 
     let values = this.getValue();
 
-    let filled = ! this.isDefaultValue( values );
+    let filled = ! this.isEmptyValue( values );
 
     let error = this.getValueError();
 

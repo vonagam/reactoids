@@ -44,7 +44,7 @@ export default class Select extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isDefaultValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
 
       },
 
@@ -86,7 +86,7 @@ export default class Select extends React.Component {
 
     let value = this.getValue();
 
-    let filled = !this.isDefaultValue( value );
+    let filled = ! this.isEmptyValue( value );
 
     let options = this.getOptions();
 

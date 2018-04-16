@@ -4,13 +4,13 @@ const getInitialValue = function( Input, inputProps ) {
 
   if ( inputProps.defaultValue !== undefined ) return inputProps.defaultValue;
 
-  return Input.defaultProps.defaultValue;
+  return Input.getEmptyValue( inputProps );
 
 };
 
-const isDefaultValue = function( Input, value ) {
+const isEmptytValue = function( Input, inputProps, value ) {
 
-  return _.isEqual( value, Input.defaultProps.defaultValue );
+  return _.isEqual( value, Input.getEmptyValue( inputProps ) );
 
 };
 
@@ -227,7 +227,7 @@ export default class Field extends React.Component {
 
     let value = state.value;
 
-    let filled = ! isDefaultValue( Input, value );
+    let filled = ! isEmptytValue( Input, inputProps, value );
 
     let focused = this.isFocused();
 

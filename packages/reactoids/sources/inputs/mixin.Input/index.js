@@ -6,7 +6,7 @@ export default InputMixin = Mixin.create( {
 
     valueType: PropTypes.func,
 
-    defaultValue: PropTypes.any,
+    emptyValue: PropTypes.funced( PropTypes.any ), // ( props: object ) => mixed
 
     inputDelay: PropTypes.number,
 
@@ -28,7 +28,7 @@ export default InputMixin = Mixin.create( {
 
     valueType: PropTypes.any,
 
-    defaultValue: undefined,
+    emptyValue: undefined,
 
     inputDelay: 100,
 
@@ -94,11 +94,19 @@ export default InputMixin = Mixin.create( {
     const VALIDATION_PROPS = _.union( [ 'validate', 'required' ], ARGS.validationProps );
 
 
+    const getEmptyValue = function( props ) {
+
+      return _.funced( ARGS.emptyValue, props );
+
+    };
+
     const getInitialValue = function( props ) {
 
       if ( props.value !== undefined ) return props.value;
 
-      return props.defaultValue;
+      if ( props.defaultValue !== undefined ) return props.defaultValue;
+
+      return getEmptyValue( props );
 
     };
 
@@ -158,9 +166,13 @@ export default InputMixin = Mixin.create( {
 
       defaultProps: {
 
-        defaultValue: ARGS.defaultValue,
-
         inputDelay: ARGS.inputDelay,
+
+      },
+
+      statics: {
+
+        getEmptyValue,
 
       },
 
@@ -349,9 +361,9 @@ export default InputMixin = Mixin.create( {
 
       },
 
-      isDefaultValue( value ) {
+      isEmptyValue( value, props = this.props ) {
 
-        return _.isEqual( value, ARGS.defaultValue );
+        return _.isEqual( value, getEmptyValue( props ) );
 
       },
 
