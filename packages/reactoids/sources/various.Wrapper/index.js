@@ -28,6 +28,17 @@ export default Wrapper = {
     wrapper.defaultProps = _.assign( {}, Component.defaultProps, overrides.defaultProps );
 
 
+    _.assign(
+
+      wrapper,
+
+      _.omit( Component, CONST( [ 'displayName', 'name', 'propTypes', 'defaultProps', 'getDerivedStateFromProps' ] ) ),
+
+      overrides.statics,
+
+    );
+
+
     return wrapper;
 
   },
