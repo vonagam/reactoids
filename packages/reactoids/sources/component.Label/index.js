@@ -19,15 +19,56 @@ export default class Label extends React.Component {
 
   static propTypes = {
 
-    htmlFor: PropTypes.any,
+    Tag: PropTypes.string,
+
+    htmlFor: PropTypes.funced( PropTypes.any ), // ( that: mixed ) => mixed
+
+    clickFor: PropTypes.func, // ( that: mixed, target: mixed ) => void
 
   };
 
-  onClick() {
+  static defaultProps = {
+
+    Tag: 'label',
+
+    clickFor( that, target ) {
+
+      if ( target.focus ) target.focus();
+
+      if ( target.click ) target.click();
+
+    },
+
+  };
+
+  onClick( event ) {
+
+    let Tag = this.props.Tag;
+
 
     let target = this.props.htmlFor;
 
-    if ( isIdString( target ) ) return;
+    if ( ! target ) return;
+
+
+    if ( isIdString( target ) ) {
+
+      if ( Tag === 'label' ) return;
+
+      target = `#${ target }`;
+
+    }
+
+
+    let dom = this.dom();
+
+    let focusable = Focus.closestFocusable( event.target );
+
+    if ( focusable && focusable !== dom && dom.contains( focusable ) ) return;
+
+
+    if ( Tag === 'label' ) event.preventDefault();
+
 
     if ( _.isFunction( target ) ) target = target( this );
 
@@ -35,9 +76,8 @@ export default class Label extends React.Component {
 
     if ( ! target ) return;
 
-    if ( target.focus ) target.focus();
 
-    if ( target.click ) target.click();
+    this.props.clickFor( this, target );
 
   }
 
@@ -45,18 +85,20 @@ export default class Label extends React.Component {
 
     let { props } = this;
 
+    let Tag = props.Tag;
+
     let htmlFor = isIdString( props.htmlFor ) ? props.htmlFor : undefined;
 
 
     return (
 
-      <label
+      <Tag
 
         { ...this.omitProps() }
 
         className={ this.classed( '' ) }
 
-        htmlFor={ htmlFor }
+        htmlFor={ Tag === 'label' ? htmlFor : undefined }
 
         onClick={ this.callback( 'onClick, props.onClick' ) }
 

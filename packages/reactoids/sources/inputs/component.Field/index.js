@@ -179,9 +179,15 @@ export default class Field extends React.Component {
 
   }
 
-  onLabelClick() {
+  getLabelFor = () => {
 
-    this.refs.input.onLabelClick();
+    return this.refs.input;
+
+  }
+
+  clickLabelFor( lable, input ) {
+
+    input.onLabelClick();
 
   }
 
@@ -246,7 +252,19 @@ export default class Field extends React.Component {
 
       >
 
-        <Label id={ this.id( 'label' ) } className={ this.classed( 'label' ) } onClick={ this.callback( 'onLabelClick' ) } children={ label } />
+        <Label
+
+          id={ this.id( 'label' ) }
+
+          className={ this.classed( 'label' ) }
+
+          htmlFor={ this.getLabelFor }
+
+          clickFor={ this.callback( 'clickLabelFor' ) }
+
+          children={ label }
+
+        />
 
         <div className={ this.classed( 'wrapper' ) }>
 
