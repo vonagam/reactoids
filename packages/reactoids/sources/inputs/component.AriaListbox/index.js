@@ -18,6 +18,66 @@ const FOCUS_KEYS = {
 
 };
 
+const NAME_SUFFIXES = {
+
+  '': ( option, index ) => '',
+
+  '[]': ( option, index ) => `[]`,
+
+  '[0]': ( option, index ) => `[${ index }]`,
+
+  '[value]': ( option, index ) => `[${ option.value }]`,
+
+};
+
+const MODES = {
+
+  single: {
+
+    listboxProps: undefined,
+
+    optionHasSoul: ( props, option ) => option.selected,
+
+    optionNameSuffix: ( props ) => NAME_SUFFIXES[ '' ],
+
+    optionValue: ( props, option ) => option.value,
+
+  },
+
+  array: {
+
+    listboxProps: {
+
+      'aria-multiselectable': 'true'
+
+    },
+
+    optionHasSoul: ( props, option ) => option.selected,
+
+    optionNameSuffix: ( props ) => NAME_SUFFIXES[ props.nameSuffix ],
+
+    optionValue: ( props, option ) => option.value,
+
+  },
+
+  object: {
+
+    listboxProps: {
+
+      'aria-multiselectable': 'true'
+
+    },
+
+    optionHasSoul: ( props, option ) => props.mapping[ +option.selected ] !== undefined,
+
+    optionNameSuffix: ( prosp ) => NAME_SUFFIXES[ '[value]' ],
+
+    optionValue: ( props, option ) => props.mapping[ +option.selected ],
+
+  },
+
+};
+
 
 @Mixin.mix
 
@@ -30,6 +90,8 @@ export default class AriaListbox extends React.Component {
     ReactoidMixin( {
 
       classes: {
+
+        '-multiple': '',
 
         '-value': '',
 
@@ -49,6 +111,8 @@ export default class AriaListbox extends React.Component {
 
           '-focused': '',
 
+          soul: '',
+
         },
 
         soul: '',
@@ -61,7 +125,21 @@ export default class AriaListbox extends React.Component {
 
     } ),
 
-    SingleOptionInputMixin( {
+    OptionsInputMixin( {
+
+      optionsMode( props ) {
+
+        if ( props.multiple ) {
+
+          return props.optionsMode;
+
+        } else {
+
+          return 'single';
+
+        }
+
+      },
 
       validateValue( that, value ) {
 
@@ -85,9 +163,21 @@ export default class AriaListbox extends React.Component {
 
   static propTypes = {
 
+    multiple: PropTypes.bool,
+
+    optionsMode: PropTypes.oneOf( [ 'array', 'object' ] ),
+
+    mapping: PropTypes.array,
+
     selectFocus: PropTypes.bool,
 
     name: PropTypes.string,
+
+    optionNameSuffix: PropTypes.oneOf( [ '', '[]', '[0]' ] ),
+
+    soulErrorName: PropTypes.string,
+
+    soulEmptyProps: PropTypes.object,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 
@@ -99,7 +189,15 @@ export default class AriaListbox extends React.Component {
 
   static defaultProps = {
 
+    multiple: true,
+
+    optionsMode: 'array',
+
+    mapping: [ undefined, 'true' ],
+
     selectFocus: false,
+
+    optionNameSuffix: '[]',
 
     tabIndex: '0',
 
@@ -155,7 +253,7 @@ export default class AriaListbox extends React.Component {
 
     this.setState( { focusedKey: option.key } );
 
-    if ( this.props.selectFocus ) this.toggleOption( option, true );
+    if ( this.props.selectFocus && this.getOptionsMode() === 'single' ) this.toggleOption( option, true );
 
   }
 
@@ -189,6 +287,42 @@ export default class AriaListbox extends React.Component {
 
   }
 
+  onOptionSoulFocus( event ) {
+
+    event.currentTarget.parentNode.focus();
+
+  }
+
+  getSoulProps( filled ) {
+
+    if ( ! filled && this.props.soulEmptyProps ) {
+
+      return {
+
+        name: _.defaultTo( this.props.soulEmptyProps.name, this.props.name ),
+
+        value: this.props.soulEmptyProps.value || '',
+
+        jsonType: this.props.soulEmptyProps.jsonType || 'auto',
+
+      };
+
+    } else {
+
+      return {
+
+        name: _.defaultTo( this.props.soulErrorName, this.props.name ),
+
+        errorOnly: true,
+
+        jsonType: 'skip',
+
+      };
+
+    }
+
+  }
+
   render() {
 
     let { CustomInputSoul } = this.props.Components;
@@ -205,6 +339,8 @@ export default class AriaListbox extends React.Component {
 
     let focused = this.isFocused();
 
+    let multiple = props.multiple;
+
     let readonly = props.readOnly;
 
     let disabled = props.disabled;
@@ -214,9 +350,25 @@ export default class AriaListbox extends React.Component {
 
     let focusedIndex = state.focusedKey === undefined ? -1 : _.findIndex( options, { key: state.focusedKey } );
 
-    let selectedIndex = value === undefined ? -1 : _.findIndex( options, { selected: true } );
+    let selectedIndex = ! filled ? -1 : _.findIndex( options, { selected: true } );
 
     let tabbableIndex = disabled ? -1 : ( focusedIndex > -1 ? focusedIndex : ( selectedIndex > -1 ? selectedIndex : 0 ) );
+
+
+    let mode = MODES[ this.getOptionsMode() ];
+
+
+    let valueIndex = 0;
+
+    let optionName = _.noop;
+
+    if ( props.name !== undefined ) {
+
+      let optionNameSuffix = mode.optionNameSuffix( props );
+
+      optionName = ( option, index ) => `${ props.name }${ optionNameSuffix( option, index ) }`
+
+    }
 
 
     return (
@@ -227,7 +379,9 @@ export default class AriaListbox extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: filled, error, focused, readonly, disabled, required } ) }
+        { ...mode.listboxProps }
+
+        className={ this.classed( '', { multiple, value: filled, error, focused, readonly, disabled, required } ) }
 
         role='listbox'
 
@@ -273,9 +427,35 @@ export default class AriaListbox extends React.Component {
 
               onBlur={ this.callback( 'onOptionEvent' ) }
 
-              children={ option.label }
+            >
 
-            />
+              { option.label }
+
+              {
+
+                ( mode.optionHasSoul( props, option ) ) ?
+
+                  <CustomInputSoul
+
+                    className={ this.classed( 'option.soul' ) }
+
+                    name={ optionName( valueIndex++ ) }
+
+                    value={ mode.optionValue( props, option ) }
+
+                    disabled={ disabled }
+
+                    jsonType={ props.jsonType }
+
+                    onFocus={ this.callback( 'onOptionSoulFocus' ) }
+
+                  />
+
+                : null
+
+              }
+
+            </div>
 
           )
 
@@ -283,17 +463,13 @@ export default class AriaListbox extends React.Component {
 
         <CustomInputSoul
 
+          { ...this.getSoulProps( filled ) }
+
           className={ this.classed( 'soul' ) }
-
-          name={ props.name }
-
-          value={ value }
 
           error={ error }
 
           disabled={ disabled }
-
-          jsonType={ props.jsonType }
 
           onFocus={ this }
 

@@ -10,6 +10,8 @@ export default class Select extends React.Component {
 
       classes: {
 
+        '-multiple': '',
+
         '-value': '',
 
         '-error': '',
@@ -36,11 +38,17 @@ export default class Select extends React.Component {
 
     } ),
 
-    SingleOptionInputMixin( {
+    OptionsInputMixin( {
 
       valueType: PropTypes.string,
 
-      defaultValue: '',
+      emptyValue: '',
+
+      optionsMode( props ) {
+
+        return props.multiple ? 'array' : 'single';
+
+      },
 
       validateValue( that, value ) {
 
@@ -60,6 +68,8 @@ export default class Select extends React.Component {
 
   static propTypes = {
 
+    multiple: PropTypes.bool,
+
     placeholder: PropTypes.string,
 
     jsonType: PropTypes.string,
@@ -76,7 +86,19 @@ export default class Select extends React.Component {
 
   onChange( event ) {
 
-    this.setValue( event.target.value );
+    let value;
+
+    if ( this.props.multiple ) {
+
+      value = _.map( _.filter( event.target.options, 'selected' ), 'value' );
+
+    } else {
+
+      value = event.target.value;
+
+    }
+
+    this.setValue( value );
 
   }
 
@@ -94,6 +116,8 @@ export default class Select extends React.Component {
 
     let focused = this.isFocused();
 
+    let multiple = props.multiple;
+
     let readonly = props.readOnly;
 
     let disabled = props.disabled;
@@ -109,9 +133,11 @@ export default class Select extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: filled, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { multiple, value: filled, error, focused, readonly, disabled, required } ) }
 
         value={ value }
+
+        multiple={ multiple }
 
         readOnly={ readonly }
 
@@ -133,9 +159,9 @@ export default class Select extends React.Component {
 
         {
 
-          ( props.allowBlank ) ?
+          ( props.allowBlank && ! multiple ) ?
 
-            <option className={ this.classed( 'option', { blank: true, selected: ! filled } ) } value={ props.placeholder } />
+            <option className={ this.classed( 'option', { blank: true, selected: ! filled } ) } children={ props.placeholder } />
 
           : null
 

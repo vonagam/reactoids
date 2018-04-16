@@ -61,7 +61,9 @@ export default class AriaRadioGroup extends React.Component {
 
     } ),
 
-    SingleOptionInputMixin( {
+    OptionsInputMixin( {
+
+      optionsMode: 'single',
 
       validateValue( that, value ) {
 
@@ -214,7 +216,7 @@ export default class AriaRadioGroup extends React.Component {
 
     let focusedIndex = state.focusedKey === undefined ? -1 : _.findIndex( options, { key: state.focusedKey } );
 
-    let selectedIndex = value === undefined ? -1 : _.findIndex( options, { selected: true } );
+    let selectedIndex = ! filled ? -1 : _.findIndex( options, { selected: true } );
 
     let tabbableIndex = disabled ? -1 : ( focusedIndex > -1 ? focusedIndex : ( selectedIndex > -1 ? selectedIndex : 0 ) );
 
