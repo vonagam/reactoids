@@ -48,15 +48,15 @@ export default InputMixin = Mixin.create( {
 
     onLabelClick( that ) {
 
-      let tabbables = that.findTabbables();
+      let focusables = that.findFocusables();
 
-      let tabbable = tabbables[ 0 ];
+      let focusable = focusables[ 0 ];
 
-      if ( ! tabbable ) return;
+      if ( ! focusable ) return;
 
-      tabbable.focus();
+      focusable.focus();
 
-      tabbable.click();
+      focusable.click();
 
     },
 

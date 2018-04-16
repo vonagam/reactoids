@@ -1,6 +1,3 @@
-import findTabbables from 'tabbable';
-
-
 export default FocusMixin = Mixin.create( {
 
   name: 'FocusMixin',
@@ -49,23 +46,17 @@ export default FocusMixin = Mixin.create( {
 
       },
 
-      findTabbables() {
+      findFocusables() {
 
-        let dom = ARGS.findDOMNode( this );
-
-        if ( ! dom ) return [];
-
-        let tabbables = findTabbables( dom, { includeContainer: true } );
-
-        return tabbables;
+        return Focus.findFocusables( ARGS.findDOMNode( this ) );
 
       },
 
       isFocusable() {
 
-        let tabbables = this.findTabbables();
+        let focusables = this.findFocusables();
 
-        return tabbables.length > 0;
+        return focusables.length > 0;
 
       },
 
@@ -79,11 +70,7 @@ export default FocusMixin = Mixin.create( {
 
         if ( this._FocusMixin ) return;
 
-        let tabbables = this.findTabbables();
-
-        if ( tabbables.length === 0 ) return;
-
-        tabbables[ 0 ].focus();
+        Focus.focus( ARGS.findDOMNode( this ) );
 
       },
 
@@ -91,15 +78,7 @@ export default FocusMixin = Mixin.create( {
 
         if ( ! this._FocusMixin ) return;
 
-        let dom = ARGS.findDOMNode( this );
-
-        if ( ! dom ) return;
-
-        let focused = document.activeElement;
-
-        if ( ! focused || ! dom.contains( focused ) ) return;
-
-        focused.blur();
+        Focus.blur( ARGS.findDOMNode( this ) );
 
       },
 
