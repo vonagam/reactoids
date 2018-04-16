@@ -71,7 +71,7 @@ export default CacheMixin = Mixin.create( {
 
         let { items } = this._CacheMixin;
 
-        if ( ! _.hasOwn( items, key ) ) {
+        if ( ! items[ key ] ) {
 
           setCache( this, key, options );
 

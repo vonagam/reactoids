@@ -151,7 +151,7 @@ export default class AriaSwitch extends React.Component {
 
         aria-invalid={ Boolean( error ) || undefined }
 
-        tabIndex={ disabled ? '-1' : props.tabIndex }
+        tabIndex={ disabled ? undefined : props.tabIndex }
 
         onClick={ this.callback( 'onClick, props.onClick' ) }
 

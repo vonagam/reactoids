@@ -1,10 +1,10 @@
 const NAME_SUFFIXES = {
 
-  '': ( that, index ) => '',
+  '': ( index ) => '',
 
-  '[]': ( that, index ) => `[]`,
+  '[]': ( index ) => `[]`,
 
-  '[0]': ( that, index ) => `[${ index }]`,
+  '[0]': ( index ) => `[${ index }]`,
 
 };
 
@@ -202,9 +202,13 @@ export default class ArrayInput extends React.Component {
 
     canRemove: PropTypes.funced( PropTypes.bool ), // ( that: mixed, value: mixed, index: number, values: Array< mixed > ) => bool
 
-    nameSuffix: PropTypes.oneOfType( [ PropTypes.oneOf( _.keys( NAME_SUFFIXES ) ), PropTypes.func ] ), // ( that: mixed, index: number ) => string
-
     name: PropTypes.string,
+
+    itemNameSuffix: PropTypes.oneOf( [ '', '[]', '[0]' ] ),
+
+    soulErrorName: PropTypes.string,
+
+    soulEmptyProps: PropTypes.object,
 
     tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
 
@@ -218,7 +222,7 @@ export default class ArrayInput extends React.Component {
 
     canRemove: true,
 
-    nameSuffix: '[]',
+    itemNameSuffix: '[]',
 
   };
 
@@ -264,6 +268,36 @@ export default class ArrayInput extends React.Component {
 
   }
 
+  getSoulProps( filled ) {
+
+    if ( ! filled && this.props.soulEmptyProps ) {
+
+      return {
+
+        name: _.defaultTo( this.props.soulEmptyProps.name, this.props.name ),
+
+        value: this.props.soulEmptyProps.value || '',
+
+        jsonType: this.props.soulEmptyProps.jsonType || 'auto',
+
+      };
+
+    } else {
+
+      return {
+
+        name: _.defaultTo( this.props.soulErrorName, this.props.name ),
+
+        errorOnly: true,
+
+        jsonType: 'skip',
+
+      };
+
+    }
+
+  }
+
   render() {
 
     let { ArrayInputItem, Button, CustomInputSoul } = this.props.Components;
@@ -285,15 +319,13 @@ export default class ArrayInput extends React.Component {
     let required = props.required;
 
 
-    let name = props.name;
-
     let itemName = _.noop;
 
-    if ( name !== undefined ) {
+    if ( props.name !== undefined ) {
 
-      let nameSuffix = _.isFunction( props.nameSuffix ) ? props.nameSuffix : NAME_SUFFIXES[ props.nameSuffix ];
+      let itemNameSuffix = NAME_SUFFIXES[ props.itemNameSuffix ];
 
-      itemName = ( index ) => `${ name }${ nameSuffix( this, index ) }`;
+      itemName = ( option, index ) => `${ props.name }${ itemNameSuffix( option, index ) }`
 
     }
 
@@ -380,17 +412,13 @@ export default class ArrayInput extends React.Component {
 
         <CustomInputSoul
 
-          className={ this.classed( 'soul' ) }
+          { ...this.getSoulProps( filled ) }
 
-          name={ name }
+          className={ this.classed( 'soul' ) }
 
           error={ error }
 
-          errorOnly={ true }
-
           disabled={ disabled }
-
-          jsonType='skip'
 
           onFocus={ this }
 
