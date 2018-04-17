@@ -2,23 +2,6 @@
 // https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton
 
 
-const FOCUS_KEYS = {
-
-  ArrowUp: ( index, options ) => ( options.length + index - 1 ) % options.length,
-
-  ArrowLeft: ( index, options ) => ( options.length + index - 1 ) % options.length,
-
-  ArrowDown: ( index, options ) => ( options.length + index + 1 ) % options.length,
-
-  ArrowRight: ( index, options ) => ( options.length + index + 1 ) % options.length,
-
-  Home: ( index, options ) => 0,
-
-  End: ( index, options ) => options.length - 1,
-
-};
-
-
 const AriaRadioGroupOption = Wrapper.create( AriaCheck, {
 
   props: { role: 'radio' },
@@ -132,13 +115,13 @@ export default class AriaRadioGroup extends React.Component {
 
     if ( event.altKey || event.ctrlKey || event.metaKey ) return;
 
-    if ( FOCUS_KEYS[ event.key ] ) {
+    if ( InputShared.OPTIONS_FOCUS_KEYS[ event.key ] ) {
 
       event.preventDefault();
 
       let options = this.getOptions();
 
-      let focusedIndex = FOCUS_KEYS[ event.key ]( index, options );
+      let focusedIndex = InputShared.OPTIONS_FOCUS_KEYS[ event.key ]( index, options );
 
       Focus.focus( this.refs.dom.childNodes[ focusedIndex ] );
 

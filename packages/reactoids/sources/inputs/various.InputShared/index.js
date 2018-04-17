@@ -1,5 +1,21 @@
 export default InputShared = {
 
+  OPTIONS_FOCUS_KEYS: {
+
+    ArrowUp: ( index, options ) => ( options.length + index - 1 ) % options.length,
+
+    ArrowLeft: ( index, options ) => ( options.length + index - 1 ) % options.length,
+
+    ArrowDown: ( index, options ) => ( options.length + index + 1 ) % options.length,
+
+    ArrowRight: ( index, options ) => ( options.length + index + 1 ) % options.length,
+
+    Home: ( index, options ) => 0,
+
+    End: ( index, options ) => options.length - 1,
+
+  },
+
   PropTypes: {
 
     boolMapping: PropTypes.oneOrArrayOf( PropTypes.oneOfType( [ PropTypes.string, PropTypes.oneOf( [ undefined ] ) ] ) ),
