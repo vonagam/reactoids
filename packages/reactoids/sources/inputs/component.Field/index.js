@@ -1,5 +1,9 @@
 const getInitialValue = function( Input, inputProps ) {
 
+  Input = Wrapper.getComponent( Input );
+
+  inputProps = _.defaults( {}, inputProps, Input.defaultProps );
+
   if ( inputProps.value !== undefined ) return inputProps.value;
 
   if ( inputProps.defaultValue !== undefined ) return inputProps.defaultValue;
@@ -9,6 +13,10 @@ const getInitialValue = function( Input, inputProps ) {
 };
 
 const isEmptytValue = function( Input, inputProps, value ) {
+
+  Input = Wrapper.getComponent( Input );
+
+  inputProps = _.defaults( {}, inputProps, Input.defaultProps );
 
   return _.isEqual( value, Input.getEmptyValue( inputProps ) );
 
