@@ -291,33 +291,6 @@ export default class AriaListbox extends React.Component {
 
     event.currentTarget.parentNode.focus();
 
-  }
-
-  getSoulProps( filled ) {
-
-    if ( ! filled && this.props.soulEmptyProps ) {
-
-      return {
-
-        name: _.defaultTo( this.props.soulEmptyProps.name, this.props.name ),
-
-        value: this.props.soulEmptyProps.value || '',
-
-        jsonType: this.props.soulEmptyProps.jsonType || 'auto',
-
-      };
-
-    } else {
-
-      return {
-
-        name: _.defaultTo( this.props.soulErrorName, this.props.name ),
-
-        errorOnly: true,
-
-        jsonType: 'skip',
-
-      };
 
     }
 
@@ -463,7 +436,7 @@ export default class AriaListbox extends React.Component {
 
         <CustomInputSoul
 
-          { ...this.getSoulProps( filled ) }
+          { ...InputShared.getOptionsSoulProps( props, filled ) }
 
           className={ this.classed( 'soul' ) }
 

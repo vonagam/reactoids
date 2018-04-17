@@ -268,36 +268,6 @@ export default class ArrayInput extends React.Component {
 
   }
 
-  getSoulProps( filled ) {
-
-    if ( ! filled && this.props.soulEmptyProps ) {
-
-      return {
-
-        name: _.defaultTo( this.props.soulEmptyProps.name, this.props.name ),
-
-        value: this.props.soulEmptyProps.value || '',
-
-        jsonType: this.props.soulEmptyProps.jsonType || 'auto',
-
-      };
-
-    } else {
-
-      return {
-
-        name: _.defaultTo( this.props.soulErrorName, this.props.name ),
-
-        errorOnly: true,
-
-        jsonType: 'skip',
-
-      };
-
-    }
-
-  }
-
   render() {
 
     let { ArrayInputItem, Button, CustomInputSoul } = this.props.Components;
@@ -412,7 +382,7 @@ export default class ArrayInput extends React.Component {
 
         <CustomInputSoul
 
-          { ...this.getSoulProps( filled ) }
+          { ...InputShared.getOptionsSoulProps( props, filled ) }
 
           className={ this.classed( 'soul' ) }
 
