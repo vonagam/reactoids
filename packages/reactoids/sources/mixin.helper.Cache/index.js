@@ -6,6 +6,12 @@ export default CacheMixin = Mixin.create( {
 
     const setCache = function( that, key, options ) {
 
+      if ( _.isFunction( options ) ) {
+
+        options = { getter: options };
+
+      }
+
       let cache = that._CacheMixin;
 
       let item = {
