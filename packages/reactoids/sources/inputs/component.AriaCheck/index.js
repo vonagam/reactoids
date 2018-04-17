@@ -187,13 +187,13 @@ export default class AriaCheck extends React.Component {
 
         tabIndex={ disabled ? undefined : props.tabIndex }
 
-        onClick={ this.callback( 'onClick, props.onClick' ) }
+        onClick={ this.callbacks( 'onClick, props.onClick' ) }
 
-        onKeyDown={ this.callback( 'onKeyDown, props.onKeyDown' ) }
+        onKeyDown={ this.callbacks( 'onKeyDown, props.onKeyDown' ) }
 
-        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
-        onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
 
       >
 

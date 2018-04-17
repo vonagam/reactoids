@@ -103,7 +103,7 @@ export default class Button extends React.Component {
 
           loading={ loading }
 
-          onClick={ this.callback( 'onClick, props.onClick' ) }
+          onClick={ this.callbacks( 'onClick, props.onClick' ) }
 
         />
 
@@ -124,7 +124,7 @@ export default class Button extends React.Component {
 
           aria-disabled={ disabled || loading || undefined }
 
-          onClick={ this.callback( 'onClick, props.onClick' ) }
+          onClick={ this.callbacks( 'onClick, props.onClick' ) }
 
         />
 
@@ -147,7 +147,7 @@ export default class Button extends React.Component {
 
           disabled={ disabled || loading || undefined }
 
-          onClick={ this.callback( 'onClick, props.onClick' ) }
+          onClick={ this.callbacks( 'onClick, props.onClick' ) }
 
         />
 

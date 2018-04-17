@@ -96,7 +96,7 @@ export default class Label extends React.Component {
 
         htmlFor={ Tag === 'label' ? htmlFor : undefined }
 
-        onClick={ this.callback( 'onClick, props.onClick' ) }
+        onClick={ this.callbacks( 'onClick, props.onClick' ) }
 
       />
 

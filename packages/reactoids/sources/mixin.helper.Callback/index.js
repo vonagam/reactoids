@@ -6,12 +6,12 @@ export default CallbackMixin = Mixin.create( {
 
     return {
 
-      callback( keys ) {
+      callbacks( keys ) {
 
         let that = this;
 
 
-        this.callback = _.memoize(
+        this.callbacks = _.memoize(
 
           ( keys ) => {
 
@@ -40,16 +40,16 @@ export default CallbackMixin = Mixin.create( {
         );
 
 
-        return this.callback( keys );
+        return this.callbacks( keys );
 
       },
 
-      callback2( methodPath, cacheKey, ...partials ) {
+      callback( methodPath, cacheKey, ...partials ) {
 
         let that = this;
 
 
-        this.callback2 = _.memoize(
+        this.callback = _.memoize(
 
           ( methodPath, cacheKey, ...partials ) => {
 
@@ -80,7 +80,7 @@ export default CallbackMixin = Mixin.create( {
         );
 
 
-        return this.callback2( methodPath, cacheKey, ...partials );
+        return this.callback( methodPath, cacheKey, ...partials );
 
       },
 

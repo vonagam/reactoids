@@ -346,9 +346,9 @@ export default class AriaListbox extends React.Component {
 
         aria-invalid={ Boolean( error ) || undefined }
 
-        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
-        onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
 
       >
 
@@ -380,13 +380,13 @@ export default class AriaListbox extends React.Component {
 
               children={ option.label }
 
-              onChange={ this.callback2( 'onOptionChange', index, index ) }
+              onChange={ this.callback( 'onOptionChange', index, index ) }
 
-              onKeyDown={ this.callback( 'onOptionEvent' ) }
+              onKeyDown={ this.callbacks( 'onOptionEvent' ) }
 
-              onFocus={ this.callback( 'onOptionEvent' ) }
+              onFocus={ this.callbacks( 'onOptionEvent' ) }
 
-              onBlur={ this.callback( 'onOptionEvent' ) }
+              onBlur={ this.callbacks( 'onOptionEvent' ) }
 
             />
 

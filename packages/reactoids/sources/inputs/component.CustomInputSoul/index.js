@@ -108,7 +108,7 @@ export default class CustomInputSoul extends React.Component {
 
         data-value-type={ props.jsonType }
 
-        onFocus={ this.callback( 'onFocus' ) }
+        onFocus={ this.callbacks( 'onFocus' ) }
 
       />
 

@@ -82,7 +82,7 @@ class ArrayInputItem extends React.Component {
 
             tabIndex: props.tabIndex,
 
-            onChange: this.callback( 'onChange' ),
+            onChange: this.callbacks( 'onChange' ),
 
           } )
 
@@ -92,7 +92,7 @@ class ArrayInputItem extends React.Component {
 
           className={ array.classed( 'remove' ) }
 
-          onClick={ props.removable ? this.callback( 'onRemove' ) : undefined }
+          onClick={ props.removable ? this.callbacks( 'onRemove' ) : undefined }
 
           children={ array.stringed( 'remove' ) }
 
@@ -316,9 +316,9 @@ export default class ArrayInput extends React.Component {
 
         aria-invalid={ Boolean( error ) || undefined }
 
-        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
-        onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
 
       >
 
@@ -360,7 +360,7 @@ export default class ArrayInput extends React.Component {
 
             tabIndex={ props.tabIndex }
 
-            onClick={ _.funced( props.canAdd, this, values ) ? this.callback( 'onAdd' ) : undefined }
+            onClick={ _.funced( props.canAdd, this, values ) ? this.callbacks( 'onAdd' ) : undefined }
 
             children={ this.stringed( 'add' ) }
 
@@ -372,7 +372,7 @@ export default class ArrayInput extends React.Component {
 
             tabIndex={ props.tabIndex }
 
-            onClick={ _.some( values, ( value, index ) => _.funced( props.canRemove, this, value, index, values ) ) ? this.callback( 'onClear' ) : undefined }
+            onClick={ _.some( values, ( value, index ) => _.funced( props.canRemove, this, value, index, values ) ) ? this.callbacks( 'onClear' ) : undefined }
 
             children={ this.stringed( 'clear' ) }
 

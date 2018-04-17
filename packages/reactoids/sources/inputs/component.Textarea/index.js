@@ -115,11 +115,11 @@ export default class Textarea extends React.Component {
 
         data-value-type={ props.jsonType }
 
-        onChange={ this.callback( 'onChange' ) }
+        onChange={ this.callbacks( 'onChange' ) }
 
-        onFocus={ this.callback( 'onFocusGain, props.onBlur' ) }
+        onFocus={ this.callbacks( 'onFocusGain, props.onBlur' ) }
 
-        onBlur={ this.callback( 'onBlur, onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callbacks( 'onBlur, onFocusLoss, props.onBlur' ) }
 
       />
 

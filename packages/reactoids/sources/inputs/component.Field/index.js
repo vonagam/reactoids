@@ -254,9 +254,9 @@ export default class Field extends React.Component {
 
         className={ this.classed( '', { label, error, status, description, details, value: filled, focused, readonly, disabled, required } ) }
 
-        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
-        onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
 
       >
 
@@ -268,7 +268,7 @@ export default class Field extends React.Component {
 
           htmlFor={ this.getLabelFor }
 
-          clickFor={ this.callback( 'clickLabelFor' ) }
+          clickFor={ this.callbacks( 'clickLabelFor' ) }
 
           children={ label }
 
@@ -280,7 +280,7 @@ export default class Field extends React.Component {
 
             React.cloneElement( fieldProps.children, {
 
-              ref: this.callback( 'saveInputRef, props.children.ref' ),
+              ref: this.callbacks( 'saveInputRef, props.children.ref' ),
 
               className: joinClassNames( this.classed( 'input' ), inputProps.className ),
 
@@ -294,9 +294,9 @@ export default class Field extends React.Component {
 
               'aria-details': joinIds( details && this.id( 'details' ), inputProps[ 'aria-details' ] ),
 
-              onChange: this.callback( 'onChange, props.children.onChange' ),
+              onChange: this.callbacks( 'onChange, props.children.onChange' ),
 
-              onValidation: this.callback( 'onValidation, props.children.onValidation' ),
+              onValidation: this.callbacks( 'onValidation, props.children.onValidation' ),
 
             } )
 

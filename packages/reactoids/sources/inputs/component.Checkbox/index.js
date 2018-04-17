@@ -178,11 +178,11 @@ export default class Checkbox extends React.Component {
 
           data-value-type={ props.jsonType }
 
-          onChange={ this.callback( 'onChange' ) }
+          onChange={ this.callbacks( 'onChange' ) }
 
-          onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+          onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
-          onBlur={ this.callback( 'onFocusLoss, props.onBlur' ) }
+          onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
 
         />
 

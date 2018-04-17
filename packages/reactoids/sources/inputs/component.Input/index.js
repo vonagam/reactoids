@@ -137,13 +137,13 @@ export default class Input extends React.Component {
 
         data-value-type={ props.jsonType }
 
-        onChange={ this.callback( 'onChange' ) }
+        onChange={ this.callbacks( 'onChange' ) }
 
-        onFocus={ this.callback( 'onFocusGain, props.onFocus' ) }
+        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
-        onBlur={ this.callback( 'onBlur, onFocusLoss, props.onBlur' ) }
+        onBlur={ this.callbacks( 'onBlur, onFocusLoss, props.onBlur' ) }
 
-        onKeyDown={ this.callback( 'onKeyDown, props.onKeyDown' ) }
+        onKeyDown={ this.callbacks( 'onKeyDown, props.onKeyDown' ) }
 
       />
 
