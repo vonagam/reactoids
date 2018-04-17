@@ -60,11 +60,7 @@ export default class Label extends React.Component {
     }
 
 
-    let dom = this.dom();
-
-    let focusable = Focus.closestFocusable( event.target );
-
-    if ( focusable && focusable !== dom && dom.contains( focusable ) ) return;
+    if ( Focus.closestFocusable( event.target, this.dom ) ) return;
 
 
     if ( Tag === 'label' ) event.preventDefault();

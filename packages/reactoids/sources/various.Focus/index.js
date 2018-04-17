@@ -87,15 +87,13 @@ export default Focus = {
 
   },
 
-  closestFocusable( node ) {
+  closestFocusable( node, context = document ) {
 
     if ( ! node ) return undefined;
 
-    while ( node && node !== document ) {
+    for ( ; node && node !== context; node = node.parentNode ) {
 
       if ( Focus.isFocusable( node ) ) return node;
-
-      node = node.parentNode;
 
     }
 
