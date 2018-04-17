@@ -23,7 +23,7 @@ export default RenderSlotsMixin = Mixin.create( {
 
       let render = `render${ _.pascalCase( name ) }`;
 
-      let props = name;
+      let props = `${ name }Props`;
 
 
       mixin.propTypes[ render ] = PropTypes.funced( PropTypes.node ); // ( that: mixed, slotArgs: object, slotProps: object ) => React.Node
