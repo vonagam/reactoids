@@ -44,6 +44,46 @@ export default CallbackMixin = Mixin.create( {
 
       },
 
+      callback2( methodPath, cacheKey, ...partials ) {
+
+        let that = this;
+
+
+        this.callback2 = _.memoize(
+
+          ( methodPath, cacheKey, ...partials ) => {
+
+            let execute;
+
+            if ( _.isEmpty( partials ) ) {
+
+              execute = ( callback, args ) => callback.apply( that, args );
+
+            } else {
+
+              execute = ( callback, args ) => callback.call( that, ...partials, ...args );
+
+            }
+
+            return function() {
+
+              let callback = _.get( that, methodPath );
+
+              if ( callback ) return execute( callback, arguments );
+
+            };
+
+          },
+
+          ( methodPath, cacheKey ) => `${ methodPath }${ cacheKey === undefined ? '' : `(${ cacheKey })` }`,
+
+        );
+
+
+        return this.callback2( methodPath, cacheKey, ...partials );
+
+      },
+
     };
 
   } ),
