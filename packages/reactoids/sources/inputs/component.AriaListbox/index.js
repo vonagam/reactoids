@@ -36,11 +36,11 @@ const MODES = {
 
     listboxProps: undefined,
 
-    optionHasSoul: ( props, option ) => option.selected,
+    optionHasName: ( props, option ) => option.selected,
 
     optionNameSuffix: ( props ) => NAME_SUFFIXES[ '' ],
 
-    optionValue: ( props, option ) => option.value,
+    optionMapping: ( props, option ) => option.value,
 
   },
 
@@ -52,11 +52,11 @@ const MODES = {
 
     },
 
-    optionHasSoul: ( props, option ) => option.selected,
+    optionHasName: ( props, option ) => option.selected,
 
     optionNameSuffix: ( props ) => NAME_SUFFIXES[ props.nameSuffix ],
 
-    optionValue: ( props, option ) => option.value,
+    optionMapping: ( props, option ) => option.value,
 
   },
 
@@ -68,15 +68,24 @@ const MODES = {
 
     },
 
-    optionHasSoul: ( props, option ) => props.mapping[ +option.selected ] !== undefined,
+    optionHasName: ( props, option ) => true,
 
     optionNameSuffix: ( prosp ) => NAME_SUFFIXES[ '[value]' ],
 
-    optionValue: ( props, option ) => props.mapping[ +option.selected ],
+    optionMapping: ( props, option ) => props.mapping,
 
   },
 
 };
+
+
+const AriaListboxOption = Wrapper.create( AriaCheck, {
+
+  props: { role: 'option' },
+
+  identity: true,
+
+} );
 
 
 @Mixin.mix
@@ -105,15 +114,7 @@ export default class AriaListbox extends React.Component {
 
         '-required': '',
 
-        option: {
-
-          '-selected': '',
-
-          '-focused': '',
-
-          soul: '',
-
-        },
+        option: '',
 
         soul: '',
 
@@ -121,7 +122,7 @@ export default class AriaListbox extends React.Component {
 
       strings: [ 'error.required' ],
 
-      Components: { CustomInputSoul },
+      Components: { AriaListboxOption, CustomInputSoul },
 
     } ),
 
@@ -167,7 +168,7 @@ export default class AriaListbox extends React.Component {
 
     optionsMode: PropTypes.oneOf( [ 'array', 'object' ] ),
 
-    mapping: PropTypes.array,
+    mapping: InputShared.PropTypes.boolMapping,
 
     selectFocus: PropTypes.bool,
 
@@ -193,7 +194,7 @@ export default class AriaListbox extends React.Component {
 
     optionsMode: 'array',
 
-    mapping: [ undefined, 'true' ],
+    mapping: 'true',
 
     selectFocus: false,
 
@@ -211,45 +212,39 @@ export default class AriaListbox extends React.Component {
 
   }
 
-  onOptionClick( option, index, options, event ) {
+  onOptionChange( index, value ) {
 
-    if ( this.props.disabled ) return;
+    let options = this.getOptions();
 
-    this.toggleOption( option );
+    let option = options[ index ];
 
-    event.currentTarget.focus();
+    this.toggleOption( option, value );
 
   }
 
-  onOptionKeyDown( option, index, options, event ) {
-
-    if ( event.currentTarget !== event.target ) return;
+  onOptionKeyDown( index, event ) {
 
     if ( event.altKey || event.ctrlKey || event.metaKey ) return;
-
-    if ( event.key === ' ' ) {
-
-      event.preventDefault();
-
-      this.toggleOption( option );
-
-    }
 
     if ( FOCUS_KEYS[ event.key ] ) {
 
       event.preventDefault();
 
+      let options = this.getOptions();
+
       let focusedIndex = FOCUS_KEYS[ event.key ]( index, options );
 
-      this.refs.dom.childNodes[ focusedIndex ].focus();
+      Focus.focus( this.refs.dom.childNodes[ focusedIndex ] );
 
     }
 
   }
 
-  onOptionFocus( option, index, options, event ) {
+  onOptionFocus( index, event ) {
 
-    if ( event.currentTarget !== event.target ) return;
+    let options = this.getOptions();
+
+    let option = options[ index ];
 
     this.setState( { focusedKey: option.key } );
 
@@ -257,9 +252,7 @@ export default class AriaListbox extends React.Component {
 
   }
 
-  onOptionBlur( option, index, options, event ) {
-
-    if ( event.currentTarget !== event.target ) return;
+  onOptionBlur( index, event ) {
 
     this.setState( { focusedKey: undefined } );
 
@@ -267,30 +260,17 @@ export default class AriaListbox extends React.Component {
 
   onOptionEvent( event ) {
 
-    let options = this.getOptions();
+    if ( event.currentTarget !== event.target ) return;
 
     let index = Number( event.currentTarget.getAttribute( 'data-index' ) );
 
-    let option = options[ index ];
-
     switch( event.type ) {
 
-      case 'click': this.onOptionClick( option, index, options, event ); break;
+      case 'keydown': this.onOptionKeyDown( index, event ); break;
 
-      case 'keydown': this.onOptionKeyDown( option, index, options, event ); break;
+      case 'focus': this.onOptionFocus( index, event ); break;
 
-      case 'focus': this.onOptionFocus( option, index, options, event ); break;
-
-      case 'blur': this.onOptionBlur( option, index, options, event ); break;
-
-    }
-
-  }
-
-  onOptionSoulFocus( event ) {
-
-    event.currentTarget.parentNode.focus();
-
+      case 'blur': this.onOptionBlur( index, event ); break;
 
     }
 
@@ -298,7 +278,7 @@ export default class AriaListbox extends React.Component {
 
   render() {
 
-    let { CustomInputSoul } = this.props.Components;
+    let { AriaListboxOption, CustomInputSoul } = this.props.Components;
 
     let { props, state } = this;
 
@@ -331,15 +311,15 @@ export default class AriaListbox extends React.Component {
     let mode = MODES[ this.getOptionsMode() ];
 
 
-    let valueIndex = 0;
-
     let optionName = _.noop;
 
     if ( props.name !== undefined ) {
 
+      let valueIndex = 0;
+
       let optionNameSuffix = mode.optionNameSuffix( props );
 
-      optionName = ( option, index ) => `${ props.name }${ optionNameSuffix( option, index ) }`
+      optionName = ( option ) => `${ props.name }${ optionNameSuffix( option, valueIndex++ ) }`;
 
     }
 
@@ -376,23 +356,31 @@ export default class AriaListbox extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <div
+            <AriaListboxOption
 
               key={ option.key }
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
 
-              role='option'
+              name={ mode.optionHasName( props, option ) ? optionName( option ) : undefined }
 
-              aria-selected={ option.selected }
+              value={ option.selected }
 
-              aria-disabled={ disabled }
+              mapping={ mode.optionMapping( props, option ) }
 
-              data-index={ index }
+              readOnly={ readonly }
+
+              disabled={ disabled }
+
+              jsonType={ props.jsonType }
 
               tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 
-              onClick={ this.callback( 'onOptionEvent' ) }
+              data-index={ index }
+
+              children={ option.label }
+
+              onChange={ this.callback2( 'onOptionChange', index, index ) }
 
               onKeyDown={ this.callback( 'onOptionEvent' ) }
 
@@ -400,35 +388,7 @@ export default class AriaListbox extends React.Component {
 
               onBlur={ this.callback( 'onOptionEvent' ) }
 
-            >
-
-              { option.label }
-
-              {
-
-                ( mode.optionHasSoul( props, option ) ) ?
-
-                  <CustomInputSoul
-
-                    className={ this.classed( 'option.soul' ) }
-
-                    name={ optionName( valueIndex++ ) }
-
-                    value={ mode.optionValue( props, option ) }
-
-                    disabled={ disabled }
-
-                    jsonType={ props.jsonType }
-
-                    onFocus={ this.callback( 'onOptionSoulFocus' ) }
-
-                  />
-
-                : null
-
-              }
-
-            </div>
+            />
 
           )
 

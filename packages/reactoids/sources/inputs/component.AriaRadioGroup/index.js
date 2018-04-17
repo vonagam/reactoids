@@ -19,6 +19,15 @@ const FOCUS_KEYS = {
 };
 
 
+const AriaRadioGroupOption = Wrapper.create( AriaCheck, {
+
+  props: { role: 'radio' },
+
+  identity: true,
+
+} );
+
+
 @Mixin.mix
 
 export default class AriaRadioGroup extends React.Component {
@@ -43,13 +52,7 @@ export default class AriaRadioGroup extends React.Component {
 
         '-required': '',
 
-        option: {
-
-          '-selected': '',
-
-          '-focused': '',
-
-        },
+        option: '',
 
         soul: '',
 
@@ -57,7 +60,7 @@ export default class AriaRadioGroup extends React.Component {
 
       strings: [ 'error.required' ],
 
-      Components: { CustomInputSoul },
+      Components: { AriaRadioGroupOption, CustomInputSoul },
 
     } ),
 
@@ -115,45 +118,39 @@ export default class AriaRadioGroup extends React.Component {
 
   }
 
-  onOptionClick( option, index, options, event ) {
+  onOptionChange( index, value ) {
 
-    if ( this.props.disabled ) return;
+    let options = this.getOptions();
 
-    this.toggleOption( option );
+    let option = options[ index ];
 
-    event.currentTarget.focus();
+    this.toggleOption( option, value );
 
   }
 
-  onOptionKeyDown( option, index, options, event ) {
-
-    if ( event.currentTarget !== event.target ) return;
+  onOptionKeyDown( index, event ) {
 
     if ( event.altKey || event.ctrlKey || event.metaKey ) return;
-
-    if ( event.key === ' ' ) {
-
-      event.preventDefault();
-
-      this.toggleOption( option );
-
-    }
 
     if ( FOCUS_KEYS[ event.key ] ) {
 
       event.preventDefault();
 
+      let options = this.getOptions();
+
       let focusedIndex = FOCUS_KEYS[ event.key ]( index, options );
 
-      this.refs.dom.childNodes[ focusedIndex ].focus();
+      Focus.focus( this.refs.dom.childNodes[ focusedIndex ] );
 
     }
 
   }
 
-  onOptionFocus( option, index, options, event ) {
+  onOptionFocus( index, event ) {
 
-    if ( event.currentTarget !== event.target ) return;
+    let options = this.getOptions();
+
+    let option = options[ index ];
 
     this.setState( { focusedKey: option.key } );
 
@@ -161,9 +158,7 @@ export default class AriaRadioGroup extends React.Component {
 
   }
 
-  onOptionBlur( option, index, options, event ) {
-
-    if ( event.currentTarget !== event.target ) return;
+  onOptionBlur( index, event ) {
 
     this.setState( { focusedKey: undefined } );
 
@@ -171,21 +166,17 @@ export default class AriaRadioGroup extends React.Component {
 
   onOptionEvent( event ) {
 
-    let options = this.getOptions();
+    if ( event.currentTarget !== event.target ) return;
 
     let index = Number( event.currentTarget.getAttribute( 'data-index' ) );
 
-    let option = options[ index ];
-
     switch( event.type ) {
 
-      case 'click': this.onOptionClick( option, index, options, event ); break;
+      case 'keydown': this.onOptionKeyDown( index, event ); break;
 
-      case 'keydown': this.onOptionKeyDown( option, index, options, event ); break;
+      case 'focus': this.onOptionFocus( index, event ); break;
 
-      case 'focus': this.onOptionFocus( option, index, options, event ); break;
-
-      case 'blur': this.onOptionBlur( option, index, options, event ); break;
+      case 'blur': this.onOptionBlur( index, event ); break;
 
     }
 
@@ -193,7 +184,7 @@ export default class AriaRadioGroup extends React.Component {
 
   render() {
 
-    let { CustomInputSoul } = this.props.Components;
+    let { AriaRadioGroupOption, CustomInputSoul } = this.props.Components;
 
     let { props, state } = this;
 
@@ -251,31 +242,33 @@ export default class AriaRadioGroup extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <div
+            <AriaRadioGroupOption
 
               key={ option.key }
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
 
-              role='radio'
+              value={ option.selected }
 
-              aria-checked={ option.selected }
+              readOnly={ readonly }
 
-              aria-disabled={ disabled }
+              disabled={ disabled }
 
-              data-index={ index }
+              jsonType={ props.jsonType }
 
               tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 
-              onClick={ this.callback( 'onOptionEvent' ) }
+              data-index={ index }
+
+              children={ option.label }
+
+              onChange={ this.callback2( 'onOptionChange', index, index ) }
 
               onKeyDown={ this.callback( 'onOptionEvent' ) }
 
               onFocus={ this.callback( 'onOptionEvent' ) }
 
               onBlur={ this.callback( 'onOptionEvent' ) }
-
-              children={ option.label }
 
             />
 
