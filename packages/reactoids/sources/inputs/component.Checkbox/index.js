@@ -62,7 +62,7 @@ export default class Checkbox extends React.Component {
 
     indeterminate: PropTypes.bool,
 
-    mapping: PropTypes.array,
+    mapping: InputShared.PropTypes.boolMapping,
 
     name: PropTypes.string,
 
@@ -125,17 +125,13 @@ export default class Checkbox extends React.Component {
     let required = props.required;
 
 
-    let names = [];
+    let formFalseValue = InputShared.mapBoolValue( false, props.mapping );
 
-    if ( value === true ) {
+    let formTrueValue = InputShared.mapBoolValue( true, props.mapping );
 
-      names[ 1 ] = props.name;
+    let formFalseName = value === false && formFalseValue !== undefined ? props.name : undefined;
 
-    } else if ( props.mapping[ 0 ] !== undefined ) {
-
-      names[ 0 ] = props.name;
-
-    }
+    let formTrueName = props.name;
 
 
     return (
@@ -146,9 +142,9 @@ export default class Checkbox extends React.Component {
 
           type='hidden'
 
-          name={ names[ 0 ] }
+          name={ formFalseName }
 
-          value={ props.mapping[ 0 ] }
+          value={ formFalseValue }
 
           disabled={ disabled }
 
@@ -164,11 +160,11 @@ export default class Checkbox extends React.Component {
 
           className={ this.classed( '', { value: filled, indeterminate, error, focused, readonly, disabled, required } ) }
 
-          name={ names[ 1 ] }
+          name={ formTrueName }
 
           type='checkbox'
 
-          value={ props.mapping[ 1 ] }
+          value={ formTrueValue }
 
           checked={ value }
 

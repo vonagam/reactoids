@@ -174,7 +174,7 @@ export default class ArrayInput extends React.Component {
 
       },
 
-      Components: { ArrayInputItem, Button, CustomInputSoul, Input }
+      Components: { ArrayInputItem, Input, Button, CustomInputSoul }
 
     } ),
 
@@ -295,7 +295,7 @@ export default class ArrayInput extends React.Component {
 
       let itemNameSuffix = NAME_SUFFIXES[ props.itemNameSuffix ];
 
-      itemName = ( option, index ) => `${ props.name }${ itemNameSuffix( option, index ) }`
+      itemName = ( index ) => `${ props.name }${ itemNameSuffix( index ) }`;
 
     }
 

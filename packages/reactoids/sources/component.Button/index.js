@@ -133,23 +133,27 @@ export default class Button extends React.Component {
     }
 
 
-    return (
+    if ( Tag === 'button' ) {
 
-      <button
+      return (
 
-        { ...this.omitProps() }
+        <button
 
-        className={ this.classed( '', { link, disabled, loading } ) }
+          { ...this.omitProps() }
 
-        type={ props.type }
+          className={ this.classed( '', { link, disabled, loading } ) }
 
-        disabled={ disabled || loading || undefined }
+          type={ props.type }
 
-        onClick={ this.callback( 'onClick, props.onClick' ) }
+          disabled={ disabled || loading || undefined }
 
-      />
+          onClick={ this.callback( 'onClick, props.onClick' ) }
 
-    );
+        />
+
+      );
+
+    }
 
   }
 
