@@ -63,15 +63,6 @@ const MODES = {
 };
 
 
-const AriaListboxOption = Wrapper.create( AriaCheck, {
-
-  props: { role: 'option' },
-
-  identity: true,
-
-} );
-
-
 @Mixin.mix
 
 export default class AriaListbox extends React.Component {
@@ -106,7 +97,7 @@ export default class AriaListbox extends React.Component {
 
       strings: [ 'error.required' ],
 
-      Components: { AriaListboxOption, CustomInputSoul },
+      Components: { AriaOption, CustomInputSoul },
 
     } ),
 
@@ -262,7 +253,7 @@ export default class AriaListbox extends React.Component {
 
   render() {
 
-    let { AriaListboxOption, CustomInputSoul } = this.props.Components;
+    let { AriaOption, CustomInputSoul } = this.props.Components;
 
     let { props, state } = this;
 
@@ -340,7 +331,7 @@ export default class AriaListbox extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <AriaListboxOption
+            <AriaOption
 
               key={ option.key }
 

@@ -2,15 +2,6 @@
 // https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton
 
 
-const AriaRadioGroupOption = Wrapper.create( AriaCheck, {
-
-  props: { role: 'radio' },
-
-  identity: true,
-
-} );
-
-
 @Mixin.mix
 
 export default class AriaRadioGroup extends React.Component {
@@ -43,7 +34,7 @@ export default class AriaRadioGroup extends React.Component {
 
       strings: [ 'error.required' ],
 
-      Components: { AriaRadioGroupOption, CustomInputSoul },
+      Components: { AriaRadio, CustomInputSoul },
 
     } ),
 
@@ -167,7 +158,7 @@ export default class AriaRadioGroup extends React.Component {
 
   render() {
 
-    let { AriaRadioGroupOption, CustomInputSoul } = this.props.Components;
+    let { AriaRadio, CustomInputSoul } = this.props.Components;
 
     let { props, state } = this;
 
@@ -225,7 +216,7 @@ export default class AriaRadioGroup extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <AriaRadioGroupOption
+            <AriaRadio
 
               key={ option.key }
 
