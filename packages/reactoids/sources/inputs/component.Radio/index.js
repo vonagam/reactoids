@@ -15,7 +15,7 @@ export default class Radio extends React.Component {
 
         '-value': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-focused': '',
 
@@ -95,7 +95,7 @@ export default class Radio extends React.Component {
 
     let filled = ! this.isEmptyValue( value );
 
-    let error = this.getValueError();
+    let invalid = this.getValueValidity();
 
     let focused = this.isFocused();
 
@@ -114,7 +114,7 @@ export default class Radio extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: filled, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value: filled, invalid, focused, readonly, disabled, required } ) }
 
         type='radio'
 
@@ -128,7 +128,7 @@ export default class Radio extends React.Component {
 
         required={ required }
 
-        aria-invalid={ Boolean( error ) || undefined }
+        aria-invalid={ Boolean( invalid ) || undefined }
 
         data-value-type={ props.jsonType }
 

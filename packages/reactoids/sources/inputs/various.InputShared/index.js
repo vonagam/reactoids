@@ -58,9 +58,9 @@ export default InputShared = {
 
       return {
 
-        name: _.defaultTo( props.soulErrorName, props.name ),
+        name: _.defaultTo( props.soulInvalidName, props.name ),
 
-        errorOnly: true,
+        validityOnly: true,
 
         jsonType: 'skip',
 

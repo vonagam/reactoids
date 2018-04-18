@@ -118,7 +118,7 @@ describe( '.constructor', () => {
 
         'setTempValue',
 
-        'getValueError',
+        'getValueValidity',
 
       )
 
@@ -605,11 +605,11 @@ describe( '#setTempValue', () => {
 
 } );
 
-describe( '#getValueError', () => {
+describe( '#getValueValidity', () => {
 
   it( 'does return state.valueError', () =>
 
-    expect( $mixin.getValueError.call( { state: { valueError: 'x' } } ) ).to.be.equal( 'x' )
+    expect( $mixin.getValueValidity.call( { state: { valueError: 'x' } } ) ).to.be.equal( 'x' )
 
   );
 

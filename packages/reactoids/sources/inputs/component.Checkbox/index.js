@@ -17,7 +17,7 @@ export default class Checkbox extends React.Component {
 
         '-indeterminate': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-focused': '',
 
@@ -29,7 +29,7 @@ export default class Checkbox extends React.Component {
 
       },
 
-      strings: [ 'error.required' ],
+      strings: [ 'invalid.required' ],
 
     } ),
 
@@ -41,7 +41,7 @@ export default class Checkbox extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'invalid.required' );
 
       },
 
@@ -115,7 +115,7 @@ export default class Checkbox extends React.Component {
 
     let filled = ! this.isEmptyValue( value );
 
-    let error = this.getValueError();
+    let invalid = this.getValueValidity();
 
     let focused = this.isFocused();
 
@@ -161,7 +161,7 @@ export default class Checkbox extends React.Component {
 
           { ...this.omitProps() }
 
-          className={ this.classed( '', { value: filled, indeterminate, error, focused, readonly, disabled, required } ) }
+          className={ this.classed( '', { value: filled, indeterminate, invalid, focused, readonly, disabled, required } ) }
 
           name={ formTrueName }
 
@@ -177,7 +177,7 @@ export default class Checkbox extends React.Component {
 
           required={ required }
 
-          aria-invalid={ Boolean( error ) || undefined }
+          aria-invalid={ Boolean( invalid ) || undefined }
 
           data-value-type={ props.jsonType }
 

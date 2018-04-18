@@ -91,7 +91,7 @@ export default InputMixin = Mixin.create( {
     };
 
 
-    const VALIDATION_PROPS = _.union( [ 'validate', 'required' ], ARGS.validationProps );
+    const VALIDATION_PROPS = _.union( [ 'validity', 'required' ], ARGS.validationProps );
 
 
     const getEmptyValue = function( props ) {
@@ -115,14 +115,14 @@ export default InputMixin = Mixin.create( {
       let value = that.getValue( props, { valueReal } );
 
 
-      let argsError = ARGS.validateValue( that, value );
+      let argsValidity = ARGS.validateValue( that, value );
 
-      if ( argsError ) return argsError;
+      if ( argsValidity ) return argsValidity;
 
 
-      let propError = _.funced( props.validate, that, value );
+      let propValidity = _.funced( props.validity, that, value );
 
-      if ( propError ) return propError;
+      if ( propValidity ) return propValidity;
 
 
       return '';
@@ -154,7 +154,7 @@ export default InputMixin = Mixin.create( {
 
         required: PropTypes.bool,
 
-        validate: PropTypes.funced( PropTypes.string ), // ( that: mixed, value: mixed ) => ?string
+        validity: PropTypes.funced( PropTypes.string ), // ( that: mixed, value: mixed ) => ?string
 
         onChange: PropTypes.func, // ( value: mixed ) => void
 
@@ -184,7 +184,7 @@ export default InputMixin = Mixin.create( {
 
           valueReal: getInitialValue( this.props ),
 
-          valueError: '',
+          valueValidity: '',
 
         };
 
@@ -206,11 +206,11 @@ export default InputMixin = Mixin.create( {
 
       componentDidMount() {
 
-        if ( this.state.valueError ) {
+        if ( this.state.valueValidity ) {
 
-          ARGS.onValidation( this, this.state.valueError );
+          ARGS.onValidation( this, this.state.valueValidity );
 
-          if ( this.props.onValidation ) this.props.onValidation( this.state.valueError );
+          if ( this.props.onValidation ) this.props.onValidation( this.state.valueValidity );
 
         }
 
@@ -228,7 +228,7 @@ export default InputMixin = Mixin.create( {
 
             valueReal: nextProps.value,
 
-            valueError: validate( this, nextProps, nextProps.value ),
+            valueValidity: validate( this, nextProps, nextProps.value ),
 
           } );
 
@@ -242,11 +242,11 @@ export default InputMixin = Mixin.create( {
 
       componentDidUpdate( prevProps, prevState ) {
 
-        if ( this.state.valueError !== prevState.valueError ) {
+        if ( this.state.valueValidity !== prevState.valueValidity ) {
 
-          ARGS.onValidation( this, this.state.valueError );
+          ARGS.onValidation( this, this.state.valueValidity );
 
-          if ( this.props.onValidation ) this.props.onValidation( this.state.valueError );
+          if ( this.props.onValidation ) this.props.onValidation( this.state.valueValidity );
 
         }
 
@@ -292,7 +292,7 @@ export default InputMixin = Mixin.create( {
 
             valueReal: value,
 
-            valueError: validate( this, this.props, value ),
+            valueValidity: validate( this, this.props, value ),
 
           }, callback );
 
@@ -345,19 +345,19 @@ export default InputMixin = Mixin.create( {
 
       validate( props = this.props, valueReal = this.state.valueReal ) {
 
-        let valueError = validate( this, props, valueReal );
+        let valueValidity = validate( this, props, valueReal );
 
-        if ( valueError !== this.state.valueError ) {
+        if ( valueValidity !== this.state.valueValidity ) {
 
-          this.setState( { valueError } );
+          this.setState( { valueValidity } );
 
         }
 
       },
 
-      getValueError() {
+      getValueValidity() {
 
-        return this.state.valueError;
+        return this.state.valueValidity;
 
       },
 

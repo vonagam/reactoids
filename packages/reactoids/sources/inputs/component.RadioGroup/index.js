@@ -12,7 +12,7 @@ export default class RadioGroup extends React.Component {
 
         '-value': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-focused': '',
 
@@ -36,7 +36,7 @@ export default class RadioGroup extends React.Component {
 
       },
 
-      strings: [ 'error.required' ],
+      strings: [ 'invalid.required' ],
 
       Components: { Radio, CustomInputSoul },
 
@@ -48,7 +48,7 @@ export default class RadioGroup extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'invalid.required' );
 
       },
 
@@ -172,7 +172,7 @@ export default class RadioGroup extends React.Component {
 
     let options = this.getOptions();
 
-    let error = this.getValueError();
+    let invalid = this.getValueValidity();
 
     let focused = this.isFocused();
 
@@ -198,7 +198,7 @@ export default class RadioGroup extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: filled, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value: filled, invalid, focused, readonly, disabled, required } ) }
 
         onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
@@ -240,7 +240,7 @@ export default class RadioGroup extends React.Component {
 
                 value={ option.selected }
 
-                error={ error }
+                validity={ invalid }
 
                 mapping={ option.value }
 
@@ -270,7 +270,7 @@ export default class RadioGroup extends React.Component {
 
           className={ this.classed( 'soul' ) }
 
-          error={ error }
+          validity={ invalid }
 
           disabled={ disabled }
 

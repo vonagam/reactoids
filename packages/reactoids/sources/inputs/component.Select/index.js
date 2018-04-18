@@ -17,7 +17,7 @@ export default class Select extends React.Component {
 
         '-value': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-focused': '',
 
@@ -37,7 +37,7 @@ export default class Select extends React.Component {
 
       },
 
-      strings: [ 'error.required' ],
+      strings: [ 'invalid.required' ],
 
     } ),
 
@@ -55,7 +55,7 @@ export default class Select extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'invalid.required' );
 
       },
 
@@ -115,7 +115,7 @@ export default class Select extends React.Component {
 
     let options = this.getOptions();
 
-    let error = this.getValueError();
+    let invalid = this.getValueValidity();
 
     let focused = this.isFocused();
 
@@ -136,7 +136,7 @@ export default class Select extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { multiple, value: filled, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { multiple, value: filled, invalid, focused, readonly, disabled, required } ) }
 
         value={ value }
 
@@ -148,7 +148,7 @@ export default class Select extends React.Component {
 
         required={ required }
 
-        aria-invalid={ Boolean( error ) || undefined }
+        aria-invalid={ Boolean( invalid ) || undefined }
 
         data-value-type={ props.jsonType }
 

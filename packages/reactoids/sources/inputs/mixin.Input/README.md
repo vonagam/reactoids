@@ -183,7 +183,7 @@ Error message get from [`arg.validateValue`](#argvalidatevalue) and [`prop.valid
 [`method.getValue`](#methodgetvalue)  
 [`method.setValue`](#methodsetvalue)  
 [`method.setTempValue`](#methodsettempvalue)  
-[`method.getValueError`](#methodgetvalueerror)  
+[`method.getValueValidity`](#methodgetValueValidity)  
 
 [`BaseKeyMixin`](../../mixin.meta.BaseKey/README.md#methods) with `Value` as `Name`:  
 [`method.getValueKey`](../../mixin.meta.BaseKey/README.md#methodgetnamekey)  
@@ -240,7 +240,7 @@ If it is non-zero - sets temp value of input, executes optional callback, trigge
 If it is more than zero - additionally starts timeout to clear temp value and transfer it to real value
 
 
-### method.getValueError
+### method.getValueValidity
 
 `() => ?string`
 

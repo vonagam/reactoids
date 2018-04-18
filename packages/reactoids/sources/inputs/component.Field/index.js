@@ -59,7 +59,7 @@ export default class Field extends React.Component {
 
         '-label': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-status': '',
 
@@ -252,7 +252,7 @@ export default class Field extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { label, error, status, description, details, value: filled, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { label, invalid: error, status, description, details, value: filled, focused, readonly, disabled, required } ) }
 
         onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
@@ -312,7 +312,7 @@ export default class Field extends React.Component {
 
           value={ fieldProps.stringify( value ) }
 
-          error={ error }
+          validity={ invalid }
 
           disabled={ disabled }
 

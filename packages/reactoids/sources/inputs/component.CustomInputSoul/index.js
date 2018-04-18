@@ -16,9 +16,9 @@ export default class CustomInputSoul extends React.Component {
 
     value: PropTypes.any,
 
-    error: PropTypes.string,
+    validity: PropTypes.string,
 
-    errorOnly: PropTypes.bool,
+    validityOnly: PropTypes.bool,
 
     disabled: PropTypes.bool,
 
@@ -32,7 +32,7 @@ export default class CustomInputSoul extends React.Component {
 
     value: '',
 
-    errorOnly: false,
+    validityOnly: false,
 
     jsonType: 'string',
 
@@ -40,9 +40,9 @@ export default class CustomInputSoul extends React.Component {
 
   componentDidMount() {
 
-    if ( this.props.error ) {
+    if ( this.props.validity ) {
 
-      this.refs.dom.setCustomValidity( this.props.error );
+      this.refs.dom.setCustomValidity( this.props.validity );
 
     }
 
@@ -50,9 +50,9 @@ export default class CustomInputSoul extends React.Component {
 
   componentDidUpdate( prevProps ) {
 
-    if ( this.props.error !== prevProps.error && this.refs.dom ) {
+    if ( this.props.validity !== prevProps.validity && this.refs.dom ) {
 
-      this.refs.dom.setCustomValidity( this.props.error );
+      this.refs.dom.setCustomValidity( this.props.validity );
 
     }
 
@@ -83,7 +83,7 @@ export default class CustomInputSoul extends React.Component {
 
     if ( props.disabled ) return null;
 
-    if ( props.errorOnly && ! props.error ) return null;
+    if ( props.validityOnly && ! props.validity ) return null;
 
 
     return (

@@ -29,7 +29,7 @@ export default class AriaCheck extends React.Component {
 
         '-indeterminate': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-focused': '',
 
@@ -43,7 +43,7 @@ export default class AriaCheck extends React.Component {
 
       },
 
-      strings: [ 'error.required' ],
+      strings: [ 'invalid.required' ],
 
       Components: { CustomInputSoul },
 
@@ -57,7 +57,7 @@ export default class AriaCheck extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'invalid.required' );
 
       },
 
@@ -139,7 +139,7 @@ export default class AriaCheck extends React.Component {
 
     let filled = ! this.isEmptyValue( value );
 
-    let error = this.getValueError();
+    let invalid = this.getValueValidity();
 
     let focused = this.isFocused();
 
@@ -171,7 +171,7 @@ export default class AriaCheck extends React.Component {
 
         { ...this.omitProps() }
 
-        className={ this.classed( '', { value: filled, indeterminate, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { value: filled, indeterminate, invalid, focused, readonly, disabled, required } ) }
 
         role={ roleName }
 
@@ -183,7 +183,7 @@ export default class AriaCheck extends React.Component {
 
         aria-required={ required }
 
-        aria-invalid={ Boolean( error ) || undefined }
+        aria-invalid={ Boolean( invalid ) || undefined }
 
         tabIndex={ disabled ? undefined : props.tabIndex }
 
@@ -211,7 +211,7 @@ export default class AriaCheck extends React.Component {
 
           value={ formValue }
 
-          error={ error }
+          validity={ invalid }
 
           disabled={ disabled }
 

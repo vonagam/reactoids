@@ -79,7 +79,7 @@ export default class AriaListbox extends React.Component {
 
         '-value': '',
 
-        '-error': '',
+        '-invalid': '',
 
         '-focused': '',
 
@@ -95,7 +95,7 @@ export default class AriaListbox extends React.Component {
 
       },
 
-      strings: [ 'error.required' ],
+      strings: [ 'invalid.required' ],
 
       Components: { AriaOption, CustomInputSoul },
 
@@ -119,7 +119,7 @@ export default class AriaListbox extends React.Component {
 
       validateValue( that, value ) {
 
-        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'error.required' );
+        if ( that.props.required && that.isEmptyValue( value ) ) return that.stringed( 'invalid.required' );
 
       },
 
@@ -151,7 +151,7 @@ export default class AriaListbox extends React.Component {
 
     optionNameSuffix: PropTypes.oneOf( [ '', '[]', '[0]' ] ),
 
-    soulErrorName: PropTypes.string,
+    soulInvalidName: PropTypes.string,
 
     soulEmptyProps: PropTypes.object,
 
@@ -263,7 +263,7 @@ export default class AriaListbox extends React.Component {
 
     let options = this.getOptions();
 
-    let error = this.getValueError();
+    let invalid = this.getValueValidity();
 
     let focused = this.isFocused();
 
@@ -309,7 +309,7 @@ export default class AriaListbox extends React.Component {
 
         { ...mode.listboxProps }
 
-        className={ this.classed( '', { multiple, value: filled, error, focused, readonly, disabled, required } ) }
+        className={ this.classed( '', { multiple, value: filled, invalid, focused, readonly, disabled, required } ) }
 
         role='listbox'
 
@@ -319,7 +319,7 @@ export default class AriaListbox extends React.Component {
 
         aria-required={ required }
 
-        aria-invalid={ Boolean( error ) || undefined }
+        aria-invalid={ Boolean( invalid ) || undefined }
 
         onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
 
@@ -375,7 +375,7 @@ export default class AriaListbox extends React.Component {
 
           className={ this.classed( 'soul' ) }
 
-          error={ error }
+          validity={ invalid }
 
           disabled={ disabled }
 
