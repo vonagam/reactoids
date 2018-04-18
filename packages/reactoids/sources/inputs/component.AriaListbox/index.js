@@ -211,6 +211,8 @@ export default class AriaListbox extends React.Component {
 
       Focus.focus( this.refs.dom.childNodes[ focusedIndex ] );
 
+      if ( this.props.selectFocus && this.getOptionsMode() === 'single' ) this.toggleOption( options[ focusedIndex ], true );
+
     }
 
   }
@@ -222,8 +224,6 @@ export default class AriaListbox extends React.Component {
     let option = options[ index ];
 
     this.setState( { focusedKey: option.key } );
-
-    if ( this.props.selectFocus && this.getOptionsMode() === 'single' ) this.toggleOption( option, true );
 
   }
 

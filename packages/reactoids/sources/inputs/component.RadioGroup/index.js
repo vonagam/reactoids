@@ -122,6 +122,8 @@ export default class RadioGroup extends React.Component {
 
       this.refs[ `inputs.${ focusedIndex }` ].focus();
 
+      if ( this.props.selectFocus ) this.toggleOption( options[ focusedIndex ], true );
+
     }
 
   }
@@ -133,8 +135,6 @@ export default class RadioGroup extends React.Component {
     let option = options[ index ];
 
     this.setState( { focusedKey: option.key } );
-
-    if ( this.props.selectFocus ) this.toggleOption( option, true );
 
   }
 
