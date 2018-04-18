@@ -8,6 +8,8 @@ export default class RadioGroup extends React.Component {
 
     ReactoidMixin( {
 
+      id: true,
+
       classes: {
 
         '-value': '',
@@ -30,6 +32,8 @@ export default class RadioGroup extends React.Component {
 
           input: '',
 
+          label: '',
+
         },
 
         soul: '',
@@ -38,7 +42,7 @@ export default class RadioGroup extends React.Component {
 
       strings: [ 'invalid.required' ],
 
-      Components: { Radio, CustomInputSoul },
+      Components: { Radio, Label, CustomInputSoul },
 
     } ),
 
@@ -162,7 +166,7 @@ export default class RadioGroup extends React.Component {
 
   render() {
 
-    let { Radio, CustomInputSoul } = this.props.Components;
+    let { Radio, Label, CustomInputSoul } = this.props.Components;
 
     let { props, state } = this;
 
@@ -210,15 +214,11 @@ export default class RadioGroup extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <Label
+            <div
 
               key={ option.key }
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
-
-              htmlFor={ this.callback( 'getLabelFor', index, index ) }
-
-              clickFor={ this.clickLabelFor }
 
               data-index={ index }
 
@@ -240,9 +240,9 @@ export default class RadioGroup extends React.Component {
 
                 value={ option.selected }
 
-                validity={ invalid }
-
                 mapping={ option.value }
+
+                validity={ invalid }
 
                 readOnly={ readonly }
 
@@ -252,15 +252,29 @@ export default class RadioGroup extends React.Component {
 
                 jsonType={ props.jsonType }
 
+                aria-labelledby={ this.id( `label-${ index }` ) }
+
                 tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 
                 onChange={ this.callback( 'onInputChange', index, index ) }
 
               />
 
-              { option.label }
+              <Label
 
-            </Label>
+                id={ this.id( `label-${ index }` ) }
+
+                className={ this.classed( 'option.label' ) }
+
+                htmlFor={ this.callback( 'getLabelFor', index, index ) }
+
+                clickFor={ this.clickLabelFor }
+
+                children={ option.label }
+
+              />
+
+            </div>
 
           )
 

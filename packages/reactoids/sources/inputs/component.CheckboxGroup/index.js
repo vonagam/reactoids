@@ -45,6 +45,8 @@ export default class CheckboxGroup extends React.Component {
 
     ReactoidMixin( {
 
+      id: true,
+
       classes: {
 
         '-value': '',
@@ -66,6 +68,8 @@ export default class CheckboxGroup extends React.Component {
           '-focused': '',
 
           input: '',
+
+          label: '',
 
         },
 
@@ -277,15 +281,11 @@ export default class CheckboxGroup extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <Label
+            <div
 
               key={ option.key }
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
-
-              htmlFor={ this.callback( 'getLabelFor', index, index ) }
-
-              clickFor={ this.clickLabelFor }
 
               data-index={ index }
 
@@ -307,9 +307,9 @@ export default class CheckboxGroup extends React.Component {
 
                 value={ option.selected }
 
-                validity={ invalid }
-
                 mapping={ mode.optionMapping( props, option ) }
+
+                validity={ invalid }
 
                 readOnly={ readonly }
 
@@ -317,15 +317,29 @@ export default class CheckboxGroup extends React.Component {
 
                 jsonType={ props.jsonType }
 
+                aria-labelledby={ this.id( `label-${ index }` ) }
+
                 tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 
                 onChange={ this.callback( 'onInputChange', index, index ) }
 
               />
 
-              { option.label }
+              <Label
 
-            </Label>
+                id={ this.id( `label-${ index }` ) }
+
+                className={ this.classed( 'option.label' ) }
+
+                htmlFor={ this.callback( 'getLabelFor', index, index ) }
+
+                clickFor={ this.clickLabelFor }
+
+                children={ option.label }
+
+              />
+
+            </div>
 
           )
 

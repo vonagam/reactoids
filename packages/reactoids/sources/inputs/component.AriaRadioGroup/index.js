@@ -12,6 +12,8 @@ export default class AriaRadioGroup extends React.Component {
 
     ReactoidMixin( {
 
+      id: true,
+
       classes: {
 
         '-value': '',
@@ -26,7 +28,17 @@ export default class AriaRadioGroup extends React.Component {
 
         '-required': '',
 
-        option: '',
+        option: {
+
+          '-selected': '',
+
+          '-focused': '',
+
+          input: '',
+
+          label: '',
+
+        },
 
         soul: '',
 
@@ -34,7 +46,7 @@ export default class AriaRadioGroup extends React.Component {
 
       strings: [ 'invalid.required' ],
 
-      Components: { AriaRadio, CustomInputSoul },
+      Components: { AriaRadio, Label, CustomInputSoul },
 
     } ),
 
@@ -92,7 +104,19 @@ export default class AriaRadioGroup extends React.Component {
 
   }
 
-  onOptionChange( index, value ) {
+  getLabelFor( index ) {
+
+    return this.refs[ `inputs.${ index }` ];
+
+  }
+
+  clickLabelFor( lable, input ) {
+
+    input.onLabelClick();
+
+  }
+
+  onInputChange( index, value ) {
 
     let options = this.getOptions();
 
@@ -114,7 +138,7 @@ export default class AriaRadioGroup extends React.Component {
 
       let focusedIndex = InputShared.OPTIONS_FOCUS_KEYS[ event.key ]( index, options );
 
-      Focus.focus( this.refs.dom.childNodes[ focusedIndex ] );
+      this.refs[ `inputs.${ focusedIndex }` ].focus();
 
       if ( this.props.selectFocus ) this.toggleOption( options[ focusedIndex ], true );
 
@@ -158,7 +182,7 @@ export default class AriaRadioGroup extends React.Component {
 
   render() {
 
-    let { AriaRadio, CustomInputSoul } = this.props.Components;
+    let { AriaRadio, Label, CustomInputSoul } = this.props.Components;
 
     let { props, state } = this;
 
@@ -216,27 +240,13 @@ export default class AriaRadioGroup extends React.Component {
 
           _.map( options, ( option, index ) =>
 
-            <AriaRadio
+            <div
 
               key={ option.key }
 
               className={ this.classed( 'option', { selected: option.selected, focused: focusedIndex === index } ) }
 
-              value={ option.selected }
-
-              readOnly={ readonly }
-
-              disabled={ disabled }
-
-              jsonType={ props.jsonType }
-
-              tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
-
               data-index={ index }
-
-              children={ option.label }
-
-              onChange={ this.callback( 'onOptionChange', index, index ) }
 
               onKeyDown={ this.callbacks( 'onOptionEvent' ) }
 
@@ -244,7 +254,45 @@ export default class AriaRadioGroup extends React.Component {
 
               onBlur={ this.callbacks( 'onOptionEvent' ) }
 
-            />
+            >
+
+              <AriaRadio
+
+                ref={ this.ref( `inputs.${ index }` ) }
+
+                className={ this.classed( 'option.input' ) }
+
+                value={ option.selected }
+
+                readOnly={ readonly }
+
+                disabled={ disabled }
+
+                jsonType={ props.jsonType }
+
+                aria-labelledby={ this.id( `label-${ index }` ) }
+
+                tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
+
+                onChange={ this.callback( 'onInputChange', index, index ) }
+
+              />
+
+              <Label
+
+                id={ this.id( `label-${ index }` ) }
+
+                className={ this.classed( 'option.label' ) }
+
+                htmlFor={ this.callback( 'getLabelFor', index, index ) }
+
+                clickFor={ this.clickLabelFor }
+
+                children={ option.label }
+
+              />
+
+            </div>
 
           )
 
