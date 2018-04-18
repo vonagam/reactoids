@@ -155,9 +155,9 @@ export default class AriaListbox extends React.Component {
 
     soulEmptyProps: PropTypes.object,
 
-    tabIndex: InputShared.PropTypes.tabIndex,
-
     jsonType: InputShared.PropTypes.jsonType,
+
+    tabIndex: InputShared.PropTypes.tabIndex,
 
     onInvalid: PropTypes.func,
 
@@ -175,9 +175,9 @@ export default class AriaListbox extends React.Component {
 
     optionNameSuffix: '[]',
 
-    tabIndex: '0',
-
     jsonType: 'auto',
+
+    tabIndex: '0',
 
   };
 

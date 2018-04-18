@@ -62,9 +62,9 @@ export default class RadioGroup extends React.Component {
 
     name: PropTypes.string,
 
-    tabIndex: InputShared.PropTypes.tabIndex,
-
     jsonType: InputShared.PropTypes.jsonType,
+
+    tabIndex: InputShared.PropTypes.tabIndex,
 
     onInvalid: PropTypes.func,
 
@@ -249,6 +249,8 @@ export default class RadioGroup extends React.Component {
                 disabled={ disabled }
 
                 required={ required }
+
+                jsonType={ props.jsonType }
 
                 tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 

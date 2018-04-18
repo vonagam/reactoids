@@ -111,9 +111,9 @@ export default class CheckboxGroup extends React.Component {
 
     soulEmptyProps: PropTypes.object,
 
-    tabIndex: InputShared.PropTypes.tabIndex,
-
     jsonType: InputShared.PropTypes.jsonType,
+
+    tabIndex: InputShared.PropTypes.tabIndex,
 
     onInvalid: PropTypes.func,
 
@@ -314,6 +314,8 @@ export default class CheckboxGroup extends React.Component {
                 readOnly={ readonly }
 
                 disabled={ disabled }
+
+                jsonType={ props.jsonType }
 
                 tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 
