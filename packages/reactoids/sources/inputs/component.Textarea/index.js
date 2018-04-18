@@ -1,3 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea
+
+
 @Mixin.mix
 
 export default class Textarea extends React.Component {
@@ -64,7 +67,7 @@ export default class Textarea extends React.Component {
 
   static propTypes = {
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
   };
 

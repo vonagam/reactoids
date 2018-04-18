@@ -122,6 +122,8 @@ export default class Button extends React.Component {
 
           className={ this.classed( '', { link, disabled, loading } ) }
 
+          role={ props.role || 'button' }
+
           aria-disabled={ disabled || loading || undefined }
 
           onClick={ this.callbacks( 'onClick, props.onClick' ) }

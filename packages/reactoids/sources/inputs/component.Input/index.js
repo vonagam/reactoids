@@ -1,3 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input
+
+
 @Mixin.mix
 
 export default class Input extends React.Component {
@@ -54,7 +57,7 @@ export default class Input extends React.Component {
 
     type: PropTypes.string,
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
     onEnter: PropTypes.func,
 

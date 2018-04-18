@@ -1,3 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+
+
 @Mixin.mix
 
 export default class Checkbox extends React.Component {
@@ -66,7 +69,7 @@ export default class Checkbox extends React.Component {
 
     name: PropTypes.string,
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
   };
 

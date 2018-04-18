@@ -119,7 +119,7 @@ export default class Field extends React.Component {
 
     stringify: PropTypes.func, // ( value: mixed, that: mixed ) => string
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
   };
 

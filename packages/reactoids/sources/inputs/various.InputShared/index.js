@@ -18,6 +18,10 @@ export default InputShared = {
 
   PropTypes: {
 
+    tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+
+    jsonType: PropTypes.oneOf( [ 'auto', 'string', 'number', 'boolean', 'null', 'array', 'object', 'skip' ] ),
+
     boolMapping: PropTypes.oneOrArrayOf( PropTypes.oneOfType( [ PropTypes.string, PropTypes.oneOf( [ undefined ] ) ] ) ),
 
   },

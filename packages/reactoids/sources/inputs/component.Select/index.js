@@ -1,3 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select
+
+
 @Mixin.mix
 
 export default class Select extends React.Component {
@@ -72,7 +75,7 @@ export default class Select extends React.Component {
 
     placeholder: PropTypes.string,
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
   };
 

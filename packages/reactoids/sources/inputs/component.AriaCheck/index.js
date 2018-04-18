@@ -77,9 +77,9 @@ export default class AriaCheck extends React.Component {
 
     name: PropTypes.string,
 
-    tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+    tabIndex: InputShared.PropTypes.tabIndex,
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
     children: PropTypes.funced( PropTypes.node ), // ( that: mixed, value: boolean, indeterminate: ?boolean ) => mixed
 

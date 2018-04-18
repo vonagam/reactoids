@@ -41,7 +41,7 @@ class ArrayInputItem extends React.Component {
 
     removable: PropTypes.bool,
 
-    tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+    tabIndex: InputShared.PropTypes.tabIndex,
 
   };
 
@@ -210,7 +210,7 @@ export default class ArrayInput extends React.Component {
 
     soulEmptyProps: PropTypes.object,
 
-    tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+    tabIndex:InputShared.PropTypes.tabIndex,
 
     onInvalid: PropTypes.func,
 

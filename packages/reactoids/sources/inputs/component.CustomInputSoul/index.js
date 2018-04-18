@@ -22,7 +22,7 @@ export default class CustomInputSoul extends React.Component {
 
     disabled: PropTypes.bool,
 
-    jsonType: PropTypes.oneOf( [ 'auto', 'string', 'number', 'boolean', 'null', 'array', 'object', 'skip' ] ),
+    jsonType: InputShared.PropTypes.jsonType,
 
     onFocus: PropTypes.any.isRequired,
 

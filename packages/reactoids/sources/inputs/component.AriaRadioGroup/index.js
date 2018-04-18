@@ -77,9 +77,9 @@ export default class AriaRadioGroup extends React.Component {
 
     name: PropTypes.string,
 
-    tabIndex: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+    tabIndex: InputShared.PropTypes.tabIndex,
 
-    jsonType: PropTypes.string,
+    jsonType: InputShared.PropTypes.jsonType,
 
     onInvalid: PropTypes.func,
 
@@ -87,7 +87,7 @@ export default class AriaRadioGroup extends React.Component {
 
   static defaultProps = {
 
-    selectFocus: false,
+    selectFocus: true,
 
     tabIndex: '0',
 
