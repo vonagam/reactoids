@@ -119,8 +119,6 @@ export default class CheckboxGroup extends React.Component {
 
     tabIndex: InputShared.PropTypes.tabIndex,
 
-    onInvalid: PropTypes.func,
-
   };
 
   static defaultProps = {
@@ -356,8 +354,6 @@ export default class CheckboxGroup extends React.Component {
           disabled={ disabled }
 
           onFocus={ this }
-
-          onInvalid={ props.onInvalid }
 
         />
 

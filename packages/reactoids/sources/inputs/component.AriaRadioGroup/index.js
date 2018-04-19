@@ -84,8 +84,6 @@ export default class AriaRadioGroup extends React.Component {
 
     tabIndex: InputShared.PropTypes.tabIndex,
 
-    onInvalid: PropTypes.func,
-
   };
 
   static defaultProps = {
@@ -313,8 +311,6 @@ export default class AriaRadioGroup extends React.Component {
           jsonType={ props.jsonType }
 
           onFocus={ this }
-
-          onInvalid={ props.onInvalid }
 
         />
 

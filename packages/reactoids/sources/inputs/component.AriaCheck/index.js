@@ -77,13 +77,11 @@ export default class AriaCheck extends React.Component {
 
     name: PropTypes.string,
 
-    tabIndex: InputShared.PropTypes.tabIndex,
-
     jsonType: InputShared.PropTypes.jsonType,
 
-    children: PropTypes.funced( PropTypes.node ), // ( that: mixed, value: boolean, indeterminate: ?boolean ) => mixed
+    tabIndex: InputShared.PropTypes.tabIndex,
 
-    onInvalid: PropTypes.func,
+    children: PropTypes.funced( PropTypes.node ), // ( that: mixed, value: boolean, indeterminate: ?boolean ) => mixed
 
   };
 
@@ -93,9 +91,9 @@ export default class AriaCheck extends React.Component {
 
     mapping: [ 'false', 'true' ],
 
-    tabIndex: '0',
-
     jsonType: 'boolean',
+
+    tabIndex: '0',
 
   };
 
@@ -218,8 +216,6 @@ export default class AriaCheck extends React.Component {
           jsonType={ props.jsonType }
 
           onFocus={ this }
-
-          onInvalid={ props.onInvalid }
 
         />
 
