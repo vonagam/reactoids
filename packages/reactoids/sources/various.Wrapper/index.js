@@ -14,16 +14,18 @@ const isWrapper = function( type ) {
 
 const createWrapper = function( Component, overrides, identity ) {
 
-  let each = _.isArray( overrides ) ? _.each : _.tap;
+  overrides = _.castArray( overrides );
 
+
+  let propsOverrides = _.reverse( _.filter( overrides, 'props' ) );
 
   let render = function( props, ref ) {
 
     props = _.assign( { ref }, props );
 
-    each( overrides, ( overrides ) => {
+    _.each( propsOverrides, ( propsOverrides ) => {
 
-      if ( overrides.props ) _.assign( props, _.funced( overrides.props, props ) );
+      _.assign( props, _.funced( propsOverrides, props ) );
 
     } );
 
@@ -40,7 +42,7 @@ const createWrapper = function( Component, overrides, identity ) {
 
   wrapper.defaultProps = _.clone( Component.defaultProps );
 
-  each( overrides, ( overrides ) => {
+  _.each( overrides, ( overrides ) => {
 
     if ( overrides.propTypes ) wrapper.propTypes = _.assign( wrapper.propTypes, overrides.propTypes );
 
@@ -83,27 +85,14 @@ export default Wrapper = {
 
   create( Component, overrides = {} ) {
 
-    let identity;
-
-
-    if ( overrides.identity ) {
-
-      identity = {};
-
-    }
+    let identity = overrides.identity ? {} : getIdentity( Component );
 
 
     if ( isWrapper( Component ) ) {
 
-      identity = identity || Component.render.wrapper.identity;
-
-      overrides = _.concat( _.castArray( Component.render.wrapper.overrides ), overrides );
+      overrides = _.concat( Component.render.wrapper.overrides, overrides );
 
       Component = Component.render.wrapper.Component;
-
-    } else {
-
-      identity = identity || Component;
 
     }
 
@@ -118,11 +107,13 @@ export default Wrapper = {
 
     if ( isWrapper( Component ) ) {
 
-      Component = Component.render.wrapper.Component;
+      return Component.render.wrapper.Component;
+
+    } else {
+
+      return Component;
 
     }
-
-    return Component;
 
   },
 
