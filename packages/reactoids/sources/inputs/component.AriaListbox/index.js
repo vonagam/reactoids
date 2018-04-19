@@ -351,8 +351,6 @@ export default class AriaListbox extends React.Component {
 
               data-index={ index }
 
-              children={ option.label }
-
               onChange={ this.callback( 'onOptionChange', index ) }
 
               onKeyDown={ this.callbacks( 'onOptionEvent' ) }
@@ -360,6 +358,8 @@ export default class AriaListbox extends React.Component {
               onFocus={ this.callbacks( 'onOptionEvent' ) }
 
               onBlur={ this.callbacks( 'onOptionEvent' ) }
+
+              children={ option.label }
 
             />
 

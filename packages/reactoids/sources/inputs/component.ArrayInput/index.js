@@ -11,104 +11,6 @@ const NAME_SUFFIXES = {
 
 @Mixin.mix
 
-class ArrayInputItem extends React.Component {
-
-  static displayName = 'ArrayInputItem';
-
-  static mixins = [
-
-    CallbackMixin(),
-
-    PureRenderMixin(),
-
-    ComponentsMixin( {
-
-      Components: { Button },
-
-    } ),
-
-  ];
-
-  static propTypes = {
-
-    array: PropTypes.any,
-
-    index: PropTypes.number,
-
-    name: PropTypes.string,
-
-    value: PropTypes.any,
-
-    removable: PropTypes.bool,
-
-    tabIndex: InputShared.PropTypes.tabIndex,
-
-  };
-
-  onChange( value ) {
-
-    this.props.array.onChange( this.props.index, value );
-
-  }
-
-  onRemove() {
-
-    this.props.array.onRemove( this.props.index );
-
-  }
-
-  render() {
-
-    let { Button } = this.props.Components;
-
-    let { props } = this;
-
-    let array = props.array;
-
-
-    return (
-
-      <div className={ array.classed( 'item' ) }>
-
-        {
-
-          array.renderInput( {
-
-            className: array.classed( 'input' ),
-
-            name: props.name,
-
-            value: props.value,
-
-            tabIndex: props.tabIndex,
-
-            onChange: this.callbacks( 'onChange' ),
-
-          } )
-
-        }
-
-        <Button
-
-          className={ array.classed( 'remove' ) }
-
-          onClick={ props.removable ? this.callbacks( 'onRemove' ) : undefined }
-
-          children={ array.stringed( 'remove' ) }
-
-        />
-
-      </div>
-
-    );
-
-  }
-
-}
-
-
-@Mixin.mix
-
 export default class ArrayInput extends React.Component {
 
   static displayName = 'ArrayInput';
@@ -174,7 +76,7 @@ export default class ArrayInput extends React.Component {
 
       },
 
-      Components: { ArrayInputItem, Input, Button, CustomInputSoul }
+      Components: { Input, Button, CustomInputSoul }
 
     } ),
 
@@ -211,8 +113,6 @@ export default class ArrayInput extends React.Component {
     soulEmptyProps: PropTypes.object,
 
     tabIndex:InputShared.PropTypes.tabIndex,
-
-    onInvalid: PropTypes.func,
 
   };
 
@@ -270,7 +170,7 @@ export default class ArrayInput extends React.Component {
 
   render() {
 
-    let { ArrayInputItem, Button, CustomInputSoul } = this.props.Components;
+    let { Button, CustomInputSoul } = this.props.Components;
 
     let { props } = this;
 
@@ -328,23 +228,37 @@ export default class ArrayInput extends React.Component {
 
             _.map( values, ( value, index ) =>
 
-              <ArrayInputItem
+              <div key={ index } className={ this.classed( 'item' ) }>
 
-                key={ index }
+                {
 
-                array={ this }
+                  this.renderInput( {
 
-                index={ index }
+                    className: this.classed( 'input' ),
 
-                name={ itemName( index ) }
+                    name: itemName( index ),
 
-                value={ value }
+                    value: value,
 
-                removable={ _.funced( props.canRemove, this, value, index, values ) }
+                    tabIndex: props.tabIndex,
 
-                tabIndex={ props.tabIndex }
+                    onChange: this.callback( 'onChange', index ),
 
-              />
+                  } )
+
+                }
+
+                <Button
+
+                  className={ this.classed( 'remove' ) }
+
+                  onClick={ _.funced( props.canRemove, this, value, index, values ) ? this.callback( 'onRemove', index ) : undefined }
+
+                  children={ this.stringed( 'remove' ) }
+
+                />
+
+              </div>
 
             )
 
@@ -356,7 +270,7 @@ export default class ArrayInput extends React.Component {
 
           <Button
 
-            className={ this.classed( 'action', '-add' ) }
+            className={ this.classed( 'action', { add: true } ) }
 
             tabIndex={ props.tabIndex }
 
@@ -368,7 +282,7 @@ export default class ArrayInput extends React.Component {
 
           <Button
 
-            className={ this.classed( 'action', '-clear' ) }
+            className={ this.classed( 'action', { clear: true } ) }
 
             tabIndex={ props.tabIndex }
 
@@ -391,8 +305,6 @@ export default class ArrayInput extends React.Component {
           disabled={ disabled }
 
           onFocus={ this }
-
-          onInvalid={ props.onInvalid }
 
         />
 
