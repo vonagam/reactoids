@@ -64,6 +64,22 @@ export default class Button extends React.Component {
 
   }
 
+  onKeyDown( event ) {
+
+    if ( event.currentTarget !== event.target ) return;
+
+    if ( event.altKey || event.ctrlKey || event.metaKey ) return;
+
+    if ( event.key === ' ' || event.key === 'Enter' ) {
+
+      event.preventDefault();
+
+      event.currentTarget.click();
+
+    }
+
+  }
+
   render() {
 
     let { Link } = this.props.Components;
@@ -105,6 +121,8 @@ export default class Button extends React.Component {
 
           onClick={ this.callbacks( 'onClick, props.onClick' ) }
 
+          onKeyDown={ this.callbacks( 'onKeyDown, props.onKeyDown' ) }
+
         />
 
       );
@@ -126,7 +144,11 @@ export default class Button extends React.Component {
 
           aria-disabled={ disabled || loading || undefined }
 
+          tabIndex={ disabled ? undefined : ( props.tabIndex || '0' ) }
+
           onClick={ this.callbacks( 'onClick, props.onClick' ) }
+
+          onKeyDown={ this.callbacks( 'onKeyDown, props.onKeyDown' ) }
 
         />
 
@@ -150,6 +172,8 @@ export default class Button extends React.Component {
           disabled={ disabled || loading || undefined }
 
           onClick={ this.callbacks( 'onClick, props.onClick' ) }
+
+          onKeyDown={ this.callbacks( 'onKeyDown, props.onKeyDown' ) }
 
         />
 
