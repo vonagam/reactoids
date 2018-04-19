@@ -321,7 +321,7 @@ export default class CheckboxGroup extends React.Component {
 
                 tabIndex={ tabbableIndex === index ? props.tabIndex : '-1' }
 
-                onChange={ this.callback( 'onInputChange', index, index ) }
+                onChange={ this.callback( 'onInputChange', index ) }
 
               />
 
@@ -331,7 +331,7 @@ export default class CheckboxGroup extends React.Component {
 
                 className={ this.classed( 'option.label' ) }
 
-                htmlFor={ this.callback( 'getLabelFor', index, index ) }
+                htmlFor={ this.callback( 'getLabelFor', index ) }
 
                 clickFor={ this.clickLabelFor }
 

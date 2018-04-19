@@ -55,7 +55,13 @@ export default CallbackMixin = Mixin.create( {
 
             let execute;
 
-            if ( _.isEmpty( partials ) ) {
+            if ( cacheKey !== undefined && partials.length === 0 ) {
+
+              partials = [ cacheKey ];
+
+            }
+
+            if ( partials.length === 0 ) {
 
               execute = ( callback, args ) => callback.apply( that, args );
 

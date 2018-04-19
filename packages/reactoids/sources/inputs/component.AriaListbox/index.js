@@ -355,7 +355,7 @@ export default class AriaListbox extends React.Component {
 
               children={ option.label }
 
-              onChange={ this.callback( 'onOptionChange', index, index ) }
+              onChange={ this.callback( 'onOptionChange', index ) }
 
               onKeyDown={ this.callbacks( 'onOptionEvent' ) }
 
