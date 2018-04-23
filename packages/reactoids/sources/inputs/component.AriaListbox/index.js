@@ -18,8 +18,6 @@ const MODES = {
 
   single: {
 
-    listboxProps: undefined,
-
     optionHasName: ( props, option ) => option.selected,
 
     optionNameSuffix: ( props ) => NAME_SUFFIXES[ '' ],
@@ -30,12 +28,6 @@ const MODES = {
 
   array: {
 
-    listboxProps: {
-
-      'aria-multiselectable': 'true'
-
-    },
-
     optionHasName: ( props, option ) => option.selected,
 
     optionNameSuffix: ( props ) => NAME_SUFFIXES[ props.nameSuffix ],
@@ -45,12 +37,6 @@ const MODES = {
   },
 
   object: {
-
-    listboxProps: {
-
-      'aria-multiselectable': 'true'
-
-    },
 
     optionHasName: ( props, option ) => true,
 
@@ -305,11 +291,11 @@ export default class AriaListbox extends React.Component {
 
         { ...this.omitProps() }
 
-        { ...mode.listboxProps }
-
         className={ this.classed( '', { multiple, value: filled, invalid, focused, readonly, disabled, required } ) }
 
         role='listbox'
+
+        aria-multiselectable={ multiple || undefined }
 
         aria-readonly={ readonly }
 

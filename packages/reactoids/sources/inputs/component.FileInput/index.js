@@ -270,7 +270,7 @@ export default class FileInput extends React.Component {
 
     multiple: false,
 
-    preview: true,
+    preview: false,
 
   };
 
