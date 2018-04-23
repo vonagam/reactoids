@@ -28,7 +28,7 @@ export default InputMixin = Mixin.create( {
 
     valueType: PropTypes.any,
 
-    emptyValue: undefined,
+    emptyValue: null,
 
     inputDelay: 100,
 
@@ -218,7 +218,7 @@ export default InputMixin = Mixin.create( {
 
       componentWillReceiveProps( nextProps ) {
 
-        if ( ! _.isEqual( this.props.value, nextProps.value ) && nextProps.value !== undefined ) {
+        if ( ! _.isEqual( nextProps.value, this.props.value ) && nextProps.value !== undefined ) {
 
           window.clearTimeout( this._InputMixin );
 

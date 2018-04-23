@@ -26,9 +26,9 @@ export default OptionsInputMixin = Mixin.create( {
 
         isOptionSelected: ( option, value ) => option.value === value,
 
-        toArray: ( value ) => value !== undefined ? [ value ] : [],
+        toArray: ( value, props ) => _.isEqual( value, _.funced( ARGS.emptyValue, props ) ) ? [] : [ value ],
 
-        toValue: ( array ) => array[ array.length - 1 ],
+        toValue: ( array, props ) => array.length === 0 ? _.funced( ARGS.emptyValue, props ) : array[ array.length - 1 ],
 
       },
 
@@ -40,9 +40,9 @@ export default OptionsInputMixin = Mixin.create( {
 
         isOptionSelected: ( option, value ) => _.includes( value, option.value ),
 
-        toArray: ( value ) => value,
+        toArray: ( value, props ) => value,
 
-        toValue: ( array ) => array,
+        toValue: ( array, props ) => array,
 
       },
 
@@ -54,9 +54,9 @@ export default OptionsInputMixin = Mixin.create( {
 
         isOptionSelected: ( option, value ) => Boolean( value[ option.value ] ),
 
-        toArray: ( value ) => _.keys( value ),
+        toArray: ( value, props ) => _.keys( value ),
 
-        toValue: ( array ) => _.transform( array, ( value, key ) => { value[ key ] = true }, {} ),
+        toValue: ( array, props ) => _.transform( array, ( value, key ) => { value[ key ] = true }, {} ),
 
       },
 
@@ -108,7 +108,7 @@ export default OptionsInputMixin = Mixin.create( {
 
         let selectedValue = that.getValue( props, state );
 
-        let selectedValues = mode.toArray( selectedValue );
+        let selectedValues = mode.toArray( selectedValue, props );
 
         let options = that.getOptions( props, state );
 
@@ -128,7 +128,7 @@ export default OptionsInputMixin = Mixin.create( {
 
         }
 
-        let allowedValue = mode.toValue( allowedValues );
+        let allowedValue = mode.toValue( allowedValues, props );
 
         that.setValue( allowedValue );
 
@@ -171,9 +171,9 @@ export default OptionsInputMixin = Mixin.create( {
 
         if ( nextProps.value !== undefined ) return;
 
-        let prevValues = prevMode.toArray( this.getValue() );
+        let prevValues = prevMode.toArray( this.getValue(), this.props );
 
-        let nextValue = nextMode.toValue( prevValues );
+        let nextValue = nextMode.toValue( prevValues, nextProps );
 
         this.setValue( nextValue );
 
@@ -227,7 +227,7 @@ export default OptionsInputMixin = Mixin.create( {
 
         let optionsValues = _.map( options, 'value' );
 
-        let prevValues = mode.toArray( this.getValue() );
+        let prevValues = mode.toArray( this.getValue(), this.props );
 
         let nextValues = operation( prevValues, optionsValues );
 
@@ -239,7 +239,7 @@ export default OptionsInputMixin = Mixin.create( {
 
         if ( nextValues.length === prevValues.length ) return;
 
-        this.setValue( mode.toValue( nextValues ) );
+        this.setValue( mode.toValue( nextValues, this.props ) );
 
       },
 

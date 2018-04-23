@@ -232,7 +232,7 @@ export default class FileInput extends React.Component {
 
       emptyValue( props ) {
 
-        return props.multiple ? [] : undefined;
+        return props.multiple ? [] : null;
 
       },
 
@@ -304,11 +304,11 @@ export default class FileInput extends React.Component {
 
     if ( this.props.multiple ) {
 
-      nextValue = prevValue[ 0 ];
+      nextValue = prevValue.length === 0 ? null : prevValue[ 0 ];
 
     } else {
 
-      nextValue = [ prevValue ];
+      nextValue = prevValue === null ? [] : [ prevValue ];
 
     }
 
@@ -403,7 +403,7 @@ export default class FileInput extends React.Component {
 
     } else {
 
-      value = undefined;
+      value = null;
 
     }
 
@@ -427,7 +427,7 @@ export default class FileInput extends React.Component {
 
     } else {
 
-      value = undefined;
+      value = null;
 
     }
 
