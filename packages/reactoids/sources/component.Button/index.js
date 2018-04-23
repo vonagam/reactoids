@@ -98,7 +98,9 @@ export default class Button extends React.Component {
 
     let link = props.link || hasHref;
 
-    let disabled = _.defaultTo( props.disabled, ! ( hasClick || hasHref || hasAjax ) );
+    let isSubmit = props.type === 'submit' && Tag === 'button' && ! link;
+
+    let disabled = _.defaultTo( props.disabled, ! ( hasClick || hasHref || hasAjax || isSubmit ) );
 
     let loading = _.defaultTo( props.loading, state.ajaxes.click );
 
