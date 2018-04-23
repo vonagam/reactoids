@@ -95,6 +95,40 @@ export default class Field extends React.Component {
 
       },
 
+      slots: {
+
+        body( that, slotArgs, slotProps ) {
+
+          return (
+
+            <React.Fragment>
+
+              { slotArgs.label }
+
+              <div className={ that.classed( 'wrapper' ) }>
+
+                { slotArgs.input }
+
+              </div>
+
+              { slotArgs.soul }
+
+              { slotArgs.error }
+
+              { slotArgs.status }
+
+              { slotArgs.description }
+
+              { slotArgs.details }
+
+            </React.Fragment>
+
+          );
+
+        },
+
+      },
+
       Components: { Label, CustomInputSoul },
 
     } ),
@@ -246,19 +280,9 @@ export default class Field extends React.Component {
     let required = inputProps.required;
 
 
-    return (
+    let body = this.renderBody( {
 
-      <div
-
-        { ...this.omitProps() }
-
-        className={ this.classed( '', { label, invalid: error, status, description, details, value: filled, focused, readonly, disabled, required } ) }
-
-        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
-
-        onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
-
-      >
+      label: (
 
         <Label
 
@@ -274,35 +298,35 @@ export default class Field extends React.Component {
 
         />
 
-        <div className={ this.classed( 'wrapper' ) }>
+      ),
 
-          {
+      input: (
 
-            React.cloneElement( fieldProps.children, {
+        React.cloneElement( fieldProps.children, {
 
-              ref: this.callbacks( 'saveInputRef, props.children.ref' ),
+          ref: this.callbacks( 'saveInputRef, props.children.ref' ),
 
-              className: joinClassNames( this.classed( 'input' ), inputProps.className ),
+          className: joinClassNames( this.classed( 'input' ), inputProps.className ),
 
-              'aria-labelledby': joinIds( label && this.id( 'label' ), inputProps[ 'aria-labelledby' ] ),
+          'aria-labelledby': joinIds( label && this.id( 'label' ), inputProps[ 'aria-labelledby' ] ),
 
-              'aria-errormessage': joinIds( error && this.id( 'error' ), inputProps[ 'aria-errormessage' ] ),
+          'aria-errormessage': joinIds( error && this.id( 'error' ), inputProps[ 'aria-errormessage' ] ),
 
-              'aria-controls': joinIds( status && this.id( 'status' ), inputProps[ 'aria-controls' ] ),
+          'aria-controls': joinIds( status && this.id( 'status' ), inputProps[ 'aria-controls' ] ),
 
-              'aria-describedby': joinIds( description && this.id( 'description' ), inputProps[ 'aria-describedby' ] ),
+          'aria-describedby': joinIds( description && this.id( 'description' ), inputProps[ 'aria-describedby' ] ),
 
-              'aria-details': joinIds( details && this.id( 'details' ), inputProps[ 'aria-details' ] ),
+          'aria-details': joinIds( details && this.id( 'details' ), inputProps[ 'aria-details' ] ),
 
-              onChange: this.callbacks( 'onChange, props.children.onChange' ),
+          onChange: this.callbacks( 'onChange, props.children.onChange' ),
 
-              onValidation: this.callbacks( 'onValidation, props.children.onValidation' ),
+          onValidation: this.callbacks( 'onValidation, props.children.onValidation' ),
 
-            } )
+        } )
 
-          }
+      ),
 
-        </div>
+      soul: (
 
         <CustomInputSoul
 
@@ -312,7 +336,7 @@ export default class Field extends React.Component {
 
           value={ fieldProps.stringify( value ) }
 
-          validity={ invalid }
+          validity={ error }
 
           disabled={ disabled }
 
@@ -322,15 +346,34 @@ export default class Field extends React.Component {
 
         />
 
-        <div id={ this.id( 'error' ) } className={ this.classed( 'error' ) } children={ error } />
+      ),
 
-        <div id={ this.id( 'status' ) } className={ this.classed( 'status' ) } children={ status } />
+      error: <div id={ this.id( 'error' ) } className={ this.classed( 'error' ) } children={ error } />,
 
-        <div id={ this.id( 'description' ) } className={ this.classed( 'description' ) } children={ description } />
+      status: <div id={ this.id( 'status' ) } className={ this.classed( 'status' ) } children={ status } />,
 
-        <div id={ this.id( 'details' ) } className={ this.classed( 'details' ) } children={ details } />
+      description: <div id={ this.id( 'description' ) } className={ this.classed( 'description' ) } children={ description } />,
 
-      </div>
+      details: <div id={ this.id( 'details' ) } className={ this.classed( 'details' ) } children={ details } />,
+
+    } );
+
+
+    return (
+
+      <div
+
+        { ...this.omitProps() }
+
+        className={ this.classed( '', { label, invalid: error, status, description, details, value: filled, focused, readonly, disabled, required } ) }
+
+        onFocus={ this.callbacks( 'onFocusGain, props.onFocus' ) }
+
+        onBlur={ this.callbacks( 'onFocusLoss, props.onBlur' ) }
+
+        children={ body }
+
+      />
 
     );
 
