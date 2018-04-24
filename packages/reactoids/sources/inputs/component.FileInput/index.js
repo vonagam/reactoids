@@ -1,6 +1,41 @@
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
 
 
+const MODES = {
+
+  single: {
+
+    valueType: PropTypes.object,
+
+    emptyValue: null,
+
+    toFiles: ( value ) => value === null ? [] : [ value ],
+
+    toValue: ( files ) => files.length === 0 ? null : files[ 0 ],
+
+  },
+
+  multiple: {
+
+    valueType: PropTypes.arrayOf( PropTypes.object ),
+
+    emptyValue: [],
+
+    toFiles: ( value ) => value,
+
+    toValue: ( files ) => files,
+
+  },
+
+}
+
+const getMode = function( props ) {
+
+  return props.multiple ? MODES.multiple : MODES.single;
+
+};
+
+
 // https://gist.github.com/guest271314/7eac2c21911f5e40f48933ac78e518bd
 
 const toFileList = function( files ) {
@@ -226,13 +261,13 @@ export default class FileInput extends React.Component {
 
       valueType( props ) {
 
-        return ( props.multiple ? PropTypes.arrayOf( PropTypes.object ) : PropTypes.object ).apply( this, arguments );
+        return getMode( props ).valueType.apply( this, arguments );
 
       },
 
       emptyValue( props ) {
 
-        return props.multiple ? [] : null;
+        return getMode( props ).emptyValue;
 
       },
 
@@ -298,19 +333,11 @@ export default class FileInput extends React.Component {
 
     if ( nextProps.value !== undefined ) return;
 
-    let nextValue;
-
     let prevValue = this.getValue();
 
-    if ( this.props.multiple ) {
+    let files = getMode( this.props ).toFiles( prevValue );
 
-      nextValue = prevValue.length === 0 ? null : prevValue[ 0 ];
-
-    } else {
-
-      nextValue = prevValue === null ? [] : [ prevValue ];
-
-    }
+    let nextValue = getMode( nextProps ).toValue( files );
 
     this.setValue( nextValue );
 
@@ -330,23 +357,11 @@ export default class FileInput extends React.Component {
 
   }
 
-  toFiles( value ) {
-
-    if ( this.props.multiple ) {
-
-      return value;
-
-    } else {
-
-      return value ? [ value ] : [];
-
-    }
-
-  }
-
   setInputFiles( value ) {
 
-    let files = this.toFiles( value );
+    let mode = getMode( this.props );
+
+    let files = mode.toFiles( value );
 
     let input = this.refs.input;
 
@@ -366,48 +381,40 @@ export default class FileInput extends React.Component {
 
   onChange( event ) {
 
-    let files = _.toArray( _.get( event, 'dataTransfer.files' ) || _.get( event, 'target.files' ) );
+    let newFiles = _.toArray( _.get( event, 'dataTransfer.files' ) || _.get( event, 'target.files' ) );
 
-    if ( files.length === 0 ) return;
+    if ( newFiles.length === 0 ) return;
 
 
-    let value;
+    let mode = getMode( this.props );
 
-    if ( this.props.multiple ) {
+    let prevValue = this.getValue();
 
-      value = this.getValue();
+    let files = mode.toFiles( prevValue );
 
-      value = value.concat( files );
+    files = newFiles.concat( files );
 
-      value = _.uniqBy( value, this.getFileKey );
+    files = _.uniqBy( files, this.getFileKey );
 
-    } else {
+    let nextValue = mode.toValue( files );
 
-      value = files[ 0 ];
-
-    }
-
-    this.setValue( value );
+    this.setValue( nextValue );
 
   }
 
   onRemove( index ) {
 
-    let value;
+    let mode = getMode( this.props );
 
-    if ( this.props.multiple ) {
+    let prevValue = this.getValue();
 
-      value = _.clone( this.getValue() );
+    let files = _.clone( mode.toFiles( prevValue ) );
 
-      value.splice( index, 1 );
+    files.splice( index, 1 )
 
-    } else {
+    let nextValue = mode.toValue( files );
 
-      value = null;
-
-    }
-
-    this.setValue( value );
+    this.setValue( nextValue );
 
   }
 
@@ -419,19 +426,11 @@ export default class FileInput extends React.Component {
 
   onClear() {
 
-    let value;
+    let mode = getMode( this.props );
 
-    if ( this.props.multiple ) {
+    let nextValue = mode.emptyValue;
 
-      value = [];
-
-    } else {
-
-      value = null;
-
-    }
-
-    this.setValue( value );
+    this.setValue( nextValue );
 
   }
 
@@ -486,6 +485,11 @@ export default class FileInput extends React.Component {
     let preview = props.preview;
 
 
+    let mode = getMode( this.props );
+
+    let files = mode.toFiles( value );
+
+
     return (
 
       <div
@@ -500,7 +504,7 @@ export default class FileInput extends React.Component {
 
           {
 
-            _.map( this.toFiles( value ), ( file, index ) =>
+            _.map( files, ( file, index ) =>
 
               <FileInputItem
 
