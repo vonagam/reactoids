@@ -42,21 +42,17 @@ module.exports = {
 
     [ 'babel-plugin-syntax-trailing-function-commas' ],
 
-    [ 'babel-plugin-transform-optional-chaining' ],
-
     [ require( './plugins/babel-plugin-default-assigment' ) ],
 
     [ require( './plugins/babel-plugin-development-assert' ) ],
 
     [ require( './plugins/babel-plugin-auto-import' ), {
 
-      autos: _.compact( _.flatten( [
+      autos: [
 
-        require( './autos/reactoids' ),
+        ...require( './autos/react' ),
 
-        require( './autos/react' ),
-
-        require( './autos/lodash' ),
+        ...require( './autos/lodash' ),
 
         { name: 'React', source: 'react' },
 
@@ -72,23 +68,17 @@ module.exports = {
 
         { name: '$', source: 'jquery' },
 
-        process.env.REACTOIDS_PACKAGE.match( /pixi.js$/ ) && { name: 'PIXI', namespace: true, source: 'pixi.js' },
-
-        process.env.REACTOIDS_PACKAGE.match( /d3$/ ) && { name: 'd3', namespace: true, source: 'd3' },
-
-        process.env.REACTOIDS_PACKAGE.match( /three$/ ) && { name: 'THREE', namespace: true, source: 'three' },
-
-      ] ) ),
+      ],
 
     } ],
+
+    [ require( './plugins/babel-plugin-root-import' ) ],
 
     [ require( './plugins/babel-plugin-reactoids-import' ) ],
 
     [ require( './plugins/babel-plugin-delayed-lodash' ) ],
 
     [ require( './plugins/babel-plugin-transform-delayed-resolve-wildcard-import' ) ],
-
-    [ 'babel-plugin-module-resolver', { alias: { '~': './sources' } } ],
 
   ],
 

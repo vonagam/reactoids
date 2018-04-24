@@ -2,11 +2,13 @@
 
 package_dirname = Dir.pwd
 
-reactoids_dirname = File.expand_path '../reactoids', package_dirname
+base_dirname = File.expand_path '../../', package_dirname
 
-scripts_dirname = File.expand_path '../../scripts', package_dirname
+reactoids_dirname = File.expand_path './packages/reactoids', base_dirname
 
-gh_pages_dirname = File.expand_path '../../gh-pages', package_dirname
+scripts_dirname = File.expand_path './scripts', base_dirname
+
+gh_pages_dirname = File.expand_path './gh-pages', base_dirname
 
 
 exit if package_dirname == scripts_dirname
@@ -67,6 +69,8 @@ env = {
 
   'REACTOIDS_PACKAGE' => package_dirname,
 
+  'REACTOIDS_BASE' => base_dirname,
+
   'REACTOIDS_REACTOIDS' => reactoids_dirname,
 
   'REACTOIDS_SCRIPTS' => scripts_dirname,
@@ -85,7 +89,7 @@ case
 
   when task == 'lib:test' && debug
 
-    exec env, "#{ bin_dirname }/mocha --inspect --inspect-brk --ui=bdd-lazy-var/rspec --require=babel-core/register --require=@reactoids/scripts/tests/setup ./sources/**/test.js"
+    exec env, "#{ bin_dirname }/mocha --inspect --inspect-brk --ui=bdd-lazy-var/rspec --require=babel-core/register --require=#{ scripts_dirname }/tests/setup ./sources/**/test.js"
 
   when task == 'lib:story'
 
